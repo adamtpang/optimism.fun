@@ -1,75 +1,64 @@
-'use client'
-
-import { motion } from 'framer-motion'
-
 const pillars = [
   {
     number: '01',
-    title: 'Problems are infinite. So are solutions.',
+    title: 'Every problem is soluble.',
+    attribution: 'David Deutsch',
     description:
-      'David Deutsch proved that there is no limit to human knowledge. Every problem that is not forbidden by the laws of physics can be solved. The only question is whether we choose to solve it.',
+      'If the laws of physics don\'t forbid it, it\'s achievable given the right knowledge. There is no limit to what we can understand, build, and solve. The only question is whether we choose to try.',
+    accent: 'text-gold',
   },
   {
     number: '02',
-    title: 'Technology is the engine.',
+    title: 'The bigger the quest, the bigger the reward.',
+    attribution: 'Founders Fund',
     description:
-      'From fire to semiconductors, technology is how we turn knowledge into solutions. Every great company started as someone saying "I know how to fix this."',
+      'The greatest founders chose problems so important that the best talent in the world wanted to help solve them. SpaceX, Tesla, Moderna — they recruited through the grandeur of the mission itself.',
+    accent: 'text-violet',
   },
   {
     number: '03',
-    title: 'Capitalism is the scoreboard.',
+    title: 'Meaningful work = your passions × objective worth.',
+    attribution: 'The Thesis',
     description:
-      'Profit is a signal. It means you solved a problem well enough that people paid you for it. The market is not just an economy. It is a feedback loop for human progress.',
+      'The best work happens at the intersection of what you\'re uniquely good at and what the world desperately needs solved. We route human attention, time, and resources toward what matters most.',
+    accent: 'text-gold',
   },
 ]
 
 export default function Thesis() {
   return (
-    <section id="worldview" className="py-32 px-6">
-      <div className="max-w-5xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.6 }}
-          className="mb-20"
-        >
-          <p className="text-indigo-400 font-medium tracking-[0.2em] uppercase text-sm mb-4">
-            The Worldview
-          </p>
-          <h2 className="font-display text-4xl md:text-5xl font-bold mb-6">
-            Every Problem Is Solvable
-          </h2>
-          <p className="text-slate-400 text-lg max-w-2xl leading-relaxed">
-            David Deutsch and Elon Musk showed us two sides of the same coin.
-            Deutsch proved that knowledge creation is unbounded. Musk proved
-            that one person with the right problem can change everything. We are
-            building on both.
-          </p>
-        </motion.div>
+    <section className="py-24 sm:py-36 px-4 sm:px-6">
+      <div className="max-w-3xl mx-auto">
+        <p className="text-violet font-medium tracking-[0.25em] uppercase text-xs sm:text-sm mb-4">
+          The Worldview
+        </p>
+        <h2 className="font-display text-3xl sm:text-4xl font-bold text-cream mb-16">
+          Three Ideas That Change Everything
+        </h2>
 
-        <div className="space-y-12">
-          {pillars.map((pillar, i) => (
-            <motion.div
+        <div className="space-y-6">
+          {pillars.map((pillar) => (
+            <div
               key={pillar.number}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="grid md:grid-cols-[80px_1fr] gap-6 p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-indigo-500/20 transition-all duration-300"
+              className="card-space rounded-2xl p-6 sm:p-8 transition-all duration-300"
             >
-              <span className="font-display text-3xl font-bold text-indigo-500/40">
-                {pillar.number}
-              </span>
-              <div>
-                <h3 className="font-display text-xl md:text-2xl font-semibold mb-3">
-                  {pillar.title}
-                </h3>
-                <p className="text-slate-400 leading-relaxed">
-                  {pillar.description}
-                </p>
+              <div className="flex items-start gap-5">
+                <span className={`font-display text-3xl font-bold ${pillar.accent} opacity-60 flex-shrink-0`}>
+                  {pillar.number}
+                </span>
+                <div>
+                  <h3 className="font-display text-lg sm:text-xl font-semibold text-cream mb-3">
+                    {pillar.title}
+                  </h3>
+                  <p className="text-warm text-sm sm:text-base leading-relaxed mb-3">
+                    {pillar.description}
+                  </p>
+                  <p className="text-xs text-muted">
+                    &mdash; {pillar.attribution}
+                  </p>
+                </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

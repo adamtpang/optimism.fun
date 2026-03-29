@@ -1,71 +1,56 @@
-'use client'
-
-import { motion } from 'framer-motion'
+import Link from 'next/link'
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-6 pt-16">
-      <div className="max-w-4xl mx-auto text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold leading-[1.1] mb-8">
-            Infinite Problems.
-            <span className="block bg-gradient-to-r from-indigo-400 via-purple-400 to-amber-400 bg-clip-text text-transparent">
-              Infinite Solutions.
-            </span>
-          </h1>
-        </motion.div>
+    <section className="min-h-[90svh] flex items-center justify-center px-4 sm:px-6 pt-20 pb-12">
+      <div className="max-w-3xl mx-auto text-center">
+        <p className="text-gold font-medium tracking-[0.25em] uppercase text-xs sm:text-sm mb-8">
+          Choose Good Quests
+        </p>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-12 leading-relaxed"
-        >
-          The world has more problems than ever. Every single one is a business
-          waiting to be built. Technology and capitalism are the greatest
-          problem-solving engines humanity has ever created.
-        </motion.p>
+        <h1 className="font-display text-4xl sm:text-5xl md:text-7xl font-bold leading-[1.1] mb-8">
+          <span className="text-cream">You know you&apos;re meant</span>
+          <br />
+          <span className="text-cream">to solve something</span>
+          <br />
+          <span className="text-gradient-hero">that actually matters.</span>
+        </h1>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
-        >
-          <a
-            href="#join"
-            className="px-8 py-4 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-lg transition-all duration-300 hover:shadow-[0_0_30px_rgba(99,102,241,0.4)]"
+        <p className="text-lg sm:text-xl text-warm max-w-2xl mx-auto mb-4 leading-relaxed">
+          You just don&apos;t know <span className="text-gold">which problem</span> yet.
+        </p>
+
+        <p className="text-sm sm:text-base text-muted max-w-xl mx-auto mb-12 leading-relaxed">
+          optimism.fun surfaces humanity&apos;s biggest unsolved problems, the companies
+          already working on them, and helps you find the quest worth committing your
+          life&apos;s work to.
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link
+            href="/problems"
+            className="group px-8 py-4 rounded-xl bg-gold hover:bg-gold-bright text-deep font-bold text-base transition-all glow-gold"
           >
-            Join the Waitlist
-          </a>
-          <a
-            href="#worldview"
-            className="px-8 py-4 rounded-full border border-white/20 hover:border-white/40 text-white font-semibold text-lg transition-all duration-300"
+            Explore Quests
+            <span className="inline-block ml-2 group-hover:translate-x-1 transition-transform">&rarr;</span>
+          </Link>
+          <Link
+            href="/discover"
+            className="px-8 py-4 rounded-xl border border-violet/30 text-violet hover:bg-violet/10 hover:border-violet/50 font-medium text-base transition-all"
           >
-            Read the Thesis
-          </a>
-        </motion.div>
-      </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2"
-      >
-        <div className="w-6 h-10 rounded-full border-2 border-white/20 flex justify-center pt-2">
-          <motion.div
-            animate={{ y: [0, 12, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-            className="w-1 h-1 rounded-full bg-white/60"
-          />
+            Find Your Match
+          </Link>
         </div>
-      </motion.div>
+
+        <div className="mt-20 space-y-2">
+          <p className="text-sm text-muted italic">
+            &ldquo;All evils are caused by insufficient knowledge.&rdquo;
+          </p>
+          <p className="text-xs text-muted tracking-wide">
+            &mdash; David Deutsch, <span className="text-warm">The Beginning of Infinity</span>
+          </p>
+        </div>
+      </div>
     </section>
   )
 }

@@ -1,0 +1,23 @@
+name: Research Pipeline
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Every 6 hours
+  workflow_dispatch: {} # Manual trigger
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger research pipeline
+        run: |
+          curl -s -X GET \
+            "${{ secrets.SITE_URL }}/api/cron/research" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            --max-time 120
+
+      - name: Update market data
+        run: |
+          curl -s -X GET \
+            "${{ secrets.SITE_URL }}/api/cron/market-data" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            --max-time 30

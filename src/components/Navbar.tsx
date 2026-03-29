@@ -1,112 +1,101 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 const navLinks = [
-  { name: 'Worldview', href: '#worldview' },
-  { name: 'The Game', href: '#game' },
-  { name: 'Resources', href: '#resources' },
-  { name: 'Join', href: '#join' },
+  { name: 'Quests', href: '/problems' },
+  { name: 'Leaderboards', href: '/leaderboards' },
+  { name: 'Discover', href: '/discover' },
+  { name: 'About', href: '/about' },
 ]
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 50)
+    const handler = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', handler)
     return () => window.removeEventListener('scroll', handler)
   }, [])
+
+  useEffect(() => {
+    setMobileOpen(false)
+  }, [pathname])
 
   return (
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-[#050510]/80 backdrop-blur-md border-b border-white/5'
+          ? 'bg-deep/80 backdrop-blur-xl border-b border-white/5'
           : ''
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a
-          href="#"
-          className="font-display text-xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent"
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        <Link
+          href="/"
+          className="font-display text-lg font-bold text-cream hover:text-gold transition-colors"
         >
           optimism.fun
-        </a>
+        </Link>
 
-        {/* Desktop */}
-        <div className="hidden md:flex items-center gap-8">
+        {/* Desktop links */}
+        <div className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.name}
               href={link.href}
-              className="text-sm text-slate-400 hover:text-white transition-colors"
+              aria-current={pathname === link.href ? 'page' : undefined}
+              className={`px-3 py-2 rounded-lg text-sm transition-colors ${
+                pathname === link.href
+                  ? 'text-gold font-medium'
+                  : 'text-warm hover:text-cream'
+              }`}
             >
               {link.name}
-            </a>
+            </Link>
           ))}
-          <a
-            href="#join"
-            className="px-4 py-2 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors"
-          >
-            Join Waitlist
-          </a>
         </div>
 
         {/* Mobile hamburger */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden text-slate-400 hover:text-white transition-colors p-2"
-          aria-label="Toggle menu"
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        <div className="md:hidden">
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="p-2 rounded-lg text-warm hover:text-cream hover:bg-white/5 transition-colors"
+            aria-label="Toggle menu"
+            aria-expanded={mobileOpen}
           >
-            {mobileOpen ? (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            ) : (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            )}
-          </svg>
-        </button>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+              {mobileOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
+              )}
+            </svg>
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden bg-[#050510]/95 backdrop-blur-md border-t border-white/5 pb-4">
+        <div className="md:hidden bg-deep/95 backdrop-blur-xl border-t border-white/5 py-2">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.name}
               href={link.href}
-              onClick={() => setMobileOpen(false)}
-              className="block px-6 py-3 text-slate-400 hover:text-white transition-colors"
+              aria-current={pathname === link.href ? 'page' : undefined}
+              className={`block px-6 py-3 text-sm transition-colors ${
+                pathname === link.href
+                  ? 'text-gold font-medium'
+                  : 'text-warm hover:text-cream'
+              }`}
             >
               {link.name}
-            </a>
+            </Link>
           ))}
-          <div className="px-6 pt-2">
-            <a
-              href="#join"
-              onClick={() => setMobileOpen(false)}
-              className="block text-center px-4 py-2 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors"
-            >
-              Join Waitlist
-            </a>
-          </div>
         </div>
       )}
     </nav>

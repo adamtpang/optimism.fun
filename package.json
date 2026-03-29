@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "framer-motion": "^11.15.0",
+    "@anthropic-ai/sdk": "^0.78.0",
+    "@neondatabase/serverless": "^1.0.2",
     "next": "^16.1.6",
+    "next-auth": "^5.0.0-beta.30",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
+  darkMode: 'class',
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -12,24 +13,22 @@ const config: Config = {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
         display: ['var(--font-space-grotesk)', 'system-ui', 'sans-serif'],
       },
-      animation: {
-        'twinkle': 'twinkle 3s ease-in-out infinite',
-        'float': 'float 6s ease-in-out infinite',
-        'glow-pulse': 'glow-pulse 3s ease-in-out infinite',
-      },
-      keyframes: {
-        twinkle: {
-          '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '0.3' },
+      colors: {
+        // Optimistic fun palette
+        gold: {
+          DEFAULT: '#f5c542',
+          dim: '#c9a23a',
+          bright: '#ffe066',
         },
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-10px)' },
+        violet: {
+          DEFAULT: '#b48eff',
+          dim: '#8b6cc4',
+          bright: '#d4b8ff',
         },
-        'glow-pulse': {
-          '0%, 100%': { boxShadow: '0 0 20px rgba(99, 102, 241, 0.3)' },
-          '50%': { boxShadow: '0 0 40px rgba(99, 102, 241, 0.6)' },
-        },
+        cream: '#f0ece2',
+        warm: '#b8b2a8',
+        muted: '#7a7568',
+        deep: '#0c0e1a',
       },
     },
   },

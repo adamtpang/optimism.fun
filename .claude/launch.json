@@ -4,8 +4,9 @@
     {
       "name": "next-dev",
       "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
-      "runtimeArgs": ["node_modules/next/dist/bin/next", "dev"],
-      "port": 3000
+      "runtimeArgs": ["node_modules/next/dist/bin/next", "dev", "--port", "3001"],
+      "port": 3001,
+      "cwd": "C:\\Users\\adamp\\OneDrive\\windows-projects\\archive\\optimism.fun"
     }
   ]
 }
