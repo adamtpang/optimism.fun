@@ -68,7 +68,7 @@ export default function ComparePage() {
         <Navbar />
         <main className="pt-20 sm:pt-24 pb-12 sm:pb-16 px-4 sm:px-6">
           <div className="max-w-3xl mx-auto text-center">
-            <div className="w-8 h-8 mx-auto rounded-full border-2 border-amber-500 border-t-transparent animate-spin" />
+            <div className="w-8 h-8 mx-auto rounded-full border-2 border-gold border-t-transparent animate-spin" />
           </div>
         </main>
         <Footer />
@@ -83,13 +83,13 @@ export default function ComparePage() {
         <div className="max-w-3xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8 sm:mb-10">
-            <p className="text-amber-400 font-medium tracking-[0.25em] uppercase text-xs sm:text-sm mb-4">
+            <p className="text-gold font-medium tracking-[0.25em] uppercase text-xs sm:text-sm mb-4">
               Head to Head
             </p>
-            <h1 className="font-display text-3xl sm:text-4xl font-bold text-zinc-100 mb-3">
+            <h1 className="font-display text-3xl sm:text-4xl font-bold text-cream mb-3">
               Who&rsquo;s contributing more?
             </h1>
-            <p className="text-zinc-400 text-sm sm:text-base max-w-md mx-auto">
+            <p className="text-warm text-sm sm:text-base max-w-md mx-auto">
               Pick who you think is contributing more to solving civilization&rsquo;s problems. Your votes update Elo ratings.
             </p>
           </div>
@@ -100,8 +100,8 @@ export default function ComparePage() {
               onClick={() => setCategory(undefined)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                 !category
-                  ? 'bg-amber-600 text-white'
-                  : 'text-zinc-500 hover:text-zinc-100 border border-white/5'
+                  ? 'bg-gold-dim text-cream'
+                  : 'text-muted hover:text-cream border border-white/5'
               }`}
             >
               All
@@ -112,8 +112,8 @@ export default function ComparePage() {
                 onClick={() => setCategory(cat)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                   category === cat
-                    ? 'bg-amber-600 text-white'
-                    : 'text-zinc-500 hover:text-zinc-100 border border-white/5'
+                    ? 'bg-gold-dim text-cream'
+                    : 'text-muted hover:text-cream border border-white/5'
                 }`}
               >
                 {cat}
@@ -131,30 +131,30 @@ export default function ComparePage() {
                   disabled={animating}
                   className={`group relative text-left p-6 sm:p-8 rounded-xl border transition-all duration-200 ${
                     animating && lastResult?.winnerId === player.id
-                      ? 'border-amber-500 bg-amber-500/10 scale-[1.02]'
+                      ? 'border-gold bg-gold/10 scale-[1.02]'
                       : animating
                         ? 'border-white/5 opacity-60'
-                        : 'card-space hover:border-amber-500/30 hover:shadow-lg hover:shadow-amber-500/5 cursor-pointer'
+                        : 'card-space hover:border-gold/30 hover:shadow-lg hover:shadow-gold/5 cursor-pointer'
                   }`}
                 >
                   {/* Type badge */}
                   <span
                     className={`inline-block text-[10px] px-2 py-0.5 rounded-full border mb-3 ${
                       player.type === 'person'
-                        ? 'bg-blue-500/10 text-blue-400 border-blue-500/30'
-                        : 'bg-purple-500/10 text-purple-400 border-purple-500/30'
+                        ? 'bg-violet/10 text-violet-bright border-violet/30'
+                        : 'bg-violet/10 text-violet border-violet/30'
                     }`}
                   >
                     {player.type}
                   </span>
 
                   {/* Name */}
-                  <h2 className="font-display text-xl sm:text-2xl font-bold text-zinc-100 group-hover:text-amber-400 transition-colors mb-2">
+                  <h2 className="font-display text-xl sm:text-2xl font-bold text-cream group-hover:text-gold transition-colors mb-2">
                     {player.name}
                   </h2>
 
                   {/* Bio */}
-                  <p className="text-sm text-zinc-500 mb-4 line-clamp-2">
+                  <p className="text-sm text-muted mb-4 line-clamp-2">
                     {player.bio}
                   </p>
 
@@ -163,7 +163,7 @@ export default function ComparePage() {
                     {player.category.map((cat) => (
                       <span
                         key={cat}
-                        className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/5 text-zinc-500"
+                        className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/5 text-muted"
                       >
                         {cat}
                       </span>
@@ -172,10 +172,10 @@ export default function ComparePage() {
 
                   {/* Elo */}
                   <div className="flex items-baseline gap-2">
-                    <span className="font-display text-2xl font-bold text-amber-400">
+                    <span className="font-display text-2xl font-bold text-gold">
                       {player.elo}
                     </span>
-                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider">
+                    <span className="text-[10px] text-warm uppercase tracking-wider">
                       Elo
                     </span>
                   </div>
@@ -184,7 +184,7 @@ export default function ComparePage() {
             </div>
           ) : (
             <div className="text-center py-16">
-              <p className="text-zinc-500 text-sm">
+              <p className="text-muted text-sm">
                 Not enough players in this category. Try a different filter.
               </p>
             </div>
@@ -194,14 +194,14 @@ export default function ComparePage() {
           {lastResult && (
             <div className="text-center mb-6 animate-fade-in">
               <div className="inline-flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5 border border-white/5">
-                <span className="text-sm text-zinc-100 font-medium">
+                <span className="text-sm text-cream font-medium">
                   {lastResult.winnerName}
                 </span>
                 <span className="text-xs text-green-400 font-mono">
                   +{lastResult.winnerDelta || '...'}
                 </span>
-                <span className="text-zinc-400 text-xs">vs</span>
-                <span className="text-sm text-zinc-500">
+                <span className="text-warm text-xs">vs</span>
+                <span className="text-sm text-muted">
                   {lastResult.loserName}
                 </span>
                 <span className="text-xs text-red-400 font-mono">
@@ -213,8 +213,8 @@ export default function ComparePage() {
 
           {/* Session stats + skip */}
           <div className="flex items-center justify-center gap-6 text-sm">
-            <div className="text-zinc-400">
-              <span className="font-display font-bold text-zinc-100">
+            <div className="text-warm">
+              <span className="font-display font-bold text-cream">
                 {sessionVotes}
               </span>{' '}
               votes this session
@@ -222,13 +222,13 @@ export default function ComparePage() {
             <button
               onClick={nextMatchup}
               disabled={animating}
-              className="text-zinc-400 hover:text-amber-400 transition-colors text-xs"
+              className="text-warm hover:text-gold transition-colors text-xs"
             >
               Skip &rarr;
             </button>
             <Link
               href="/players"
-              className="text-zinc-400 hover:text-amber-400 transition-colors text-xs"
+              className="text-warm hover:text-gold transition-colors text-xs"
             >
               View Rankings &rarr;
             </Link>
@@ -236,9 +236,9 @@ export default function ComparePage() {
 
           {/* Quote */}
           <div className="mt-16 text-center">
-            <p className="text-sm text-zinc-400 italic max-w-lg mx-auto">
+            <p className="text-sm text-warm italic max-w-lg mx-auto">
               &ldquo;Optimism is a duty. The future is open.&rdquo;
-              <span className="block mt-1 not-italic text-zinc-500">
+              <span className="block mt-1 not-italic text-muted">
                 &mdash; Karl Popper
               </span>
             </p>

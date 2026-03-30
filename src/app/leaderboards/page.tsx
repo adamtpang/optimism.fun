@@ -15,34 +15,46 @@ export const metadata: Metadata = {
 }
 
 export default async function LeaderboardsPage() {
-  const sql = getDb()
+  let problems: Record<string, unknown>[] = []
+  let companies: Record<string, unknown>[] = []
+  let xAccounts: Record<string, unknown>[] = []
+  let countries: Record<string, unknown>[] = []
 
-  const [problems, companies, xAccounts, countries] = await Promise.all([
-    sql`
-      SELECT p.slug, p.title, p.composite_score, p.affected_population_count,
-             p.annual_deaths, p.economic_value_usd, p.who_has_problem,
-             c.name as category_name, c.icon as category_icon
-      FROM problems p
-      LEFT JOIN categories c ON c.id = p.category_id
-      WHERE p.status = 'active'
-      ORDER BY p.composite_score DESC
-    `,
-    sql`
-      SELECT co.*, c.name as category_name, c.icon as category_icon
-      FROM companies co
-      LEFT JOIN categories c ON c.id = co.category_id
-      ORDER BY co.market_cap_usd DESC NULLS LAST
-    `,
-    sql`
-      SELECT x.*, c.name as category_name, c.icon as category_icon
-      FROM x_accounts x
-      LEFT JOIN categories c ON c.id = x.category_id
-      ORDER BY x.follower_count DESC NULLS LAST
-    `,
-    sql`
-      SELECT * FROM countries ORDER BY gdp_usd DESC NULLS LAST
-    `,
-  ])
+  try {
+    const sql = getDb()
+    const results = await Promise.all([
+      sql`
+        SELECT p.slug, p.title, p.composite_score, p.affected_population_count,
+               p.annual_deaths, p.economic_value_usd, p.who_has_problem,
+               c.name as category_name, c.icon as category_icon
+        FROM problems p
+        LEFT JOIN categories c ON c.id = p.category_id
+        WHERE p.status = 'active'
+        ORDER BY p.composite_score DESC
+      `,
+      sql`
+        SELECT co.*, c.name as category_name, c.icon as category_icon
+        FROM companies co
+        LEFT JOIN categories c ON c.id = co.category_id
+        ORDER BY co.market_cap_usd DESC NULLS LAST
+      `,
+      sql`
+        SELECT x.*, c.name as category_name, c.icon as category_icon
+        FROM x_accounts x
+        LEFT JOIN categories c ON c.id = x.category_id
+        ORDER BY x.follower_count DESC NULLS LAST
+      `,
+      sql`
+        SELECT * FROM countries ORDER BY gdp_usd DESC NULLS LAST
+      `,
+    ])
+    problems = results[0] as unknown as Record<string, unknown>[]
+    companies = results[1] as unknown as Record<string, unknown>[]
+    xAccounts = results[2] as unknown as Record<string, unknown>[]
+    countries = results[3] as unknown as Record<string, unknown>[]
+  } catch {
+    // DB unavailable
+  }
 
   const byScore = problems.slice(0, 15)
   const byHumans = [...problems].sort((a, b) => Number(b.affected_population_count) - Number(a.affected_population_count)).slice(0, 15)
@@ -58,13 +70,13 @@ export default async function LeaderboardsPage() {
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-6">
-            <p className="text-amber-400 font-medium tracking-[0.25em] uppercase text-xs sm:text-sm mb-4">
+            <p className="text-gold font-medium tracking-[0.25em] uppercase text-xs sm:text-sm mb-4">
               Rankings
             </p>
-            <h1 className="font-display text-3xl sm:text-4xl font-bold text-zinc-100 mb-3">
+            <h1 className="font-display text-3xl sm:text-4xl font-bold text-cream mb-3">
               Leaderboards
             </h1>
-            <p className="text-zinc-400 text-sm sm:text-base max-w-xl">
+            <p className="text-warm text-sm sm:text-base max-w-xl">
               Who has the biggest problems? Who is creating the solutions? Who has the most capital? The scoreboard of human progress.
             </p>
           </div>
@@ -73,62 +85,62 @@ export default async function LeaderboardsPage() {
 
           {/* ═══ PROBLEMS ═══ */}
           <section id="problems" className="mb-16 scroll-mt-32">
-            <h2 className="font-display text-2xl font-bold text-zinc-100 mb-2">
+            <h2 className="font-display text-2xl font-bold text-cream mb-2">
               Problems
             </h2>
-            <p className="text-sm text-zinc-500 mb-6">
+            <p className="text-sm text-muted mb-6">
               The biggest problems facing humanity - ranked by score, human impact, and economic value.
             </p>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div>
-                <h3 className="text-xs font-medium text-zinc-400 uppercase tracking-wider mb-3">By Score</h3>
+                <h3 className="text-xs font-medium text-warm uppercase tracking-wider mb-3">By Score</h3>
                 <div className="space-y-2">
                   {byScore.map((p, i) => (
-                    <Link key={p.slug as string} href={`/problems/${p.slug}`} className="flex items-center gap-3 p-3 rounded-xl card-space hover:border-amber-500/30 transition-colors group">
-                      <span className="text-xs font-mono text-zinc-400 w-5 text-right">{i + 1}</span>
+                    <Link key={p.slug as string} href={`/problems/${p.slug}`} className="flex items-center gap-3 p-3 rounded-xl card-space hover:border-gold/30 transition-colors group">
+                      <span className="text-xs font-mono text-warm w-5 text-right">{i + 1}</span>
                       <div className="flex-1 min-w-0">
-                        <div className="text-sm font-medium text-zinc-100 group-hover:text-amber-400 truncate transition-colors">{p.title as string}</div>
-                        <div className="text-[10px] text-zinc-400">{p.category_icon as string} {p.category_name as string}</div>
+                        <div className="text-sm font-medium text-cream group-hover:text-gold truncate transition-colors">{p.title as string}</div>
+                        <div className="text-[10px] text-warm">{p.category_icon as string} {p.category_name as string}</div>
                       </div>
                       <div className="text-right flex-shrink-0">
-                        <div className="font-display text-sm font-bold text-amber-400">{Number(p.composite_score).toFixed(1)}</div>
-                        <div className="text-[10px] text-zinc-400">score</div>
+                        <div className="font-display text-sm font-bold text-gold">{Number(p.composite_score).toFixed(1)}</div>
+                        <div className="text-[10px] text-warm">score</div>
                       </div>
                     </Link>
                   ))}
                 </div>
               </div>
               <div>
-                <h3 className="text-xs font-medium text-zinc-400 uppercase tracking-wider mb-3">Most Humans Affected</h3>
+                <h3 className="text-xs font-medium text-warm uppercase tracking-wider mb-3">Most Humans Affected</h3>
                 <div className="space-y-2">
                   {byHumans.map((p, i) => (
-                    <Link key={p.slug as string} href={`/problems/${p.slug}`} className="flex items-center gap-3 p-3 rounded-xl card-space hover:border-amber-500/30 transition-colors group">
-                      <span className="text-xs font-mono text-zinc-400 w-5 text-right">{i + 1}</span>
+                    <Link key={p.slug as string} href={`/problems/${p.slug}`} className="flex items-center gap-3 p-3 rounded-xl card-space hover:border-gold/30 transition-colors group">
+                      <span className="text-xs font-mono text-warm w-5 text-right">{i + 1}</span>
                       <div className="flex-1 min-w-0">
-                        <div className="text-sm font-medium text-zinc-100 group-hover:text-amber-400 truncate transition-colors">{p.title as string}</div>
-                        <div className="text-[10px] text-zinc-400">{p.category_icon as string} {p.category_name as string}</div>
+                        <div className="text-sm font-medium text-cream group-hover:text-gold truncate transition-colors">{p.title as string}</div>
+                        <div className="text-[10px] text-warm">{p.category_icon as string} {p.category_name as string}</div>
                       </div>
                       <div className="text-right flex-shrink-0">
-                        <div className="font-display text-sm font-bold text-amber-400">{formatPop(Number(p.affected_population_count))}</div>
-                        <div className="text-[10px] text-zinc-400">affected</div>
+                        <div className="font-display text-sm font-bold text-gold">{formatPop(Number(p.affected_population_count))}</div>
+                        <div className="text-[10px] text-warm">affected</div>
                       </div>
                     </Link>
                   ))}
                 </div>
               </div>
               <div>
-                <h3 className="text-xs font-medium text-zinc-400 uppercase tracking-wider mb-3">Most Economic Value</h3>
+                <h3 className="text-xs font-medium text-warm uppercase tracking-wider mb-3">Most Economic Value</h3>
                 <div className="space-y-2">
                   {byValue.map((p, i) => (
-                    <Link key={p.slug as string} href={`/problems/${p.slug}`} className="flex items-center gap-3 p-3 rounded-xl card-space hover:border-amber-500/30 transition-colors group">
-                      <span className="text-xs font-mono text-zinc-400 w-5 text-right">{i + 1}</span>
+                    <Link key={p.slug as string} href={`/problems/${p.slug}`} className="flex items-center gap-3 p-3 rounded-xl card-space hover:border-gold/30 transition-colors group">
+                      <span className="text-xs font-mono text-warm w-5 text-right">{i + 1}</span>
                       <div className="flex-1 min-w-0">
-                        <div className="text-sm font-medium text-zinc-100 group-hover:text-amber-400 truncate transition-colors">{p.title as string}</div>
-                        <div className="text-[10px] text-zinc-400">{p.category_icon as string} {p.category_name as string}</div>
+                        <div className="text-sm font-medium text-cream group-hover:text-gold truncate transition-colors">{p.title as string}</div>
+                        <div className="text-[10px] text-warm">{p.category_icon as string} {p.category_name as string}</div>
                       </div>
                       <div className="text-right flex-shrink-0">
-                        <div className="font-display text-sm font-bold text-amber-400">{formatBigNum(Number(p.economic_value_usd))}</div>
-                        <div className="text-[10px] text-zinc-400">value</div>
+                        <div className="font-display text-sm font-bold text-gold">{formatBigNum(Number(p.economic_value_usd))}</div>
+                        <div className="text-[10px] text-warm">value</div>
                       </div>
                     </Link>
                   ))}
@@ -139,40 +151,40 @@ export default async function LeaderboardsPage() {
 
           {/* ═══ COMPANIES ═══ */}
           <section id="companies" className="mb-16 scroll-mt-32">
-            <h2 className="font-display text-2xl font-bold text-zinc-100 mb-2">
+            <h2 className="font-display text-2xl font-bold text-cream mb-2">
               Companies
             </h2>
-            <p className="text-sm text-zinc-500 mb-6">
+            <p className="text-sm text-muted mb-6">
               Organizations deploying capital to solve humanity's biggest problems, ranked by market cap.
             </p>
             <div className="space-y-2">
               {allCompanies.slice(0, 20).map((c: Record<string, unknown>, i: number) => (
                 <div key={c.id as number} className="flex items-center gap-3 p-3 sm:p-4 rounded-xl card-space">
-                  <span className="text-xs font-mono text-zinc-400 w-5 text-right">{i + 1}</span>
+                  <span className="text-xs font-mono text-warm w-5 text-right">{i + 1}</span>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-zinc-100">{c.name as string}</span>
-                      {c.ticker ? <span className="text-[10px] font-mono text-zinc-400">{c.ticker as string}</span> : null}
+                      <span className="text-sm font-medium text-cream">{c.name as string}</span>
+                      {c.ticker ? <span className="text-[10px] font-mono text-warm">{c.ticker as string}</span> : null}
                       <span className={`text-[10px] px-1.5 py-0.5 rounded-full border ${
                         c.company_type === 'crypto'
-                          ? 'bg-purple-500/10 text-purple-400 border-purple-500/30'
+                          ? 'bg-violet/10 text-violet border-violet/30'
                           : c.company_type === 'public'
                             ? 'bg-blue-500/10 text-blue-400 border-blue-500/30'
-                            : 'bg-white/5 text-zinc-500 border-white/10'
+                            : 'bg-white/5 text-muted border-white/10'
                       }`}>
                         {c.company_type as string}
                       </span>
                     </div>
-                    <div className="text-[10px] text-zinc-400 mt-0.5">
+                    <div className="text-[10px] text-warm mt-0.5">
                       {c.category_icon as string} {c.category_name as string}
-                      {c.problem_solving ? <span className="ml-2 text-zinc-500"> - {(c.problem_solving as string).slice(0, 60)}</span> : null}
+                      {c.problem_solving ? <span className="ml-2 text-muted"> - {(c.problem_solving as string).slice(0, 60)}</span> : null}
                     </div>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <div className="font-display text-sm font-bold text-amber-400">
+                    <div className="font-display text-sm font-bold text-gold">
                       {formatBigNum(Number(c.market_cap_usd))}
                     </div>
-                    <div className="text-[10px] text-zinc-400">market cap</div>
+                    <div className="text-[10px] text-warm">market cap</div>
                   </div>
                 </div>
               ))}
@@ -182,32 +194,32 @@ export default async function LeaderboardsPage() {
           {/* ═══ CRYPTO ═══ */}
           {cryptoCompanies.length > 0 && (
             <section id="crypto" className="mb-16 scroll-mt-32">
-              <h2 className="font-display text-2xl font-bold text-zinc-100 mb-2">
+              <h2 className="font-display text-2xl font-bold text-cream mb-2">
                 Crypto
               </h2>
-              <p className="text-sm text-zinc-500 mb-6">
+              <p className="text-sm text-muted mb-6">
                 Cryptocurrencies and blockchain projects solving real problems, ranked by market cap.
               </p>
               <div className="space-y-2">
                 {cryptoCompanies.slice(0, 15).map((c: Record<string, unknown>, i: number) => (
                   <div key={c.id as number} className="flex items-center gap-3 p-3 sm:p-4 rounded-xl card-space">
-                    <span className="text-xs font-mono text-zinc-400 w-5 text-right">{i + 1}</span>
+                    <span className="text-xs font-mono text-warm w-5 text-right">{i + 1}</span>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium text-zinc-100">{c.name as string}</span>
-                        {c.ticker ? <span className="text-[10px] font-mono text-purple-500">{c.ticker as string}</span> : null}
+                        <span className="text-sm font-medium text-cream">{c.name as string}</span>
+                        {c.ticker ? <span className="text-[10px] font-mono text-violet">{c.ticker as string}</span> : null}
                       </div>
-                      <div className="text-[10px] text-zinc-400 mt-0.5">
+                      <div className="text-[10px] text-warm mt-0.5">
                         {c.category_icon as string} {c.category_name as string}
                       </div>
                     </div>
                     <div className="text-right flex-shrink-0">
                       {Number(c.price_usd) > 0 && (
-                        <div className="text-xs text-zinc-400 mb-0.5">
+                        <div className="text-xs text-warm mb-0.5">
                           ${Number(c.price_usd).toLocaleString(undefined, { maximumFractionDigits: 2 })}
                         </div>
                       )}
-                      <div className="font-display text-sm font-bold text-amber-400">
+                      <div className="font-display text-sm font-bold text-gold">
                         {formatBigNum(Number(c.market_cap_usd))}
                       </div>
                       {Number(c.market_cap_change_24h) !== 0 && (
@@ -225,10 +237,10 @@ export default async function LeaderboardsPage() {
           {/* ═══ PEOPLE ═══ */}
           {xAccounts.length > 0 && (
             <section id="people" className="mb-16 scroll-mt-32">
-              <h2 className="font-display text-2xl font-bold text-zinc-100 mb-2">
+              <h2 className="font-display text-2xl font-bold text-cream mb-2">
                 People
               </h2>
-              <p className="text-sm text-zinc-500 mb-6">
+              <p className="text-sm text-muted mb-6">
                 The people solving the world's biggest problems, ranked by following.
               </p>
               <div className="space-y-2">
@@ -238,25 +250,25 @@ export default async function LeaderboardsPage() {
                     href={x.url as string}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 p-3 sm:p-4 rounded-xl card-space hover:border-amber-500/30 transition-colors group"
+                    className="flex items-center gap-3 p-3 sm:p-4 rounded-xl card-space hover:border-gold/30 transition-colors group"
                   >
-                    <span className="text-xs font-mono text-zinc-400 w-5 text-right">{i + 1}</span>
+                    <span className="text-xs font-mono text-warm w-5 text-right">{i + 1}</span>
                     <div className="flex-1 min-w-0">
-                      <div className="text-sm font-medium text-zinc-100 group-hover:text-amber-400 transition-colors">
+                      <div className="text-sm font-medium text-cream group-hover:text-gold transition-colors">
                         {x.display_name as string}
                       </div>
-                      <div className="text-[10px] text-zinc-400">
+                      <div className="text-[10px] text-warm">
                         @{x.handle as string} · {x.category_icon as string} {x.category_name as string}
                       </div>
                       {x.why_follow ? (
-                        <div className="text-xs text-zinc-500 mt-1 line-clamp-1">{x.why_follow as string}</div>
+                        <div className="text-xs text-muted mt-1 line-clamp-1">{x.why_follow as string}</div>
                       ) : null}
                     </div>
                     <div className="text-right flex-shrink-0">
-                      <div className="font-display text-sm font-bold text-amber-400">
+                      <div className="font-display text-sm font-bold text-gold">
                         {formatPop(Number(x.follower_count))}
                       </div>
-                      <div className="text-[10px] text-zinc-400">followers</div>
+                      <div className="text-[10px] text-warm">followers</div>
                     </div>
                   </a>
                 ))}
@@ -266,10 +278,10 @@ export default async function LeaderboardsPage() {
 
           {/* ═══ FOUNDERS ═══ */}
           <section id="founders" className="mb-16 scroll-mt-32">
-            <h2 className="font-display text-2xl font-bold text-zinc-100 mb-2">
+            <h2 className="font-display text-2xl font-bold text-cream mb-2">
               Founders Hall of Fame
             </h2>
-            <p className="text-sm text-zinc-500 mb-6">
+            <p className="text-sm text-muted mb-6">
               The greatest founders in history, studied by David Senra on the Founders podcast. Church for the intense.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -279,17 +291,17 @@ export default async function LeaderboardsPage() {
                   href={ep.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-start gap-3 p-4 rounded-xl card-space hover:border-amber-500/30 transition-colors group"
+                  className="flex items-start gap-3 p-4 rounded-xl card-space hover:border-gold/30 transition-colors group"
                 >
-                  <span className="text-xs font-mono text-zinc-400 mt-0.5 w-5 text-right flex-shrink-0">{i + 1}</span>
+                  <span className="text-xs font-mono text-warm mt-0.5 w-5 text-right flex-shrink-0">{i + 1}</span>
                   <div className="flex-1 min-w-0">
-                    <div className="text-xs text-amber-400 font-medium mb-0.5">
+                    <div className="text-xs text-gold font-medium mb-0.5">
                       #{ep.episodeNumber} · {ep.subject}
                     </div>
-                    <div className="text-sm font-medium text-zinc-100 group-hover:text-amber-400 transition-colors mb-1">
+                    <div className="text-sm font-medium text-cream group-hover:text-gold transition-colors mb-1">
                       {ep.title}
                     </div>
-                    <div className="text-xs text-zinc-400 italic line-clamp-1">
+                    <div className="text-xs text-warm italic line-clamp-1">
                       &ldquo;{ep.keyInsight}&rdquo;
                     </div>
                   </div>
@@ -301,23 +313,23 @@ export default async function LeaderboardsPage() {
           {/* ═══ COUNTRIES ═══ */}
           {countries.length > 0 && (
             <section id="countries" className="mb-16 scroll-mt-32">
-              <h2 className="font-display text-2xl font-bold text-zinc-100 mb-2">
+              <h2 className="font-display text-2xl font-bold text-cream mb-2">
                 Countries
               </h2>
-              <p className="text-sm text-zinc-500 mb-6">
+              <p className="text-sm text-muted mb-6">
                 The best places on Earth for meaningful work - ranked by GDP, tech friendliness, and startup culture.
               </p>
               <div className="space-y-2">
                 {countries.map((country: Record<string, unknown>, i: number) => (
                   <div key={country.id as number} className="p-4 rounded-xl card-space">
                     <div className="flex items-center gap-3">
-                      <span className="text-xs font-mono text-zinc-400 w-5 text-right">{i + 1}</span>
+                      <span className="text-xs font-mono text-warm w-5 text-right">{i + 1}</span>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-sm font-medium text-zinc-100">{country.name as string}</span>
-                          <span className="text-[10px] font-mono text-zinc-400">{country.iso_code as string}</span>
+                          <span className="text-sm font-medium text-cream">{country.name as string}</span>
+                          <span className="text-[10px] font-mono text-warm">{country.iso_code as string}</span>
                         </div>
-                        <div className="flex flex-wrap gap-3 text-[10px] text-zinc-500 mb-2">
+                        <div className="flex flex-wrap gap-3 text-[10px] text-muted mb-2">
                           <span>GDP: {formatBigNum(Number(country.gdp_usd))}</span>
                           <span>Growth: {Number(country.gdp_growth_pct).toFixed(1)}%</span>
                           <span>Pop: {formatPop(Number(country.population))}</span>
@@ -329,27 +341,27 @@ export default async function LeaderboardsPage() {
                             { label: 'Quality', score: Number(country.quality_of_life) },
                           ].map(s => (
                             <div key={s.label} className="flex items-center gap-1">
-                              <span className="text-[10px] text-zinc-400">{s.label}</span>
-                              <span className="text-xs font-bold text-amber-400">{s.score}/10</span>
+                              <span className="text-[10px] text-warm">{s.label}</span>
+                              <span className="text-xs font-bold text-gold">{s.score}/10</span>
                             </div>
                           ))}
                         </div>
                         {country.why_move ? (
-                          <p className="text-xs text-zinc-500 line-clamp-2">{country.why_move as string}</p>
+                          <p className="text-xs text-muted line-clamp-2">{country.why_move as string}</p>
                         ) : null}
                         {(country.top_industries as string[])?.length > 0 ? (
                           <div className="flex flex-wrap gap-1 mt-2">
                             {(country.top_industries as string[]).map(ind => (
-                              <span key={ind} className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/5 text-zinc-500">{ind}</span>
+                              <span key={ind} className="text-[10px] px-1.5 py-0.5 rounded-full bg-white/5 text-muted">{ind}</span>
                             ))}
                           </div>
                         ) : null}
                       </div>
                       <div className="text-right flex-shrink-0">
-                        <div className="font-display text-lg font-bold text-amber-400">
+                        <div className="font-display text-lg font-bold text-gold">
                           {formatBigNum(Number(country.gdp_usd))}
                         </div>
-                        <div className="text-[10px] text-zinc-400">GDP</div>
+                        <div className="text-[10px] text-warm">GDP</div>
                       </div>
                     </div>
                   </div>
@@ -360,9 +372,9 @@ export default async function LeaderboardsPage() {
 
           {/* Quote */}
           <div className="text-center mt-8">
-            <p className="text-sm text-zinc-400 italic max-w-lg mx-auto">
+            <p className="text-sm text-warm italic max-w-lg mx-auto">
               &ldquo;Your margin is my opportunity. Work backwards from the customer.&rdquo;
-              <span className="block mt-1 not-italic text-zinc-500"> - Jeff Bezos</span>
+              <span className="block mt-1 not-italic text-muted"> - Jeff Bezos</span>
             </p>
           </div>
         </div>

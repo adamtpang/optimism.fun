@@ -13,19 +13,27 @@ export const metadata: Metadata = {
 }
 
 export default async function DiscoverPage() {
-  const sql = getDb()
+  let categories: Category[] = []
+  let problems: { slug: string; title: string; composite_score: number; category_slug: string | null; category_icon: string | null; category_name: string | null }[] = []
 
-  const [categories, problems] = await Promise.all([
-    sql`SELECT * FROM categories ORDER BY name`,
-    sql`
-      SELECT p.slug, p.title, p.composite_score,
-             c.slug as category_slug, c.icon as category_icon, c.name as category_name
-      FROM problems p
-      LEFT JOIN categories c ON p.category_id = c.id
-      WHERE p.status = 'active'
-      ORDER BY p.composite_score DESC
-    `,
-  ])
+  try {
+    const sql = getDb()
+    const [catResult, probResult] = await Promise.all([
+      sql`SELECT * FROM categories ORDER BY name`,
+      sql`
+        SELECT p.slug, p.title, p.composite_score,
+               c.slug as category_slug, c.icon as category_icon, c.name as category_name
+        FROM problems p
+        LEFT JOIN categories c ON p.category_id = c.id
+        WHERE p.status = 'active'
+        ORDER BY p.composite_score DESC
+      `,
+    ])
+    categories = catResult as unknown as Category[]
+    problems = probResult as unknown as typeof problems
+  } catch {
+    // DB unavailable - show empty state
+  }
 
   return (
     <>
@@ -33,21 +41,21 @@ export default async function DiscoverPage() {
       <main className="pt-20 sm:pt-24 pb-12 sm:pb-16 px-4 sm:px-6">
         <div className="max-w-2xl mx-auto">
           <div className="mb-8">
-            <p className="text-amber-400 font-medium tracking-[0.25em] uppercase text-xs sm:text-sm mb-4">
+            <p className="text-gold font-medium tracking-[0.25em] uppercase text-xs sm:text-sm mb-4">
               Self-Discovery
             </p>
-            <h1 className="font-display text-3xl sm:text-4xl font-bold text-zinc-100 mb-3">
+            <h1 className="font-display text-3xl sm:text-4xl font-bold text-cream mb-3">
               Find Your Path
             </h1>
-            <p className="text-zinc-400 text-sm sm:text-base max-w-lg">
+            <p className="text-warm text-sm sm:text-base max-w-lg">
               Answer a few questions to match your passions and talents with problems
               worth solving. It takes 30 seconds.
             </p>
           </div>
 
           <DiscoveryFlow
-            categories={categories as unknown as Category[]}
-            problems={problems as unknown as { slug: string; title: string; composite_score: number; category_slug: string | null; category_icon: string | null; category_name: string | null }[]}
+            categories={categories}
+            problems={problems}
           />
         </div>
       </main>

@@ -16,7 +16,7 @@ export default async function PeopleSection({ categoryId }: { categoryId: number
 
   return (
     <section className="mb-10">
-      <h2 className="text-sm font-medium text-zinc-100 uppercase tracking-wider mb-4">
+      <h2 className="text-sm font-medium text-cream uppercase tracking-wider mb-4">
         People Solving This
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -26,14 +26,14 @@ export default async function PeopleSection({ categoryId }: { categoryId: number
             href={person.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-xl card-space p-4 hover:border-amber-500/30 transition-colors group"
+            className="rounded-xl card-space p-4 hover:border-gold/30 transition-colors group"
           >
             <div className="flex items-start justify-between gap-2 mb-1">
-              <div className="font-display font-semibold text-zinc-100 group-hover:text-amber-400 transition-colors text-sm">
+              <div className="font-display font-semibold text-cream group-hover:text-gold transition-colors text-sm">
                 {person.display_name}
               </div>
               {person.follower_count && person.follower_count > 0 && (
-                <span className="text-[10px] text-zinc-400 flex-shrink-0">
+                <span className="text-[10px] text-warm flex-shrink-0">
                   {person.follower_count >= 1_000_000
                     ? `${(person.follower_count / 1_000_000).toFixed(1)}M`
                     : person.follower_count >= 1_000
@@ -42,8 +42,8 @@ export default async function PeopleSection({ categoryId }: { categoryId: number
                 </span>
               )}
             </div>
-            <div className="text-xs text-zinc-400 mb-2">@{person.handle}</div>
-            <p className="text-xs text-zinc-500 leading-relaxed">{person.why_follow}</p>
+            <div className="text-xs text-warm mb-2">@{person.handle}</div>
+            <p className="text-xs text-muted leading-relaxed">{person.why_follow}</p>
           </a>
         ))}
       </div>

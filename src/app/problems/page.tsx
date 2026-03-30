@@ -14,15 +14,20 @@ export const metadata: Metadata = {
 }
 
 export default async function ProblemsPage() {
-  const sql = getDb()
+  let problems: ProblemWithCategory[] = []
 
-  const problems = await sql`
-    SELECT p.*, cat.name as category_name, cat.slug as category_slug,
-           cat.icon as category_icon, cat.color as category_color
-    FROM problems p
-    LEFT JOIN categories cat ON cat.id = p.category_id
-    ORDER BY p.composite_score DESC
-  ` as unknown as ProblemWithCategory[]
+  try {
+    const sql = getDb()
+    problems = await sql`
+      SELECT p.*, cat.name as category_name, cat.slug as category_slug,
+             cat.icon as category_icon, cat.color as category_color
+      FROM problems p
+      LEFT JOIN categories cat ON cat.id = p.category_id
+      ORDER BY p.composite_score DESC
+    ` as unknown as ProblemWithCategory[]
+  } catch {
+    // DB unavailable
+  }
 
   const totalEconomicValue = problems.reduce((sum, p) => sum + (Number(p.economic_value_usd) || 0), 0)
   const totalAffected = problems.reduce((sum, p) => sum + (Number(p.affected_population_count) || 0), 0)
@@ -34,13 +39,13 @@ export default async function ProblemsPage() {
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-10 sm:mb-14">
-            <p className="text-amber-400 font-medium tracking-[0.25em] uppercase text-xs sm:text-sm mb-4">
+            <p className="text-gold font-medium tracking-[0.25em] uppercase text-xs sm:text-sm mb-4">
               Quest Index
             </p>
-            <h1 className="font-display text-3xl sm:text-4xl font-bold text-zinc-100 mb-4">
+            <h1 className="font-display text-3xl sm:text-4xl font-bold text-cream mb-4">
               Problems Worth Solving
             </h1>
-            <p className="text-zinc-400 text-sm sm:text-base max-w-xl mb-8">
+            <p className="text-warm text-sm sm:text-base max-w-xl mb-8">
               Ranked by composite score  - severity, market opportunity, and solvability.
               Every problem is an opportunity for meaningful work.
             </p>
@@ -48,16 +53,16 @@ export default async function ProblemsPage() {
             {/* Aggregate stats */}
             <div className="grid grid-cols-3 gap-3">
               <div className="card-space rounded-xl p-4 text-center">
-                <div className="font-display text-xl sm:text-2xl font-bold text-zinc-100">{problems.length}</div>
-                <div className="text-[10px] text-zinc-500 uppercase tracking-wider">Quests</div>
+                <div className="font-display text-xl sm:text-2xl font-bold text-cream">{problems.length}</div>
+                <div className="text-[10px] text-muted uppercase tracking-wider">Quests</div>
               </div>
               <div className="card-space rounded-xl p-4 text-center">
-                <div className="font-display text-xl sm:text-2xl font-bold text-amber-400">{formatBigNum(totalEconomicValue)}</div>
-                <div className="text-[10px] text-zinc-500 uppercase tracking-wider">Economic Value</div>
+                <div className="font-display text-xl sm:text-2xl font-bold text-gold">{formatBigNum(totalEconomicValue)}</div>
+                <div className="text-[10px] text-muted uppercase tracking-wider">Economic Value</div>
               </div>
               <div className="card-space rounded-xl p-4 text-center">
-                <div className="font-display text-xl sm:text-2xl font-bold text-zinc-300">{formatPop(totalAffected)}</div>
-                <div className="text-[10px] text-zinc-500 uppercase tracking-wider">Humans Affected</div>
+                <div className="font-display text-xl sm:text-2xl font-bold text-cream">{formatPop(totalAffected)}</div>
+                <div className="text-[10px] text-muted uppercase tracking-wider">Humans Affected</div>
               </div>
             </div>
           </div>
@@ -77,36 +82,36 @@ export default async function ProblemsPage() {
                 <Link
                   key={problem.id}
                   href={`/problems/${problem.slug}`}
-                  className="group block rounded-xl card-space hover:border-amber-500/30 transition-colors"
+                  className="group block rounded-xl card-space hover:border-gold/30 transition-colors"
                 >
                   <div className="p-4 sm:p-6">
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
                         {/* Rank + category */}
                         <div className="flex items-center gap-2 mb-2 flex-wrap">
-                          <span className="text-xs font-mono text-zinc-400">#{i + 1}</span>
+                          <span className="text-xs font-mono text-warm">#{i + 1}</span>
                           {problem.category_icon && (
                             <span className="text-sm">{problem.category_icon}</span>
                           )}
-                          <span className="text-xs text-zinc-500">{problem.category_name}</span>
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-zinc-500">
+                          <span className="text-xs text-muted">{problem.category_name}</span>
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-muted">
                             {tenTenAvg}/10 avg
                           </span>
                         </div>
 
                         {/* Title */}
-                        <h2 className="font-display text-base sm:text-lg font-semibold text-zinc-100 group-hover:text-amber-400 transition-colors mb-1.5">
+                        <h2 className="font-display text-base sm:text-lg font-semibold text-cream group-hover:text-gold transition-colors mb-1.5">
                           {problem.title}
                         </h2>
 
                         {/* Description */}
-                        <p className="text-xs sm:text-sm text-zinc-500 mb-2 line-clamp-2">
+                        <p className="text-xs sm:text-sm text-muted mb-2 line-clamp-2">
                           {problem.description}
                         </p>
 
                         {/* Who has this problem */}
                         {problem.who_has_problem && (
-                          <p className="text-xs text-amber-400/80 line-clamp-1 mb-2">
+                          <p className="text-xs text-gold/80 line-clamp-1 mb-2">
                             {problem.who_has_problem}
                           </p>
                         )}
@@ -114,17 +119,17 @@ export default async function ProblemsPage() {
                         {/* Stats row - humans first */}
                         <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs">
                           {Number(problem.affected_population_count) > 0 && (
-                            <span className="font-medium text-zinc-300">
+                            <span className="font-medium text-cream">
                               {formatPop(Number(problem.affected_population_count))} humans affected
                             </span>
                           )}
                           {Number(problem.annual_deaths) > 0 && (
-                            <span className="text-red-600 dark:text-red-400">
+                            <span className="text-red-400">
                               {formatPop(Number(problem.annual_deaths))} deaths/yr
                             </span>
                           )}
                           {Number(problem.economic_value_usd) > 0 && (
-                            <span className="text-zinc-500">
+                            <span className="text-muted">
                               {formatBigNum(Number(problem.economic_value_usd))} market
                             </span>
                           )}
@@ -133,10 +138,10 @@ export default async function ProblemsPage() {
 
                       {/* Composite score */}
                       <div className="flex-shrink-0 text-right">
-                        <div className="font-display text-2xl font-bold text-amber-400">
+                        <div className="font-display text-2xl font-bold text-gold">
                           {Number(problem.composite_score).toFixed(1)}
                         </div>
-                        <div className="text-[10px] text-zinc-400">score</div>
+                        <div className="text-[10px] text-warm">score</div>
                       </div>
                     </div>
 
@@ -151,12 +156,12 @@ export default async function ProblemsPage() {
                       ].map((s) => (
                         <div key={s.label} className="flex-1">
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-[9px] text-zinc-400">{s.label}</span>
-                            <span className="text-[9px] text-zinc-500 font-mono">{s.score}</span>
+                            <span className="text-[9px] text-warm">{s.label}</span>
+                            <span className="text-[9px] text-muted font-mono">{s.score}</span>
                           </div>
                           <div className="h-1 rounded-full bg-white/5 overflow-hidden">
                             <div
-                              className="h-full rounded-full bg-amber-500"
+                              className="h-full rounded-full bg-gold"
                               style={{ width: `${s.score * 10}%` }}
                             />
                           </div>
@@ -171,9 +176,9 @@ export default async function ProblemsPage() {
 
           {/* Quote */}
           <div className="mt-16 text-center">
-            <p className="text-sm text-zinc-400 italic max-w-lg mx-auto">
+            <p className="text-sm text-warm italic max-w-lg mx-auto">
               &ldquo;Problems are inevitable. Problems are soluble.&rdquo;
-              <span className="block mt-1 not-italic text-zinc-500"> - David Deutsch</span>
+              <span className="block mt-1 not-italic text-muted"> - David Deutsch</span>
             </p>
           </div>
         </div>

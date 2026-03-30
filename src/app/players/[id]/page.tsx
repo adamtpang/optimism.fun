@@ -21,7 +21,7 @@ export default function PlayerProfilePage({
         <Navbar />
         <main className="pt-20 sm:pt-24 pb-12 sm:pb-16 px-4 sm:px-6">
           <div className="max-w-3xl mx-auto">
-            <div className="w-8 h-8 mx-auto rounded-full border-2 border-amber-500 border-t-transparent animate-spin" />
+            <div className="w-8 h-8 mx-auto rounded-full border-2 border-gold border-t-transparent animate-spin" />
           </div>
         </main>
         <Footer />
@@ -35,12 +35,12 @@ export default function PlayerProfilePage({
         <Navbar />
         <main className="pt-20 sm:pt-24 pb-12 sm:pb-16 px-4 sm:px-6">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="font-display text-2xl font-bold text-zinc-100 mb-4">
+            <h1 className="font-display text-2xl font-bold text-cream mb-4">
               Player not found
             </h1>
             <Link
               href="/players"
-              className="text-amber-400 hover:underline text-sm"
+              className="text-gold hover:underline text-sm"
             >
               &larr; Back to rankings
             </Link>
@@ -79,15 +79,15 @@ export default function PlayerProfilePage({
       <main className="pt-20 sm:pt-24 pb-12 sm:pb-16 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-xs text-zinc-400 mb-8">
+          <div className="flex items-center gap-2 text-xs text-warm mb-8">
             <Link
               href="/players"
-              className="hover:text-amber-400 transition-colors"
+              className="hover:text-gold transition-colors"
             >
               Players
             </Link>
             <span>/</span>
-            <span className="text-zinc-300">
+            <span className="text-cream">
               {player.name}
             </span>
           </div>
@@ -99,25 +99,25 @@ export default function PlayerProfilePage({
                 <span
                   className={`inline-block text-[10px] px-2 py-0.5 rounded-full border mb-3 ${
                     player.type === 'person'
-                      ? 'bg-blue-500/10 text-blue-400 border-blue-500/30'
-                      : 'bg-purple-500/10 text-purple-400 border-purple-500/30'
+                      ? 'bg-violet/10 text-violet-bright border-violet/30'
+                      : 'bg-violet/10 text-violet border-violet/30'
                   }`}
                 >
                   {player.type}
                 </span>
-                <h1 className="font-display text-3xl sm:text-4xl font-bold text-zinc-100 mb-2">
+                <h1 className="font-display text-3xl sm:text-4xl font-bold text-cream mb-2">
                   {player.name}
                 </h1>
-                <p className="text-zinc-400 text-sm sm:text-base max-w-lg">
+                <p className="text-warm text-sm sm:text-base max-w-lg">
                   {player.bio}
                 </p>
               </div>
 
               <div className="text-right flex-shrink-0">
-                <div className="font-display text-4xl sm:text-5xl font-bold text-amber-400">
+                <div className="font-display text-4xl sm:text-5xl font-bold text-gold">
                   {player.elo}
                 </div>
-                <div className="text-[10px] text-zinc-400 uppercase tracking-wider">
+                <div className="text-[10px] text-warm uppercase tracking-wider">
                   Current Elo
                 </div>
               </div>
@@ -128,7 +128,7 @@ export default function PlayerProfilePage({
               {player.category.map((cat) => (
                 <span
                   key={cat}
-                  className="text-xs px-2 py-1 rounded-full bg-white/5 text-zinc-400"
+                  className="text-xs px-2 py-1 rounded-full bg-white/5 text-warm"
                 >
                   {cat}
                 </span>
@@ -138,26 +138,26 @@ export default function PlayerProfilePage({
             {/* Stats grid */}
             <div className="grid grid-cols-3 gap-3">
               <div className="rounded-xl card-space p-4 text-center">
-                <div className="font-display text-xl sm:text-2xl font-bold text-amber-400">
+                <div className="font-display text-xl sm:text-2xl font-bold text-gold">
                   {player.peakElo}
                 </div>
-                <div className="text-[10px] text-zinc-500 uppercase tracking-wider">
+                <div className="text-[10px] text-muted uppercase tracking-wider">
                   Peak Elo
                 </div>
               </div>
               <div className="rounded-xl card-space p-4 text-center">
-                <div className="font-display text-xl sm:text-2xl font-bold text-zinc-100">
+                <div className="font-display text-xl sm:text-2xl font-bold text-cream">
                   {playerMatches.filter((m) => m.winnerId === id).length}
                 </div>
-                <div className="text-[10px] text-zinc-500 uppercase tracking-wider">
+                <div className="text-[10px] text-muted uppercase tracking-wider">
                   Wins
                 </div>
               </div>
               <div className="rounded-xl card-space p-4 text-center">
-                <div className="font-display text-xl sm:text-2xl font-bold text-zinc-100">
+                <div className="font-display text-xl sm:text-2xl font-bold text-cream">
                   {playerMatches.filter((m) => m.loserId === id).length}
                 </div>
-                <div className="text-[10px] text-zinc-500 uppercase tracking-wider">
+                <div className="text-[10px] text-muted uppercase tracking-wider">
                   Losses
                 </div>
               </div>
@@ -167,7 +167,7 @@ export default function PlayerProfilePage({
           {/* Elo history chart */}
           {eloHistory.length > 1 && (
             <div className="mb-10">
-              <h2 className="text-amber-400 font-medium tracking-[0.25em] uppercase text-xs mb-4">
+              <h2 className="text-gold font-medium tracking-[0.25em] uppercase text-xs mb-4">
                 Elo History
               </h2>
               <div className="rounded-xl card-space p-4 sm:p-6">
@@ -192,7 +192,7 @@ export default function PlayerProfilePage({
                   <path
                     d={pathD}
                     fill="none"
-                    className="stroke-amber-500"
+                    className="stroke-gold"
                     strokeWidth="2.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -206,12 +206,12 @@ export default function PlayerProfilePage({
                         cx={cx}
                         cy={cy}
                         r="3"
-                        className="fill-amber-500"
+                        className="fill-gold"
                       />
                     )
                   })}
                 </svg>
-                <div className="flex justify-between mt-2 text-[10px] text-zinc-400">
+                <div className="flex justify-between mt-2 text-[10px] text-warm">
                   <span>{eloHistory[0].date}</span>
                   <span>{eloHistory[eloHistory.length - 1].date}</span>
                 </div>
@@ -222,7 +222,7 @@ export default function PlayerProfilePage({
           {/* Match history */}
           {playerMatches.length > 0 && (
             <div className="mb-10">
-              <h2 className="text-amber-400 font-medium tracking-[0.25em] uppercase text-xs mb-4">
+              <h2 className="text-gold font-medium tracking-[0.25em] uppercase text-xs mb-4">
                 Recent Matches
               </h2>
               <div className="space-y-2">
@@ -246,10 +246,10 @@ export default function PlayerProfilePage({
                         {isWinner ? 'W' : 'L'}
                       </span>
                       <div className="flex-1 min-w-0">
-                        <span className="text-sm text-zinc-500">vs </span>
+                        <span className="text-sm text-muted">vs </span>
                         <Link
                           href={`/players/${opponentId}`}
-                          className="text-sm font-medium text-zinc-100 hover:text-amber-400 transition-colors"
+                          className="text-sm font-medium text-cream hover:text-gold transition-colors"
                         >
                           {opponent?.name ?? opponentId}
                         </Link>
@@ -266,7 +266,7 @@ export default function PlayerProfilePage({
                             ? `+${match.winnerEloAfter - match.winnerEloBefore}`
                             : `${match.loserEloAfter - match.loserEloBefore}`}
                         </span>
-                        <span className="text-[10px] text-zinc-400 ml-2">
+                        <span className="text-[10px] text-warm ml-2">
                           {match.date}
                         </span>
                       </div>
@@ -281,13 +281,13 @@ export default function PlayerProfilePage({
           <div className="flex flex-wrap gap-3">
             <Link
               href="/compare"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black text-sm font-medium transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gold hover:bg-gold-bright text-deep glow-gold text-sm font-medium transition-colors"
             >
               Compare Players
             </Link>
             <Link
               href="/players"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-purple-500/30 text-purple-300 hover:bg-white/5 text-sm font-medium transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-violet/30 text-violet hover:bg-white/5 text-sm font-medium transition-colors"
             >
               &larr; All Players
             </Link>

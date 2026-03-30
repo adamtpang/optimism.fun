@@ -20,10 +20,10 @@ export default async function WorkSection({ categoryId }: { categoryId: number |
 
   return (
     <section className="mb-10">
-      <h2 className="text-sm font-medium text-zinc-100 uppercase tracking-wider mb-1">
+      <h2 className="text-sm font-medium text-cream uppercase tracking-wider mb-1">
         Meaningful Work
       </h2>
-      <p className="text-xs text-zinc-500 mb-4">
+      <p className="text-xs text-muted mb-4">
         Opportunities at organizations working on this problem.
       </p>
       <div className="space-y-3">
@@ -33,38 +33,38 @@ export default async function WorkSection({ categoryId }: { categoryId: number |
             href={job.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="block rounded-xl card-space p-4 hover:border-amber-500/30 transition-colors group"
+            className="block rounded-xl card-space p-4 hover:border-gold/30 transition-colors group"
           >
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
-                <div className="font-display font-semibold text-zinc-100 group-hover:text-amber-400 transition-colors text-sm mb-1">
+                <div className="font-display font-semibold text-cream group-hover:text-gold transition-colors text-sm mb-1">
                   {job.title}
                 </div>
                 {job.company_name && (
-                  <div className="text-xs text-zinc-400 mb-2">{job.company_name}</div>
+                  <div className="text-xs text-warm mb-2">{job.company_name}</div>
                 )}
                 <div className="flex flex-wrap items-center gap-2 mb-2">
                   {job.job_type && (
                     <span className={`text-[10px] px-2 py-0.5 rounded-full border ${
                       job.job_type === 'remote'
                         ? 'bg-green-500/10 text-green-400 border-green-500/20'
-                        : 'bg-white/5 text-zinc-500 border-zinc-700'
+                        : 'bg-white/5 text-muted border-muted'
                     }`}>
                       {job.job_type === 'remote' ? '🌍 Remote' : job.job_type}
                     </span>
                   )}
                   {job.location && job.job_type !== 'remote' && (
-                    <span className="text-[10px] text-zinc-400">{job.location}</span>
+                    <span className="text-[10px] text-warm">{job.location}</span>
                   )}
                   {job.salary_range && (
-                    <span className="text-[10px] text-zinc-400">{job.salary_range}</span>
+                    <span className="text-[10px] text-warm">{job.salary_range}</span>
                   )}
                 </div>
                 {job.problem_solving && (
-                  <p className="text-xs text-zinc-500 italic">{job.problem_solving}</p>
+                  <p className="text-xs text-muted italic">{job.problem_solving}</p>
                 )}
               </div>
-              <svg className="w-4 h-4 text-zinc-700 group-hover:text-amber-500 transition-colors flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-4 h-4 text-muted group-hover:text-gold transition-colors flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
               </svg>
             </div>

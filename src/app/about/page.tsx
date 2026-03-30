@@ -68,13 +68,13 @@ export default function AboutPage() {
         <div className="max-w-3xl mx-auto">
           {/* Header */}
           <div className="mb-12 sm:mb-16">
-            <p className="text-amber-400 font-medium tracking-[0.25em] uppercase text-xs sm:text-sm mb-4">
+            <p className="text-gold font-medium tracking-[0.25em] uppercase text-xs sm:text-sm mb-4">
               Philosophy
             </p>
-            <h1 className="font-display text-3xl sm:text-4xl font-bold text-zinc-100 mb-4">
+            <h1 className="font-display text-3xl sm:text-4xl font-bold text-cream mb-4">
               Why Optimism Is Rational
             </h1>
-            <p className="text-zinc-400 text-sm sm:text-base leading-relaxed max-w-xl">
+            <p className="text-warm text-sm sm:text-base leading-relaxed max-w-xl">
               optimism.fun applies David Deutsch&apos;s critical rationalism and David
               Senra&apos;s philosophy of dedicated study to meaningful work. Every problem
               is soluble. Every solution starts with understanding.
@@ -88,16 +88,16 @@ export default function AboutPage() {
                 key={i}
                 className="rounded-xl card-space p-6"
               >
-                <h3 className="font-display text-lg font-semibold text-zinc-100 mb-2">{p.title}</h3>
-                <p className="text-zinc-400 text-sm leading-relaxed mb-3">{p.description}</p>
-                <p className="text-xs text-zinc-500"> - {p.source}</p>
+                <h3 className="font-display text-lg font-semibold text-cream mb-2">{p.title}</h3>
+                <p className="text-warm text-sm leading-relaxed mb-3">{p.description}</p>
+                <p className="text-xs text-muted"> - {p.source}</p>
               </div>
             ))}
           </div>
 
           {/* Thinkers */}
           <div className="mb-16">
-            <h2 className="font-display text-2xl font-bold text-zinc-100 mb-6">
+            <h2 className="font-display text-2xl font-bold text-cream mb-6">
               Standing on the Shoulders of Giants
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -107,13 +107,13 @@ export default function AboutPage() {
                   href={t.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-xl card-space p-4 hover:border-amber-500/30 transition-colors group"
+                  className="rounded-xl card-space p-4 hover:border-gold/30 transition-colors group"
                 >
-                  <div className="font-display font-semibold text-zinc-100 group-hover:text-amber-400 transition-colors mb-1">
+                  <div className="font-display font-semibold text-cream group-hover:text-gold transition-colors mb-1">
                     {t.name}
                   </div>
-                  <div className="text-xs text-zinc-400 mb-2">{t.role}</div>
-                  <div className="text-xs text-zinc-500">{t.key}</div>
+                  <div className="text-xs text-warm mb-2">{t.role}</div>
+                  <div className="text-xs text-muted">{t.key}</div>
                 </a>
               ))}
             </div>
@@ -121,7 +121,7 @@ export default function AboutPage() {
 
           {/* Resources */}
           <div className="mb-16">
-            <h2 className="font-display text-2xl font-bold text-zinc-100 mb-6">
+            <h2 className="font-display text-2xl font-bold text-cream mb-6">
               Essential Reading &amp; Listening
             </h2>
             <div className="space-y-3">
@@ -129,11 +129,11 @@ export default function AboutPage() {
                 <div key={i} className="rounded-xl card-space p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <div className="font-display font-semibold text-zinc-100 text-sm mb-1">{r.title}</div>
-                      {r.author && <div className="text-xs text-zinc-400 mb-1">{r.author}</div>}
-                      <div className="text-xs text-zinc-500">{r.description}</div>
+                      <div className="font-display font-semibold text-cream text-sm mb-1">{r.title}</div>
+                      {r.author && <div className="text-xs text-warm mb-1">{r.author}</div>}
+                      <div className="text-xs text-muted">{r.description}</div>
                     </div>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-zinc-500 flex-shrink-0">{r.type}</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-muted flex-shrink-0">{r.type}</span>
                   </div>
                 </div>
               ))}
@@ -141,37 +141,37 @@ export default function AboutPage() {
           </div>
 
           {/* How It Works */}
-          <div className="rounded-xl border card-space border-amber-500/20 p-6 sm:p-8 mb-16">
-            <h2 className="font-display text-xl font-bold text-zinc-100 mb-6 text-center">
+          <div className="rounded-xl border card-space border-gold/20 p-6 sm:p-8 mb-16">
+            <h2 className="font-display text-xl font-bold text-cream mb-6 text-center">
               How optimism.fun Works
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               <div className="text-center">
-                <div className="font-display text-2xl font-bold text-amber-400 mb-2">01</div>
-                <h3 className="font-display font-semibold text-zinc-100 mb-2 text-sm">Research Pipeline</h3>
-                <p className="text-xs text-zinc-500">AI scans 8 data sources every 6 hours. Claude extracts and scores problems by severity, opportunity, and solvability.</p>
+                <div className="font-display text-2xl font-bold text-gold mb-2">01</div>
+                <h3 className="font-display font-semibold text-cream mb-2 text-sm">Research Pipeline</h3>
+                <p className="text-xs text-muted">AI scans 8 data sources every 6 hours. Claude extracts and scores problems by severity, opportunity, and solvability.</p>
               </div>
               <div className="text-center">
-                <div className="font-display text-2xl font-bold text-amber-400 mb-2">02</div>
-                <h3 className="font-display font-semibold text-zinc-100 mb-2 text-sm">Deep Analysis</h3>
-                <p className="text-xs text-zinc-500">Each problem gets an economic value, affected population, 10/10 framework score, and matched organizations.</p>
+                <div className="font-display text-2xl font-bold text-gold mb-2">02</div>
+                <h3 className="font-display font-semibold text-cream mb-2 text-sm">Deep Analysis</h3>
+                <p className="text-xs text-muted">Each problem gets an economic value, affected population, 10/10 framework score, and matched organizations.</p>
               </div>
               <div className="text-center">
-                <div className="font-display text-2xl font-bold text-amber-400 mb-2">03</div>
-                <h3 className="font-display font-semibold text-zinc-100 mb-2 text-sm">Meaningful Work</h3>
-                <p className="text-xs text-zinc-500">Match your passions and talents to problems worth solving. Find remote work at organizations making real progress.</p>
+                <div className="font-display text-2xl font-bold text-gold mb-2">03</div>
+                <h3 className="font-display font-semibold text-cream mb-2 text-sm">Meaningful Work</h3>
+                <p className="text-xs text-muted">Match your passions and talents to problems worth solving. Find remote work at organizations making real progress.</p>
               </div>
             </div>
           </div>
 
           {/* CTA */}
           <div className="text-center">
-            <h2 className="font-display text-2xl font-bold text-zinc-100 mb-4">Start Exploring</h2>
+            <h2 className="font-display text-2xl font-bold text-cream mb-4">Start Exploring</h2>
             <div className="flex items-center justify-center gap-3 flex-wrap">
-              <Link href="/problems" className="px-6 py-3 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black glow-amber font-medium transition-colors">
+              <Link href="/problems" className="px-6 py-3 rounded-lg bg-gold hover:bg-gold-bright text-black glow-gold font-medium transition-colors">
                 Explore Problems
               </Link>
-              <Link href="/discover" className="px-6 py-3 rounded-lg border border-purple-500/30 text-purple-300 hover:bg-purple-500/10 font-medium transition-colors">
+              <Link href="/discover" className="px-6 py-3 rounded-lg border border-violet/30 text-violet hover:bg-violet/10 font-medium transition-colors">
                 Discover Your Path
               </Link>
             </div>

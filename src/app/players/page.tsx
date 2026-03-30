@@ -69,7 +69,7 @@ export default function PlayersPage() {
         <Navbar />
         <main className="pt-20 sm:pt-24 pb-12 sm:pb-16 px-4 sm:px-6">
           <div className="max-w-4xl mx-auto">
-            <div className="w-8 h-8 mx-auto rounded-full border-2 border-amber-500 border-t-transparent animate-spin" />
+            <div className="w-8 h-8 mx-auto rounded-full border-2 border-gold border-t-transparent animate-spin" />
           </div>
         </main>
         <Footer />
@@ -84,16 +84,16 @@ export default function PlayersPage() {
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-8 sm:mb-10">
-            <p className="text-amber-400 font-medium tracking-[0.25em] uppercase text-xs sm:text-sm mb-4">
+            <p className="text-gold font-medium tracking-[0.25em] uppercase text-xs sm:text-sm mb-4">
               Elo Rankings
             </p>
-            <h1 className="font-display text-3xl sm:text-4xl font-bold text-zinc-100 mb-3">
+            <h1 className="font-display text-3xl sm:text-4xl font-bold text-cream mb-3">
               Players
             </h1>
-            <p className="text-zinc-400 text-sm sm:text-base max-w-xl mb-6">
+            <p className="text-warm text-sm sm:text-base max-w-xl mb-6">
               The people and companies solving civilization&rsquo;s biggest problems, ranked by Elo rating.
               Vote in{' '}
-              <Link href="/compare" className="text-amber-400 hover:underline">
+              <Link href="/compare" className="text-gold hover:underline">
                 head-to-head matchups
               </Link>{' '}
               to update rankings.
@@ -102,26 +102,26 @@ export default function PlayersPage() {
             {/* Aggregate stats */}
             <div className="grid grid-cols-3 gap-3">
               <div className="rounded-xl card-space p-4 text-center">
-                <div className="font-display text-xl sm:text-2xl font-bold text-zinc-100">
+                <div className="font-display text-xl sm:text-2xl font-bold text-cream">
                   {players.length}
                 </div>
-                <div className="text-[10px] text-zinc-500 uppercase tracking-wider">
+                <div className="text-[10px] text-muted uppercase tracking-wider">
                   Players
                 </div>
               </div>
               <div className="rounded-xl card-space p-4 text-center">
-                <div className="font-display text-xl sm:text-2xl font-bold text-amber-400">
+                <div className="font-display text-xl sm:text-2xl font-bold text-gold">
                   {Math.max(...players.map((p) => p.elo))}
                 </div>
-                <div className="text-[10px] text-zinc-500 uppercase tracking-wider">
+                <div className="text-[10px] text-muted uppercase tracking-wider">
                   Highest Elo
                 </div>
               </div>
               <div className="rounded-xl card-space p-4 text-center">
-                <div className="font-display text-xl sm:text-2xl font-bold text-zinc-300">
+                <div className="font-display text-xl sm:text-2xl font-bold text-cream">
                   {players.reduce((sum, p) => sum + p.eloHistory.length - 1, 0)}
                 </div>
-                <div className="text-[10px] text-zinc-500 uppercase tracking-wider">
+                <div className="text-[10px] text-muted uppercase tracking-wider">
                   Total Votes
                 </div>
               </div>
@@ -135,7 +135,7 @@ export default function PlayersPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search players..."
-              className="w-full px-4 py-2.5 rounded-xl card-space text-sm text-zinc-100 placeholder-zinc-400 focus:outline-none focus:border-amber-500 transition-colors"
+              className="w-full px-4 py-2.5 rounded-xl card-space text-sm text-cream placeholder-warm focus:outline-none focus:border-gold transition-colors"
             />
 
             <div className="flex flex-wrap gap-2">
@@ -146,8 +146,8 @@ export default function PlayersPage() {
                   onClick={() => setTypeFilter(t)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                     typeFilter === t
-                      ? 'bg-amber-600 text-white'
-                      : 'text-zinc-500 hover:text-zinc-100 border border-white/5'
+                      ? 'bg-gold text-deep'
+                      : 'text-muted hover:text-cream border border-white/5'
                   }`}
                 >
                   {t === 'all' ? 'All Types' : t === 'person' ? 'People' : 'Companies'}
@@ -161,8 +161,8 @@ export default function PlayersPage() {
                 onClick={() => setCategory(undefined)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                   !category
-                    ? 'bg-amber-600 text-white'
-                    : 'text-zinc-500 hover:text-zinc-100 border border-white/5'
+                    ? 'bg-gold text-deep'
+                    : 'text-muted hover:text-cream border border-white/5'
                 }`}
               >
                 All
@@ -173,8 +173,8 @@ export default function PlayersPage() {
                   onClick={() => setCategory(cat)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                     category === cat
-                      ? 'bg-amber-600 text-white'
-                      : 'text-zinc-500 hover:text-zinc-100 border border-white/5'
+                      ? 'bg-gold text-deep'
+                      : 'text-muted hover:text-cream border border-white/5'
                   }`}
                 >
                   {cat}
@@ -184,17 +184,17 @@ export default function PlayersPage() {
           </div>
 
           {/* Table header */}
-          <div className="hidden sm:flex items-center gap-3 px-4 py-2 text-[10px] text-zinc-400 uppercase tracking-wider font-medium border-b border-white/5 mb-2">
+          <div className="hidden sm:flex items-center gap-3 px-4 py-2 text-[10px] text-warm uppercase tracking-wider font-medium border-b border-white/5 mb-2">
             <span className="w-8 text-right">#</span>
-            <button onClick={() => handleSort('name')} className="flex-1 text-left hover:text-zinc-300 transition-colors">
+            <button onClick={() => handleSort('name')} className="flex-1 text-left hover:text-cream transition-colors">
               Name{sortIcon('name')}
             </button>
             <span className="w-16 text-center">Type</span>
             <span className="w-24 text-center">Category</span>
-            <button onClick={() => handleSort('elo')} className="w-16 text-right hover:text-zinc-300 transition-colors">
+            <button onClick={() => handleSort('elo')} className="w-16 text-right hover:text-cream transition-colors">
               Elo{sortIcon('elo')}
             </button>
-            <button onClick={() => handleSort('peakElo')} className="w-16 text-right hover:text-zinc-300 transition-colors">
+            <button onClick={() => handleSort('peakElo')} className="w-16 text-right hover:text-cream transition-colors">
               Peak{sortIcon('peakElo')}
             </button>
           </div>
@@ -205,22 +205,22 @@ export default function PlayersPage() {
               <Link
                 key={player.id}
                 href={`/players/${player.id}`}
-                className="group flex items-center gap-3 p-3 sm:p-4 rounded-xl card-space hover:border-amber-500/30 transition-colors"
+                className="group flex items-center gap-3 p-3 sm:p-4 rounded-xl card-space hover:border-gold/30 transition-colors"
               >
-                <span className="text-xs font-mono text-zinc-400 w-8 text-right">
+                <span className="text-xs font-mono text-warm w-8 text-right">
                   {i + 1}
                 </span>
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
-                    <span className="text-sm font-medium text-zinc-100 group-hover:text-amber-400 transition-colors truncate">
+                    <span className="text-sm font-medium text-cream group-hover:text-gold transition-colors truncate">
                       {player.name}
                     </span>
                     <span
                       className={`hidden sm:inline text-[10px] px-1.5 py-0.5 rounded-full border ${
                         player.type === 'person'
-                          ? 'bg-blue-500/10 text-blue-400 border-blue-500/30'
-                          : 'bg-purple-500/10 text-purple-400 border-purple-500/30'
+                          ? 'bg-violet/10 text-violet-bright border-violet/30'
+                          : 'bg-violet/10 text-violet border-violet/30'
                       }`}
                     >
                       {player.type}
@@ -230,7 +230,7 @@ export default function PlayersPage() {
                     {player.category.slice(0, 2).map((cat) => (
                       <span
                         key={cat}
-                        className="text-[10px] text-zinc-400"
+                        className="text-[10px] text-warm"
                       >
                         {cat}
                       </span>
@@ -239,10 +239,10 @@ export default function PlayersPage() {
                 </div>
 
                 <div className="text-right flex-shrink-0">
-                  <div className="font-display text-lg sm:text-xl font-bold text-amber-400">
+                  <div className="font-display text-lg sm:text-xl font-bold text-gold">
                     {player.elo}
                   </div>
-                  <div className="text-[10px] text-zinc-400">
+                  <div className="text-[10px] text-warm">
                     peak {player.peakElo}
                   </div>
                 </div>
@@ -251,7 +251,7 @@ export default function PlayersPage() {
 
             {filtered.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-zinc-500 text-sm">No players found.</p>
+                <p className="text-muted text-sm">No players found.</p>
               </div>
             )}
           </div>
@@ -260,7 +260,7 @@ export default function PlayersPage() {
           <div className="mt-10 text-center">
             <Link
               href="/compare"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black text-sm font-medium transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gold hover:bg-gold-bright text-deep glow-gold text-sm font-medium transition-colors"
             >
               Vote in Head-to-Head
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
@@ -271,9 +271,9 @@ export default function PlayersPage() {
 
           {/* Quote */}
           <div className="mt-16 text-center">
-            <p className="text-sm text-zinc-400 italic max-w-lg mx-auto">
+            <p className="text-sm text-warm italic max-w-lg mx-auto">
               &ldquo;All evils are caused by insufficient knowledge.&rdquo;
-              <span className="block mt-1 not-italic text-zinc-500">
+              <span className="block mt-1 not-italic text-muted">
                 &mdash; David Deutsch
               </span>
             </p>

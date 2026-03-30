@@ -45,8 +45,8 @@ export default function TabNav() {
             onClick={() => scrollTo(tab.id)}
             className={`px-3 py-1.5 rounded-lg text-sm whitespace-nowrap transition-colors ${
               active === tab.id
-                ? 'bg-amber-500/10 text-amber-400 font-medium'
-                : 'text-zinc-500 hover:text-zinc-100'
+                ? 'bg-gold/10 text-gold font-medium'
+                : 'text-muted hover:text-cream'
             }`}
           >
             {tab.label}
