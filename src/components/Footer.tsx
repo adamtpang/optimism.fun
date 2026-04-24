@@ -61,9 +61,14 @@ export default function Footer() {
               <Link href="/methodology" className="text-ink-300 hover:text-amber-300 transition-colors">
                 methodology
               </Link>
-              <Link href="/about" className="text-ink-300 hover:text-amber-300 transition-colors">
-                about
-              </Link>
+              <a
+                href="https://github.com/adamtpang/optimism.fun"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-ink-300 hover:text-amber-300 transition-colors"
+              >
+                github
+              </a>
             </div>
           </div>
         </div>

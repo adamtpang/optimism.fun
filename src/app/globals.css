@@ -90,9 +90,18 @@ a.link:hover {
   color: #fbe3bd;
 }
 
-/* Editorial-surface variant for /about, /methodology */
+/* Editorial-surface variant for /methodology */
 .surface-paper {
   background:
     linear-gradient(180deg, rgba(180, 83, 9, 0.02) 0%, transparent 50%),
     #13100d;
+}
+
+/* Hide scrollbar utility for horizontal nav */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
