@@ -9,24 +9,22 @@ import { formatHumans, formatScore } from '@/lib/format'
 import TierPill from './TierPill'
 
 type Lens = 'balanced' | 'welfare' | 'xrisk' | 'utility'
-type SortKey = 'composite' | 'humans' | 'welfare' | 'xrisk' | 'utility'
+type SortKey = 'composite' | 'humans' | 'welfare' | 'xrisk' | 'utility' | 'voices'
 
 const LENS_META: Record<Lens, { label: string; desc: string }> = {
-  balanced: { label: 'balanced', desc: 'equal weight across all three lenses' },
-  welfare: { label: 'EA / welfare', desc: 'copenhagen BCR is the headline' },
-  xrisk: { label: 'x-risk', desc: '80k hours ITN is the headline' },
-  utility: { label: 'e/acc / utility delta', desc: 'state-of-art vs physics limit' },
+  balanced: { label: 'balanced', desc: 'equal weight, all lenses' },
+  welfare: { label: 'ea · welfare', desc: 'copenhagen BCR dominant' },
+  xrisk: { label: 'x-risk', desc: '80k hours ITN dominant' },
+  utility: { label: 'e/acc · utility δ', desc: 'physics-gap dominant' },
 }
 
 function compositeScore(p: Problem, lens: Lens): number {
   const w = p.scores.welfareBCR?.value ?? 0
   const x = p.scores.xriskITN?.value ?? 0
   const u = p.scores.utilityDelta?.value ?? 0
-
   const wNorm = Math.min(1, w / 50)
   const xNorm = Math.min(1, x / 10)
   const uNorm = Math.min(1, u)
-
   switch (lens) {
     case 'welfare':
       return wNorm * 0.7 + xNorm * 0.15 + uNorm * 0.15
@@ -34,7 +32,6 @@ function compositeScore(p: Problem, lens: Lens): number {
       return wNorm * 0.15 + xNorm * 0.7 + uNorm * 0.15
     case 'utility':
       return wNorm * 0.15 + xNorm * 0.15 + uNorm * 0.7
-    case 'balanced':
     default:
       return (wNorm + xNorm + uNorm) / 3
   }
@@ -47,21 +44,16 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
 
   const companyCounts = useMemo(() => {
     const m = new Map<string, number>()
-    for (const c of companies) {
-      for (const p of c.problemSlugs) {
-        m.set(p, (m.get(p) ?? 0) + 1)
-      }
-    }
+    for (const c of companies)
+      for (const s of c.problemSlugs) m.set(s, (m.get(s) ?? 0) + 1)
     return m
   }, [])
 
   const voiceCounts = useMemo(() => {
     const m = new Map<string, number>()
-    for (const v of voices) {
-      for (const pos of v.positions) {
+    for (const v of voices)
+      for (const pos of v.positions)
         m.set(pos.problemSlug, (m.get(pos.problemSlug) ?? 0) + 1)
-      }
-    }
     return m
   }, [])
 
@@ -73,169 +65,169 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
       voiceCount: voiceCounts.get(p.slug) ?? 0,
     }))
     decorated.sort((a, b) => {
-      let aVal = 0
-      let bVal = 0
+      let av = 0
+      let bv = 0
       switch (sortKey) {
         case 'composite':
-          aVal = a.composite
-          bVal = b.composite
+          av = a.composite
+          bv = b.composite
           break
         case 'humans':
-          aVal = a.p.humansAffected.value
-          bVal = b.p.humansAffected.value
+          av = a.p.humansAffected.value
+          bv = b.p.humansAffected.value
           break
         case 'welfare':
-          aVal = a.p.scores.welfareBCR?.value ?? -1
-          bVal = b.p.scores.welfareBCR?.value ?? -1
+          av = a.p.scores.welfareBCR?.value ?? -1
+          bv = b.p.scores.welfareBCR?.value ?? -1
           break
         case 'xrisk':
-          aVal = a.p.scores.xriskITN?.value ?? -1
-          bVal = b.p.scores.xriskITN?.value ?? -1
+          av = a.p.scores.xriskITN?.value ?? -1
+          bv = b.p.scores.xriskITN?.value ?? -1
           break
         case 'utility':
-          aVal = a.p.scores.utilityDelta?.value ?? -1
-          bVal = b.p.scores.utilityDelta?.value ?? -1
+          av = a.p.scores.utilityDelta?.value ?? -1
+          bv = b.p.scores.utilityDelta?.value ?? -1
+          break
+        case 'voices':
+          av = a.voiceCount
+          bv = b.voiceCount
           break
       }
-      return sortDir === 'desc' ? bVal - aVal : aVal - bVal
+      return sortDir === 'desc' ? bv - av : av - bv
     })
     return decorated
   }, [problems, lens, sortKey, sortDir, companyCounts, voiceCounts])
 
   function toggleSort(key: SortKey) {
-    if (sortKey === key) {
-      setSortDir(sortDir === 'desc' ? 'asc' : 'desc')
-    } else {
+    if (sortKey === key) setSortDir(sortDir === 'desc' ? 'asc' : 'desc')
+    else {
       setSortKey(key)
       setSortDir('desc')
     }
   }
 
-  function sortIcon(key: SortKey) {
-    if (sortKey !== key) return <span className="text-slate-600">↕</span>
-    return sortDir === 'desc' ? (
-      <span className="text-indigo-400">↓</span>
+  const icon = (key: SortKey) =>
+    sortKey !== key ? (
+      <span className="text-ink-600">·</span>
+    ) : sortDir === 'desc' ? (
+      <span className="text-amber-300">▾</span>
     ) : (
-      <span className="text-indigo-400">↑</span>
+      <span className="text-amber-300">▴</span>
     )
-  }
 
   return (
     <div className="w-full">
-      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex flex-wrap gap-2">
+      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-wrap gap-px border border-hair">
           {(Object.keys(LENS_META) as Lens[]).map((l) => (
             <button
               key={l}
               onClick={() => setLens(l)}
-              className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+              className={`px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider transition-colors ${
                 lens === l
-                  ? 'border-indigo-500/40 bg-indigo-500/10 text-indigo-300'
-                  : 'border-white/[0.08] bg-white/[0.02] text-slate-400 hover:border-white/[0.16] hover:text-slate-200'
+                  ? 'bg-amber-300/10 text-amber-300'
+                  : 'text-ink-400 hover:text-ink-100 hover:bg-ink-800'
               }`}
             >
               {LENS_META[l].label}
             </button>
           ))}
         </div>
-        <p className="text-xs text-slate-500">{LENS_META[lens].desc}</p>
+        <p className="font-mono text-[11px] text-ink-500">
+          <span className="text-ink-600">weighting: </span>
+          {LENS_META[lens].desc}
+        </p>
       </div>
 
-      <div className="overflow-x-auto rounded-2xl border border-white/[0.06] bg-white/[0.01]">
-        <table className="min-w-full text-sm">
+      <div className="overflow-x-auto border border-hair">
+        <table className="min-w-full font-mono text-xs">
           <thead>
-            <tr className="border-b border-white/[0.06] text-left text-[11px] uppercase tracking-wider text-slate-500">
-              <th className="px-4 py-3 font-medium">
-                <button
-                  onClick={() => toggleSort('composite')}
-                  className="flex items-center gap-1 hover:text-slate-300"
-                >
-                  #
-                </button>
-              </th>
-              <th className="px-4 py-3 font-medium">Problem</th>
-              <th className="px-4 py-3 font-medium">Tier</th>
-              <th className="px-4 py-3 font-medium text-right">
+            <tr className="border-b border-hair-strong bg-ink-800/40 text-left text-[10px] uppercase tracking-ultra-wide text-ink-400">
+              <th className="px-3 py-2.5 font-medium w-10">#</th>
+              <th className="px-3 py-2.5 font-medium">problem</th>
+              <th className="px-3 py-2.5 font-medium">tier</th>
+              <th className="px-3 py-2.5 font-medium text-right">
                 <button
                   onClick={() => toggleSort('humans')}
-                  className="flex items-center gap-1 hover:text-slate-300 ml-auto"
+                  className="inline-flex items-center gap-1 hover:text-ink-100 ml-auto"
                 >
-                  Humans {sortIcon('humans')}
+                  humans {icon('humans')}
                 </button>
               </th>
-              <th className="px-4 py-3 font-medium text-right">
+              <th className="px-3 py-2.5 font-medium text-right">
                 <button
                   onClick={() => toggleSort('welfare')}
-                  className="flex items-center gap-1 hover:text-slate-300 ml-auto"
+                  className="inline-flex items-center gap-1 hover:text-ink-100 ml-auto"
                 >
-                  Welfare BCR {sortIcon('welfare')}
+                  bcr {icon('welfare')}
                 </button>
               </th>
-              <th className="px-4 py-3 font-medium text-right">
+              <th className="px-3 py-2.5 font-medium text-right">
                 <button
                   onClick={() => toggleSort('xrisk')}
-                  className="flex items-center gap-1 hover:text-slate-300 ml-auto"
+                  className="inline-flex items-center gap-1 hover:text-ink-100 ml-auto"
                 >
-                  X-risk ITN {sortIcon('xrisk')}
+                  itn {icon('xrisk')}
                 </button>
               </th>
-              <th className="px-4 py-3 font-medium text-right">
+              <th className="px-3 py-2.5 font-medium text-right">
                 <button
                   onClick={() => toggleSort('utility')}
-                  className="flex items-center gap-1 hover:text-slate-300 ml-auto"
+                  className="inline-flex items-center gap-1 hover:text-ink-100 ml-auto"
                 >
-                  Utility Δ {sortIcon('utility')}
+                  util δ {icon('utility')}
                 </button>
               </th>
-              <th className="px-4 py-3 font-medium text-right" title="Companies mapped">Co.</th>
-              <th className="px-4 py-3 font-medium text-right" title="Voices (thinkers) citing this problem">V.</th>
+              <th className="px-3 py-2.5 font-medium text-right">co</th>
+              <th className="px-3 py-2.5 font-medium text-right">
+                <button
+                  onClick={() => toggleSort('voices')}
+                  className="inline-flex items-center gap-1 hover:text-ink-100 ml-auto"
+                >
+                  v {icon('voices')}
+                </button>
+              </th>
             </tr>
           </thead>
           <tbody>
             {rows.map(({ p, companyCount, voiceCount }, i) => (
               <tr
                 key={p.slug}
-                className="group border-b border-white/[0.04] last:border-b-0 hover:bg-white/[0.02] transition-colors"
+                className="group border-b border-hair last:border-b-0 hover:bg-ink-800/30 transition-colors"
               >
-                <td className="px-4 py-4 text-slate-600 tabular-nums">
+                <td className="px-3 py-3 text-ink-600 tabular-nums">
                   {(i + 1).toString().padStart(2, '0')}
                 </td>
-                <td className="px-4 py-4">
+                <td className="px-3 py-3">
                   <Link
                     href={`/p/${p.slug}`}
-                    className="block font-display font-semibold text-slate-100 group-hover:text-indigo-300 transition-colors"
+                    className="block font-sans text-sm font-medium text-ink-100 group-hover:text-amber-300 transition-colors"
                   >
                     {p.name}
                   </Link>
-                  <p className="mt-0.5 text-xs text-slate-500 line-clamp-1 max-w-md">
+                  <p className="mt-0.5 text-[11px] text-ink-500 line-clamp-1 max-w-md">
                     {p.tagline}
                   </p>
                 </td>
-                <td className="px-4 py-4">
+                <td className="px-3 py-3">
                   <TierPill tier={p.tier} />
                 </td>
-                <td className="px-4 py-4 text-right tabular-nums">
+                <td className="px-3 py-3 text-right tabular-nums text-ink-200">
                   {formatHumans(p.humansAffected.value)}
                 </td>
-                <td className="px-4 py-4 text-right tabular-nums text-amber-300/90">
-                  {p.scores.welfareBCR
-                    ? `${formatScore(p.scores.welfareBCR.value)}×`
-                    : '·'}
+                <td className="px-3 py-3 text-right tabular-nums text-terminal-green">
+                  {p.scores.welfareBCR ? `${formatScore(p.scores.welfareBCR.value)}×` : <span className="text-ink-700">·</span>}
                 </td>
-                <td className="px-4 py-4 text-right tabular-nums text-rose-300/90">
-                  {p.scores.xriskITN
-                    ? `${formatScore(p.scores.xriskITN.value)}/10`
-                    : '·'}
+                <td className="px-3 py-3 text-right tabular-nums text-terminal-rose">
+                  {p.scores.xriskITN ? formatScore(p.scores.xriskITN.value) : <span className="text-ink-700">·</span>}
                 </td>
-                <td className="px-4 py-4 text-right tabular-nums text-indigo-300/90">
-                  {p.scores.utilityDelta
-                    ? `${(p.scores.utilityDelta.value * 100).toFixed(0)}%`
-                    : '·'}
+                <td className="px-3 py-3 text-right tabular-nums text-amber-300">
+                  {p.scores.utilityDelta ? `${(p.scores.utilityDelta.value * 100).toFixed(0)}%` : <span className="text-ink-700">·</span>}
                 </td>
-                <td className="px-4 py-4 text-right tabular-nums text-slate-500">
+                <td className="px-3 py-3 text-right tabular-nums text-ink-500">
                   {companyCount}
                 </td>
-                <td className="px-4 py-4 text-right tabular-nums text-purple-300/80">
+                <td className="px-3 py-3 text-right tabular-nums text-terminal-violet/80">
                   {voiceCount}
                 </td>
               </tr>
@@ -244,9 +236,13 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
         </table>
       </div>
 
-      <p className="mt-4 text-xs text-slate-500">
-        welfare = copenhagen consensus BCR. x-risk = 80k hours ITN composite. utility Δ = current state-of-the-art divided by physically-possible ceiling. every number carries a confidence tag. see{' '}
-        <Link href="/methodology" className="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">
+      <p className="mt-3 font-mono text-[11px] text-ink-500 leading-relaxed">
+        <span className="text-ink-600">bcr</span> copenhagen consensus benefit-cost ratio ·
+        <span className="text-ink-600"> itn</span> 80,000 hours importance × tractability × neglectedness ·
+        <span className="text-ink-600"> util δ</span> state-of-the-art vs physics-possible ceiling ·
+        <span className="text-ink-600"> co</span> companies mapped ·
+        <span className="text-ink-600"> v</span> voices citing. full method in{' '}
+        <Link href="/methodology" className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2">
           methodology
         </Link>
         .

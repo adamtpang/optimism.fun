@@ -1,4 +1,3 @@
-import StarField from '@/components/StarField'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
@@ -12,31 +11,30 @@ export const metadata = {
 export default function MethodologyPage() {
   return (
     <>
-      <StarField />
       <Navbar />
       <main>
         <section className="pt-28 pb-20 px-6">
           <div className="max-w-3xl mx-auto">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-300 transition-colors mb-8"
+              className="inline-flex items-center gap-2 text-sm text-ink-500 hover:text-ink-300 transition-colors mb-8"
             >
               <span>←</span> back
             </Link>
-            <p className="text-indigo-400 font-medium tracking-[0.2em] uppercase text-xs mb-3">
+            <p className="text-amber-300 font-medium tracking-[0.2em] uppercase text-xs mb-3">
               Methodology
             </p>
-            <h1 className="font-display text-4xl md:text-6xl font-bold leading-[1.1] mb-6">
+            <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.1] mb-6">
               How we rank.
             </h1>
-            <p className="text-lg text-slate-400 leading-relaxed mb-12">
+            <p className="text-lg text-ink-400 leading-relaxed mb-12">
               Every ranking is a conjecture open to refutation. The point is not to be right
               forever, it is to be wrong in public and correctable by evidence.
             </p>
 
-            <div className="space-y-12 text-slate-300 leading-relaxed">
+            <div className="space-y-12 text-ink-300 leading-relaxed">
               <section>
-                <h2 className="font-display text-2xl font-bold mb-4 text-slate-100">
+                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
                   Three lenses, not one composite
                 </h2>
                 <p className="mb-4">
@@ -45,42 +43,42 @@ export default function MethodologyPage() {
                   supports it. Users pick which lens matters and sort by it.
                 </p>
                 <div className="space-y-4">
-                  <div className="rounded-xl border border-amber-500/20 bg-amber-500/[0.03] p-5">
+                  <div className="rounded border border-amber-500/20 bg-amber-500/[0.03] p-5">
                     <p className="text-amber-300 text-xs uppercase tracking-wider mb-2">
                       welfare lens
                     </p>
-                    <h3 className="font-display font-semibold mb-2 text-slate-100">
+                    <h3 className="font-serif font-semibold mb-2 text-ink-100">
                       Copenhagen Consensus Benefit-Cost Ratio
                     </h3>
-                    <p className="text-sm text-slate-400">
+                    <p className="text-sm text-ink-400">
                       Dollars of social good per dollar of intervention. Developed by Nobel-
                       laureate economists at the Copenhagen Consensus Center. Favors
                       high-certainty, shovel-ready interventions like micronutrients and
                       disease control.
                     </p>
                   </div>
-                  <div className="rounded-xl border border-rose-500/20 bg-rose-500/[0.03] p-5">
-                    <p className="text-rose-300 text-xs uppercase tracking-wider mb-2">
+                  <div className="rounded border border-rose-500/20 bg-rose-500/[0.03] p-5">
+                    <p className="text-terminal-rose text-xs uppercase tracking-wider mb-2">
                       x-risk lens
                     </p>
-                    <h3 className="font-display font-semibold mb-2 text-slate-100">
+                    <h3 className="font-serif font-semibold mb-2 text-ink-100">
                       80,000 Hours ITN composite
                     </h3>
-                    <p className="text-sm text-slate-400">
+                    <p className="text-sm text-ink-400">
                       Importance × Tractability × Neglectedness. Developed at 80,000 Hours
                       for Effective Altruism cause prioritization. Favors problems where an
                       additional unit of effort has the highest marginal impact on avoiding
                       civilizational loss.
                     </p>
                   </div>
-                  <div className="rounded-xl border border-indigo-500/20 bg-indigo-500/[0.03] p-5">
-                    <p className="text-indigo-300 text-xs uppercase tracking-wider mb-2">
+                  <div className="rounded border border-amber-300/20 bg-indigo-500/[0.03] p-5">
+                    <p className="text-amber-200 text-xs uppercase tracking-wider mb-2">
                       utility delta lens
                     </p>
-                    <h3 className="font-display font-semibold mb-2 text-slate-100">
+                    <h3 className="font-serif font-semibold mb-2 text-ink-100">
                       State-of-the-art vs physics-possible
                     </h3>
-                    <p className="text-sm text-slate-400">
+                    <p className="text-sm text-ink-400">
                       The ratio of current best solution to what physics and economics would
                       allow. Inspired by Musk&rsquo;s utility-delta framing. Favors hard tech
                       with massive unrealized gaps. Energy, construction, transportation, bio.
@@ -90,7 +88,7 @@ export default function MethodologyPage() {
               </section>
 
               <section>
-                <h2 className="font-display text-2xl font-bold mb-4 text-slate-100">
+                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
                   Severity is willingness to pay over wealth
                 </h2>
                 <p>
@@ -102,14 +100,14 @@ export default function MethodologyPage() {
               </section>
 
               <section>
-                <h2 className="font-display text-2xl font-bold mb-4 text-slate-100">
+                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
                   Every number carries a confidence tag
                 </h2>
                 <p className="mb-4">
                   If we don&rsquo;t know, we say so. Every numeric cell is tagged{' '}
-                  <span className="text-emerald-300">high</span>,{' '}
+                  <span className="text-terminal-green">high</span>,{' '}
                   <span className="text-amber-300">med</span>, or{' '}
-                  <span className="text-rose-300">low</span> with a source and an as-of date.
+                  <span className="text-terminal-rose">low</span> with a source and an as-of date.
                   Unknown values are written as &ldquo;unknown&rdquo; and tagged low. No silent
                   guessing.
                 </p>
@@ -122,51 +120,51 @@ export default function MethodologyPage() {
               </section>
 
               <section>
-                <h2 className="font-display text-2xl font-bold mb-4 text-slate-100">
+                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
                   Five tiers, for navigation not hierarchy
                 </h2>
-                <ul className="space-y-2 text-sm text-slate-400">
+                <ul className="space-y-2 text-sm text-ink-400">
                   <li>
                     <span className="text-amber-300">welfare floor</span>: Copenhagen
                     Consensus baseline. High-certainty, high-BCR interventions.
                   </li>
                   <li>
-                    <span className="text-rose-300">x-risk frontier</span>: 80,000 Hours
+                    <span className="text-terminal-rose">x-risk frontier</span>: 80,000 Hours
                     top-priority areas. AI, bio, nuclear, catastrophic risk.
                   </li>
                   <li>
-                    <span className="text-indigo-300">hard tech</span>: Stephens&rsquo;
+                    <span className="text-amber-200">hard tech</span>: Stephens&rsquo;
                     &ldquo;good quests&rdquo; from Founders Fund. Energy, construction, space,
                     bio-manufacturing.
                   </li>
                   <li>
-                    <span className="text-emerald-300">progress &amp; abundance</span>: Roots
+                    <span className="text-terminal-green">progress &amp; abundance</span>: Roots
                     of Progress / Collison / Cowen canon. The meta-quests that compound.
                   </li>
                   <li>
-                    <span className="text-purple-300">emerging</span>: massive problems
+                    <span className="text-terminal-violet">emerging</span>: massive problems
                     under-indexed by EA and e/acc. Fertility, loneliness, epistemics.
                   </li>
                 </ul>
               </section>
 
               <section>
-                <h2 className="font-display text-2xl font-bold mb-4 text-slate-100">
+                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
                   What we refuse to do
                 </h2>
-                <ul className="space-y-3 text-slate-400">
+                <ul className="space-y-3 text-ink-400">
                   <li>
-                    <span className="text-slate-200">Never sell ranking placement.</span>{' '}
+                    <span className="text-ink-200">Never sell ranking placement.</span>{' '}
                     No company pays to move up. No advertising that looks like endorsement.
                     The moment this rule breaks, the dataset is worth nothing.
                   </li>
                   <li>
-                    <span className="text-slate-200">Never silently guess a number.</span>{' '}
+                    <span className="text-ink-200">Never silently guess a number.</span>{' '}
                     If we don&rsquo;t have a source, the cell is &ldquo;unknown&rdquo; and tagged low until
                     we do.
                   </li>
                   <li>
-                    <span className="text-slate-200">
+                    <span className="text-ink-200">
                       Never collapse to a single moral score.
                     </span>{' '}
                     Welfare, x-risk, and utility delta disagree. That disagreement is
@@ -176,7 +174,7 @@ export default function MethodologyPage() {
               </section>
 
               <section>
-                <h2 className="font-display text-2xl font-bold mb-4 text-slate-100">
+                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
                   Phase 0 status
                 </h2>
                 <p className="mb-3">

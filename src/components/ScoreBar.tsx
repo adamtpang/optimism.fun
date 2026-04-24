@@ -5,22 +5,24 @@ type Props = {
   label: string
   score: SourcedNumber | null
   max: number
-  color: 'amber' | 'rose' | 'indigo' | 'emerald'
+  color: 'amber' | 'rose' | 'green' | 'cyan' | 'violet'
   format?: (n: number) => string
 }
 
 const BAR_COLOR: Record<Props['color'], string> = {
-  amber: 'bg-amber-500/70',
-  rose: 'bg-rose-500/70',
-  indigo: 'bg-indigo-500/70',
-  emerald: 'bg-emerald-500/70',
+  amber: 'bg-amber-300',
+  rose: 'bg-terminal-rose',
+  green: 'bg-terminal-green',
+  cyan: 'bg-terminal-cyan',
+  violet: 'bg-terminal-violet',
 }
 
 const TEXT_COLOR: Record<Props['color'], string> = {
   amber: 'text-amber-300',
-  rose: 'text-rose-300',
-  indigo: 'text-indigo-300',
-  emerald: 'text-emerald-300',
+  rose: 'text-terminal-rose',
+  green: 'text-terminal-green',
+  cyan: 'text-terminal-cyan',
+  violet: 'text-terminal-violet',
 }
 
 export default function ScoreBar({
@@ -32,14 +34,14 @@ export default function ScoreBar({
 }: Props) {
   if (!score) {
     return (
-      <div className="py-2">
+      <div className="py-2.5 font-mono border-b border-hair last:border-b-0">
         <div className="flex items-baseline justify-between mb-1.5">
-          <span className="text-xs uppercase tracking-wider text-slate-500">
+          <span className="text-[10px] uppercase tracking-ultra-wide text-ink-500">
             {label}
           </span>
-          <span className="text-sm text-slate-600">not applicable</span>
+          <span className="text-xs text-ink-600">n/a</span>
         </div>
-        <div className="h-1 rounded-full bg-white/[0.04]" />
+        <div className="h-px bg-ink-700" />
       </div>
     )
   }
@@ -47,13 +49,13 @@ export default function ScoreBar({
   const pct = Math.min(100, Math.max(0, (score.value / max) * 100))
 
   return (
-    <div className="py-2">
+    <div className="py-2.5 font-mono border-b border-hair last:border-b-0">
       <div className="flex items-baseline justify-between mb-1.5 gap-2">
-        <span className="text-xs uppercase tracking-wider text-slate-500">
+        <span className="text-[10px] uppercase tracking-ultra-wide text-ink-500">
           {label}
         </span>
         <div className="flex items-center gap-2">
-          <span className={`text-sm font-semibold ${TEXT_COLOR[color]}`}>
+          <span className={`text-sm font-semibold tabular-nums ${TEXT_COLOR[color]}`}>
             {format(score.value)}
           </span>
           <SourceBadge
@@ -63,9 +65,9 @@ export default function ScoreBar({
           />
         </div>
       </div>
-      <div className="h-1 rounded-full bg-white/[0.04] overflow-hidden">
+      <div className="h-px bg-ink-700 overflow-hidden">
         <div
-          className={`h-full ${BAR_COLOR[color]} rounded-full`}
+          className={`h-full ${BAR_COLOR[color]}`}
           style={{ width: `${pct}%` }}
         />
       </div>

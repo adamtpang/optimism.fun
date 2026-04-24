@@ -1,4 +1,3 @@
-import StarField from '@/components/StarField'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
@@ -16,24 +15,23 @@ export default function VoicesPage() {
 
   return (
     <>
-      <StarField />
       <Navbar />
       <main>
         <section className="pt-28 pb-20 px-6">
           <div className="max-w-5xl mx-auto">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-300 transition-colors mb-8"
+              className="inline-flex items-center gap-2 text-sm text-ink-500 hover:text-ink-300 transition-colors mb-8"
             >
               <span>←</span> back
             </Link>
-            <p className="text-purple-400 font-medium tracking-[0.2em] uppercase text-xs mb-3">
+            <p className="text-terminal-violet font-medium tracking-[0.2em] uppercase text-xs mb-3">
               Voices
             </p>
-            <h1 className="font-display text-4xl md:text-6xl font-bold leading-[1.1] mb-6">
+            <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.1] mb-6">
               What the thinkers say.
             </h1>
-            <p className="text-lg text-slate-400 leading-relaxed max-w-3xl mb-16">
+            <p className="text-lg text-ink-400 leading-relaxed max-w-3xl mb-16">
               The people who have spent careers thinking about which problems humanity should
               work on, and what they&rsquo;ve actually said. When multiple voices point at the
               same quest, that&rsquo;s a convergence signal. Disagreement is information too.
@@ -43,27 +41,27 @@ export default function VoicesPage() {
               {voices.map((v) => (
                 <div
                   key={v.slug}
-                  className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-7 hover:border-purple-500/20 transition-colors"
+                  className="rounded border border-hair bg-ink-900 p-7 hover:border-terminal-violet/20 transition-colors"
                 >
                   <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-1 mb-3">
                     <div>
                       <Link
                         href={`/voices/${v.slug}`}
-                        className="font-display text-2xl font-bold text-slate-100 hover:text-purple-300 transition-colors"
+                        className="font-serif text-2xl font-normal text-ink-100 hover:text-terminal-violet transition-colors"
                       >
                         {v.name}
                       </Link>
-                      <p className="text-sm text-slate-500 mt-0.5">
+                      <p className="text-sm text-ink-500 mt-0.5">
                         {v.role}
                         {v.org ? ` · ${v.org}` : ''}
                       </p>
                     </div>
-                    <span className="text-xs text-slate-500">
+                    <span className="text-xs text-ink-500">
                       {v.positions.length}{' '}
                       {v.positions.length === 1 ? 'problem' : 'problems'} cited
                     </span>
                   </div>
-                  <p className="text-slate-400 leading-relaxed mb-5">{v.bio}</p>
+                  <p className="text-ink-400 leading-relaxed mb-5">{v.bio}</p>
                   <div className="flex flex-wrap gap-1.5">
                     {v.positions.map((pos) => {
                       const problem = problemBySlug.get(pos.problemSlug)
@@ -72,7 +70,7 @@ export default function VoicesPage() {
                         <Link
                           key={pos.problemSlug}
                           href={`/p/${pos.problemSlug}`}
-                          className="inline-flex items-center rounded-full border border-white/[0.06] bg-white/[0.02] px-2.5 py-0.5 text-[11px] text-slate-400 hover:border-purple-500/30 hover:text-purple-300 transition-colors"
+                          className="inline-flex items-center rounded-none border border-hair bg-ink-900 px-2.5 py-0.5 text-[11px] text-ink-400 hover:border-terminal-violet/30 hover:text-terminal-violet transition-colors"
                         >
                           {problem.name}
                         </Link>

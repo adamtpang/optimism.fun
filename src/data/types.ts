@@ -129,3 +129,40 @@ export type Voice = {
   writings: { title: string; url: string }[]
   positions: VoicePosition[]
 }
+
+export type Country = {
+  rank: number
+  iso2: string
+  iso3: string
+  name: string
+  gdp: SourcedNumber
+  asOf: string
+}
+
+export type Crypto = {
+  rank: number
+  name: string
+  symbol: string
+  price: SourcedNumber
+  marketCap: SourcedNumber
+  asOf: string
+}
+
+export type PublicCompany = {
+  rank: number
+  name: string
+  ticker: string
+  marketCap: SourcedNumber
+  country: string
+  asOf: string
+}
+
+export type Founder = {
+  rank: number
+  name: string
+  netWorth: SourcedNumber
+  source: string // "Tesla, SpaceX" — the business
+  country: string
+  age?: number
+  asOf: string
+}

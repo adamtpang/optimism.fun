@@ -3,53 +3,96 @@
 @tailwind utilities;
 
 :root {
-  --background: #050510;
-  --foreground: #e2e8f0;
+  --bg: #08080a;
+  --bg-elev: #0f0e11;
+  --fg: #f6f5f2;
+  --fg-dim: #9c9a93;
+  --line: rgba(246, 245, 242, 0.08);
+  --line-strong: rgba(246, 245, 242, 0.16);
+  --amber: #e5a13c;
+  --amber-dim: rgba(229, 161, 60, 0.15);
+  --violet: #8b7bc2;
+  --rose: #c26070;
+  --green: #5c9c70;
+  --cyan: #6b98a8;
+  --copper: #b45309;
+  --cream: #f5ede0;
 }
 
 html {
   scroll-behavior: smooth;
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--bg);
+  color: var(--fg);
+  font-feature-settings: 'ss01', 'cv11';
 }
 
-/* Cosmic nebula background */
+/* Terminal-grid background — 1px lattice at 32px pitch, barely visible */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   z-index: -20;
-  background:
-    radial-gradient(ellipse 600px 600px at 20% 30%, rgba(88, 28, 135, 0.15), transparent),
-    radial-gradient(ellipse 500px 500px at 80% 70%, rgba(67, 56, 202, 0.12), transparent),
-    radial-gradient(ellipse 400px 400px at 50% 90%, rgba(30, 58, 138, 0.1), transparent),
-    var(--background);
+  background-image:
+    linear-gradient(to right, rgba(246, 245, 242, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(246, 245, 242, 0.015) 1px, transparent 1px),
+    radial-gradient(ellipse 1200px 800px at 50% -10%, rgba(229, 161, 60, 0.04), transparent 70%);
+  background-size: 32px 32px, 32px 32px, 100% 100%;
   pointer-events: none;
 }
 
-/* Selection color */
+/* Selection */
 ::selection {
-  background: rgba(99, 102, 241, 0.3);
-  color: white;
+  background: rgba(229, 161, 60, 0.35);
+  color: #fffaf2;
 }
 
-/* Scrollbar */
+/* Scrollbar — narrow, amber thumb */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
+  height: 4px;
 }
-
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: rgba(99, 102, 241, 0.3);
-  border-radius: 3px;
+  background: rgba(229, 161, 60, 0.25);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(229, 161, 60, 0.5);
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(99, 102, 241, 0.5);
+/* Tabular numerals by default for all mono text */
+.font-mono,
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Fine hairline utility */
+.border-hair {
+  border-color: var(--line);
+}
+.border-hair-strong {
+  border-color: var(--line-strong);
+}
+
+/* Terminal link underline */
+a.link {
+  color: var(--amber);
+  border-bottom: 1px solid rgba(229, 161, 60, 0.35);
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+a.link:hover {
+  border-bottom-color: var(--amber);
+  color: #fbe3bd;
+}
+
+/* Editorial-surface variant for /about, /methodology */
+.surface-paper {
+  background:
+    linear-gradient(180deg, rgba(180, 83, 9, 0.02) 0%, transparent 50%),
+    #13100d;
 }
