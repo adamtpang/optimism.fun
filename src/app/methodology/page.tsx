@@ -13,7 +13,7 @@ export default function MethodologyPage() {
     <>
       <Navbar />
       <main>
-        <section className="pt-28 pb-20 px-6">
+        <section className="pt-32 pb-20 px-6">
           <div className="max-w-3xl mx-auto">
             <Link
               href="/"

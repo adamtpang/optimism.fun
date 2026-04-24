@@ -216,13 +216,13 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
                   {formatHumans(p.humansAffected.value)}
                 </td>
                 <td className="px-3 py-3 text-right tabular-nums text-terminal-green">
-                  {p.scores.welfareBCR ? `${formatScore(p.scores.welfareBCR.value)}×` : <span className="text-ink-700">·</span>}
+                  {p.scores.welfareBCR ? `${formatScore(p.scores.welfareBCR.value)}×` : <span className="text-ink-500/70">·</span>}
                 </td>
                 <td className="px-3 py-3 text-right tabular-nums text-terminal-rose">
-                  {p.scores.xriskITN ? formatScore(p.scores.xriskITN.value) : <span className="text-ink-700">·</span>}
+                  {p.scores.xriskITN ? formatScore(p.scores.xriskITN.value) : <span className="text-ink-500/70">·</span>}
                 </td>
                 <td className="px-3 py-3 text-right tabular-nums text-amber-300">
-                  {p.scores.utilityDelta ? `${(p.scores.utilityDelta.value * 100).toFixed(0)}%` : <span className="text-ink-700">·</span>}
+                  {p.scores.utilityDelta ? `${(p.scores.utilityDelta.value * 100).toFixed(0)}%` : <span className="text-ink-500/70">·</span>}
                 </td>
                 <td className="px-3 py-3 text-right tabular-nums text-ink-500">
                   {companyCount}

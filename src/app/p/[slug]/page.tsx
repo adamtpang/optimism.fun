@@ -47,7 +47,7 @@ export default async function ProblemPage({
     <>
       <Navbar />
       <main>
-        <section className="pt-24 pb-10 border-b border-hair">
+        <section className="pt-28 pb-10 border-b border-hair">
           <div className="max-w-5xl mx-auto px-6">
             <Link
               href="/"

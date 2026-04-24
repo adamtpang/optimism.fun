@@ -99,6 +99,9 @@ export default function Home() {
           ]}
         />
 
+        {/* Primary CTA — email capture right after the hero */}
+        <EmailCapture />
+
         {/* Thesis / what-this-is */}
         <section className="border-b border-hair">
           <div className="max-w-5xl mx-auto px-6 py-14">
@@ -250,9 +253,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        {/* Email capture */}
-        <EmailCapture />
 
         {/* Closer */}
         <section className="border-t border-hair">

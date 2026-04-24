@@ -12,6 +12,7 @@ import { crypto } from '@/data/crypto'
 import { voices } from '@/data/voices'
 import { ecosystem } from '@/data/ecosystem'
 import ThemeToggle from './ThemeToggle'
+import { FeedbackButton } from './FeedbackWidget'
 
 const dataTabs = [
   {
@@ -97,9 +98,9 @@ export default function Navbar() {
             <span className="text-amber-300">◆</span>{' '}
             <span className="font-semibold">optimism.fun</span>
           </Link>
-          <div className="flex items-center gap-4 font-mono text-[11px]">
-            <span className="hidden sm:inline text-ink-500">
-              humanity&rsquo;s quest log &middot; v0.1
+          <div className="flex items-center gap-3 sm:gap-4 font-mono text-[11px]">
+            <span className="hidden md:inline text-ink-500">
+              v0.1
             </span>
             <Link
               href="/methodology"
@@ -109,11 +110,12 @@ export default function Navbar() {
             >
               methodology
             </Link>
+            <FeedbackButton />
             <a
               href="https://github.com/adamtpang/optimism.fun"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-ink-300 hover:text-ink-100 transition-colors"
+              className="hidden sm:inline text-ink-300 hover:text-ink-100 transition-colors"
             >
               github
             </a>

@@ -15,7 +15,7 @@ const TONE: Record<NonNullable<Props['rightStats']>[number]['tone'] & string, st
 
 export default function PageHeader({ kicker, title, lede, rightStats }: Props) {
   return (
-    <section className="pt-24 pb-10 border-b border-hair">
+    <section className="pt-28 pb-10 border-b border-hair">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-[1fr_auto] gap-10 items-end">
           <div className="max-w-3xl">

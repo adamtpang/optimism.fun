@@ -43,7 +43,7 @@ export default function EcosystemPage() {
     <>
       <Navbar />
       <main>
-        <section className="pt-28 pb-20 px-6">
+        <section className="pt-32 pb-20 px-6">
           <div className="max-w-5xl mx-auto">
             <Link
               href="/"

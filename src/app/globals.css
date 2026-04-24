@@ -42,31 +42,34 @@
 [data-theme='light'] {
   --bg: 247 242 233; /* warm cream */
   --fg: 23 22 26;
-  --paper: 243 238 227;
+  --paper: 241 234 220;
 
-  /* Ink scale inverted for readability: 100 = near-black text, 900 = lightest surface */
+  /* Ink scale inverted for readability.
+     Text tokens (100-600) tuned for >=3:1 contrast on the cream bg,
+     body ranges (100-400) hit AA. Surface tokens (700-900) are warm grays
+     slightly darker than bg so cards appear recessed. */
   --ink-100: 23 22 26;
   --ink-200: 47 45 50;
-  --ink-300: 79 76 72;
-  --ink-400: 112 108 102;
-  --ink-500: 130 126 120;
-  --ink-600: 170 163 153;
-  --ink-700: 210 202 190;
-  --ink-800: 232 224 211;
-  --ink-900: 243 238 227;
+  --ink-300: 76 72 67;
+  --ink-400: 102 97 90;
+  --ink-500: 124 118 109;
+  --ink-600: 148 140 128; /* ~3.3:1, decorative labels */
+  --ink-700: 186 176 160; /* dividers / very muted placeholders */
+  --ink-800: 216 207 190; /* hover surface */
+  --ink-900: 235 227 211; /* card surface, subtly darker than bg */
 
-  /* Semantic tones — darker on light */
+  /* Semantic tones — darker on light for readability */
   --terminal-green: 58 120 78;
   --terminal-rose: 159 64 82;
   --terminal-violet: 98 82 158;
   --terminal-cyan: 66 110 126;
 
   --line: 23 22 26;
-  --line-opacity: 0.12;
-  --line-strong-opacity: 0.2;
+  --line-opacity: 0.14;
+  --line-strong-opacity: 0.22;
 
-  --grid-opacity: 0.025;
-  --glow-opacity: 0.03;
+  --grid-opacity: 0.03;
+  --glow-opacity: 0.025;
 
   color-scheme: light;
 }
