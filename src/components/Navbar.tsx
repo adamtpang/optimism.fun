@@ -1,12 +1,14 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 
 const navLinks = [
-  { name: 'Worldview', href: '#worldview' },
-  { name: 'The Game', href: '#game' },
-  { name: 'Resources', href: '#resources' },
-  { name: 'Join', href: '#join' },
+  { name: 'Problems', href: '/' },
+  { name: 'Voices', href: '/voices' },
+  { name: 'Ecosystem', href: '/ecosystem' },
+  { name: 'Methodology', href: '/methodology' },
+  { name: 'About', href: '/about' },
 ]
 
 export default function Navbar() {
@@ -28,33 +30,25 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a
-          href="#"
-          className="font-display text-xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent"
+        <Link
+          href="/"
+          className="font-display text-xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-amber-400 bg-clip-text text-transparent"
         >
           optimism.fun
-        </a>
+        </Link>
 
-        {/* Desktop */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.name}
               href={link.href}
               className="text-sm text-slate-400 hover:text-white transition-colors"
             >
               {link.name}
-            </a>
+            </Link>
           ))}
-          <a
-            href="#join"
-            className="px-4 py-2 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors"
-          >
-            Join Waitlist
-          </a>
         </div>
 
-        {/* Mobile hamburger */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
           className="md:hidden text-slate-400 hover:text-white transition-colors p-2"
@@ -85,28 +79,18 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile menu */}
       {mobileOpen && (
         <div className="md:hidden bg-[#050510]/95 backdrop-blur-md border-t border-white/5 pb-4">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.name}
               href={link.href}
               onClick={() => setMobileOpen(false)}
               className="block px-6 py-3 text-slate-400 hover:text-white transition-colors"
             >
               {link.name}
-            </a>
+            </Link>
           ))}
-          <div className="px-6 pt-2">
-            <a
-              href="#join"
-              onClick={() => setMobileOpen(false)}
-              className="block text-center px-4 py-2 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors"
-            >
-              Join Waitlist
-            </a>
-          </div>
         </div>
       )}
     </nav>

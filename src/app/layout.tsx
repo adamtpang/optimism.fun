@@ -13,30 +13,32 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'optimism.fun | The Infinite Game',
+  title: "optimism.fun | Humanity's Quest Log",
   description:
-    'Money is finite. Problems and solutions are infinite. Apply critical rationalism to capitalism, find your economic superpower, and solve problems for humanity.',
+    "A ranked dashboard of humanity's most important problems. All problems are explainable, all solutions are creatable. Companies, founders, and capital mapped to the quest they serve.",
   keywords: [
     'optimism',
-    'capitalism',
     'critical rationalism',
     'David Deutsch',
-    'economics',
-    'entrepreneurship',
+    'choose good quests',
+    'effective altruism',
+    'e/acc',
+    'progress studies',
+    'techno-capitalism',
   ],
   openGraph: {
-    title: 'optimism.fun | The Infinite Game',
+    title: "optimism.fun | Humanity's Quest Log",
     description:
-      'Money is finite. Problems and solutions are infinite. Apply critical rationalism to capitalism and find your economic superpower.',
+      "A ranked dashboard of humanity's most important problems, scored on welfare, x-risk, and utility delta. Infinite problems, infinite solutions.",
     url: 'https://optimism.fun',
     siteName: 'optimism.fun',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'optimism.fun | The Infinite Game',
+    title: "optimism.fun | Humanity's Quest Log",
     description:
-      'Money is finite. Problems and solutions are infinite. Apply critical rationalism to capitalism and find your economic superpower.',
+      "All problems are explainable. All solutions are creatable. A ranked dashboard of humanity's most important problems.",
   },
 }
 
