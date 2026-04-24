@@ -2,31 +2,82 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --bg: #08080a;
-  --bg-elev: #0f0e11;
-  --fg: #f6f5f2;
-  --fg-dim: #9c9a93;
-  --line: rgba(246, 245, 242, 0.08);
-  --line-strong: rgba(246, 245, 242, 0.16);
-  --amber: #e5a13c;
-  --amber-dim: rgba(229, 161, 60, 0.15);
-  --violet: #8b7bc2;
-  --rose: #c26070;
-  --green: #5c9c70;
-  --cyan: #6b98a8;
-  --copper: #b45309;
-  --cream: #f5ede0;
+/* Dark (default) — terminal palette on true-black */
+:root,
+[data-theme='dark'] {
+  --bg: 8 8 10;
+  --fg: 246 245 242;
+  --paper: 19 16 13;
+
+  /* Ink scale: 100 = brightest text, 900 = darkest surface */
+  --ink-100: 246 245 242;
+  --ink-200: 217 215 209;
+  --ink-300: 156 154 147;
+  --ink-400: 109 107 101;
+  --ink-500: 116 114 107;
+  --ink-600: 74 72 68;
+  --ink-700: 42 41 38;
+  --ink-800: 24 23 26;
+  --ink-900: 15 14 17;
+
+  /* Semantic tones — muted on dark */
+  --terminal-green: 92 156 112;
+  --terminal-rose: 194 96 112;
+  --terminal-violet: 139 123 194;
+  --terminal-cyan: 107 152 168;
+
+  /* Surface helpers */
+  --line: 246 245 242;
+  --line-opacity: 0.08;
+  --line-strong-opacity: 0.16;
+
+  /* Grid lattice opacity */
+  --grid-opacity: 0.015;
+  --glow-opacity: 0.04;
+
+  color-scheme: dark;
+}
+
+/* Light — warm cream, deeper mono, same amber accent */
+[data-theme='light'] {
+  --bg: 247 242 233; /* warm cream */
+  --fg: 23 22 26;
+  --paper: 243 238 227;
+
+  /* Ink scale inverted for readability: 100 = near-black text, 900 = lightest surface */
+  --ink-100: 23 22 26;
+  --ink-200: 47 45 50;
+  --ink-300: 79 76 72;
+  --ink-400: 112 108 102;
+  --ink-500: 130 126 120;
+  --ink-600: 170 163 153;
+  --ink-700: 210 202 190;
+  --ink-800: 232 224 211;
+  --ink-900: 243 238 227;
+
+  /* Semantic tones — darker on light */
+  --terminal-green: 58 120 78;
+  --terminal-rose: 159 64 82;
+  --terminal-violet: 98 82 158;
+  --terminal-cyan: 66 110 126;
+
+  --line: 23 22 26;
+  --line-opacity: 0.12;
+  --line-strong-opacity: 0.2;
+
+  --grid-opacity: 0.025;
+  --glow-opacity: 0.03;
+
+  color-scheme: light;
 }
 
 html {
   scroll-behavior: smooth;
-  color-scheme: dark;
 }
 
 body {
-  background: var(--bg);
-  color: var(--fg);
+  background: rgb(var(--bg));
+  color: rgb(var(--fg));
   font-feature-settings: 'ss01', 'cv11';
 }
 
@@ -37,20 +88,18 @@ body::before {
   inset: 0;
   z-index: -20;
   background-image:
-    linear-gradient(to right, rgba(246, 245, 242, 0.015) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(246, 245, 242, 0.015) 1px, transparent 1px),
-    radial-gradient(ellipse 1200px 800px at 50% -10%, rgba(229, 161, 60, 0.04), transparent 70%);
+    linear-gradient(to right, rgb(var(--fg) / var(--grid-opacity)) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(var(--fg) / var(--grid-opacity)) 1px, transparent 1px),
+    radial-gradient(ellipse 1200px 800px at 50% -10%, rgba(229, 161, 60, var(--glow-opacity)), transparent 70%);
   background-size: 32px 32px, 32px 32px, 100% 100%;
   pointer-events: none;
 }
 
-/* Selection */
 ::selection {
   background: rgba(229, 161, 60, 0.35);
-  color: #fffaf2;
+  color: rgb(var(--fg));
 }
 
-/* Scrollbar — narrow, amber thumb */
 ::-webkit-scrollbar {
   width: 4px;
   height: 4px;
@@ -65,36 +114,23 @@ body::before {
   background: rgba(229, 161, 60, 0.5);
 }
 
-/* Tabular numerals by default for all mono text */
 .font-mono,
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
 
-/* Fine hairline utility */
+/* Hairline utilities that follow theme */
 .border-hair {
-  border-color: var(--line);
+  border-color: rgb(var(--line) / var(--line-opacity));
 }
 .border-hair-strong {
-  border-color: var(--line-strong);
+  border-color: rgb(var(--line) / var(--line-strong-opacity));
 }
 
-/* Terminal link underline */
-a.link {
-  color: var(--amber);
-  border-bottom: 1px solid rgba(229, 161, 60, 0.35);
-  transition: border-color 0.15s ease, color 0.15s ease;
-}
-a.link:hover {
-  border-bottom-color: var(--amber);
-  color: #fbe3bd;
-}
-
-/* Editorial-surface variant for /methodology */
 .surface-paper {
   background:
     linear-gradient(180deg, rgba(180, 83, 9, 0.02) 0%, transparent 50%),
-    #13100d;
+    rgb(var(--paper));
 }
 
 /* Hide scrollbar utility for horizontal nav */

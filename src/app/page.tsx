@@ -3,6 +3,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import PageHeader from '@/components/PageHeader'
 import ProblemTable from '@/components/ProblemTable'
+import EmailCapture from '@/components/EmailCapture'
 import { problems } from '@/data/problems'
 import { companies } from '@/data/companies'
 import { publicCompanies } from '@/data/public-companies'
@@ -249,6 +250,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Email capture */}
+        <EmailCapture />
 
         {/* Closer */}
         <section className="border-t border-hair">

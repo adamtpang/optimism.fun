@@ -1,5 +1,9 @@
 import type { Metadata } from 'next'
 import { IBM_Plex_Sans, IBM_Plex_Mono, Fraunces } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
+import Providers from '@/components/Providers'
+import FeedbackWidget from '@/components/FeedbackWidget'
 import './globals.css'
 
 const plexSans = IBM_Plex_Sans({
@@ -58,9 +62,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${plexSans.variable} ${plexMono.variable} ${fraunces.variable}`}
     >
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <Providers>
+          {children}
+          <FeedbackWidget />
+        </Providers>
+        <Analytics />
+        <SpeedInsights />
+      </body>
     </html>
   )
 }

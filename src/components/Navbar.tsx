@@ -11,6 +11,7 @@ import { countries } from '@/data/countries'
 import { crypto } from '@/data/crypto'
 import { voices } from '@/data/voices'
 import { ecosystem } from '@/data/ecosystem'
+import ThemeToggle from './ThemeToggle'
 
 const dataTabs = [
   {
@@ -96,7 +97,7 @@ export default function Navbar() {
             <span className="text-amber-300">◆</span>{' '}
             <span className="font-semibold">optimism.fun</span>
           </Link>
-          <div className="flex items-center gap-5 font-mono text-[11px]">
+          <div className="flex items-center gap-4 font-mono text-[11px]">
             <span className="hidden sm:inline text-ink-500">
               humanity&rsquo;s quest log &middot; v0.1
             </span>
@@ -116,6 +117,7 @@ export default function Navbar() {
             >
               github
             </a>
+            <ThemeToggle />
           </div>
         </div>
       </div>

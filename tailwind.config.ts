@@ -1,6 +1,14 @@
 import type { Config } from 'tailwindcss'
 
+/**
+ * Colors use CSS variables so we can flip theme on <html data-theme="light|dark">.
+ * Format: var(--ink-100) → "246 245 242" (space-separated RGB).
+ * Tailwind reads this via `rgb(var(--ink-100) / <alpha-value>)`.
+ */
+const rgb = (v: string) => `rgb(var(${v}) / <alpha-value>)`
+
 const config: Config = {
+  darkMode: ['class', '[data-theme="dark"]'],
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -15,20 +23,20 @@ const config: Config = {
         display: ['var(--font-fraunces)', 'Georgia', 'serif'],
       },
       colors: {
-        // Terminal palette: true-black surfaces with warm accents
+        // Surfaces + text (theme-swappable)
         ink: {
-          DEFAULT: '#08080a',
-          100: '#f6f5f2', // cream, primary text on dark
-          200: '#d9d7d1', // warm gray
-          300: '#9c9a93',
-          400: '#6d6b65',
-          500: '#4a4844',
-          600: '#2a2926',
-          700: '#18171a',
-          800: '#0f0e11',
-          900: '#08080a',
+          DEFAULT: rgb('--bg'),
+          100: rgb('--ink-100'),
+          200: rgb('--ink-200'),
+          300: rgb('--ink-300'),
+          400: rgb('--ink-400'),
+          500: rgb('--ink-500'),
+          600: rgb('--ink-600'),
+          700: rgb('--ink-700'),
+          800: rgb('--ink-800'),
+          900: rgb('--ink-900'),
         },
-        // Primary accent: amber, used for numbers, key CTAs
+        // Primary accent, same in both themes
         amber: {
           50: '#fef5e7',
           100: '#fbe3bd',
@@ -38,16 +46,15 @@ const config: Config = {
           500: '#a25f15',
           600: '#7a4410',
         },
-        // Muted semantic signals (Bloomberg-terminal style)
+        // Semantic signals, same in both themes (adjusted for contrast by usage)
         terminal: {
-          green: '#5c9c70', // welfare, positive
-          rose: '#c26070', // x-risk, alert
-          violet: '#8b7bc2', // voices, aggregated commentary
-          cyan: '#6b98a8', // data, neutral
+          green: rgb('--terminal-green'),
+          rose: rgb('--terminal-rose'),
+          violet: rgb('--terminal-violet'),
+          cyan: rgb('--terminal-cyan'),
         },
-        // Editorial surfaces (for /about, /methodology)
         paper: {
-          DEFAULT: '#13100d',
+          DEFAULT: rgb('--paper'),
           50: '#f5ede0',
           100: '#e6d9c1',
           200: '#c9b795',
@@ -55,7 +62,6 @@ const config: Config = {
         },
       },
       fontSize: {
-        // Tighter, more precise scale — terminal density
         xs: ['0.72rem', { lineHeight: '1rem' }],
         sm: ['0.82rem', { lineHeight: '1.25rem' }],
         base: ['0.92rem', { lineHeight: '1.5rem' }],
@@ -64,7 +70,6 @@ const config: Config = {
         'ultra-wide': '0.25em',
       },
       borderRadius: {
-        // Sharper corners for terminal feel
         DEFAULT: '0.25rem',
         md: '0.375rem',
         lg: '0.5rem',
