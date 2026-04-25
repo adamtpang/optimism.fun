@@ -11,53 +11,19 @@ import { countries } from '@/data/countries'
 import { crypto } from '@/data/crypto'
 import { voices } from '@/data/voices'
 import { ecosystem } from '@/data/ecosystem'
+import { progress } from '@/data/progress'
 import ThemeToggle from './ThemeToggle'
 import { FeedbackButton } from './FeedbackWidget'
 
 const dataTabs = [
-  {
-    name: 'Problems',
-    href: '/',
-    count: problems.length,
-    tone: 'amber',
-  },
-  {
-    name: 'Companies',
-    href: '/companies',
-    count: publicCompanies.length,
-    tone: 'cyan',
-    sub: `+ ${companies.length} quest-mapped`,
-  },
-  {
-    name: 'Founders',
-    href: '/founders',
-    count: founders.length,
-    tone: 'amber',
-  },
-  {
-    name: 'Countries',
-    href: '/countries',
-    count: countries.length,
-    tone: 'green',
-  },
-  {
-    name: 'Crypto',
-    href: '/crypto',
-    count: crypto.length,
-    tone: 'violet',
-  },
-  {
-    name: 'Voices',
-    href: '/voices',
-    count: voices.length,
-    tone: 'violet',
-  },
-  {
-    name: 'Ecosystem',
-    href: '/ecosystem',
-    count: ecosystem.length,
-    tone: 'green',
-  },
+  { name: 'Problems', href: '/', count: problems.length, tone: 'amber' },
+  { name: 'Explanations', href: '/voices', count: voices.length, tone: 'violet' },
+  { name: 'Solutions', href: '/companies', count: publicCompanies.length, tone: 'cyan' },
+  { name: 'People', href: '/founders', count: founders.length, tone: 'amber' },
+  { name: 'Progress', href: '/progress', count: progress.length, tone: 'green' },
+  { name: 'Countries', href: '/countries', count: countries.length, tone: 'green' },
+  { name: 'Crypto', href: '/crypto', count: crypto.length, tone: 'violet' },
+  { name: 'Capital', href: '/ecosystem', count: ecosystem.length, tone: 'cyan' },
 ] as const
 
 const TONE: Record<'amber' | 'cyan' | 'green' | 'violet', string> = {
@@ -84,8 +50,8 @@ export default function Navbar() {
     <nav
       className={`fixed top-0 w-full z-50 transition-colors duration-200 ${
         scrolled
-          ? 'bg-[#08080a]/90 backdrop-blur-md border-b border-hair'
-          : 'bg-[#08080a] border-b border-hair'
+          ? 'bg-ink/90 backdrop-blur-md border-b border-hair'
+          : 'bg-ink border-b border-hair'
       }`}
     >
       {/* Row 1: brand + meta */}

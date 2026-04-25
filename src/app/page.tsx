@@ -12,55 +12,57 @@ import { voices } from '@/data/voices'
 import { countries } from '@/data/countries'
 import { crypto } from '@/data/crypto'
 import { founders } from '@/data/founders'
+import { progress } from '@/data/progress'
 
+// Five primary lenses on the same project: a record of human problem-solving.
 const atlasCards = [
   {
+    href: '/voices',
+    kicker: 'explanations',
+    n: voices.length,
+    title: 'The why behind the what',
+    desc: 'Deutsch, Musk, Collison, Crawford, Cowen, Stephens. Each thinker mapped to the problems they argue matter most, with quotes and source links.',
+    tone: 'violet',
+  },
+  {
     href: '/companies',
-    kicker: 'companies',
+    kicker: 'solutions',
     n: publicCompanies.length,
-    title: 'Public companies',
-    desc: 'Top listed companies by market cap, via companiesmarketcap.com.',
+    title: 'What is being built',
+    desc: 'Top public companies by market cap, plus quest-tagged startups and the capital allocators funding them. Real numbers from companiesmarketcap.com.',
     tone: 'cyan',
   },
   {
     href: '/founders',
-    kicker: 'founders',
+    kicker: 'people',
     n: founders.length,
-    title: 'Billionaires',
-    desc: 'The 2026 Forbes top 10, via Wikipedia. Net worth and source of wealth.',
+    title: 'Who is building',
+    desc: 'The 2026 Forbes top 10. Net worth, source of wealth, country. Soon: the founders, allocators, and operators on each quest.',
     tone: 'amber',
   },
   {
+    href: '/progress',
+    kicker: 'progress',
+    n: progress.length,
+    title: 'What humanity has solved',
+    desc: 'Long-run series on extreme poverty, child mortality, literacy, life expectancy, GDP, electricity, internet. The historical record of compounding gains.',
+    tone: 'green',
+  },
+  {
     href: '/countries',
-    kicker: 'countries',
+    kicker: 'context · countries',
     n: countries.length,
     title: 'Countries by GDP',
-    desc: 'World Bank current-USD GDP, 2024. The economic weight map.',
+    desc: 'World Bank 2024 current-USD GDP. The economic-weight denominator behind every metric on the site.',
     tone: 'green',
   },
   {
     href: '/crypto',
-    kicker: 'crypto',
+    kicker: 'context · crypto',
     n: crypto.length,
-    title: 'Cryptocurrencies',
-    desc: 'Top tokens by market cap via CoinMarketCap.',
+    title: 'Crypto market caps',
+    desc: 'Top tokens via CoinMarketCap. A separate experiment in coordination, capital, and incentives.',
     tone: 'violet',
-  },
-  {
-    href: '/voices',
-    kicker: 'voices',
-    n: voices.length,
-    title: 'Progress-studies thinkers',
-    desc: "What Deutsch, Musk, Collison, Crawford, Cowen, and Stephens say matters.",
-    tone: 'violet',
-  },
-  {
-    href: '/ecosystem',
-    kicker: 'ecosystem',
-    n: ecosystem.length,
-    title: 'Capital stack',
-    desc: 'Grants, fellowships, studios, catalytic capital, deep-tech VC.',
-    tone: 'green',
   },
 ] as const
 
@@ -90,12 +92,12 @@ export default function Home() {
         <PageHeader
           kicker="Humanity's quest log · v0.1"
           title="Infinite problems. Infinite solutions."
-          lede="A ranked dashboard of humanity's most important problems, scored on welfare (Copenhagen BCR), x-risk (80,000 Hours ITN), and utility delta (state-of-the-art vs physics). Companies, founders, countries, crypto, and capital mapped to the quest they serve. Built for allocators and entrepreneurs who want to choose good quests, with data."
+          lede="A live record of the priority problems humanity faces (importance × urgency), the explanations behind them, the solutions being built, the people doing the building, and the progress we're making. Scored on welfare, x-risk, and utility delta. Built for allocators and entrepreneurs who want to choose good quests, with data."
           rightStats={[
             { label: 'problems', value: problems.length, tone: 'amber' },
-            { label: 'voices', value: voices.length, tone: 'violet' },
-            { label: 'companies', value: companies.length + publicCompanies.length, tone: 'cyan' },
-            { label: 'capital', value: ecosystem.length, tone: 'green' },
+            { label: 'explanations', value: voices.length, tone: 'violet' },
+            { label: 'solutions', value: companies.length + publicCompanies.length, tone: 'cyan' },
+            { label: 'progress', value: progress.length, tone: 'green' },
           ]}
         />
 
@@ -160,7 +162,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* The atlas: 6 data cards */}
+        {/* The atlas: five lenses on the same record */}
         <section className="border-b border-hair">
           <div className="max-w-7xl mx-auto px-6 py-14">
             <div className="flex items-baseline justify-between mb-6">
@@ -168,7 +170,9 @@ export default function Home() {
                 <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
                   The atlas
                 </p>
-                <h2 className="font-serif text-2xl text-ink-100">Six leaderboards, one thesis.</h2>
+                <h2 className="font-serif text-2xl text-ink-100">
+                  Problems, explanations, solutions, people, progress.
+                </h2>
               </div>
               <span className="font-mono text-[11px] text-ink-500">
                 every number has a source

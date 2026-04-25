@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export default function Footer() {
   return (
-    <footer className="border-t border-hair bg-[#08080a] mt-24">
+    <footer className="border-t border-hair bg-ink mt-24">
       <div className="max-w-7xl mx-auto px-6 py-10">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-8">
           <div className="col-span-2">
@@ -20,23 +20,23 @@ export default function Footer() {
           </div>
           <div>
             <p className="text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
-              Data
+              The five
             </p>
             <div className="flex flex-col gap-1.5 text-xs">
               <Link href="/" className="text-ink-300 hover:text-amber-300 transition-colors">
                 problems
               </Link>
+              <Link href="/voices" className="text-ink-300 hover:text-amber-300 transition-colors">
+                explanations
+              </Link>
               <Link href="/companies" className="text-ink-300 hover:text-amber-300 transition-colors">
-                companies
+                solutions
               </Link>
               <Link href="/founders" className="text-ink-300 hover:text-amber-300 transition-colors">
-                founders
+                people
               </Link>
-              <Link href="/countries" className="text-ink-300 hover:text-amber-300 transition-colors">
-                countries
-              </Link>
-              <Link href="/crypto" className="text-ink-300 hover:text-amber-300 transition-colors">
-                crypto
+              <Link href="/progress" className="text-ink-300 hover:text-amber-300 transition-colors">
+                progress
               </Link>
             </div>
           </div>
@@ -45,11 +45,14 @@ export default function Footer() {
               Context
             </p>
             <div className="flex flex-col gap-1.5 text-xs">
-              <Link href="/voices" className="text-ink-300 hover:text-amber-300 transition-colors">
-                voices
+              <Link href="/countries" className="text-ink-300 hover:text-amber-300 transition-colors">
+                countries
+              </Link>
+              <Link href="/crypto" className="text-ink-300 hover:text-amber-300 transition-colors">
+                crypto
               </Link>
               <Link href="/ecosystem" className="text-ink-300 hover:text-amber-300 transition-colors">
-                ecosystem
+                capital stack
               </Link>
             </div>
           </div>

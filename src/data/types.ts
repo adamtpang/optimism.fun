@@ -166,3 +166,18 @@ export type Founder = {
   age?: number
   asOf: string
 }
+
+export type ProgressMilestone = {
+  slug: string
+  name: string
+  description: string
+  unit: string
+  format: 'percent' | 'years' | 'usd' | 'absolute'
+  baseline: { year: number; value: number }
+  latest: { year: number; value: number }
+  direction: 'up' | 'down' // which direction is improvement
+  source: string
+  sourceUrl: string
+  confidence: Confidence
+  asOf: string
+}
