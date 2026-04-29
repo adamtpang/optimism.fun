@@ -14,7 +14,7 @@ import { resend, notifyEmail, fromEmail } from '@/lib/resend'
 export const runtime = 'nodejs'
 
 type FeedbackBody = {
-  topic?: string
+  rating?: number
   message?: string
   email?: string
   page?: string
@@ -29,18 +29,24 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: 'invalid json' }, { status: 400 })
   }
 
-  const topic = (body.topic ?? 'other').slice(0, 40)
+  const rawRating = Number(body.rating)
+  const rating = Number.isFinite(rawRating) && rawRating >= 1 && rawRating <= 5 ? Math.round(rawRating) : 0
   const message = (body.message ?? '').trim().slice(0, 4000)
   const email = (body.email ?? '').trim().slice(0, 240)
   const page = (body.page ?? '').slice(0, 240)
 
-  if (!message) {
-    return NextResponse.json({ ok: false, error: 'empty message' }, { status: 400 })
+  if (!rating) {
+    return NextResponse.json({ ok: false, error: 'rating required (1-5)' }, { status: 400 })
+  }
+  // For ratings under 5, require a written reason so feedback is actionable.
+  if (rating < 5 && !message) {
+    return NextResponse.json({ ok: false, error: 'message required for ratings under 5' }, { status: 400 })
   }
 
+  const stars = '★'.repeat(rating) + '☆'.repeat(5 - rating)
   const payload = {
     event: 'feedback',
-    topic,
+    rating,
     message,
     email: email || null,
     page,
@@ -57,13 +63,13 @@ export async function POST(req: Request) {
       from: fromEmail,
       to: notifyEmail,
       replyTo: email || undefined,
-      subject: `[optimism.fun] feedback · ${topic}`,
+      subject: `[optimism.fun] feedback · ${stars} (${rating}/5)`,
       text: [
-        `topic: ${topic}`,
+        `rating: ${stars} (${rating}/5)`,
         `page: ${page}`,
         `email: ${email || '(none)'}`,
         '',
-        message,
+        message || '(no message — perfect score)',
       ].join('\n'),
     })
     if (error) {
