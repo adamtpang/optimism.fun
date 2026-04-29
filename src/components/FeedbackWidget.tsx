@@ -20,13 +20,19 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
   const [status, setStatus] = useState<Status>('idle')
   const [message, setMessage] = useState('')
   const [email, setEmail] = useState('')
-  const [topic, setTopic] = useState('data')
+  const [rating, setRating] = useState(0) // 0 = unset; 1–5 = selected
+  const [hoverRating, setHoverRating] = useState(0)
 
   const open = useCallback(() => setVisible(true), [])
   const close = useCallback(() => {
     setVisible(false)
     // delay so the closing animation (if any) finishes before reset
-    setTimeout(() => setStatus('idle'), 300)
+    setTimeout(() => {
+      setStatus('idle')
+      setRating(0)
+      setHoverRating(0)
+      setMessage('')
+    }, 300)
   }, [])
 
   useEffect(() => {
@@ -38,16 +44,19 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener('keydown', onKey)
   }, [visible, close])
 
+  // Submit is allowed when a rating is set, AND (if rating < 5) a message is present.
+  const canSubmit = rating > 0 && (rating === 5 || message.trim().length > 0)
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!message.trim()) return
+    if (!canSubmit) return
     setStatus('sending')
     try {
       const res = await fetch('/api/feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          topic,
+          rating,
           message,
           email,
           page: typeof window !== 'undefined' ? window.location.pathname : '',
@@ -86,7 +95,7 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
                   feedback &middot; criticism welcome
                 </p>
                 <h2 id="feedback-title" className="font-serif text-xl text-ink-100">
-                  What&rsquo;s wrong with this?
+                  Rate optimism.fun
                 </h2>
               </div>
               <button
@@ -108,49 +117,60 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1.5">
-                    topic
+                  <label className="block font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+                    your rating
                   </label>
-                  <div className="flex flex-wrap gap-px border border-hair">
-                    {[
-                      { k: 'data', l: 'data is wrong' },
-                      { k: 'design', l: 'design' },
-                      { k: 'thesis', l: 'thesis' },
-                      { k: 'other', l: 'other' },
-                    ].map((t) => (
-                      <button
-                        key={t.k}
-                        type="button"
-                        onClick={() => setTopic(t.k)}
-                        className={`px-3 py-1.5 font-mono text-[11px] transition-colors ${
-                          topic === t.k
-                            ? 'bg-amber-300/10 text-amber-300'
-                            : 'text-ink-400 hover:text-ink-100 hover:bg-ink-800'
-                        }`}
-                      >
-                        {t.l}
-                      </button>
-                    ))}
+                  <div
+                    className="flex items-center gap-1"
+                    onMouseLeave={() => setHoverRating(0)}
+                  >
+                    {[1, 2, 3, 4, 5].map((n) => {
+                      const filled = (hoverRating || rating) >= n
+                      return (
+                        <button
+                          key={n}
+                          type="button"
+                          onClick={() => setRating(n)}
+                          onMouseEnter={() => setHoverRating(n)}
+                          aria-label={`${n} star${n > 1 ? 's' : ''}`}
+                          aria-pressed={rating === n}
+                          className={`text-3xl leading-none w-10 h-10 flex items-center justify-center transition-colors ${
+                            filled ? 'text-amber-300' : 'text-ink-600 hover:text-ink-400'
+                          }`}
+                        >
+                          {filled ? '★' : '☆'}
+                        </button>
+                      )
+                    })}
+                    <span className="ml-3 font-mono text-[11px] text-ink-500 tabular-nums">
+                      {rating ? `${rating} / 5` : 'pick a rating'}
+                    </span>
                   </div>
                 </div>
 
-                <div>
-                  <label
-                    htmlFor="feedback-message"
-                    className="block font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1.5"
-                  >
-                    message
-                  </label>
-                  <textarea
-                    id="feedback-message"
-                    required
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    rows={5}
-                    placeholder="what is wrong with the data, design, or thesis?"
-                    className="w-full bg-[rgb(var(--bg))] border border-hair-strong text-ink-100 font-sans text-sm p-3 focus:outline-none focus:border-amber-300/60 placeholder:text-ink-500"
-                  />
-                </div>
+                {rating > 0 && (
+                  <div>
+                    <label
+                      htmlFor="feedback-message"
+                      className="block font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1.5"
+                    >
+                      {rating < 5 ? 'what would make this a 5?' : 'anything you’d love to see? (optional)'}
+                    </label>
+                    <textarea
+                      id="feedback-message"
+                      required={rating < 5}
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      rows={5}
+                      placeholder={
+                        rating < 5
+                          ? 'be specific — data, design, or thesis. all criticism welcome.'
+                          : 'extra signal welcome but not required.'
+                      }
+                      className="w-full bg-[rgb(var(--bg))] border border-hair-strong text-ink-100 font-sans text-sm p-3 focus:outline-none focus:border-amber-300/60 placeholder:text-ink-500"
+                    />
+                  </div>
+                )}
 
                 <div>
                   <label
@@ -181,7 +201,7 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
                   </p>
                   <button
                     type="submit"
-                    disabled={status === 'sending' || !message.trim()}
+                    disabled={status === 'sending' || !canSubmit}
                     className="font-mono text-[11px] uppercase tracking-wider text-amber-300 border border-amber-300/40 px-4 py-2 hover:bg-amber-300/[0.08] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                   >
                     {status === 'sending' ? 'sending…' : 'send →'}

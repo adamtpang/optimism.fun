@@ -90,9 +90,9 @@ export default function Home() {
       <Navbar />
       <main>
         <PageHeader
-          kicker="Humanity's quest log · v0.1"
+          kicker="for founders · pick a quest worth your life"
           title="Infinite problems. Infinite solutions."
-          lede="A live record of the priority problems humanity faces (importance × urgency), the explanations behind them, the solutions being built, the people doing the building, and the progress we're making. Scored on welfare, x-risk, and utility delta. Built for allocators and entrepreneurs who want to choose good quests, with data."
+          lede="A live, ranked dashboard of the priority problems humanity faces — for founders looking for what to build next. Importance × urgency. Welfare, x-risk, and utility delta. Every number sourced. Every ranking open to refutation. The goal: route founder energy to the problems that actually matter most, quantifiably."
           rightStats={[
             { label: 'problems', value: problems.length, tone: 'amber' },
             { label: 'explanations', value: voices.length, tone: 'violet' },
@@ -101,7 +101,22 @@ export default function Home() {
           ]}
         />
 
-        {/* Primary CTA — email capture right after the hero */}
+        {/* Primary CTA — point founders straight at the table */}
+        <section className="border-b border-hair">
+          <div className="max-w-7xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4">
+            <p className="font-mono text-[11px] text-ink-400">
+              The whole point of the site is below. Pick a problem worth your life.
+            </p>
+            <a
+              href="#problems"
+              className="font-mono text-[11px] uppercase tracking-wider text-amber-300 border border-amber-300/40 px-4 py-2 hover:bg-amber-300/[0.08] transition-colors"
+            >
+              Find your problem →
+            </a>
+          </div>
+        </section>
+
+        {/* Secondary CTA — newsletter / weekly memo signup */}
         <EmailCapture />
 
         {/* Thesis / what-this-is */}
@@ -204,7 +219,7 @@ export default function Home() {
         </section>
 
         {/* Problem leaderboard */}
-        <section className="px-6 py-14 max-w-7xl mx-auto">
+        <section id="problems" className="px-6 py-14 max-w-7xl mx-auto scroll-mt-24">
           <div className="flex items-baseline justify-between mb-5">
             <div>
               <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
