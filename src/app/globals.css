@@ -38,38 +38,36 @@
   color-scheme: dark;
 }
 
-/* Light — warm cream, deeper mono, same amber accent */
+/* Light (default) — clean white, slate ink, sky-blue accent. Optimistic. */
 [data-theme='light'] {
-  --bg: 247 242 233; /* warm cream */
-  --fg: 23 22 26;
-  --paper: 241 234 220;
+  --bg: 255 255 255;     /* pure white */
+  --fg: 15 23 42;        /* slate-900 */
+  --paper: 248 250 252;  /* slate-50 — slightly cool off-white for card surfaces */
 
-  /* Ink scale inverted for readability.
-     Text tokens (100-600) tuned for >=3:1 contrast on the cream bg,
-     body ranges (100-400) hit AA. Surface tokens (700-900) are warm grays
-     slightly darker than bg so cards appear recessed. */
-  --ink-100: 23 22 26;
-  --ink-200: 47 45 50;
-  --ink-300: 76 72 67;
-  --ink-400: 102 97 90;
-  --ink-500: 124 118 109;
-  --ink-600: 148 140 128; /* ~3.3:1, decorative labels */
-  --ink-700: 186 176 160; /* dividers / very muted placeholders */
-  --ink-800: 216 207 190; /* hover surface */
-  --ink-900: 235 227 211; /* card surface, subtly darker than bg */
+  /* Ink scale on Tailwind slate, tuned for AA contrast on white.
+     Text tokens (100-500) hit >=4.5:1; decorative tokens (600+) >=3:1. */
+  --ink-100: 15 23 42;    /* slate-900 — body text */
+  --ink-200: 30 41 59;    /* slate-800 */
+  --ink-300: 51 65 85;    /* slate-700 — secondary text */
+  --ink-400: 71 85 105;   /* slate-600 — tertiary text */
+  --ink-500: 100 116 139; /* slate-500 — muted labels */
+  --ink-600: 148 163 184; /* slate-400 — decorative labels */
+  --ink-700: 203 213 225; /* slate-300 — dividers / placeholders */
+  --ink-800: 226 232 240; /* slate-200 — hover surface */
+  --ink-900: 241 245 249; /* slate-100 — card surface */
 
   /* Semantic tones — darker on light for readability */
-  --terminal-green: 58 120 78;
-  --terminal-rose: 159 64 82;
-  --terminal-violet: 98 82 158;
-  --terminal-cyan: 66 110 126;
+  --terminal-green: 21 128 61;   /* green-700 */
+  --terminal-rose: 190 18 60;    /* rose-700 */
+  --terminal-violet: 109 40 217; /* violet-700 */
+  --terminal-cyan: 14 116 144;   /* cyan-700 */
 
-  --line: 23 22 26;
-  --line-opacity: 0.14;
-  --line-strong-opacity: 0.22;
+  --line: 15 23 42;
+  --line-opacity: 0.10;
+  --line-strong-opacity: 0.18;
 
-  --grid-opacity: 0.03;
-  --glow-opacity: 0.025;
+  --grid-opacity: 0.04;
+  --glow-opacity: 0.06;
 
   color-scheme: light;
 }
@@ -93,13 +91,13 @@ body::before {
   background-image:
     linear-gradient(to right, rgb(var(--fg) / var(--grid-opacity)) 1px, transparent 1px),
     linear-gradient(to bottom, rgb(var(--fg) / var(--grid-opacity)) 1px, transparent 1px),
-    radial-gradient(ellipse 1200px 800px at 50% -10%, rgba(229, 161, 60, var(--glow-opacity)), transparent 70%);
+    radial-gradient(ellipse 1200px 800px at 50% -10%, rgba(14, 165, 233, var(--glow-opacity)), transparent 70%);
   background-size: 32px 32px, 32px 32px, 100% 100%;
   pointer-events: none;
 }
 
 ::selection {
-  background: rgba(229, 161, 60, 0.35);
+  background: rgba(14, 165, 233, 0.35);
   color: rgb(var(--fg));
 }
 
@@ -111,10 +109,10 @@ body::before {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(229, 161, 60, 0.25);
+  background: rgba(14, 165, 233, 0.25);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(229, 161, 60, 0.5);
+  background: rgba(14, 165, 233, 0.5);
 }
 
 .font-mono,
@@ -132,7 +130,7 @@ body::before {
 
 .surface-paper {
   background:
-    linear-gradient(180deg, rgba(180, 83, 9, 0.02) 0%, transparent 50%),
+    linear-gradient(180deg, rgba(14, 165, 233, 0.025) 0%, transparent 50%),
     rgb(var(--paper));
 }
 

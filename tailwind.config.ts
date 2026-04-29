@@ -36,15 +36,17 @@ const config: Config = {
           800: rgb('--ink-800'),
           900: rgb('--ink-900'),
         },
-        // Primary accent, same in both themes
+        // Primary accent — sky blue. Class name kept as `amber-*` for legacy
+        // continuity (~86 call sites); semantic role is "the bright accent."
+        // Rename to `accent-*` later if it bothers anyone.
         amber: {
-          50: '#fef5e7',
-          100: '#fbe3bd',
-          200: '#f5c97a',
-          300: '#e5a13c',
-          400: '#c97f1f',
-          500: '#a25f15',
-          600: '#7a4410',
+          50: '#f0f9ff',  // sky-50
+          100: '#e0f2fe', // sky-100
+          200: '#bae6fd', // sky-200
+          300: '#0ea5e9', // sky-500 — primary punch on white
+          400: '#0284c7', // sky-600 — hover / pressed
+          500: '#0369a1', // sky-700 — heavy borders / focus rings
+          600: '#075985', // sky-800
         },
         // Semantic signals, same in both themes (adjusted for contrast by usage)
         terminal: {
@@ -55,10 +57,10 @@ const config: Config = {
         },
         paper: {
           DEFAULT: rgb('--paper'),
-          50: '#f5ede0',
-          100: '#e6d9c1',
-          200: '#c9b795',
-          copper: '#b45309',
+          50: '#f1f5f9',  // slate-100
+          100: '#e2e8f0', // slate-200
+          200: '#cbd5e1', // slate-300
+          copper: '#0369a1', // sky-700 — used as paper-copper accent on .surface-paper sections
         },
       },
       fontSize: {
