@@ -30,14 +30,43 @@ export type LensScore = {
   utilityDelta: SourcedNumber | null
 }
 
+/**
+ * The success theory for a problem — what changes if the solution lands.
+ * Written as a concrete, falsifiable commitment, not a wish.
+ * Hyperloop Alpha's "1.35 hour SF→LA at $20/ticket" is the spirit.
+ */
+export type Transformation = {
+  before: string // current state, in plain English
+  after: string  // post-solution state, equally concrete
+  horizon: string // rough time horizon for the after state (e.g. "10 years", "1 generation")
+  source?: string
+  sourceUrl?: string
+  confidence: Confidence
+  asOf: string
+}
+
 export type Problem = {
   slug: string
   name: string
   tier: Tier
   tagline: string
   description: string
+  /** How many humans this problem affects today. */
   humansAffected: SourcedNumber
+  /** Per-capita severity of the problem (DALYs, $-cost, or other proxy). */
   severity: SourcedNumber
+  /**
+   * USD value of the addressable market for solutions — TAM proxy.
+   * Drives axis 4 of the ranking: "how much money can pay for the solution."
+   */
+  marketSize?: SourcedNumber
+  /**
+   * Current solution quality (0–10, or 0–1 normalized) — low = high opportunity.
+   * Drives axis 3 of the ranking: "how good are existing solutions."
+   */
+  currentSolutionQuality?: SourcedNumber
+  /** Before/after success vision for the problem. */
+  transformation?: Transformation
   scores: LensScore
   sources: { title: string; url: string }[]
   asOf: string

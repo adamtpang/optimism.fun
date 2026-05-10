@@ -68,17 +68,18 @@ export default function EmailCapture({ variant = 'prominent' }: { variant?: Vari
         <div className="grid lg:grid-cols-[1.2fr_1fr] gap-10 items-center">
           <div>
             <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-paper-copper mb-4">
-              Join the ledger
+              Weekly whitepaper drop
             </p>
             <h2 className="font-serif text-3xl md:text-5xl text-ink-100 leading-[1.05] mb-5">
-              Get routed to the problems
-              <span className="block text-amber-300">that matter most.</span>
+              One problem.
+              <span className="block text-amber-300">One whitepaper. Every week.</span>
             </h2>
             <p className="text-ink-200 leading-relaxed text-base md:text-lg max-w-xl mb-6">
-              Subscribers get notified when the dataset updates, new problems are added, and
-              confidence tags improve. Soon, you&rsquo;ll opt in to direct routing: tell us
-              what you can build or fund, and we&rsquo;ll match you to the founders, companies,
-              and quests that need you. No spam. No marketing. Ledger updates only.
+              Each week we ship a deep-dive whitepaper on a top-ranked humanity-scale
+              problem — built in the spirit of Musk&rsquo;s <em>Hyperloop Alpha</em> and the
+              transformer paper. Problem + market size + before/after vision + a proposed
+              solution + the investors who would back it. Humanity&rsquo;s Requests for
+              Startups, sourced and sorted quantitatively. No spam. No marketing.
             </p>
 
             {status === 'sent' ? (
@@ -129,9 +130,10 @@ export default function EmailCapture({ variant = 'prominent' }: { variant?: Vari
               the three routings
             </p>
             <div className="border border-hair p-4 bg-[rgb(var(--bg)/0.3)]">
-              <p className="text-amber-300 mb-1">1 &middot; ledger updates</p>
+              <p className="text-amber-300 mb-1">1 &middot; weekly whitepaper</p>
               <p className="text-ink-300 leading-relaxed">
-                when new problems, companies, or voices are added. ships now.
+                one humanity-scale problem per week, deep-dived to whitepaper depth.
+                ships every monday.
               </p>
             </div>
             <div className="border border-hair p-4 bg-[rgb(var(--bg)/0.3)]">
