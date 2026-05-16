@@ -78,13 +78,32 @@ export default async function ProblemPage({
         </section>
 
         <section className="px-6 py-10 max-w-5xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-px bg-ink-700/50 border border-hair mb-12">
+          <Link
+            href={`/p/${problem.slug}/whitepaper`}
+            className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 border border-amber-300/40 text-amber-300 hover:bg-amber-300/[0.08] transition-colors font-mono text-[10px] uppercase tracking-ultra-wide group"
+          >
+            <span>Whitepaper · v0.1 · open to refutation</span>
+            <span className="group-hover:translate-x-0.5 transition-transform">→</span>
+          </Link>
+          <p className="font-mono text-[11px] text-ink-500 mb-6 max-w-2xl">
+            The summary lives here. The{' '}
+            <Link
+              href={`/p/${problem.slug}/whitepaper`}
+              className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+            >
+              full whitepaper
+            </Link>{' '}
+            walks through the four-axis ranking, existing alternatives, proposed direction,
+            cost &amp; scale, and suggested investors — in the spirit of <em>Hyperloop Alpha</em>.
+          </p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-ink-700/50 border border-hair mb-12">
+            {/* Axis 1 — Quantity (humans affected) */}
             <div className="bg-ink-900 p-6">
               <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
-                Humans affected
+                Quantity · humans affected
               </p>
               <div className="flex items-baseline gap-3 mb-2">
-                <span className="font-mono text-4xl tabular-nums text-amber-300">
+                <span className="font-mono text-3xl tabular-nums text-amber-300">
                   {formatHumans(problem.humansAffected.value)}
                 </span>
                 <span className="text-sm text-ink-500">
@@ -107,12 +126,14 @@ export default async function ProblemPage({
                 )}
               </p>
             </div>
+
+            {/* Axis 2 — Severity */}
             <div className="bg-ink-900 p-6">
               <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
                 Severity · WTP / wealth
               </p>
               <div className="flex items-baseline gap-3 mb-2">
-                <span className="font-mono text-4xl tabular-nums text-terminal-rose">
+                <span className="font-mono text-3xl tabular-nums text-terminal-rose">
                   {formatPercent(problem.severity.value)}
                 </span>
                 <SourceBadge
@@ -125,6 +146,51 @@ export default async function ProblemPage({
                 share of affected person&rsquo;s wealth they would pay for a solution
               </p>
             </div>
+
+            {/* Axis 3 — Current solution quality (low = high opportunity) */}
+            {problem.currentSolutionQuality && (
+              <div className="bg-ink-900 p-6">
+                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
+                  Current solutions
+                </p>
+                <div className="flex items-baseline gap-3 mb-2">
+                  <span className="font-mono text-3xl tabular-nums text-terminal-violet">
+                    {(problem.currentSolutionQuality.value * 10).toFixed(1)}
+                  </span>
+                  <span className="text-sm text-ink-500">/ 10</span>
+                  <SourceBadge
+                    confidence={problem.currentSolutionQuality.confidence}
+                    source={problem.currentSolutionQuality.source}
+                    asOf={problem.currentSolutionQuality.asOf}
+                  />
+                </div>
+                <p className="font-mono text-[11px] text-ink-500 leading-relaxed">
+                  quality of existing solutions — low score = high opportunity
+                </p>
+              </div>
+            )}
+
+            {/* Axis 4 — Market size (TAM proxy) */}
+            {problem.marketSize && (
+              <div className="bg-ink-900 p-6">
+                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
+                  Market size · TAM
+                </p>
+                <div className="flex items-baseline gap-3 mb-2">
+                  <span className="font-mono text-3xl tabular-nums text-terminal-cyan">
+                    {formatUSD(problem.marketSize.value)}
+                  </span>
+                  <SourceBadge
+                    confidence={problem.marketSize.confidence}
+                    source={problem.marketSize.source}
+                    asOf={problem.marketSize.asOf}
+                  />
+                </div>
+                <p className="font-mono text-[11px] text-ink-500 leading-relaxed">
+                  {problem.marketSize.unit ?? 'addressable market'} the world is already paying
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="border border-hair p-6 mb-12">
@@ -161,6 +227,45 @@ export default async function ProblemPage({
               {problem.description}
             </p>
           </div>
+
+          {/* Transformation — the success vision. If we solve this, here is the world we get. */}
+          {problem.transformation && (
+            <section className="mb-16">
+              <div className="flex items-baseline justify-between mb-5 border-b border-hair pb-3">
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
+                    The success vision · {problem.transformation.horizon} horizon
+                  </p>
+                  <h2 className="font-serif text-2xl text-ink-100">
+                    If we solve this, here is the world we get.
+                  </h2>
+                </div>
+                <SourceBadge
+                  confidence={problem.transformation.confidence}
+                  source={problem.transformation.source ?? 'editorial — open to refutation'}
+                  asOf={problem.transformation.asOf}
+                />
+              </div>
+              <div className="grid md:grid-cols-2 gap-px bg-ink-700/50 border border-hair">
+                <div className="bg-ink-900 p-6">
+                  <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-terminal-rose mb-3">
+                    Before · today
+                  </p>
+                  <p className="font-serif text-lg text-ink-200 leading-relaxed">
+                    {problem.transformation.before}
+                  </p>
+                </div>
+                <div className="bg-ink-900 p-6">
+                  <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-terminal-green mb-3">
+                    After · {problem.transformation.horizon}
+                  </p>
+                  <p className="font-serif text-lg text-ink-200 leading-relaxed">
+                    {problem.transformation.after}
+                  </p>
+                </div>
+              </div>
+            </section>
+          )}
 
           {problemPositions.length > 0 && (
             <section className="mb-16">

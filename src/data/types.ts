@@ -30,14 +30,74 @@ export type LensScore = {
   utilityDelta: SourcedNumber | null
 }
 
+/**
+ * The success theory for a problem — what changes if the solution lands.
+ * Written as a concrete, falsifiable commitment, not a wish.
+ * Hyperloop Alpha's "1.35 hour SF→LA at $20/ticket" is the spirit.
+ */
+export type Transformation = {
+  before: string // current state, in plain English
+  after: string  // post-solution state, equally concrete
+  horizon: string // rough time horizon for the after state (e.g. "10 years", "1 generation")
+  source?: string
+  sourceUrl?: string
+  confidence: Confidence
+  asOf: string
+}
+
+/**
+ * A Request for Startup — a concrete, buildable company someone should start
+ * to attack a ranked problem. Modeled on YC's RFS (punchy pitch, why-now,
+ * concrete shape) and Founders Fund's "Choose Good Quests" rubric
+ * (important if it works × a genuine frontier × unambiguously good).
+ *
+ * The RFS is the call-to-action. The whitepaper is the analysis. One problem
+ * has many RFS; each RFS attacks one problem.
+ */
+export type RequestForStartup = {
+  slug: string
+  problemSlug: string
+  /** Evocative working name for the company/idea. */
+  title: string
+  /** The hook — 1–3 sentences in the YC-RFS voice. Lead with the pain. */
+  pitch: string
+  /** The unlock — why this is buildable *now* (tech / cost / regulatory shift). */
+  whyNow: string
+  /** What the company concretely does. No hand-waving. */
+  shape: string
+  /** Concrete success state, tied to the problem's transformation. */
+  successLooksLike: string
+  /**
+   * One sentence on why this passes the Choose Good Quests test:
+   * important if it works, a real frontier, and unambiguously good.
+   */
+  goodQuest: string
+  confidence: Confidence
+  asOf: string
+}
+
 export type Problem = {
   slug: string
   name: string
   tier: Tier
   tagline: string
   description: string
+  /** How many humans this problem affects today. */
   humansAffected: SourcedNumber
+  /** Per-capita severity of the problem (DALYs, $-cost, or other proxy). */
   severity: SourcedNumber
+  /**
+   * USD value of the addressable market for solutions — TAM proxy.
+   * Drives axis 4 of the ranking: "how much money can pay for the solution."
+   */
+  marketSize?: SourcedNumber
+  /**
+   * Current solution quality (0–10, or 0–1 normalized) — low = high opportunity.
+   * Drives axis 3 of the ranking: "how good are existing solutions."
+   */
+  currentSolutionQuality?: SourcedNumber
+  /** Before/after success vision for the problem. */
+  transformation?: Transformation
   scores: LensScore
   sources: { title: string; url: string }[]
   asOf: string
