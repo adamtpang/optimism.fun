@@ -27,6 +27,7 @@ import { problems, getProblemBySlug } from '@/data/problems'
 import { getCompaniesForProblem } from '@/data/companies'
 import { getEcosystemForProblem } from '@/data/ecosystem'
 import { getPositionsForProblem } from '@/data/voices'
+import { getRequestsForProblem } from '@/data/rfs'
 import { ECOSYSTEM_TYPE_LABEL } from '@/data/types'
 import { formatHumans, formatUSD, formatPercent } from '@/lib/format'
 
@@ -119,6 +120,7 @@ export default async function WhitepaperPage({
   const companies = getCompaniesForProblem(slug)
   const ecosystem = getEcosystemForProblem(slug)
   const positions = getPositionsForProblem(slug)
+  const requests = getRequestsForProblem(slug)
 
   // Heuristic: any allocator type that meaningfully writes checks for new
   // ventures or research orgs counts as a "would-back-this" candidate. Grants
@@ -413,9 +415,61 @@ export default async function WhitepaperPage({
                     {problem.transformation.after}
                   </p>
                 </div>
-                <InProgressCallout
-                  note="Technical specifications, architectural choices, and capital-stack design — the Hyperloop Alpha-equivalent depth — are being authored as the weekly cadence ships."
-                />
+                {requests.length > 0 ? (
+                  <div className="mb-6">
+                    <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
+                      Requests for startups · {requests.length} concrete companies to build
+                    </p>
+                    <div className="space-y-3">
+                      {requests.map((r) => (
+                        <div key={r.slug} className="border border-hair p-5">
+                          <h3 className="font-serif text-lg text-ink-100 mb-2">
+                            {r.title}
+                          </h3>
+                          <p className="font-serif text-base text-ink-200 leading-relaxed mb-3">
+                            {r.pitch}
+                          </p>
+                          <dl className="grid sm:grid-cols-3 gap-x-5 gap-y-2 text-sm">
+                            <div>
+                              <dt className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-0.5">
+                                why now
+                              </dt>
+                              <dd className="text-ink-300 leading-relaxed">{r.whyNow}</dd>
+                            </div>
+                            <div>
+                              <dt className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-0.5">
+                                shape
+                              </dt>
+                              <dd className="text-ink-300 leading-relaxed">{r.shape}</dd>
+                            </div>
+                            <div>
+                              <dt className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-0.5">
+                                success
+                              </dt>
+                              <dd className="text-ink-300 leading-relaxed">
+                                {r.successLooksLike}
+                              </dd>
+                            </div>
+                          </dl>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="font-mono text-[11px] text-ink-500 mt-3">
+                      full rubric + framing on the{' '}
+                      <Link
+                        href="/rfs"
+                        className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                      >
+                        Requests for Startups
+                      </Link>{' '}
+                      page.
+                    </p>
+                  </div>
+                ) : (
+                  <InProgressCallout
+                    note="Technical specifications, architectural choices, and capital-stack design — the Hyperloop Alpha-equivalent depth — are being authored as the weekly cadence ships."
+                  />
+                )}
               </>
             ) : (
               <InProgressCallout note="The success vision and technical proposal for this problem are still being drafted." />

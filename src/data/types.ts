@@ -45,6 +45,37 @@ export type Transformation = {
   asOf: string
 }
 
+/**
+ * A Request for Startup — a concrete, buildable company someone should start
+ * to attack a ranked problem. Modeled on YC's RFS (punchy pitch, why-now,
+ * concrete shape) and Founders Fund's "Choose Good Quests" rubric
+ * (important if it works × a genuine frontier × unambiguously good).
+ *
+ * The RFS is the call-to-action. The whitepaper is the analysis. One problem
+ * has many RFS; each RFS attacks one problem.
+ */
+export type RequestForStartup = {
+  slug: string
+  problemSlug: string
+  /** Evocative working name for the company/idea. */
+  title: string
+  /** The hook — 1–3 sentences in the YC-RFS voice. Lead with the pain. */
+  pitch: string
+  /** The unlock — why this is buildable *now* (tech / cost / regulatory shift). */
+  whyNow: string
+  /** What the company concretely does. No hand-waving. */
+  shape: string
+  /** Concrete success state, tied to the problem's transformation. */
+  successLooksLike: string
+  /**
+   * One sentence on why this passes the Choose Good Quests test:
+   * important if it works, a real frontier, and unambiguously good.
+   */
+  goodQuest: string
+  confidence: Confidence
+  asOf: string
+}
+
 export type Problem = {
   slug: string
   name: string
