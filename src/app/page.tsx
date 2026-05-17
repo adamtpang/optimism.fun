@@ -96,9 +96,9 @@ export default function Home() {
       <Navbar />
       <main>
         <PageHeader
-          kicker="for founders · pick a quest worth your life"
+          kicker="humanity's requests for startups · v0.1"
           title="Infinite problems. Infinite solutions."
-          lede="A live, ranked dashboard of the priority problems humanity faces — for founders looking for what to build next. Importance × urgency. Welfare, x-risk, and utility delta. Every number sourced. Every ranking open to refutation. The goal: route founder energy to the problems that actually matter most, quantifiably."
+          lede="A live, ranked dashboard of humanity's priority problems — sourced and sorted across quantity × severity × current-solution-quality × market-size, then packaged as whitepapers in the spirit of Hyperloop Alpha. Built for founders looking for what to build next, and the investors looking for who to back. Every number sourced. Every ranking open to refutation. New whitepaper every monday."
           rightStats={[
             { label: 'problems', value: problems.length, tone: 'amber' },
             { label: 'explanations', value: voices.length, tone: 'violet' },

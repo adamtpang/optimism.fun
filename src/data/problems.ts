@@ -26,6 +26,29 @@ export const problems: Problem[] = [
       confidence: 'low',
       asOf: TODAY,
     },
+    marketSize: {
+      value: 20_000_000_000,
+      unit: 'USD / year',
+      source: 'projected annual market for alignment R&D, interpretability tooling, evals, and AI governance services by 2030',
+      confidence: 'low',
+      asOf: '2026-05-09',
+    },
+    currentSolutionQuality: {
+      value: 0.15,
+      unit: '0–1 (low = high opportunity)',
+      source: 'estimated — early field; no proven scalable alignment method yet',
+      confidence: 'low',
+      asOf: '2026-05-09',
+    },
+    transformation: {
+      before:
+        'Frontier AI training proceeds with limited interpretability of model internals, no proven scalable alignment method, and minimal regulatory verification capacity.',
+      after:
+        'Aligned, corrigible frontier AI is the default deployment pattern. Interpretability tools verify models share human-relevant values before deployment. Capability gains do not increase x-risk.',
+      horizon: '15 years',
+      confidence: 'low',
+      asOf: '2026-05-09',
+    },
     scores: {
       welfareBCR: null,
       xriskITN: {
@@ -75,6 +98,29 @@ export const problems: Problem[] = [
       source: 'estimated, engineered pandemic could approach extinction',
       confidence: 'low',
       asOf: TODAY,
+    },
+    marketSize: {
+      value: 100_000_000_000,
+      unit: 'USD / year',
+      source: 'projected global biosecurity + pandemic-prep market (vaccines, surveillance, broad-spectrum countermeasures, PPE) at full deployment',
+      confidence: 'low',
+      asOf: '2026-05-09',
+    },
+    currentSolutionQuality: {
+      value: 0.3,
+      unit: '0–1 (low = high opportunity)',
+      source: 'estimated — decent reactive vaccines but pathogen-agnostic detection + rapid global distribution still weak',
+      confidence: 'med',
+      asOf: '2026-05-09',
+    },
+    transformation: {
+      before:
+        'World detects novel pathogens months after they spread; vaccines take 12+ months to develop and longer to globally distribute.',
+      after:
+        'Pathogens detected within days via genomic surveillance; vaccines designed and manufactured in weeks; equitable global distribution. No mass-casualty pandemic events possible.',
+      horizon: '10 years',
+      confidence: 'med',
+      asOf: '2026-05-09',
     },
     scores: {
       welfareBCR: null,
@@ -126,6 +172,30 @@ export const problems: Problem[] = [
       sourceUrl: 'https://data.worldbank.org/',
       confidence: 'med',
       asOf: TODAY,
+    },
+    marketSize: {
+      value: 10_000_000_000_000,
+      unit: 'USD / year',
+      source: 'global primary energy market — IEA WEO 2025 (electricity, fuels, industrial heat)',
+      sourceUrl: 'https://www.iea.org/reports/world-energy-outlook-2025',
+      confidence: 'high',
+      asOf: '2026-05-09',
+    },
+    currentSolutionQuality: {
+      value: 0.4,
+      unit: '0–1 (low = high opportunity)',
+      source: 'estimated — renewables scaling but intermittent; fission politically stalled; fusion pre-commercial',
+      confidence: 'med',
+      asOf: '2026-05-09',
+    },
+    transformation: {
+      before:
+        '~700M humans lack reliable electricity. Clean firm baseload requires policy heroics. Industrial heat + desalination + direct air capture remain economically marginal at current energy prices.',
+      after:
+        'Energy approaches "too cheap to meter" ($0.01–0.02/kWh wholesale). Universal access. Industrial heat, mass desalination, and carbon removal become economically trivial.',
+      horizon: '20 years',
+      confidence: 'med',
+      asOf: '2026-05-09',
     },
     scores: {
       welfareBCR: {
@@ -180,6 +250,29 @@ export const problems: Problem[] = [
       confidence: 'med',
       asOf: TODAY,
     },
+    marketSize: {
+      value: 13_000_000_000_000,
+      unit: 'USD / year',
+      source: 'global construction market (Oxford Economics, McKinsey Global Institute)',
+      confidence: 'high',
+      asOf: '2026-05-09',
+    },
+    currentSolutionQuality: {
+      value: 0.3,
+      unit: '0–1 (low = high opportunity)',
+      source: 'estimated — construction productivity flat for 50+ years (McKinsey); zoning + permitting bottlenecks worsening',
+      confidence: 'med',
+      asOf: '2026-05-09',
+    },
+    transformation: {
+      before:
+        'Median home in major cities costs 6–12× median income. Construction productivity flat for 50 years. 1.6B humans lack adequate housing.',
+      after:
+        'Quality housing at ~1/3 current cost via factory-built modular + zoning + permitting reform. Median home affordable on median income in nearly every major city.',
+      horizon: '15 years',
+      confidence: 'med',
+      asOf: '2026-05-09',
+    },
     scores: {
       welfareBCR: {
         value: 8,
@@ -229,6 +322,29 @@ export const problems: Problem[] = [
       sourceUrl: 'https://openknowledge.worldbank.org/entities/publication/1f1b2b42-c50a-5116-9bd7-2f2a08a9e8f8',
       confidence: 'med',
       asOf: TODAY,
+    },
+    marketSize: {
+      value: 6_000_000_000_000,
+      unit: 'USD / year',
+      source: 'global education spend (UNESCO Global Education Monitoring Report); EdTech slice ~$400B and growing',
+      confidence: 'high',
+      asOf: '2026-05-09',
+    },
+    currentSolutionQuality: {
+      value: 0.3,
+      unit: '0–1 (low = high opportunity)',
+      source: 'estimated — 1:1 tutoring (+2σ per Bloom 1984) remains gold standard but unaffordable for most; LLM tutors emerging but unproven at scale',
+      confidence: 'med',
+      asOf: '2026-05-09',
+    },
+    transformation: {
+      before:
+        '1:1 human tutoring produces +2σ outcomes vs classroom (Bloom 1984) but is unaffordable for most. Median schooling under-delivers; global learning poverty ~70% in low-income countries.',
+      after:
+        'Every learner has access to AI tutoring matching the best human tutors, in any language, at near-zero cost. Bloom 2-sigma becomes the default, not the exception.',
+      horizon: '10 years',
+      confidence: 'med',
+      asOf: '2026-05-09',
     },
     scores: {
       welfareBCR: {
@@ -280,6 +396,29 @@ export const problems: Problem[] = [
       confidence: 'med',
       asOf: TODAY,
     },
+    marketSize: {
+      value: 200_000_000_000,
+      unit: 'USD / year',
+      source: 'global infectious-disease therapeutics + vaccines + diagnostics + delivery (WHO + IFPMA estimates)',
+      confidence: 'med',
+      asOf: '2026-05-09',
+    },
+    currentSolutionQuality: {
+      value: 0.4,
+      unit: '0–1 (low = high opportunity)',
+      source: 'estimated — proven interventions (bednets, ARVs, DOTS) effective where deployed; coverage incomplete and resistance rising',
+      confidence: 'med',
+      asOf: '2026-05-09',
+    },
+    transformation: {
+      before:
+        '~1.3M deaths/yr from TB. ~600K from malaria. ~600K from HIV/AIDS. All preventable with known interventions but coverage gaps + drug resistance growing.',
+      after:
+        'Malaria, TB, HIV mortality reduced 95%+ via single-dose curatives, gene-drive vector control, universal vaccines. Three of humanity’s oldest scourges effectively closed out.',
+      horizon: '15 years',
+      confidence: 'med',
+      asOf: '2026-05-09',
+    },
     scores: {
       welfareBCR: {
         value: 48,
@@ -325,6 +464,31 @@ export const problems: Problem[] = [
       source: 'estimated, affects long-run growth rate, not direct spending',
       confidence: 'low',
       asOf: TODAY,
+    },
+    marketSize: {
+      value: 2_500_000_000_000,
+      unit: 'USD / year',
+      source: 'global R&D spend (UNESCO Institute for Statistics) — productivity uplift is leveraged across all of this',
+      sourceUrl: 'https://uis.unesco.org/apps/visualisations/research-and-development-spending/',
+      confidence: 'high',
+      asOf: '2026-05-09',
+    },
+    currentSolutionQuality: {
+      value: 0.25,
+      unit: '0–1 (low = high opportunity)',
+      source: 'estimated — per-researcher productivity declining ("Are Ideas Getting Harder to Find?", Bloom-Jones-Reenen 2020); replication crisis and grant-admin overhead unresolved',
+      sourceUrl: 'https://www.nber.org/papers/w23782',
+      confidence: 'med',
+      asOf: '2026-05-09',
+    },
+    transformation: {
+      before:
+        'Per-researcher productivity declining for 50+ years (BTGD). Most grant time spent on paperwork. Replication crisis unresolved. New PhDs needed to maintain Moore’s-law-style progress doubling every ~7 years.',
+      after:
+        'Scientific output per dollar 10× higher via automated experiments, AI literature review, FROs, lottery + fast-grants reform. Trustworthy literature. New disciplines created on AI timescales.',
+      horizon: '20 years',
+      confidence: 'low',
+      asOf: '2026-05-09',
     },
     scores: {
       welfareBCR: {
@@ -382,6 +546,29 @@ export const problems: Problem[] = [
       confidence: 'med',
       asOf: TODAY,
     },
+    marketSize: {
+      value: 4_000_000_000_000,
+      unit: 'USD / year',
+      source: 'global healthcare spend for ages 65+ (OECD Health Statistics); standalone longevity-tech market projected $44B → $600B by 2035',
+      confidence: 'med',
+      asOf: '2026-05-09',
+    },
+    currentSolutionQuality: {
+      value: 0.2,
+      unit: '0–1 (low = high opportunity)',
+      source: 'estimated — rapamycin, senolytics promising in mice; no FDA-approved life-extension intervention yet',
+      confidence: 'low',
+      asOf: '2026-05-09',
+    },
+    transformation: {
+      before:
+        'Healthspan declines starting ~age 50. Aging treated as inevitable rather than as a disease. ~100M humans living with frailty-driven decline.',
+      after:
+        'Healthspan extended by 20+ years. Aging recognized as a treatable condition with FDA-approved interventions. 100→120-year healthy lifespan common in cohorts born after 2030.',
+      horizon: '30 years',
+      confidence: 'low',
+      asOf: '2026-05-09',
+    },
     scores: {
       welfareBCR: {
         value: 7,
@@ -431,6 +618,29 @@ export const problems: Problem[] = [
       confidence: 'low',
       asOf: TODAY,
     },
+    marketSize: {
+      value: 50_000_000_000,
+      unit: 'USD / year',
+      source: 'addressable: fertility tech, IVF, childcare, ART, family-formation services (Frost & Sullivan); demographic-collapse cost is GDP-scale but indirect',
+      confidence: 'low',
+      asOf: '2026-05-09',
+    },
+    currentSolutionQuality: {
+      value: 0.15,
+      unit: '0–1 (low = high opportunity)',
+      source: 'estimated — TFR continuing to fall in nearly all developed economies; policy responses minimal and largely ineffective',
+      confidence: 'med',
+      asOf: '2026-05-09',
+    },
+    transformation: {
+      before:
+        'TFR <2.1 in nearly every developed nation and approaching it in developing ones. Demographic collapse + dependency-ratio crisis baked in for the next 50+ years absent intervention.',
+      after:
+        'TFR above replacement in most willing societies. Family formation affordable, supported, and culturally celebrated. Demographic stability restored.',
+      horizon: '30 years',
+      confidence: 'low',
+      asOf: '2026-05-09',
+    },
     scores: {
       welfareBCR: null,
       xriskITN: {
@@ -476,6 +686,30 @@ export const problems: Problem[] = [
       source: 'meta-analyses of loneliness and life satisfaction',
       confidence: 'med',
       asOf: TODAY,
+    },
+    marketSize: {
+      value: 100_000_000_000,
+      unit: 'USD / year',
+      source: 'US Surgeon General estimates $400B+/yr in US healthcare + productivity costs alone; global addressable wellness + community-tech market larger',
+      sourceUrl: 'https://www.hhs.gov/sites/default/files/surgeon-general-social-connection-advisory.pdf',
+      confidence: 'low',
+      asOf: '2026-05-09',
+    },
+    currentSolutionQuality: {
+      value: 0.2,
+      unit: '0–1 (low = high opportunity)',
+      source: 'estimated — therapy + apps show modest effects; deep social-connection interventions hard to manufacture at scale',
+      confidence: 'low',
+      asOf: '2026-05-09',
+    },
+    transformation: {
+      before:
+        'WHO calls loneliness a global health threat. ~1 in 4 adults report serious loneliness. Mortality risk comparable to smoking 15 cigarettes/day.',
+      after:
+        'Default social architecture restored — third places, family proximity, community bonds rebuilt. Loneliness reduced to incidental rather than structural.',
+      horizon: '20 years',
+      confidence: 'low',
+      asOf: '2026-05-09',
     },
     scores: {
       welfareBCR: {
