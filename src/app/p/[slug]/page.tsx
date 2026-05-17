@@ -78,8 +78,23 @@ export default async function ProblemPage({
         </section>
 
         <section className="px-6 py-10 max-w-5xl mx-auto">
-          <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-6">
-            Whitepaper · v0.1 · open to refutation
+          <Link
+            href={`/p/${problem.slug}/whitepaper`}
+            className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 border border-amber-300/40 text-amber-300 hover:bg-amber-300/[0.08] transition-colors font-mono text-[10px] uppercase tracking-ultra-wide group"
+          >
+            <span>Whitepaper · v0.1 · open to refutation</span>
+            <span className="group-hover:translate-x-0.5 transition-transform">→</span>
+          </Link>
+          <p className="font-mono text-[11px] text-ink-500 mb-6 max-w-2xl">
+            The summary lives here. The{' '}
+            <Link
+              href={`/p/${problem.slug}/whitepaper`}
+              className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+            >
+              full whitepaper
+            </Link>{' '}
+            walks through the four-axis ranking, existing alternatives, proposed direction,
+            cost &amp; scale, and suggested investors — in the spirit of <em>Hyperloop Alpha</em>.
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-ink-700/50 border border-hair mb-12">
             {/* Axis 1 — Quantity (humans affected) */}
