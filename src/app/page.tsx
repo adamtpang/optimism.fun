@@ -1,156 +1,175 @@
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
-import PageHeader from '@/components/PageHeader'
+import ProblemTable from '@/components/ProblemTable'
 import EmailCapture from '@/components/EmailCapture'
 import { problems } from '@/data/problems'
+import { companies } from '@/data/companies'
+import { publicCompanies } from '@/data/public-companies'
+import { ecosystem } from '@/data/ecosystem'
 import { voices } from '@/data/voices'
 import { founders } from '@/data/founders'
-import { ecosystem } from '@/data/ecosystem'
-import { progress } from '@/data/progress'
-import { requestsForStartups } from '@/data/rfs'
-
-/**
- * Play optimism.fun — the homepage as a three-level game.
- * Level 01 pick your problem · Level 02 build your team · Level 03 get the capital.
- * Everything else (thesis, history, methodology) lives one click away.
- */
-const levels = [
-  {
-    n: '01',
-    kicker: 'pick your problem',
-    title: 'Find a quest worth your life.',
-    desc: `${problems.length} ranked problems, scored on quantity × severity × current-solution-quality × market-size. ${requestsForStartups.length} concrete companies someone should build.`,
-    links: [
-      { href: '/', label: 'Browse problems' },
-      { href: '/rfs', label: 'Browse requests' },
-    ],
-    tone: 'amber',
-  },
-  {
-    n: '02',
-    kicker: 'build your team',
-    title: 'Find your people.',
-    desc: `${voices.length} thinkers explaining the problems. ${founders.length} of the biggest builders already on them. Find your cofounders, your operators, your council.`,
-    links: [
-      { href: '/voices', label: 'See thinkers' },
-      { href: '/founders', label: 'See builders' },
-    ],
-    tone: 'violet',
-  },
-  {
-    n: '03',
-    kicker: 'get the capital',
-    title: 'Raise the money.',
-    desc: `${ecosystem.length} capital allocators — grants, fellowships, FROs, studios, VCs — tagged by quest. The money already chasing this work.`,
-    links: [{ href: '/ecosystem', label: 'See the capital stack' }],
-    tone: 'cyan',
-  },
-] as const
-
-const TONE: Record<'amber' | 'violet' | 'cyan', string> = {
-  amber: 'text-amber-300',
-  violet: 'text-terminal-violet',
-  cyan: 'text-terminal-cyan',
-}
 
 export default function Home() {
+  const solutionCount = companies.length + publicCompanies.length
+
   return (
     <>
       <Navbar />
       <main>
-        <PageHeader
-          kicker="play · v0.1"
-          title="Be the next Elon."
-          lede="Humanity has problems. Pick one. Build the team. Get the capital. Ship the future. Three moves below."
-          rightStats={[
-            { label: 'problems', value: problems.length, tone: 'amber' },
-            { label: 'requests', value: requestsForStartups.length, tone: 'amber' },
-            { label: 'capital', value: ecosystem.length, tone: 'cyan' },
-            { label: 'progress', value: progress.length, tone: 'green' },
-          ]}
-        />
-
-        {/* The game board — three levels, in order */}
-        <section className="border-b border-hair">
-          <div className="max-w-7xl mx-auto px-6 py-12">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
-              How to play
+        {/* Hero — minimal. Title, one line, and a pointer to the table. */}
+        <section className="pt-28 pb-8 border-b border-hair">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-amber-300 text-[10px]">◆</span>
+              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-400">
+                humanity&rsquo;s requests for startups &middot; v0.1
+              </p>
+            </div>
+            <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.02] text-ink-100 mb-4">
+              Infinite problems.{' '}
+              <span className="text-amber-300">Infinite solutions.</span>
+            </h1>
+            <p className="text-ink-400 leading-relaxed max-w-2xl text-base">
+              {problems.length} priority problems, ranked. Every number sourced. Pick one
+              worth your life.
             </p>
-            <h2 className="font-serif text-3xl md:text-4xl text-ink-100 leading-tight mb-8">
-              Three moves. In order.
-            </h2>
-            <ol className="grid md:grid-cols-3 gap-px bg-ink-700/50 border border-hair">
-              {levels.map((lv) => (
-                <li key={lv.n} className="bg-ink-900 p-6 flex flex-col">
-                  <span
-                    className={`font-mono text-[11px] tabular-nums tracking-ultra-wide mb-4 ${TONE[lv.tone]}`}
-                  >
-                    LEVEL {lv.n}
-                  </span>
-                  <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
-                    {lv.kicker}
-                  </p>
-                  <h3 className="font-serif text-2xl text-ink-100 mb-3 leading-tight">
-                    {lv.title}
-                  </h3>
-                  <p className="text-sm text-ink-400 leading-relaxed mb-5 flex-1">
-                    {lv.desc}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {lv.links.map((l) => (
-                      <Link
-                        key={l.href}
-                        href={l.href}
-                        className="font-mono text-[11px] uppercase tracking-wider text-amber-300 border border-amber-300/40 px-3 py-1.5 hover:bg-amber-300/[0.08] transition-colors"
-                      >
-                        {l.label} →
-                      </Link>
-                    ))}
-                  </div>
-                </li>
-              ))}
-            </ol>
           </div>
         </section>
 
-        {/* Receipts — compressed. The game has been won before. */}
+        {/* The leaderboard — front and center. */}
+        <section
+          id="problems"
+          className="px-6 pt-10 pb-14 max-w-7xl mx-auto scroll-mt-24"
+        >
+          <ProblemTable problems={problems} />
+        </section>
+
+        {/* The pipeline: explanations → solutions → coordination (talent + capital). */}
+        <section className="border-y border-hair">
+          <div className="max-w-7xl mx-auto px-6 py-12">
+            <div className="grid lg:grid-cols-[1fr_2fr] gap-8 mb-6">
+              <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight">
+                The pipeline.
+              </h2>
+              <p className="text-ink-400 leading-relaxed max-w-2xl text-sm">
+                Each problem above has thinkers explaining it, companies attacking it, and
+                a coordination layer of talent and capital pointed at it. Every node sourced.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-px bg-ink-700/50 border border-hair">
+              <Link
+                href="/voices"
+                className="group block bg-ink-900 hover:bg-ink-800/70 transition-colors p-6"
+              >
+                <div className="flex items-baseline justify-between mb-3">
+                  <span className="font-mono text-[11px] tabular-nums text-amber-300">
+                    02
+                  </span>
+                  <span className="font-mono tabular-nums text-2xl text-terminal-violet">
+                    {voices.length}
+                  </span>
+                </div>
+                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+                  the explanations
+                </p>
+                <h3 className="font-serif text-xl text-ink-100 group-hover:text-amber-300 transition-colors">
+                  Why each one matters.
+                </h3>
+              </Link>
+
+              <Link
+                href="/companies"
+                className="group block bg-ink-900 hover:bg-ink-800/70 transition-colors p-6"
+              >
+                <div className="flex items-baseline justify-between mb-3">
+                  <span className="font-mono text-[11px] tabular-nums text-amber-300">
+                    03
+                  </span>
+                  <span className="font-mono tabular-nums text-2xl text-terminal-cyan">
+                    {solutionCount}
+                  </span>
+                </div>
+                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+                  the solutions
+                </p>
+                <h3 className="font-serif text-xl text-ink-100 group-hover:text-amber-300 transition-colors">
+                  What gets built.
+                </h3>
+              </Link>
+            </div>
+
+            {/* Coordination row — talent + capital paired under one header */}
+            <div className="mt-6">
+              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
+                04 &middot; coordination
+              </p>
+              <div className="grid md:grid-cols-2 gap-px bg-ink-700/50 border border-hair">
+                <Link
+                  href="/founders"
+                  className="group block bg-ink-900 hover:bg-ink-800/70 transition-colors p-6"
+                >
+                  <div className="flex items-baseline justify-between mb-3">
+                    <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
+                      talent
+                    </span>
+                    <span className="font-mono tabular-nums text-2xl text-amber-300">
+                      {founders.length}
+                    </span>
+                  </div>
+                  <h3 className="font-serif text-xl text-ink-100 group-hover:text-amber-300 transition-colors">
+                    Who builds it.
+                  </h3>
+                </Link>
+
+                <Link
+                  href="/ecosystem"
+                  className="group block bg-ink-900 hover:bg-ink-800/70 transition-colors p-6"
+                >
+                  <div className="flex items-baseline justify-between mb-3">
+                    <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
+                      capital
+                    </span>
+                    <span className="font-mono tabular-nums text-2xl text-terminal-green">
+                      {ecosystem.length}
+                    </span>
+                  </div>
+                  <h3 className="font-serif text-xl text-ink-100 group-hover:text-amber-300 transition-colors">
+                    Who funds it.
+                  </h3>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* The white mirror — every problem above, solved, for all that have it. */}
         <section className="border-b border-hair surface-paper">
-          <div className="max-w-3xl mx-auto px-6 py-14">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-paper-copper mb-3">
-              The game has been won before
+          <div className="max-w-4xl mx-auto px-6 py-16 md:py-20">
+            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-paper-copper mb-4">
+              05 &middot; the white mirror
             </p>
-            <p className="font-serif text-xl md:text-2xl text-ink-100 leading-snug mb-5">
-              Extreme poverty halved since 1990. Child mortality down 60%. Literacy
-              near-universal. Internet adoption — luxury to utility in a generation.
-              <span className="block mt-3 text-amber-300">Pick what&rsquo;s next.</span>
+            <h2 className="font-serif text-3xl md:text-5xl text-ink-100 leading-[1.05] mb-6">
+              Every problem above,{' '}
+              <span className="text-amber-300">solved for all that have it.</span>
+            </h2>
+            <p className="font-serif text-lg text-ink-200 leading-relaxed mb-8 max-w-3xl">
+              Extreme poverty cut by more than half since 1990. Child mortality down ~60%.
+              Literacy near-universal. Life expectancy up two decades. This is the world on
+              the other side of the table — and the receipts are getting longer.
             </p>
             <Link
               href="/progress"
               className="font-mono text-[11px] uppercase tracking-wider text-amber-300 border border-amber-300/40 px-4 py-2 hover:bg-amber-300/[0.08] transition-colors inline-block"
             >
-              See the receipts →
+              See the receipts &rarr;
             </Link>
           </div>
         </section>
 
-        {/* Weekly whitepaper drop (newsletter) */}
+        {/* Join */}
         <EmailCapture />
-
-        {/* Closer */}
-        <section className="border-t border-hair">
-          <div className="max-w-5xl mx-auto px-6 py-10 flex flex-wrap items-baseline justify-between gap-4">
-            <p className="font-mono text-[11px] text-ink-500">
-              v0.1 · solo-built · refined weekly · criticism welcome
-            </p>
-            <Link
-              href="/methodology"
-              className="font-mono text-[11px] uppercase tracking-wider text-amber-300 hover:text-amber-200 border border-amber-300/30 px-4 py-2 hover:bg-amber-300/[0.05] transition-colors"
-            >
-              methodology →
-            </Link>
-          </div>
-        </section>
       </main>
       <Footer />
     </>
