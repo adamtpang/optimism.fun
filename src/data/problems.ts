@@ -40,6 +40,20 @@ export const problems: Problem[] = [
       confidence: 'low',
       asOf: '2026-05-09',
     },
+    timeToImpact: {
+      value: 15,
+      unit: 'years',
+      source: 'OOM estimate — analogue: from current scaling-laws debate to corrigible frontier deployment',
+      confidence: 'low',
+      asOf: '2026-05-25',
+    },
+    capitalRequired: {
+      value: 200_000_000_000,
+      unit: 'USD',
+      source: 'OOM estimate — analogue: alignment R&D + interpretability + governance + safe-training compute reserves',
+      confidence: 'low',
+      asOf: '2026-05-25',
+    },
     transformation: {
       before:
         'Frontier AI training proceeds with limited interpretability of model internals, no proven scalable alignment method, and minimal regulatory verification capacity.',
@@ -112,6 +126,20 @@ export const problems: Problem[] = [
       source: 'estimated — decent reactive vaccines but pathogen-agnostic detection + rapid global distribution still weak',
       confidence: 'med',
       asOf: '2026-05-09',
+    },
+    timeToImpact: {
+      value: 12,
+      unit: 'years',
+      source: 'OOM estimate — analogue: COVID-era response infrastructure scaled and globalized',
+      confidence: 'low',
+      asOf: '2026-05-25',
+    },
+    capitalRequired: {
+      value: 500_000_000_000,
+      unit: 'USD',
+      source: 'OOM estimate — analogue: rapid-vaccine platforms + global genomic surveillance + far-UVC + stockpiles',
+      confidence: 'low',
+      asOf: '2026-05-25',
     },
     transformation: {
       before:
@@ -187,6 +215,20 @@ export const problems: Problem[] = [
       source: 'estimated — renewables scaling but intermittent; fission politically stalled; fusion pre-commercial',
       confidence: 'med',
       asOf: '2026-05-09',
+    },
+    timeToImpact: {
+      value: 25,
+      unit: 'years',
+      source: 'OOM estimate — analogue: full grid + transmission + nuclear/fusion scale-up arc',
+      confidence: 'low',
+      asOf: '2026-05-25',
+    },
+    capitalRequired: {
+      value: 5_000_000_000_000,
+      unit: 'USD',
+      source: 'OOM estimate — analogue: IEA Net-Zero capex envelope through 2050 (annualized × duration)',
+      confidence: 'low',
+      asOf: '2026-05-25',
     },
     transformation: {
       before:
@@ -264,6 +306,20 @@ export const problems: Problem[] = [
       confidence: 'med',
       asOf: '2026-05-09',
     },
+    timeToImpact: {
+      value: 15,
+      unit: 'years',
+      source: 'OOM estimate — analogue: industrialized-construction supply chain at meaningful national scale',
+      confidence: 'low',
+      asOf: '2026-05-25',
+    },
+    capitalRequired: {
+      value: 2_000_000_000_000,
+      unit: 'USD',
+      source: 'OOM estimate — analogue: factory-built housing + materials supply chain + zoning-compliance overhead',
+      confidence: 'low',
+      asOf: '2026-05-25',
+    },
     transformation: {
       before:
         'Median home in major cities costs 6–12× median income. Construction productivity flat for 50 years. 1.6B humans lack adequate housing.',
@@ -336,6 +392,20 @@ export const problems: Problem[] = [
       source: 'estimated — 1:1 tutoring (+2σ per Bloom 1984) remains gold standard but unaffordable for most; LLM tutors emerging but unproven at scale',
       confidence: 'med',
       asOf: '2026-05-09',
+    },
+    timeToImpact: {
+      value: 12,
+      unit: 'years',
+      source: 'OOM estimate — analogue: LLM tutor deployment + institutional adoption arc',
+      confidence: 'low',
+      asOf: '2026-05-25',
+    },
+    capitalRequired: {
+      value: 200_000_000_000,
+      unit: 'USD',
+      source: 'OOM estimate — analogue: model + delivery + content + teacher-displacement reserve',
+      confidence: 'low',
+      asOf: '2026-05-25',
     },
     transformation: {
       before:
@@ -410,6 +480,20 @@ export const problems: Problem[] = [
       confidence: 'med',
       asOf: '2026-05-09',
     },
+    timeToImpact: {
+      value: 10,
+      unit: 'years',
+      source: 'OOM estimate — analogue: malaria + TB elimination programmes scaled to civilizational coverage',
+      confidence: 'low',
+      asOf: '2026-05-25',
+    },
+    capitalRequired: {
+      value: 150_000_000_000,
+      unit: 'USD',
+      source: 'OOM estimate — analogue: Global Fund + Gavi-scale procurement + last-mile delivery infrastructure',
+      confidence: 'low',
+      asOf: '2026-05-25',
+    },
     transformation: {
       before:
         '~1.3M deaths/yr from TB. ~600K from malaria. ~600K from HIV/AIDS. All preventable with known interventions but coverage gaps + drug resistance growing.',
@@ -480,6 +564,20 @@ export const problems: Problem[] = [
       sourceUrl: 'https://www.nber.org/papers/w23782',
       confidence: 'med',
       asOf: '2026-05-09',
+    },
+    timeToImpact: {
+      value: 20,
+      unit: 'years',
+      source: 'OOM estimate — analogue: NIH/NSF reform + AI-for-science adoption + FRO/ARIA scaling',
+      confidence: 'low',
+      asOf: '2026-05-25',
+    },
+    capitalRequired: {
+      value: 100_000_000_000,
+      unit: 'USD',
+      source: 'OOM estimate — analogue: alt-funding stack (FROs, ARIA, focused programs) at ~10× current scale',
+      confidence: 'low',
+      asOf: '2026-05-25',
     },
     transformation: {
       before:
@@ -560,6 +658,20 @@ export const problems: Problem[] = [
       confidence: 'low',
       asOf: '2026-05-09',
     },
+    timeToImpact: {
+      value: 25,
+      unit: 'years',
+      source: 'OOM estimate — analogue: biotech base rate from validated target to civilizational clinical impact',
+      confidence: 'low',
+      asOf: '2026-05-25',
+    },
+    capitalRequired: {
+      value: 300_000_000_000,
+      unit: 'USD',
+      source: 'OOM estimate — analogue: ~30 large clinical programs through phase 3 + manufacturing + delivery',
+      confidence: 'low',
+      asOf: '2026-05-25',
+    },
     transformation: {
       before:
         'Healthspan declines starting ~age 50. Aging treated as inevitable rather than as a disease. ~100M humans living with frailty-driven decline.',
@@ -632,6 +744,20 @@ export const problems: Problem[] = [
       confidence: 'med',
       asOf: '2026-05-09',
     },
+    timeToImpact: {
+      value: 30,
+      unit: 'years',
+      source: 'OOM estimate — analogue: one full generation for policy and cultural shift to register in TFR',
+      confidence: 'low',
+      asOf: '2026-05-25',
+    },
+    capitalRequired: {
+      value: 1_000_000_000_000,
+      unit: 'USD',
+      source: 'OOM estimate — analogue: childcare infrastructure + family-formation incentives + reproductive-tech R&D',
+      confidence: 'low',
+      asOf: '2026-05-25',
+    },
     transformation: {
       before:
         'TFR <2.1 in nearly every developed nation and approaching it in developing ones. Demographic collapse + dependency-ratio crisis baked in for the next 50+ years absent intervention.',
@@ -701,6 +827,20 @@ export const problems: Problem[] = [
       source: 'estimated — therapy + apps show modest effects; deep social-connection interventions hard to manufacture at scale',
       confidence: 'low',
       asOf: '2026-05-09',
+    },
+    timeToImpact: {
+      value: 20,
+      unit: 'years',
+      source: 'OOM estimate — analogue: time to rebuild third-spaces and rebalance digital toward physical',
+      confidence: 'low',
+      asOf: '2026-05-25',
+    },
+    capitalRequired: {
+      value: 50_000_000_000,
+      unit: 'USD',
+      source: 'OOM estimate — analogue: civic-infrastructure subsidy + mental-health system overhaul',
+      confidence: 'low',
+      asOf: '2026-05-25',
     },
     transformation: {
       before:

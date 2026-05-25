@@ -5,11 +5,19 @@ import Link from 'next/link'
 import type { Problem } from '@/data/types'
 import { companies } from '@/data/companies'
 import { voices } from '@/data/voices'
-import { formatHumans, formatScore } from '@/lib/format'
+import { formatHumans, formatScore, formatUSD, formatYears } from '@/lib/format'
 import TierPill from './TierPill'
 
 type Lens = 'balanced' | 'welfare' | 'xrisk' | 'utility'
-type SortKey = 'composite' | 'humans' | 'welfare' | 'xrisk' | 'utility' | 'voices'
+type SortKey =
+  | 'composite'
+  | 'humans'
+  | 'welfare'
+  | 'xrisk'
+  | 'utility'
+  | 'voices'
+  | 'time'
+  | 'capital'
 
 const LENS_META: Record<Lens, { label: string; desc: string }> = {
   balanced: { label: 'balanced', desc: 'equal weight, all lenses' },
@@ -91,6 +99,15 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
         case 'voices':
           av = a.voiceCount
           bv = b.voiceCount
+          break
+        case 'time':
+          // Sort: shorter time-to-impact ranks "higher" when desc, so invert.
+          av = a.p.timeToImpact?.value ?? Number.POSITIVE_INFINITY
+          bv = b.p.timeToImpact?.value ?? Number.POSITIVE_INFINITY
+          return sortDir === 'desc' ? av - bv : bv - av
+        case 'capital':
+          av = a.p.capitalRequired?.value ?? -1
+          bv = b.p.capitalRequired?.value ?? -1
           break
       }
       return sortDir === 'desc' ? bv - av : av - bv
@@ -178,6 +195,22 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
                   util δ {icon('utility')}
                 </button>
               </th>
+              <th className="px-3 py-2.5 font-medium text-right">
+                <button
+                  onClick={() => toggleSort('time')}
+                  className="inline-flex items-center gap-1 hover:text-ink-100 ml-auto"
+                >
+                  time {icon('time')}
+                </button>
+              </th>
+              <th className="px-3 py-2.5 font-medium text-right">
+                <button
+                  onClick={() => toggleSort('capital')}
+                  className="inline-flex items-center gap-1 hover:text-ink-100 ml-auto"
+                >
+                  cap {icon('capital')}
+                </button>
+              </th>
               <th className="px-3 py-2.5 font-medium text-right">co</th>
               <th className="px-3 py-2.5 font-medium text-right">
                 <button
@@ -224,6 +257,12 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
                 <td className="px-3 py-3 text-right tabular-nums text-amber-300">
                   {p.scores.utilityDelta ? `${(p.scores.utilityDelta.value * 100).toFixed(0)}%` : <span className="text-ink-500/70">·</span>}
                 </td>
+                <td className="px-3 py-3 text-right tabular-nums text-ink-300">
+                  {p.timeToImpact ? formatYears(p.timeToImpact.value) : <span className="text-ink-500/70">·</span>}
+                </td>
+                <td className="px-3 py-3 text-right tabular-nums text-ink-300">
+                  {p.capitalRequired ? formatUSD(p.capitalRequired.value) : <span className="text-ink-500/70">·</span>}
+                </td>
                 <td className="px-3 py-3 text-right tabular-nums text-ink-500">
                   {companyCount}
                 </td>
@@ -237,7 +276,9 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
       </div>
 
       <p className="mt-3 font-mono text-[11px] text-ink-500 leading-relaxed">
-        <span className="text-ink-600">bcr</span> copenhagen consensus benefit-cost ratio ·
+        <span className="text-ink-600">time</span> OOM years-to-meaningful-impact ·
+        <span className="text-ink-600"> cap</span> OOM capital required to solve ·
+        <span className="text-ink-600"> bcr</span> copenhagen consensus benefit-cost ratio ·
         <span className="text-ink-600"> itn</span> 80,000 hours importance × tractability × neglectedness ·
         <span className="text-ink-600"> util δ</span> state-of-the-art vs physics-possible ceiling ·
         <span className="text-ink-600"> co</span> companies mapped ·

@@ -10,7 +10,7 @@ import { getCompaniesForProblem } from '@/data/companies'
 import { getEcosystemForProblem } from '@/data/ecosystem'
 import { getPositionsForProblem } from '@/data/voices'
 import { ECOSYSTEM_TYPE_LABEL } from '@/data/types'
-import { formatHumans, formatUSD, formatPercent } from '@/lib/format'
+import { formatHumans, formatUSD, formatPercent, formatYears } from '@/lib/format'
 
 export function generateStaticParams() {
   return problems.map((p) => ({ slug: p.slug }))
@@ -188,6 +188,50 @@ export default async function ProblemPage({
                 </div>
                 <p className="font-mono text-[11px] text-ink-500 leading-relaxed">
                   {problem.marketSize.unit ?? 'addressable market'} the world is already paying
+                </p>
+              </div>
+            )}
+
+            {/* Axis 5 — Time to impact (OOM estimate) */}
+            {problem.timeToImpact && (
+              <div className="bg-ink-900 p-6">
+                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
+                  Time · OOM to impact
+                </p>
+                <div className="flex items-baseline gap-3 mb-2">
+                  <span className="font-mono text-3xl tabular-nums text-ink-100">
+                    {formatYears(problem.timeToImpact.value)}
+                  </span>
+                  <SourceBadge
+                    confidence={problem.timeToImpact.confidence}
+                    source={problem.timeToImpact.source}
+                    asOf={problem.timeToImpact.asOf}
+                  />
+                </div>
+                <p className="font-mono text-[11px] text-ink-500 leading-relaxed">
+                  order-of-magnitude horizon to civilizational-scale impact
+                </p>
+              </div>
+            )}
+
+            {/* Axis 6 — Capital required (OOM estimate) */}
+            {problem.capitalRequired && (
+              <div className="bg-ink-900 p-6">
+                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
+                  Capital · OOM to solve
+                </p>
+                <div className="flex items-baseline gap-3 mb-2">
+                  <span className="font-mono text-3xl tabular-nums text-ink-100">
+                    {formatUSD(problem.capitalRequired.value)}
+                  </span>
+                  <SourceBadge
+                    confidence={problem.capitalRequired.confidence}
+                    source={problem.capitalRequired.source}
+                    asOf={problem.capitalRequired.asOf}
+                  />
+                </div>
+                <p className="font-mono text-[11px] text-ink-500 leading-relaxed">
+                  cumulative R&amp;D + deployment + supply chain across the arc
                 </p>
               </div>
             )}

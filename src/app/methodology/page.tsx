@@ -89,6 +89,32 @@ export default function MethodologyPage() {
 
               <section>
                 <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
+                  Time and capital are order-of-magnitude estimates
+                </h2>
+                <p className="mb-4">
+                  Two questions a founder asks before anything else: how long will this
+                  take, and how much capital will it consume? We surface both, with the
+                  caveat that each is an order-of-magnitude estimate based on analogues,
+                  not a forecast.
+                </p>
+                <p className="mb-4">
+                  For <span className="text-ink-100">time-to-impact</span>, we pattern-match
+                  against the closest historical arc — biotech base rates for longevity, IEA
+                  Net-Zero envelopes for energy, Gavi/Global Fund scaling curves for
+                  infectious disease. The number is years from <em>today</em> to
+                  civilizational-scale impact, not first product.
+                </p>
+                <p>
+                  For <span className="text-ink-100">capital required</span>, we sum the
+                  R&amp;D, deployment, and supply-chain build-out across the arc. These are
+                  always tagged <span className="text-terminal-rose">low</span> confidence
+                  and will move with new data. The point is to give founders and allocators
+                  a starting reference, not a closed answer.
+                </p>
+              </section>
+
+              <section>
+                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
                   Severity is willingness to pay over wealth
                 </h2>
                 <p>
