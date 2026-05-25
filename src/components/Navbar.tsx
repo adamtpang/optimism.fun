@@ -13,11 +13,13 @@ import { voices } from '@/data/voices'
 import { ecosystem } from '@/data/ecosystem'
 import { progress } from '@/data/progress'
 import { requestsForStartups } from '@/data/rfs'
+import { sectors } from '@/data/sectors'
 import ThemeToggle from './ThemeToggle'
 import { FeedbackButton } from './FeedbackWidget'
 
 const dataTabs = [
   { name: 'Problems', href: '/', count: problems.length, tone: 'amber' },
+  { name: 'Sectors', href: '/sector', count: sectors.length, tone: 'amber' },
   { name: 'Requests', href: '/rfs', count: requestsForStartups.length, tone: 'amber' },
   { name: 'Explanations', href: '/voices', count: voices.length, tone: 'violet' },
   { name: 'Solutions', href: '/companies', count: publicCompanies.length, tone: 'cyan' },
