@@ -28,6 +28,7 @@ import { getCompaniesForProblem } from '@/data/companies'
 import { getEcosystemForProblem } from '@/data/ecosystem'
 import { getPositionsForProblem } from '@/data/voices'
 import { getRequestsForProblem } from '@/data/rfs'
+import { getLatestWhitepaperForProblem } from '@/data/whitepapers'
 import { ECOSYSTEM_TYPE_LABEL } from '@/data/types'
 import { formatHumans, formatUSD, formatPercent } from '@/lib/format'
 
@@ -121,6 +122,7 @@ export default async function WhitepaperPage({
   const ecosystem = getEcosystemForProblem(slug)
   const positions = getPositionsForProblem(slug)
   const requests = getRequestsForProblem(slug)
+  const editorialDoc = getLatestWhitepaperForProblem(slug)
 
   // Heuristic: any allocator type that meaningfully writes checks for new
   // ventures or research orgs counts as a "would-back-this" candidate. Grants
@@ -199,6 +201,58 @@ export default async function WhitepaperPage({
         </section>
 
         <article className="max-w-3xl mx-auto px-6 py-12 space-y-16">
+          {editorialDoc && (
+            <section>
+              <SectionHeading
+                number="0"
+                kicker={`weekly drop · week ${editorialDoc.week}`}
+                title="Editor’s drop"
+              />
+              <p className="font-mono text-[11px] text-ink-500 mb-6">
+                Published {editorialDoc.publishedAt}
+                {editorialDoc.authors?.length
+                  ? ` · ${editorialDoc.authors.join(', ')}`
+                  : ''}
+              </p>
+              <div className="border-l-2 border-amber-300/50 pl-5 mb-8">
+                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-2">
+                  blackpaper · the problem
+                </p>
+                <div className="font-serif text-lg text-ink-200 leading-relaxed whitespace-pre-line">
+                  {editorialDoc.blackpaper}
+                </div>
+              </div>
+              <div className="border-l-2 border-terminal-green/50 pl-5 mb-6">
+                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-terminal-green mb-2">
+                  whitepaper · the proposal
+                </p>
+                <div className="font-serif text-lg text-ink-200 leading-relaxed whitespace-pre-line">
+                  {editorialDoc.whitepaper}
+                </div>
+              </div>
+              {editorialDoc.cta && (
+                <div className="border border-amber-300/40 bg-amber-300/[0.04] p-5">
+                  <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-2">
+                    request for {editorialDoc.cta.for}s
+                  </p>
+                  <p className="font-serif text-ink-200 leading-relaxed mb-3 whitespace-pre-line">
+                    {editorialDoc.cta.body}
+                  </p>
+                  {editorialDoc.cta.url && (
+                    <a
+                      href={editorialDoc.cta.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block px-4 py-2 font-mono text-[11px] uppercase tracking-wider text-amber-300 border border-amber-300/40 hover:bg-amber-300/[0.08] transition-colors"
+                    >
+                      {editorialDoc.cta.ctaLabel ?? 'apply'} &rarr;
+                    </a>
+                  )}
+                </div>
+              )}
+            </section>
+          )}
+
           {/* §1 — Abstract */}
           <section>
             <SectionHeading number="1" kicker="abstract" title="The four-axis ranking" />
