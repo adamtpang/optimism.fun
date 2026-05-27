@@ -1,8 +1,10 @@
 /**
  * POST /api/cron/media-ingest
  *
- * Hourly poll of the curated media sources (substacks via RSS, YouTube
- * channels via Atom feed, X handles via the polling worker).
+ * Daily poll of the curated media sources (substacks via RSS, YouTube
+ * channels via Atom feed, X handles via the polling worker). Daily, not
+ * hourly, because Vercel Hobby caps crons at one run per day. Move to a
+ * higher cadence after upgrading the plan.
  *
  * Pipeline (when fully wired):
  *   1. For each MediaSource with a feedUrl, fetch the RSS/Atom feed.
