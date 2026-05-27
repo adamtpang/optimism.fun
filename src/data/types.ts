@@ -227,6 +227,44 @@ export type Founder = {
   asOf: string
 }
 
+export type MediaSourceKind = 'substack' | 'youtube' | 'x' | 'blog' | 'podcast'
+
+export type MediaSource = {
+  /** Stable id e.g. "substack:not-boring" */
+  id: string
+  kind: MediaSourceKind
+  /** Human-readable label e.g. "Not Boring" */
+  name: string
+  /** Author / channel handle e.g. "Packy McCormick" */
+  author?: string
+  url: string
+  /** RSS feed for substack / blog / podcast; YouTube channel feed; X polling URL. */
+  feedUrl?: string
+}
+
+export type MediaStatus = 'draft' | 'live' | 'rejected'
+
+/**
+ * A single media item — essay, podcast episode, video, thread — tagged
+ * to the problems and sectors it discusses. Surfaces in MediaFeed on
+ * /p/[slug], /sector/[slug], and the /media firehose.
+ *
+ * Cron at /api/cron/media-ingest pulls these from RSS / YouTube / X and
+ * Anthropic auto-tags them. Editor reviews 'draft' rows and flips to
+ * 'live'. Seeded items in src/data/media.ts are 'live' by default.
+ */
+export type MediaItem = {
+  id: string
+  title: string
+  url: string
+  sourceId: string
+  publishedAt: string
+  excerpt?: string
+  problemSlugs: string[]
+  sectorSlugs?: string[]
+  status: MediaStatus
+}
+
 export type ProgressMilestone = {
   slug: string
   name: string

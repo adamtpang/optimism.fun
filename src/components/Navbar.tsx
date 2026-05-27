@@ -13,6 +13,7 @@ import { voices } from '@/data/voices'
 import { ecosystem } from '@/data/ecosystem'
 import { progress } from '@/data/progress'
 import { requestsForStartups } from '@/data/rfs'
+import { seededMedia } from '@/data/media'
 import ThemeToggle from './ThemeToggle'
 import { FeedbackButton } from './FeedbackWidget'
 
@@ -20,6 +21,7 @@ const dataTabs = [
   { name: 'Problems', href: '/', count: problems.length, tone: 'amber' },
   { name: 'Requests', href: '/rfs', count: requestsForStartups.length, tone: 'amber' },
   { name: 'Explanations', href: '/voices', count: voices.length, tone: 'violet' },
+  { name: 'Media', href: '/media', count: seededMedia.length, tone: 'cyan' },
   { name: 'Solutions', href: '/companies', count: publicCompanies.length, tone: 'cyan' },
   { name: 'People', href: '/founders', count: founders.length, tone: 'amber' },
   { name: 'Progress', href: '/progress', count: progress.length, tone: 'green' },

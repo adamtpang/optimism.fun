@@ -4,6 +4,10 @@
     {
       "path": "/api/cron/problem-sourcing",
       "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/cron/media-ingest",
+      "schedule": "0 * * * *"
     }
   ]
 }
