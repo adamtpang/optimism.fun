@@ -7,6 +7,7 @@ import { companies } from '@/data/companies'
 import { voices } from '@/data/voices'
 import { formatHumans, formatScore } from '@/lib/format'
 import TierPill from './TierPill'
+import InfoTip from './InfoTip'
 
 type Lens = 'balanced' | 'welfare' | 'xrisk' | 'utility'
 type SortKey = 'composite' | 'humans' | 'welfare' | 'xrisk' | 'utility' | 'voices'
@@ -147,45 +148,89 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
               <th className="px-3 py-2.5 font-medium">problem</th>
               <th className="px-3 py-2.5 font-medium">tier</th>
               <th className="px-3 py-2.5 font-medium text-right">
-                <button
-                  onClick={() => toggleSort('humans')}
-                  className="inline-flex items-center gap-1 hover:text-ink-100 ml-auto"
-                >
-                  humans {icon('humans')}
-                </button>
+                <span className="inline-flex items-center justify-end gap-1.5 ml-auto">
+                  <button
+                    onClick={() => toggleSort('humans')}
+                    className="inline-flex items-center gap-1 hover:text-ink-100"
+                  >
+                    humans {icon('humans')}
+                  </button>
+                  <InfoTip label="humans affected">
+                    Best-available count of people experiencing this problem today.
+                    Every row carries a confidence tag (high / med / low) and a sourced citation.
+                  </InfoTip>
+                </span>
               </th>
               <th className="px-3 py-2.5 font-medium text-right">
-                <button
-                  onClick={() => toggleSort('welfare')}
-                  className="inline-flex items-center gap-1 hover:text-ink-100 ml-auto"
-                >
-                  bcr {icon('welfare')}
-                </button>
+                <span className="inline-flex items-center justify-end gap-1.5 ml-auto">
+                  <button
+                    onClick={() => toggleSort('welfare')}
+                    className="inline-flex items-center gap-1 hover:text-ink-100"
+                  >
+                    bcr {icon('welfare')}
+                  </button>
+                  <InfoTip label="bcr · benefit-cost ratio">
+                    Copenhagen Consensus methodology — expected welfare return per
+                    dollar spent on the dominant intervention. Higher = more good per
+                    dollar. Anchor of the EA / welfare lens.
+                  </InfoTip>
+                </span>
               </th>
               <th className="px-3 py-2.5 font-medium text-right">
-                <button
-                  onClick={() => toggleSort('xrisk')}
-                  className="inline-flex items-center gap-1 hover:text-ink-100 ml-auto"
-                >
-                  itn {icon('xrisk')}
-                </button>
+                <span className="inline-flex items-center justify-end gap-1.5 ml-auto">
+                  <button
+                    onClick={() => toggleSort('xrisk')}
+                    className="inline-flex items-center gap-1 hover:text-ink-100"
+                  >
+                    itn {icon('xrisk')}
+                  </button>
+                  <InfoTip label="itn · importance × tractability × neglectedness">
+                    80,000 Hours cause-prioritization score. Importance of the
+                    problem, tractability of progress, and neglectedness of the
+                    field combined. Higher = more upside for an additional unit of
+                    effort. Anchor of the x-risk lens.
+                  </InfoTip>
+                </span>
               </th>
               <th className="px-3 py-2.5 font-medium text-right">
-                <button
-                  onClick={() => toggleSort('utility')}
-                  className="inline-flex items-center gap-1 hover:text-ink-100 ml-auto"
-                >
-                  util δ {icon('utility')}
-                </button>
+                <span className="inline-flex items-center justify-end gap-1.5 ml-auto">
+                  <button
+                    onClick={() => toggleSort('utility')}
+                    className="inline-flex items-center gap-1 hover:text-ink-100"
+                  >
+                    util δ {icon('utility')}
+                  </button>
+                  <InfoTip label="util δ · utility delta">
+                    Gap between today&rsquo;s state-of-the-art and the
+                    physics-possible ceiling. Higher = more room for solutions to
+                    keep compounding. Anchor of the e/acc / utility lens.
+                  </InfoTip>
+                </span>
               </th>
-              <th className="px-3 py-2.5 font-medium text-right">co</th>
               <th className="px-3 py-2.5 font-medium text-right">
-                <button
-                  onClick={() => toggleSort('voices')}
-                  className="inline-flex items-center gap-1 hover:text-ink-100 ml-auto"
-                >
-                  v {icon('voices')}
-                </button>
+                <span className="inline-flex items-center justify-end gap-1.5 ml-auto">
+                  <span>co</span>
+                  <InfoTip label="co · companies on it">
+                    Companies in our dataset tagged to this problem — public and
+                    private. A proxy for how much capital and talent has already
+                    chosen this quest.
+                  </InfoTip>
+                </span>
+              </th>
+              <th className="px-3 py-2.5 font-medium text-right">
+                <span className="inline-flex items-center justify-end gap-1.5 ml-auto">
+                  <button
+                    onClick={() => toggleSort('voices')}
+                    className="inline-flex items-center gap-1 hover:text-ink-100"
+                  >
+                    v {icon('voices')}
+                  </button>
+                  <InfoTip label="v · voices citing">
+                    Thinkers (Deutsch, Musk, Collison, Crawford, Cowen, Stephens,
+                    &hellip;) who argue this is THE problem to work on. Each voice
+                    has a quote and a source link.
+                  </InfoTip>
+                </span>
               </th>
             </tr>
           </thead>
@@ -237,11 +282,7 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
       </div>
 
       <p className="mt-3 font-mono text-[11px] text-ink-500 leading-relaxed">
-        <span className="text-ink-600">bcr</span> copenhagen consensus benefit-cost ratio ·
-        <span className="text-ink-600"> itn</span> 80,000 hours importance × tractability × neglectedness ·
-        <span className="text-ink-600"> util δ</span> state-of-the-art vs physics-possible ceiling ·
-        <span className="text-ink-600"> co</span> companies mapped ·
-        <span className="text-ink-600"> v</span> voices citing. full method in{' '}
+        hover any column header for definitions, or read the full{' '}
         <Link href="/methodology" className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2">
           methodology
         </Link>
