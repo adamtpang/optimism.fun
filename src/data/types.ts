@@ -96,6 +96,16 @@ export type Problem = {
    * Drives axis 3 of the ranking: "how good are existing solutions."
    */
   currentSolutionQuality?: SourcedNumber
+  /**
+   * Order-of-magnitude time to meaningful impact, in years. Drawn from analogues
+   * (e.g. biotech base rates, energy infrastructure timelines). Low confidence.
+   */
+  timeToImpact?: SourcedNumber
+  /**
+   * Order-of-magnitude capital required for civilizational-scale solution, in USD.
+   * Includes R&D, deployment, and the supply chain to scale. Low confidence.
+   */
+  capitalRequired?: SourcedNumber
   /** Before/after success vision for the problem. */
   transformation?: Transformation
   scores: LensScore

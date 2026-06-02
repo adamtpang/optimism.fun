@@ -5,12 +5,20 @@ import Link from 'next/link'
 import type { Problem } from '@/data/types'
 import { companies } from '@/data/companies'
 import { voices } from '@/data/voices'
-import { formatHumans, formatScore } from '@/lib/format'
+import { formatHumans, formatScore, formatUSD, formatYears } from '@/lib/format'
 import TierPill from './TierPill'
 import InfoTip from './InfoTip'
 
 type Lens = 'balanced' | 'welfare' | 'xrisk' | 'utility'
-type SortKey = 'composite' | 'humans' | 'welfare' | 'xrisk' | 'utility' | 'voices'
+type SortKey =
+  | 'composite'
+  | 'humans'
+  | 'welfare'
+  | 'xrisk'
+  | 'utility'
+  | 'voices'
+  | 'time'
+  | 'capital'
 
 const LENS_META: Record<Lens, { label: string; desc: string }> = {
   balanced: { label: 'balanced', desc: 'equal weight, all lenses' },
@@ -92,6 +100,15 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
         case 'voices':
           av = a.voiceCount
           bv = b.voiceCount
+          break
+        case 'time':
+          // Sort: shorter time-to-impact ranks "higher" when desc, so invert.
+          av = a.p.timeToImpact?.value ?? Number.POSITIVE_INFINITY
+          bv = b.p.timeToImpact?.value ?? Number.POSITIVE_INFINITY
+          return sortDir === 'desc' ? av - bv : bv - av
+        case 'capital':
+          av = a.p.capitalRequired?.value ?? -1
+          bv = b.p.capitalRequired?.value ?? -1
           break
       }
       return sortDir === 'desc' ? bv - av : av - bv
@@ -209,6 +226,36 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
               </th>
               <th className="px-3 py-2.5 font-medium text-right">
                 <span className="inline-flex items-center justify-end gap-1.5 ml-auto">
+                  <button
+                    onClick={() => toggleSort('time')}
+                    className="inline-flex items-center gap-1 hover:text-ink-100"
+                  >
+                    time {icon('time')}
+                  </button>
+                  <InfoTip label="time · years to impact">
+                    Order-of-magnitude estimate of years to meaningful impact at the
+                    frontier. Lower = faster payoff. A rough planning prior, not a
+                    forecast — confidence-tagged.
+                  </InfoTip>
+                </span>
+              </th>
+              <th className="px-3 py-2.5 font-medium text-right">
+                <span className="inline-flex items-center justify-end gap-1.5 ml-auto">
+                  <button
+                    onClick={() => toggleSort('capital')}
+                    className="inline-flex items-center gap-1 hover:text-ink-100"
+                  >
+                    cap {icon('capital')}
+                  </button>
+                  <InfoTip label="cap · capital required">
+                    Order-of-magnitude capital required to meaningfully move this
+                    problem — millions vs. billions vs. trillions. A scale marker,
+                    confidence-tagged.
+                  </InfoTip>
+                </span>
+              </th>
+              <th className="px-3 py-2.5 font-medium text-right">
+                <span className="inline-flex items-center justify-end gap-1.5 ml-auto">
                   <span>co</span>
                   <InfoTip label="co · companies on it">
                     Companies in our dataset tagged to this problem — public and
@@ -268,6 +315,12 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
                 </td>
                 <td className="px-3 py-3 text-right tabular-nums text-amber-300">
                   {p.scores.utilityDelta ? `${(p.scores.utilityDelta.value * 100).toFixed(0)}%` : <span className="text-ink-500/70">·</span>}
+                </td>
+                <td className="px-3 py-3 text-right tabular-nums text-ink-300">
+                  {p.timeToImpact ? formatYears(p.timeToImpact.value) : <span className="text-ink-500/70">·</span>}
+                </td>
+                <td className="px-3 py-3 text-right tabular-nums text-ink-300">
+                  {p.capitalRequired ? formatUSD(p.capitalRequired.value) : <span className="text-ink-500/70">·</span>}
                 </td>
                 <td className="px-3 py-3 text-right tabular-nums text-ink-500">
                   {companyCount}
