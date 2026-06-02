@@ -201,6 +201,117 @@ export default function MethodologyPage() {
 
               <section>
                 <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
+                  Shoulders we stand on
+                </h2>
+                <p className="mb-4">
+                  optimism.fun is downstream of three open inspirations. Each one supplies
+                  a piece of the rubric we use to rank.
+                </p>
+                <ul className="space-y-3 text-sm text-ink-400">
+                  <li>
+                    <a
+                      href="https://foundersfund.com/2023/06/choose-good-quests/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                    >
+                      Founders Fund &middot; &ldquo;Choose Good Quests&rdquo;
+                    </a>{' '}
+                    &mdash; Trae Stephens&rsquo; rubric for what makes a problem worth
+                    attacking: important if it works, a real frontier, unambiguously good.
+                    Anchors our tier definitions.
+                  </li>
+                  <li>
+                    <a
+                      href="https://patrickcollison.com/progress"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                    >
+                      Patrick Collison &middot; Progress Studies
+                    </a>{' '}
+                    &mdash; the case that progress is a study, not a vibe. Cowen &amp;
+                    Collison&rsquo;s 2019 essay set the field. The dense linkroll on that
+                    page is the spirit we want for our /voices and /progress.
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.ycombinator.com/rfs"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                    >
+                      Y Combinator &middot; Requests for Startups
+                    </a>{' '}
+                    &mdash; the format for turning a problem into a concrete buildable
+                    company. Our per-problem whitepapers follow the RFS voice: lead with the
+                    pain, name the unlock, describe the shape.
+                  </li>
+                  <li>
+                    <a
+                      href="https://80000hours.org/problem-profiles/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                    >
+                      80,000 Hours &middot; problem profiles
+                    </a>{' '}
+                    &mdash; the ITN composite (importance &times; tractability &times;
+                    neglectedness) we use as the x-risk lens.
+                  </li>
+                  <li>
+                    <a
+                      href="https://copenhagenconsensus.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                    >
+                      Copenhagen Consensus
+                    </a>{' '}
+                    &mdash; benefit-cost ratios for the welfare lens. Lomborg&rsquo;s
+                    Nobel-laureate panel methodology.
+                  </li>
+                  <li>
+                    <a
+                      href="https://ourworldindata.org"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                    >
+                      Our World in Data
+                    </a>{' '}
+                    &mdash; the gold standard for &ldquo;every number sourced.&rdquo; Many of
+                    our progress receipts trace back here.
+                  </li>
+                  <li>
+                    <a
+                      href="https://rootsofprogress.org"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                    >
+                      Roots of Progress
+                    </a>{' '}
+                    &mdash; Jason Crawford&rsquo;s case that progress is the moral imperative
+                    of our era. Anchors the &ldquo;progress &amp; abundance&rdquo; tier.
+                  </li>
+                  <li>
+                    <a
+                      href="https://worksinprogress.co"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                    >
+                      Works in Progress
+                    </a>{' '}
+                    &mdash; the magazine of the progress-studies movement. Where many of the
+                    arguments behind the rankings get sharpened.
+                  </li>
+                </ul>
+              </section>
+
+              <section>
+                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
                   Phase 0 status
                 </h2>
                 <p className="mb-3">
