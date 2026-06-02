@@ -268,3 +268,35 @@ export type ProgressMilestone = {
   confidence: Confidence
   asOf: string
 }
+
+export type CandidateStatus = 'draft' | 'promoted' | 'rejected'
+
+/**
+ * A problem candidate produced by the daily cron. Mirrors the curated
+ * Problem shape but is unverified — a human reviews + promotes (or
+ * rejects) via /admin/candidates before it shows up in the live ranking.
+ */
+export type ProblemCandidate = {
+  id: string
+  slug: string
+  name: string
+  tier: Tier
+  tagline: string
+  description: string
+  humansAffected: number | null
+  severity: number | null
+  marketSize: number | null
+  currentSolutionQuality: number | null
+  welfareBCR: number | null
+  xriskITN: number | null
+  utilityDelta: number | null
+  transformation: Transformation | null
+  sources: { title: string; url: string }[]
+  signalUrl: string | null
+  signalTitle: string | null
+  signalPublishedAt: string | null
+  rationale: string | null
+  status: CandidateStatus
+  createdAt: string
+  updatedAt: string
+}
