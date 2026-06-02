@@ -9,6 +9,7 @@ import { problems, getProblemBySlug } from '@/data/problems'
 import { getCompaniesForProblem } from '@/data/companies'
 import { getEcosystemForProblem } from '@/data/ecosystem'
 import { getPositionsForProblem } from '@/data/voices'
+import { getSectorsForProblem, getSectorBySlug } from '@/data/sectors'
 import { ECOSYSTEM_TYPE_LABEL } from '@/data/types'
 import { formatHumans, formatUSD, formatPercent, formatYears } from '@/lib/format'
 
@@ -42,6 +43,9 @@ export default async function ProblemPage({
   const problemCompanies = getCompaniesForProblem(slug)
   const problemEcosystem = getEcosystemForProblem(slug)
   const problemPositions = getPositionsForProblem(slug)
+  const problemSectors = getSectorsForProblem(slug)
+    .map((s) => getSectorBySlug(s))
+    .filter((s): s is NonNullable<typeof s> => Boolean(s))
 
   return (
     <>
@@ -58,6 +62,15 @@ export default async function ProblemPage({
 
             <div className="flex flex-wrap items-center gap-2 mb-5">
               <TierPill tier={problem.tier} />
+              {problemSectors.map((s) => (
+                <Link
+                  key={s.slug}
+                  href={`/sector/${s.slug}`}
+                  className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-300 border border-hair hover:border-amber-300/60 hover:text-amber-300 px-2 py-0.5 transition-colors"
+                >
+                  {s.name}
+                </Link>
+              ))}
               <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
                 humans affected:
               </span>

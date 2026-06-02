@@ -9,6 +9,7 @@ import { publicCompanies } from '@/data/public-companies'
 import { ecosystem } from '@/data/ecosystem'
 import { voices } from '@/data/voices'
 import { founders } from '@/data/founders'
+import { sectors } from '@/data/sectors'
 
 export default function Home() {
   const solutionCount = companies.length + publicCompanies.length
@@ -43,6 +44,32 @@ export default function Home() {
           className="px-6 pt-10 pb-14 max-w-7xl mx-auto scroll-mt-24"
         >
           <ProblemTable problems={problems} />
+
+          {/* Sector chip strip — pick a cluster instead of scanning the table */}
+          <div className="mt-8 border-t border-hair pt-6">
+            <div className="flex items-baseline justify-between mb-4">
+              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
+                or browse by sector
+              </p>
+              <Link
+                href="/sector"
+                className="font-mono text-[11px] text-ink-500 hover:text-amber-300 transition-colors"
+              >
+                all sectors &rarr;
+              </Link>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {sectors.map((s) => (
+                <Link
+                  key={s.slug}
+                  href={`/sector/${s.slug}`}
+                  className="border border-hair hover:border-amber-300/60 px-3 py-1.5 font-mono text-[11px] text-ink-300 hover:text-amber-300 transition-colors"
+                >
+                  {s.name}
+                </Link>
+              ))}
+            </div>
+          </div>
         </section>
 
         {/* The pipeline: explanations → solutions → coordination (talent + capital). */}

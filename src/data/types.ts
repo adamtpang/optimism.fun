@@ -76,10 +76,27 @@ export type RequestForStartup = {
   asOf: string
 }
 
+export type Sector = {
+  slug: string
+  name: string
+  /** One-line description for the chip and SEO. */
+  tagline: string
+  /** Long-form explainer for the sector landing page (1-3 paragraphs). */
+  description: string
+  /** Lead voice — name + URL of the canonical thinker on this sector. */
+  leadVoice?: { name: string; url: string }
+  /** Color hint used by chips and the landing-page hero accent. */
+  accent: 'amber' | 'rose' | 'cyan' | 'violet' | 'green' | 'indigo'
+  /** Open-ended further reading, Patrick-Collison-progress-style. */
+  furtherReading: { title: string; url: string; by?: string }[]
+}
+
 export type Problem = {
   slug: string
   name: string
   tier: Tier
+  /** Sector cluster slugs this problem belongs to. A problem can sit in 1-N sectors. */
+  sectors?: string[]
   tagline: string
   description: string
   /** How many humans this problem affects today. */
