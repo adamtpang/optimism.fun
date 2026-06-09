@@ -2,7 +2,10 @@ import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import ProblemTable from '@/components/ProblemTable'
+import RadarClient from '@/components/RadarClient'
+import DataFreshness from '@/components/DataFreshness'
 import EmailCapture from '@/components/EmailCapture'
+import { computeRadarRows } from '@/lib/radar'
 import { problems } from '@/data/problems'
 import { companies } from '@/data/companies'
 import { publicCompanies } from '@/data/public-companies'
@@ -13,6 +16,7 @@ import { sectors } from '@/data/sectors'
 
 export default function Home() {
   const solutionCount = companies.length + publicCompanies.length
+  const radarRows = computeRadarRows()
 
   return (
     <>
@@ -35,10 +39,30 @@ export default function Home() {
               {problems.length} priority problems, ranked. Every number sourced. Pick one
               worth your life.
             </p>
+            <DataFreshness className="mt-5" />
           </div>
         </section>
 
-        {/* The leaderboard — front and center. */}
+        {/* THE RADAR — opportunity-ranked: where demand is high and supply is low */}
+        <section className="border-b border-hair">
+          <div className="max-w-7xl mx-auto px-6 py-12">
+            <div className="mb-6">
+              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-1">
+                The radar
+              </p>
+              <h2 className="font-serif text-2xl md:text-4xl text-ink-100 leading-tight">
+                Where demand is high, and supply is low.
+              </h2>
+              <p className="mt-2 text-ink-400 max-w-2xl text-sm leading-relaxed">
+                Every problem ranked by opportunity: how badly the world needs a solution,
+                divided by how well-served it already is. The biggest gaps are step zero.
+              </p>
+            </div>
+            <RadarClient rows={radarRows} />
+          </div>
+        </section>
+
+        {/* The leaderboard — the detailed, multi-metric sortable index. */}
         <section
           id="problems"
           className="px-6 pt-10 pb-14 max-w-7xl mx-auto scroll-mt-24"
