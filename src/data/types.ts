@@ -76,10 +76,85 @@ export type RequestForStartup = {
   asOf: string
 }
 
+export type Sector = {
+  slug: string
+  name: string
+  /** One-line description for the chip and SEO. */
+  tagline: string
+  /** Long-form explainer for the sector landing page (1-3 paragraphs). */
+  description: string
+  /** Lead voice — name + URL of the canonical thinker on this sector. */
+  leadVoice?: { name: string; url: string }
+  /** Color hint used by chips and the landing-page hero accent. */
+  accent: 'amber' | 'rose' | 'cyan' | 'violet' | 'green' | 'indigo'
+  /** Open-ended further reading, Patrick-Collison-progress-style. */
+  furtherReading: { title: string; url: string; by?: string }[]
+}
+
+/**
+ * Primary domain facet for the home dashboard filter. One word, mutually
+ * exclusive, so visitors can slice the index the way 80,000 Hours and Our
+ * World in Data do. (Distinct from `sectors`, which is a multi-cluster tag.)
+ */
+export type Domain =
+  | 'health'
+  | 'energy'
+  | 'ai'
+  | 'bio'
+  | 'poverty'
+  | 'governance'
+  | 'education'
+  | 'climate'
+  | 'science'
+  | 'longevity'
+  | 'social'
+
+/** Direction of travel for a problem's headline number. */
+export type Trend = 'improving' | 'worsening' | 'flat'
+
+/**
+ * The headline scale measure: one number, its unit, the direction it is moving,
+ * and a sparse real time-series for the sparkline. Trend is the optimism signal:
+ * most things are improving, and we show it.
+ */
+export type ScaleMeasure = {
+  value: number
+  unit: string
+  trend: Trend
+  /** Sparse, real anchor points (year ascending) for the sparkline. */
+  series?: { year: number; value: number }[]
+  source: string
+  sourceUrl?: string
+  confidence: Confidence
+  asOf: string
+}
+
+/** A 0-10 judgment (neglectedness, tractability) with a reasoned, cited rationale. */
+export type ScoredJudgment = {
+  score: number // 0-10
+  rationale: string
+  source: string
+  sourceUrl?: string
+  confidence: Confidence
+  asOf: string
+}
+
+export type Organization = { name: string; url: string; kind: string }
+export type Person = { name: string; role: string; url?: string }
+export type WayToHelp = {
+  mode: 'build' | 'fund' | 'research' | 'donate' | 'career' | 'policy'
+  text: string
+  url?: string
+}
+
 export type Problem = {
   slug: string
   name: string
   tier: Tier
+  /** Primary domain facet for the home dashboard filter. */
+  domain?: Domain
+  /** Sector cluster slugs this problem belongs to. A problem can sit in 1-N sectors. */
+  sectors?: string[]
   tagline: string
   description: string
   /** How many humans this problem affects today. */
@@ -96,8 +171,32 @@ export type Problem = {
    * Drives axis 3 of the ranking: "how good are existing solutions."
    */
   currentSolutionQuality?: SourcedNumber
+  /**
+   * Order-of-magnitude time to meaningful impact, in years. Drawn from analogues
+   * (e.g. biotech base rates, energy infrastructure timelines). Low confidence.
+   */
+  timeToImpact?: SourcedNumber
+  /**
+   * Order-of-magnitude capital required for civilizational-scale solution, in USD.
+   * Includes R&D, deployment, and the supply chain to scale. Low confidence.
+   */
+  capitalRequired?: SourcedNumber
   /** Before/after success vision for the problem. */
   transformation?: Transformation
+  /** Headline scale + trend (improving/worsening) + optional sparkline series. */
+  scale?: ScaleMeasure
+  /** How crowded the field is. Low score = neglected = high opportunity. 0-10. */
+  neglectedness?: ScoredJudgment
+  /** How much traction effort buys right now. 0-10. */
+  tractability?: ScoredJudgment
+  /** Key organizations working on it. */
+  organizations?: Organization[]
+  /** People worth following on this problem. */
+  people?: Person[]
+  /** Concrete ways to help or build, for non-founders and founders alike. */
+  waysToHelp?: WayToHelp[]
+  /** ISO date this entry's content was last reviewed. Shown on every page. */
+  lastUpdated?: string
   scores: LensScore
   sources: { title: string; url: string }[]
   asOf: string
@@ -266,6 +365,44 @@ export type WhitepaperDoc = {
   newsletter?: { subject: string; preheader: string }
 }
 
+export type MediaSourceKind = 'substack' | 'youtube' | 'x' | 'blog' | 'podcast'
+
+export type MediaSource = {
+  /** Stable id e.g. "substack:not-boring" */
+  id: string
+  kind: MediaSourceKind
+  /** Human-readable label e.g. "Not Boring" */
+  name: string
+  /** Author / channel handle e.g. "Packy McCormick" */
+  author?: string
+  url: string
+  /** RSS feed for substack / blog / podcast; YouTube channel feed; X polling URL. */
+  feedUrl?: string
+}
+
+export type MediaStatus = 'draft' | 'live' | 'rejected'
+
+/**
+ * A single media item — essay, podcast episode, video, thread — tagged
+ * to the problems and sectors it discusses. Surfaces in MediaFeed on
+ * /p/[slug], /sector/[slug], and the /media firehose.
+ *
+ * Cron at /api/cron/media-ingest pulls these from RSS / YouTube / X and
+ * Anthropic auto-tags them. Editor reviews 'draft' rows and flips to
+ * 'live'. Seeded items in src/data/media.ts are 'live' by default.
+ */
+export type MediaItem = {
+  id: string
+  title: string
+  url: string
+  sourceId: string
+  publishedAt: string
+  excerpt?: string
+  problemSlugs: string[]
+  sectorSlugs?: string[]
+  status: MediaStatus
+}
+
 export type ProgressMilestone = {
   slug: string
   name: string
@@ -279,4 +416,36 @@ export type ProgressMilestone = {
   sourceUrl: string
   confidence: Confidence
   asOf: string
+}
+
+export type CandidateStatus = 'draft' | 'promoted' | 'rejected'
+
+/**
+ * A problem candidate produced by the daily cron. Mirrors the curated
+ * Problem shape but is unverified — a human reviews + promotes (or
+ * rejects) via /admin/candidates before it shows up in the live ranking.
+ */
+export type ProblemCandidate = {
+  id: string
+  slug: string
+  name: string
+  tier: Tier
+  tagline: string
+  description: string
+  humansAffected: number | null
+  severity: number | null
+  marketSize: number | null
+  currentSolutionQuality: number | null
+  welfareBCR: number | null
+  xriskITN: number | null
+  utilityDelta: number | null
+  transformation: Transformation | null
+  sources: { title: string; url: string }[]
+  signalUrl: string | null
+  signalTitle: string | null
+  signalPublishedAt: string | null
+  rationale: string | null
+  status: CandidateStatus
+  createdAt: string
+  updatedAt: string
 }

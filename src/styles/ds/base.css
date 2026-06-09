@@ -1,0 +1,73 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   optimism.fun · BASE & SIGNATURE EFFECTS
+   The terminal-grid lattice, sky glow, selection, scrollbars, and the handful
+   of utility classes the product relies on (.surface-paper, .border-hair, …).
+   ────────────────────────────────────────────────────────────────────────── */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: rgb(var(--bg));
+  color: rgb(var(--fg));
+  font-family: var(--font-sans);
+  font-feature-settings: var(--font-features-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Terminal-grid background — 1px lattice at 32px pitch, barely visible, plus a
+   single sky-blue radial glow blooming from the top edge. The signature
+   atmosphere of every optimism.fun page. */
+.lattice-bg::before,
+body.lattice-bg::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -20;
+  background-image:
+    linear-gradient(to right, rgb(var(--fg) / var(--grid-opacity)) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(var(--fg) / var(--grid-opacity)) 1px, transparent 1px),
+    radial-gradient(ellipse 1200px 800px at 50% -10%, rgba(14, 165, 233, var(--glow-opacity)), transparent 70%);
+  background-size: var(--lattice) var(--lattice), var(--lattice) var(--lattice), 100% 100%;
+  pointer-events: none;
+}
+
+::selection {
+  background: rgba(14, 165, 233, 0.35);
+  color: rgb(var(--fg));
+}
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(14, 165, 233, 0.25); }
+::-webkit-scrollbar-thumb:hover { background: rgba(14, 165, 233, 0.5); }
+
+/* Tabular numerals everywhere data lives */
+.font-mono,
+.tabular-nums { font-variant-numeric: tabular-nums; }
+
+/* Theme-following hairlines */
+.border-hair { border-color: rgb(var(--line) / var(--line-opacity)); }
+.border-hair-strong { border-color: rgb(var(--line) / var(--line-strong-opacity)); }
+
+/* Paper surface — warmer feature sections, with a faint sky wash up top */
+.surface-paper {
+  background:
+    linear-gradient(180deg, rgba(14, 165, 233, 0.025) 0%, transparent 50%),
+    rgb(var(--paper));
+}
+
+/* Signature kicker — mono, uppercase, ultra-wide tracking */
+.kicker {
+  font-family: var(--font-mono);
+  font-size: var(--text-label-sm);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-ultra-wide);
+  color: var(--text-muted);
+}
+
+/* Hide scrollbar utility for horizontal nav rails */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }

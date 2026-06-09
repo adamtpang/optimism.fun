@@ -3,8 +3,8 @@
  * state via `isAnthropicConfigured()` so callers can degrade.
  *
  * Default model is Claude Opus 4.7 — chosen for high-stakes reasoning
- * (drafting blackpapers / whitepapers). Lighter calls can pass a different
- * model id.
+ * (scoring candidate problems, drafting blackpapers / whitepapers). Lighter
+ * calls can pass a different model id.
  */
 import Anthropic from '@anthropic-ai/sdk'
 
