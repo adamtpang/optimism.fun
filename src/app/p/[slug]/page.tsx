@@ -12,6 +12,27 @@ import { getPositionsForProblem } from '@/data/voices'
 import { getSectorsForProblem, getSectorBySlug } from '@/data/sectors'
 import { ECOSYSTEM_TYPE_LABEL } from '@/data/types'
 import { formatHumans, formatUSD, formatPercent, formatYears } from '@/lib/format'
+import Sparkline from '@/components/Sparkline'
+import TrendBadge from '@/components/TrendBadge'
+import { priorityScore, importanceScore, urgencyScore } from '@/lib/priority'
+
+const WAY_LABEL: Record<string, string> = {
+  build: 'Build',
+  fund: 'Fund',
+  research: 'Research',
+  donate: 'Donate',
+  career: 'Career',
+  policy: 'Policy',
+}
+
+function compactScale(n: number): string {
+  if (n >= 1e12) return `${(n / 1e12).toFixed(1)}T`
+  if (n >= 1e9) return `${(n / 1e9).toFixed(1)}B`
+  if (n >= 1e6) return `${(n / 1e6).toFixed(0)}M`
+  if (n >= 1e3) return `${(n / 1e3).toFixed(0)}K`
+  if (n <= 1 && n > 0) return `${(n * 100).toFixed(0)}%`
+  return n.toLocaleString()
+}
 
 export function generateStaticParams() {
   return problems.map((p) => ({ slug: p.slug }))
@@ -79,6 +100,11 @@ export default async function ProblemPage({
                 source={problem.humansAffected.source}
                 asOf={problem.asOf}
               />
+              {problem.lastUpdated && (
+                <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
+                  · updated {problem.lastUpdated}
+                </span>
+              )}
             </div>
 
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.05] text-ink-100 mb-5">
@@ -89,6 +115,57 @@ export default async function ProblemPage({
             </p>
           </div>
         </section>
+
+        {/* Scale + trend — the Our-World-in-Data style headline measure */}
+        {problem.scale && (
+          <section className="border-b border-hair">
+            <div className="max-w-5xl mx-auto px-6 py-8 flex flex-wrap items-center justify-between gap-6">
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+                  The scale of it
+                </p>
+                <div className="flex items-baseline gap-3">
+                  <span className="font-mono text-4xl md:text-5xl tabular-nums text-ink-100">
+                    {compactScale(problem.scale.value)}
+                  </span>
+                  <TrendBadge trend={problem.scale.trend} />
+                </div>
+                <p className="text-sm text-ink-400 mt-1 max-w-md">{problem.scale.unit}</p>
+              </div>
+              {problem.scale.series && problem.scale.series.length >= 2 && (
+                <div className="flex flex-col items-end gap-1">
+                  <Sparkline
+                    series={problem.scale.series}
+                    trend={problem.scale.trend}
+                    width={220}
+                    height={56}
+                    strokeWidth={2}
+                  />
+                  <span className="font-mono text-[10px] text-ink-500 tabular-nums">
+                    {problem.scale.series[0].year} – {problem.scale.series[problem.scale.series.length - 1].year}
+                  </span>
+                </div>
+              )}
+            </div>
+            <div className="max-w-5xl mx-auto px-6 pb-6">
+              <p className="font-mono text-[11px] text-ink-500">
+                <span className="text-ink-600">source:</span>{' '}
+                {problem.scale.sourceUrl ? (
+                  <a
+                    href={problem.scale.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                  >
+                    {problem.scale.source}
+                  </a>
+                ) : (
+                  problem.scale.source
+                )}
+              </p>
+            </div>
+          </section>
+        )}
 
         <section className="px-6 py-10 max-w-5xl mx-auto">
           <Link
@@ -249,6 +326,188 @@ export default async function ProblemPage({
               </div>
             )}
           </div>
+
+          {/* Priority = importance x urgency (the optimism.fun formula) */}
+          <div className="grid sm:grid-cols-3 gap-px bg-ink-700/50 border border-hair mb-12">
+            <div className="bg-ink-900 p-6">
+              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-2">
+                Priority score
+              </p>
+              <p className="font-mono text-4xl tabular-nums text-ink-100">{priorityScore(problem)}</p>
+              <p className="font-mono text-[11px] text-ink-500 mt-1">importance × urgency, 0–100</p>
+            </div>
+            <div className="bg-ink-900 p-6">
+              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+                Importance
+              </p>
+              <p className="font-mono text-2xl tabular-nums text-ink-200">
+                {(importanceScore(problem) * 100).toFixed(0)}
+              </p>
+              <p className="font-mono text-[11px] text-ink-500 mt-1">
+                humans affected × severity, gated by market
+              </p>
+            </div>
+            <div className="bg-ink-900 p-6">
+              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+                Urgency
+              </p>
+              <p className="font-mono text-2xl tabular-nums text-ink-200">
+                {(urgencyScore(problem) * 100).toFixed(0)}
+              </p>
+              <p className="font-mono text-[11px] text-ink-500 mt-1">
+                direction of travel + solution gap
+              </p>
+            </div>
+          </div>
+
+          {/* Neglectedness + tractability (the 80,000 Hours lenses, made explicit) */}
+          {(problem.neglectedness || problem.tractability) && (
+            <div className="grid md:grid-cols-2 gap-px bg-ink-700/50 border border-hair mb-12">
+              {problem.neglectedness && (
+                <div className="bg-ink-900 p-6">
+                  <div className="flex items-baseline justify-between mb-2">
+                    <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
+                      Neglectedness
+                    </p>
+                    <span className="font-mono text-lg tabular-nums text-terminal-violet">
+                      {problem.neglectedness.score}/10
+                    </span>
+                  </div>
+                  <div className="h-1 bg-ink-800 mb-3">
+                    <div
+                      className="h-1 bg-terminal-violet"
+                      style={{ width: `${problem.neglectedness.score * 10}%` }}
+                    />
+                  </div>
+                  <p className="text-sm text-ink-400 leading-relaxed mb-2">
+                    {problem.neglectedness.rationale}
+                  </p>
+                  <SourceBadge
+                    confidence={problem.neglectedness.confidence}
+                    source={problem.neglectedness.source}
+                    asOf={problem.neglectedness.asOf}
+                  />
+                </div>
+              )}
+              {problem.tractability && (
+                <div className="bg-ink-900 p-6">
+                  <div className="flex items-baseline justify-between mb-2">
+                    <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
+                      Tractability
+                    </p>
+                    <span className="font-mono text-lg tabular-nums text-terminal-green">
+                      {problem.tractability.score}/10
+                    </span>
+                  </div>
+                  <div className="h-1 bg-ink-800 mb-3">
+                    <div
+                      className="h-1 bg-terminal-green"
+                      style={{ width: `${problem.tractability.score * 10}%` }}
+                    />
+                  </div>
+                  <p className="text-sm text-ink-400 leading-relaxed mb-2">
+                    {problem.tractability.rationale}
+                  </p>
+                  <SourceBadge
+                    confidence={problem.tractability.confidence}
+                    source={problem.tractability.source}
+                    asOf={problem.tractability.asOf}
+                  />
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Ways to help — the call to action, for builders and non-builders */}
+          {problem.waysToHelp && problem.waysToHelp.length > 0 && (
+            <div className="mb-12">
+              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-4">
+                Ways to help
+              </p>
+              <div className="space-y-2">
+                {problem.waysToHelp.map((w, i) => (
+                  <div key={i} className="flex items-start gap-3 border border-hair p-4">
+                    <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 whitespace-nowrap mt-0.5 w-16">
+                      {WAY_LABEL[w.mode] ?? w.mode}
+                    </span>
+                    <p className="text-sm text-ink-300 leading-relaxed flex-1">
+                      {w.url ? (
+                        <a
+                          href={w.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-amber-300 transition-colors"
+                        >
+                          {w.text} →
+                        </a>
+                      ) : (
+                        w.text
+                      )}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Who is working on it: organizations + people */}
+          {((problem.organizations && problem.organizations.length > 0) ||
+            (problem.people && problem.people.length > 0)) && (
+            <div className="grid md:grid-cols-2 gap-8 mb-12">
+              {problem.organizations && problem.organizations.length > 0 && (
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
+                    Organizations
+                  </p>
+                  <ul className="space-y-2">
+                    {problem.organizations.map((o) => (
+                      <li key={o.name} className="flex items-baseline justify-between gap-3 border-b border-hair pb-2">
+                        <a
+                          href={o.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-ink-200 hover:text-amber-300 transition-colors"
+                        >
+                          {o.name}
+                        </a>
+                        <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 whitespace-nowrap">
+                          {o.kind}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {problem.people && problem.people.length > 0 && (
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
+                    People to follow
+                  </p>
+                  <ul className="space-y-2">
+                    {problem.people.map((person) => (
+                      <li key={person.name} className="flex items-baseline justify-between gap-3 border-b border-hair pb-2">
+                        {person.url ? (
+                          <a
+                            href={person.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-ink-200 hover:text-amber-300 transition-colors"
+                          >
+                            {person.name}
+                          </a>
+                        ) : (
+                          <span className="text-sm text-ink-200">{person.name}</span>
+                        )}
+                        <span className="font-mono text-[10px] text-ink-500 text-right">
+                          {person.role}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
 
           <div className="border border-hair p-6 mb-12">
             <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-4">
