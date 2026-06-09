@@ -4,6 +4,7 @@ import Footer from '@/components/Footer'
 import ProblemTable from '@/components/ProblemTable'
 import RadarClient from '@/components/RadarClient'
 import DataFreshness from '@/components/DataFreshness'
+import GlobeView from '@/components/GlobeView'
 import EmailCapture from '@/components/EmailCapture'
 import { computeRadarRows } from '@/lib/radar'
 import { problems } from '@/data/problems'
@@ -22,25 +23,45 @@ export default function Home() {
     <>
       <Navbar />
       <main>
-        {/* Hero — minimal. Title, one line, and a pointer to the table. */}
-        <section className="pt-28 pb-8 border-b border-hair">
-          <div className="max-w-7xl mx-auto px-6">
+        {/* GLOBE HERO — capitalism on a globe, the landing's first impression. */}
+        <section className="border-b border-hair">
+          <div className="max-w-7xl mx-auto px-6 pt-28 pb-6">
             <div className="flex items-center gap-2 mb-3">
               <span className="text-amber-300 text-[10px]">◆</span>
               <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-400">
                 humanity&rsquo;s requests for startups &middot; v0.1
               </p>
             </div>
-            <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.02] text-ink-100 mb-4">
+            <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.02] text-ink-100 mb-4 max-w-3xl">
               Infinite problems.{' '}
               <span className="text-amber-300">Infinite solutions.</span>
             </h1>
             <p className="text-ink-400 leading-relaxed max-w-2xl text-base">
-              {problems.length} priority problems, ranked. Every number sourced. Pick one
-              worth your life.
+              A live map of capitalism — every company, founder, and economy — pointed at{' '}
+              {problems.length} ranked problems worth your life. Spin the globe, then start
+              your quest.
             </p>
+            <div className="mt-6 flex flex-wrap items-center gap-2">
+              <Link
+                href="/journey"
+                className="font-mono text-[11px] uppercase tracking-wider text-paper bg-amber-300 hover:bg-amber-200 px-4 py-2.5 rounded transition-colors"
+              >
+                Start the quest &rarr;
+              </Link>
+              <Link
+                href="#problems"
+                className="font-mono text-[11px] uppercase tracking-wider text-ink-300 border border-hair hover:border-amber-300 px-4 py-2.5 rounded transition-colors"
+              >
+                See the ranking &rarr;
+              </Link>
+            </div>
             <DataFreshness className="mt-5" />
           </div>
+          {/* full-bleed globe — companies + founders by default; toggle layers below it */}
+          <GlobeView
+            className="relative w-full h-[62vh] min-h-[420px]"
+            initialLayers={['companies', 'founders']}
+          />
         </section>
 
         {/* THE RADAR — opportunity-ranked: where demand is high and supply is low */}

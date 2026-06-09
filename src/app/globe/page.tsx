@@ -3,7 +3,6 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import EmailCapture from '@/components/EmailCapture'
 import GlobeView from '@/components/GlobeView'
-import { publicCompanies } from '@/data/public-companies'
 
 export const metadata: Metadata = {
   title: 'The Globe | optimism.fun',
@@ -25,20 +24,24 @@ export default function GlobePage() {
               Capitalism, on a globe.
             </h1>
             <p className="text-ink-400 leading-relaxed max-w-2xl text-base">
-              The world’s {publicCompanies.length} largest public companies, plotted at their
-              headquarters and scaled by market cap. A calm, open re-imagining of Harvard’s
-              Globe of Economic Complexity. Drag to spin, scroll to zoom, hover a dot.
+              The world’s largest public companies, wealthiest founders, and biggest
+              economies — plotted at their location, each scaled (log) within its layer. A calm,
+              open re-imagining of Harvard’s Globe of Economic Complexity. Drag to spin, scroll to
+              zoom, hover a dot, toggle the layers.
             </p>
           </div>
         </section>
 
         <section className="px-2 sm:px-6 py-4 max-w-7xl mx-auto">
-          <GlobeView />
+          <GlobeView
+            className="relative w-full h-[72vh] min-h-[480px]"
+            initialLayers={['companies', 'founders', 'countries']}
+          />
           <p className="mt-3 px-4 font-mono text-[10px] text-ink-500 leading-relaxed">
-            <span className="text-amber-300">●</span> each dot is a public company at its HQ
-            country, height scaled to market cap (companiesmarketcap-style). Market data from the
-            companies dataset. More layers coming: crypto, founders, countries by GDP, and the
-            problems each company serves.
+            <span style={{ color: '#38bdf8' }}>●</span> companies by market cap ·{' '}
+            <span style={{ color: '#fbbf24' }}>●</span> founders by net worth ·{' '}
+            <span style={{ color: '#34d399' }}>●</span> countries by GDP. Height is log-scaled
+            within each layer. Next: color companies by the problem they serve.
           </p>
         </section>
 
