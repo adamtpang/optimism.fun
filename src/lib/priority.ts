@@ -78,3 +78,45 @@ export function isRising(p: Problem): boolean {
 export function byPriority(problems: Problem[]): Problem[] {
   return [...problems].sort((a, b) => priorityScore(b) - priorityScore(a))
 }
+
+/* ── The demand radar: supply, and the opportunity gap ─────────────────────
+   Demand = importance (how badly the world needs a solution).
+   Supply = how well-served the problem already is (companies on it, capital
+   deployed, and the quality of existing solutions).
+   Opportunity = high demand AND low supply. That gap is the "step 0" for a
+   founder choosing what to build. ─────────────────────────────────────────── */
+
+/** Counts of who is already working on a problem. Pass from the data layer. */
+export type SupplyInputs = {
+  /** Number of companies tagged to this problem. */
+  companies: number
+  /** Number of capital allocators (grants, funds, studios) tagged to it. */
+  capital: number
+}
+
+/**
+ * 0..1 of how well-served a problem already is. Higher = more crowded = less
+ * opportunity. Blends the quality of existing solutions with how many companies
+ * and allocators are on it (log-scaled, since a few well-funded entries already
+ * change the picture).
+ */
+export function supplyScore(p: Problem, s: SupplyInputs): number {
+  const quality = p.currentSolutionQuality?.value
+  const qualityNorm = quality == null ? 0.4 : clamp01(quality > 1 ? quality / 10 : quality)
+  const companyNorm = clamp01(Math.log10(1 + s.companies) / Math.log10(1 + 20)) // ~20 cos = saturated
+  const capitalNorm = clamp01(Math.log10(1 + s.capital) / Math.log10(1 + 12)) // ~12 funds = saturated
+  // Quality of solutions matters most; headcount of supply is secondary.
+  return clamp01(0.5 * qualityNorm + 0.35 * companyNorm + 0.15 * capitalNorm)
+}
+
+/**
+ * 0..100 opportunity score: high demand, low supply. This is the radar's
+ * ranking metric. A big, urgent, badly-served problem scores highest.
+ */
+export function opportunityScore(p: Problem, s: SupplyInputs): number {
+  const demand = importanceScore(p)
+  const supply = supplyScore(p, s)
+  // Urgency nudges it: a worsening, unsolved problem is a sharper opportunity.
+  const urgency = 0.7 + 0.3 * urgencyScore(p)
+  return Math.round(demand * (1 - supply) * urgency * 100)
+}
