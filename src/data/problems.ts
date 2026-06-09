@@ -1,4 +1,4 @@
-import type { Problem } from './types'
+import type { Problem, Domain } from './types'
 
 const TODAY = '2026-04-24'
 
@@ -7,6 +7,50 @@ export const problems: Problem[] = [
     slug: 'ai-safety',
     name: 'AI safety & alignment',
     tier: 'x-risk',
+    domain: 'ai',
+    scale: {
+      value: 8_200_000_000,
+      unit: 'humans exposed to frontier AI systems',
+      trend: 'worsening',
+      source: 'Capability is scaling faster than alignment: frontier training compute has grown ~4-5x per year (Epoch AI) while no scalable alignment method is proven.',
+      sourceUrl: 'https://epoch.ai/trends',
+      confidence: 'med',
+      asOf: '2026-06-09',
+    },
+    neglectedness: {
+      score: 3,
+      rationale: 'The alignment field is growing fast (hundreds to low thousands of researchers) but is still tiny next to the tens of billions in annual capabilities spend.',
+      source: '80,000 Hours AI problem profile',
+      sourceUrl: 'https://80000hours.org/problem-profiles/artificial-intelligence/',
+      confidence: 'med',
+      asOf: '2026-06-09',
+    },
+    tractability: {
+      score: 4,
+      rationale: 'Interpretability and evals went from toy to production scale in three years; real fundable technical work now exists, though no scalable alignment method is proven.',
+      source: 'Anthropic interpretability research; METR evaluations',
+      sourceUrl: 'https://www.anthropic.com/research',
+      confidence: 'low',
+      asOf: '2026-06-09',
+    },
+    organizations: [
+      { name: 'Anthropic', url: 'https://www.anthropic.com', kind: 'frontier lab' },
+      { name: 'Redwood Research', url: 'https://www.redwoodresearch.org', kind: 'nonprofit research' },
+      { name: 'UK AI Safety Institute', url: 'https://www.aisi.gov.uk', kind: 'government' },
+      { name: 'METR', url: 'https://metr.org', kind: 'evaluations' },
+    ],
+    people: [
+      { name: 'Paul Christiano', role: 'alignment researcher', url: 'https://paulfchristiano.com' },
+      { name: 'Chris Olah', role: 'interpretability, Anthropic', url: 'https://colah.github.io' },
+      { name: 'Beth Barnes', role: 'evaluations, METR', url: 'https://metr.org' },
+    ],
+    waysToHelp: [
+      { mode: 'career', text: 'Do technical alignment or evals research; 80,000 Hours ranks it a top career path.', url: 'https://80000hours.org/career-reviews/ai-safety-researcher/' },
+      { mode: 'build', text: 'Build interpretability, evaluation, and red-teaming tooling that labs and regulators can buy.' },
+      { mode: 'fund', text: 'Fund independent alignment work via the Long-Term Future Fund.', url: 'https://funds.effectivealtruism.org/funds/far-future' },
+      { mode: 'policy', text: 'Work on compute governance and deployment-safety standards.' },
+    ],
+    lastUpdated: '2026-06-09',
     tagline:
       'Ensure increasingly capable AI systems remain corrigible, honest, and aligned with human values.',
     description:
@@ -92,6 +136,47 @@ export const problems: Problem[] = [
   },
   {
     slug: 'biosecurity',
+    domain: 'bio',
+    scale: {
+      value: 20_000_000,
+      unit: 'excess deaths in the last major pandemic (COVID-19)',
+      trend: 'worsening',
+      source: 'WHO estimated ~14.8M excess deaths in 2020-21; later totals ~20M. Engineered-pandemic risk is rising as DNA synthesis and gain-of-function capability spread.',
+      sourceUrl: 'https://www.who.int/data/stories/global-excess-deaths-associated-with-covid-19-january-2020-to-december-2021',
+      confidence: 'med',
+      asOf: '2026-06-09',
+    },
+    neglectedness: {
+      score: 4,
+      rationale: 'Funding rose after COVID-19, but pathogen-agnostic early warning and rapid global manufacturing remain underbuilt relative to the tail risk.',
+      source: 'Johns Hopkins Center for Health Security',
+      sourceUrl: 'https://centerforhealthsecurity.org',
+      confidence: 'med',
+      asOf: '2026-06-09',
+    },
+    tractability: {
+      score: 6,
+      rationale: 'Concrete tools exist or are near: metagenomic surveillance, far-UVC sterilization, and rapid platform vaccines. The gating problems are deployment and policy, not science.',
+      source: 'Nucleic Acid Observatory; CEPI 100 Days Mission',
+      sourceUrl: 'https://cepi.net/100-days',
+      confidence: 'med',
+      asOf: '2026-06-09',
+    },
+    organizations: [
+      { name: 'Johns Hopkins Center for Health Security', url: 'https://centerforhealthsecurity.org', kind: 'research' },
+      { name: 'CEPI', url: 'https://cepi.net', kind: 'vaccine coalition' },
+      { name: 'Nuclear Threat Initiative (bio)', url: 'https://www.nti.org/area/biosecurity/', kind: 'policy' },
+    ],
+    people: [
+      { name: 'Kevin Esvelt', role: 'biosecurity, MIT Media Lab', url: 'https://www.media.mit.edu/people/esvelt/' },
+      { name: 'Tom Inglesby', role: 'director, JHU Center for Health Security', url: 'https://centerforhealthsecurity.org' },
+    ],
+    waysToHelp: [
+      { mode: 'career', text: 'Work in biosecurity research or policy; 80,000 Hours rates it a top problem.', url: 'https://80000hours.org/problem-profiles/preventing-catastrophic-pandemics/' },
+      { mode: 'build', text: 'Build pathogen-agnostic detection, far-UVC hardware, or rapid biomanufacturing.' },
+      { mode: 'policy', text: 'Push mandatory DNA-synthesis screening and lab-safety standards.' },
+    ],
+    lastUpdated: '2026-06-09',
     name: 'Biosecurity & pandemic preparedness',
     tier: 'x-risk',
     tagline:
@@ -179,6 +264,53 @@ export const problems: Problem[] = [
   },
   {
     slug: 'energy-abundance',
+    domain: 'energy',
+    scale: {
+      value: 750_000_000,
+      unit: 'people without electricity access',
+      trend: 'improving',
+      series: [
+        { year: 2000, value: 1_400_000_000 },
+        { year: 2010, value: 1_200_000_000 },
+        { year: 2016, value: 1_100_000_000 },
+        { year: 2022, value: 760_000_000 },
+      ],
+      source: 'IEA / World Bank SDG7 tracking: people without electricity access',
+      sourceUrl: 'https://ourworldindata.org/energy-access',
+      confidence: 'high',
+      asOf: '2026-06-09',
+    },
+    neglectedness: {
+      score: 5,
+      rationale: 'Climate capital is abundant, but firm clean baseload (advanced nuclear, enhanced geothermal) is underfunded relative to intermittent renewables.',
+      source: 'IEA World Energy Investment',
+      sourceUrl: 'https://www.iea.org/reports/world-energy-investment-2024',
+      confidence: 'med',
+      asOf: '2026-06-09',
+    },
+    tractability: {
+      score: 7,
+      rationale: 'Solar and battery costs fell ~90% in a decade; advanced fission, fusion, and enhanced geothermal are all moving from lab to first deployments.',
+      source: 'Our World in Data — cost of clean energy',
+      sourceUrl: 'https://ourworldindata.org/cheap-renewables-growth',
+      confidence: 'high',
+      asOf: '2026-06-09',
+    },
+    organizations: [
+      { name: 'Breakthrough Energy', url: 'https://www.breakthroughenergy.org', kind: 'catalytic capital' },
+      { name: 'International Energy Agency', url: 'https://www.iea.org', kind: 'data / policy' },
+      { name: 'Commonwealth Fusion Systems', url: 'https://cfs.energy', kind: 'company' },
+    ],
+    people: [
+      { name: 'Hannah Ritchie', role: 'energy + environment, Our World in Data', url: 'https://www.hannahritchie.com' },
+      { name: 'Vaclav Smil', role: 'energy systems analyst', url: 'https://vaclavsmil.com' },
+    ],
+    waysToHelp: [
+      { mode: 'build', text: 'Build advanced nuclear, enhanced geothermal, or long-duration storage.' },
+      { mode: 'policy', text: 'Fix permitting and interconnection queues that block firm clean power.' },
+      { mode: 'career', text: 'Engineering and project finance for energy infrastructure.' },
+    ],
+    lastUpdated: '2026-06-09',
     name: 'Energy abundance',
     tier: 'hard-tech',
     tagline:
@@ -270,6 +402,45 @@ export const problems: Problem[] = [
   },
   {
     slug: 'housing-construction',
+    domain: 'poverty',
+    scale: {
+      value: 1_600_000_000,
+      unit: 'people in inadequate housing',
+      trend: 'worsening',
+      source: 'UN-Habitat: ~1.6B people in inadequate housing; urban affordability worsening as construction productivity stays flat.',
+      sourceUrl: 'https://unhabitat.org/topic/housing',
+      confidence: 'med',
+      asOf: '2026-06-09',
+    },
+    neglectedness: {
+      score: 6,
+      rationale: 'Enormous need, little frontier capital: construction has barely industrialized and zoning reform is politically stuck.',
+      source: 'McKinsey Global Institute — construction productivity',
+      sourceUrl: 'https://www.mckinsey.com/capabilities/operations/our-insights/reinventing-construction-through-a-productivity-revolution',
+      confidence: 'med',
+      asOf: '2026-06-09',
+    },
+    tractability: {
+      score: 4,
+      rationale: 'The technology (modular, factory-built) keeps failing on logistics, financing, and entitlement, not on engineering. The bottleneck is policy and process.',
+      source: 'Construction Physics (Brian Potter)',
+      sourceUrl: 'https://www.construction-physics.com',
+      confidence: 'med',
+      asOf: '2026-06-09',
+    },
+    organizations: [
+      { name: 'ICON', url: 'https://www.iconbuild.com', kind: 'company' },
+      { name: 'UN-Habitat', url: 'https://unhabitat.org', kind: 'policy / data' },
+    ],
+    people: [
+      { name: 'Alain Bertaud', role: 'urban planner, NYU Marron', url: 'https://marroninstitute.nyu.edu/people/alain-bertaud' },
+      { name: 'Brian Potter', role: 'Construction Physics', url: 'https://www.construction-physics.com' },
+    ],
+    waysToHelp: [
+      { mode: 'build', text: 'Factory-built housing or permitting-and-entitlement software.' },
+      { mode: 'policy', text: 'Zoning and by-right permitting reform in your city.' },
+    ],
+    lastUpdated: '2026-06-09',
     name: 'Low-cost housing & construction',
     tier: 'hard-tech',
     tagline:
@@ -357,6 +528,45 @@ export const problems: Problem[] = [
   },
   {
     slug: 'pedagogy',
+    domain: 'education',
+    scale: {
+      value: 0.7,
+      unit: 'share of 10-year-olds in low/middle-income countries who cannot read a simple text',
+      trend: 'worsening',
+      source: 'World Bank "learning poverty": ~57% pre-COVID, ~70% after pandemic school closures.',
+      sourceUrl: 'https://www.worldbank.org/en/topic/education/brief/learning-poverty',
+      confidence: 'high',
+      asOf: '2026-06-09',
+    },
+    neglectedness: {
+      score: 5,
+      rationale: 'Education spend is huge, but the high-leverage wedge (scalable 1:1-quality tutoring) is barely funded relative to its potential.',
+      source: 'World Bank EdTech',
+      sourceUrl: 'https://www.worldbank.org/en/topic/edutech',
+      confidence: 'med',
+      asOf: '2026-06-09',
+    },
+    tractability: {
+      score: 7,
+      rationale: 'Bloom proved 1:1 tutoring lifts outcomes two standard deviations; LLM tutors can now approximate it at near-zero marginal cost.',
+      source: 'Bloom (1984), "The 2 Sigma Problem"',
+      sourceUrl: 'https://en.wikipedia.org/wiki/Bloom%27s_2_sigma_problem',
+      confidence: 'med',
+      asOf: '2026-06-09',
+    },
+    organizations: [
+      { name: 'Khan Academy', url: 'https://www.khanacademy.org', kind: 'nonprofit' },
+      { name: 'Education Endowment Foundation', url: 'https://educationendowmentfoundation.org.uk', kind: 'evidence / research' },
+    ],
+    people: [
+      { name: 'Sal Khan', role: 'founder, Khan Academy', url: 'https://www.khanacademy.org' },
+      { name: 'Rebecca Winthrop', role: 'global education, Brookings', url: 'https://www.brookings.edu/people/rebecca-winthrop/' },
+    ],
+    waysToHelp: [
+      { mode: 'build', text: 'Build an AI tutor with a real pedagogical model and measured learning gains.' },
+      { mode: 'career', text: 'Teaching, instructional design, or edtech research.' },
+    ],
+    lastUpdated: '2026-06-09',
     name: 'Pedagogy at scale',
     tier: 'progress',
     tagline:
@@ -445,6 +655,51 @@ export const problems: Problem[] = [
   },
   {
     slug: 'infectious-disease',
+    domain: 'health',
+    scale: {
+      value: 600_000,
+      unit: 'annual malaria deaths',
+      trend: 'improving',
+      series: [
+        { year: 2004, value: 900_000 },
+        { year: 2015, value: 580_000 },
+        { year: 2019, value: 560_000 },
+        { year: 2022, value: 608_000 },
+      ],
+      source: 'WHO World Malaria Report: deaths fell sharply from the 2004 peak, then stalled. Malaria is one of several treatable infections (with TB and HIV) that still kill at scale.',
+      sourceUrl: 'https://www.who.int/teams/global-malaria-programme/reports/world-malaria-report-2023',
+      confidence: 'high',
+      asOf: '2026-06-09',
+    },
+    neglectedness: {
+      score: 5,
+      rationale: 'Among the most cost-effective causes in global health, yet still chronically underfunded relative to the deaths it prevents.',
+      source: 'GiveWell',
+      sourceUrl: 'https://www.givewell.org/charities/top-charities',
+      confidence: 'high',
+      asOf: '2026-06-09',
+    },
+    tractability: {
+      score: 8,
+      rationale: 'Proven interventions exist now: bednets, the RTS,S and R21 vaccines, antiretrovirals, and emerging gene-drive vector control.',
+      source: 'WHO; Against Malaria Foundation',
+      sourceUrl: 'https://www.againstmalaria.com',
+      confidence: 'high',
+      asOf: '2026-06-09',
+    },
+    organizations: [
+      { name: 'Against Malaria Foundation', url: 'https://www.againstmalaria.com', kind: 'nonprofit' },
+      { name: 'Gates Foundation', url: 'https://www.gatesfoundation.org', kind: 'funder' },
+    ],
+    people: [
+      { name: 'Caroline Buckee', role: 'epidemiology, Harvard', url: 'https://www.hsph.harvard.edu/caroline-buckee/' },
+      { name: 'Rob Mather', role: 'founder, Against Malaria Foundation', url: 'https://www.againstmalaria.com' },
+    ],
+    waysToHelp: [
+      { mode: 'donate', text: 'Donate to GiveWell top charities (bednets, vaccines): among the most cost-effective ways to save a life.', url: 'https://www.givewell.org' },
+      { mode: 'build', text: 'Build sub-dollar point-of-care diagnostics or safe gene-drive vector control.' },
+    ],
+    lastUpdated: '2026-06-09',
     name: 'Infectious disease (malaria, TB, HIV)',
     tier: 'welfare',
     tagline:
@@ -529,6 +784,45 @@ export const problems: Problem[] = [
   },
   {
     slug: 'scientific-productivity',
+    domain: 'science',
+    scale: {
+      value: 18,
+      unit: 'x more researchers needed to sustain Moore’s-law progress vs the 1970s',
+      trend: 'worsening',
+      source: 'Bloom, Jones, Van Reenen & Webb (2020), "Are Ideas Getting Harder to Find?" — research productivity is falling across many fields.',
+      sourceUrl: 'https://www.aeaweb.org/articles?id=10.1257/aer.20180338',
+      confidence: 'med',
+      asOf: '2026-06-09',
+    },
+    neglectedness: {
+      score: 6,
+      rationale: 'Metascience (studying and fixing how science works) is a tiny field relative to the trillions in R&D it could make more productive.',
+      source: 'Institute for Progress',
+      sourceUrl: 'https://ifp.org',
+      confidence: 'med',
+      asOf: '2026-06-09',
+    },
+    tractability: {
+      score: 5,
+      rationale: 'Concrete experiments exist: Focused Research Organizations, fast-grant programs, and AI-driven autonomous labs.',
+      source: 'Convergent Research (FROs); Astera Institute',
+      sourceUrl: 'https://www.convergentresearch.org',
+      confidence: 'med',
+      asOf: '2026-06-09',
+    },
+    organizations: [
+      { name: 'Convergent Research', url: 'https://www.convergentresearch.org', kind: 'FRO incubator' },
+      { name: 'Institute for Progress', url: 'https://ifp.org', kind: 'policy' },
+    ],
+    people: [
+      { name: 'Patrick Collison', role: 'co-founder, Stripe & Arc Institute', url: 'https://patrickcollison.com' },
+      { name: 'Heidi Williams', role: 'economist of innovation', url: 'https://heidiwilliamseconomics.com' },
+    ],
+    waysToHelp: [
+      { mode: 'build', text: 'Build autonomous labs, replication infrastructure, or fast-grant rails.' },
+      { mode: 'research', text: 'Work in metascience: measure and fix the bottlenecks in how science gets funded and done.' },
+    ],
+    lastUpdated: '2026-06-09',
     name: 'Scientific productivity',
     tier: 'progress',
     tagline:
@@ -623,6 +917,51 @@ export const problems: Problem[] = [
   },
   {
     slug: 'longevity',
+    domain: 'longevity',
+    scale: {
+      value: 73,
+      unit: 'years (global life expectancy at birth)',
+      trend: 'improving',
+      series: [
+        { year: 1900, value: 32 },
+        { year: 1950, value: 47 },
+        { year: 2000, value: 67 },
+        { year: 2023, value: 73 },
+      ],
+      source: 'Our World in Data / UN: life expectancy has more than doubled since 1900. The frontier is now healthspan, not just lifespan.',
+      sourceUrl: 'https://ourworldindata.org/life-expectancy',
+      confidence: 'high',
+      asOf: '2026-06-09',
+    },
+    neglectedness: {
+      score: 6,
+      rationale: 'Aging biology is underfunded relative to disease-by-disease medicine, despite aging being the largest shared risk factor.',
+      source: 'Hevolution Foundation',
+      sourceUrl: 'https://hevolution.com',
+      confidence: 'med',
+      asOf: '2026-06-09',
+    },
+    tractability: {
+      score: 4,
+      rationale: 'Promising biology (senolytics, partial reprogramming, aging clocks) but no approved intervention that slows aging in humans yet.',
+      source: 'Buck Institute for Research on Aging',
+      sourceUrl: 'https://www.buckinstitute.org',
+      confidence: 'low',
+      asOf: '2026-06-09',
+    },
+    organizations: [
+      { name: 'Buck Institute', url: 'https://www.buckinstitute.org', kind: 'research' },
+      { name: 'Hevolution Foundation', url: 'https://hevolution.com', kind: 'funder' },
+    ],
+    people: [
+      { name: 'Cynthia Kenyon', role: 'aging biologist, Calico', url: 'https://www.calicolabs.com' },
+      { name: 'Morgan Levine', role: 'aging-clock researcher', url: 'https://www.altoslabs.com' },
+    ],
+    waysToHelp: [
+      { mode: 'build', text: 'Build longitudinal aging biomarkers or geroscience tools that make the field falsifiable.' },
+      { mode: 'research', text: 'Work on the biology of aging or the regulatory path to "aging as an indication".' },
+    ],
+    lastUpdated: '2026-06-09',
     name: 'Longevity & aging',
     tier: 'hard-tech',
     tagline:
@@ -709,6 +1048,51 @@ export const problems: Problem[] = [
   },
   {
     slug: 'fertility-decline',
+    domain: 'social',
+    scale: {
+      value: 2.2,
+      unit: 'global total fertility rate (births per woman)',
+      trend: 'worsening',
+      series: [
+        { year: 1960, value: 4.7 },
+        { year: 1990, value: 3.3 },
+        { year: 2010, value: 2.6 },
+        { year: 2023, value: 2.2 },
+      ],
+      source: 'UN World Population Prospects: global fertility is falling toward the 2.1 replacement rate, and is already far below it across the developed world.',
+      sourceUrl: 'https://ourworldindata.org/fertility-rate',
+      confidence: 'high',
+      asOf: '2026-06-09',
+    },
+    neglectedness: {
+      score: 7,
+      rationale: 'Treated as inevitable rather than as a solvable problem; very little serious work on the cost and culture of family formation.',
+      source: 'Institute for Family Studies',
+      sourceUrl: 'https://ifstudies.org',
+      confidence: 'med',
+      asOf: '2026-06-09',
+    },
+    tractability: {
+      score: 3,
+      rationale: 'Pro-natal policy levers have shown weak effects so far; the affordability and IVF-cost wedges are more promising but unproven at scale.',
+      source: 'Institute for Family Studies',
+      sourceUrl: 'https://ifstudies.org',
+      confidence: 'low',
+      asOf: '2026-06-09',
+    },
+    organizations: [
+      { name: 'Institute for Family Studies', url: 'https://ifstudies.org', kind: 'research' },
+      { name: 'UN Population Division', url: 'https://population.un.org/wpp/', kind: 'data' },
+    ],
+    people: [
+      { name: 'Lyman Stone', role: 'demographer', url: 'https://ifstudies.org/lyman-stone' },
+      { name: 'Catherine Pakaluk', role: 'economist of the family', url: 'https://business.catholic.edu' },
+    ],
+    waysToHelp: [
+      { mode: 'build', text: 'Order-of-magnitude cheaper IVF, or bundle down the marginal cost of raising a child.' },
+      { mode: 'research', text: 'Study what actually moves family formation, separate from ideology.' },
+    ],
+    lastUpdated: '2026-06-09',
     name: 'Fertility decline & demographic stagnation',
     tier: 'emerging',
     tagline:
@@ -792,6 +1176,45 @@ export const problems: Problem[] = [
   },
   {
     slug: 'loneliness',
+    domain: 'social',
+    scale: {
+      value: 0.24,
+      unit: 'share of adults reporting significant loneliness (global)',
+      trend: 'worsening',
+      source: 'Meta-Gallup global survey (2023): ~24% of adults aged 15+ felt very or fairly lonely. The WHO declared loneliness a global health priority.',
+      sourceUrl: 'https://www.who.int/groups/commission-on-social-connection',
+      confidence: 'med',
+      asOf: '2026-06-09',
+    },
+    neglectedness: {
+      score: 6,
+      rationale: 'A mortality-grade health risk (comparable to smoking) that receives little structural investment beyond therapy and apps.',
+      source: 'US Surgeon General Advisory on Social Connection (2023)',
+      sourceUrl: 'https://www.hhs.gov/surgeongeneral/priorities/connection/index.html',
+      confidence: 'med',
+      asOf: '2026-06-09',
+    },
+    tractability: {
+      score: 4,
+      rationale: 'Deep social connection is hard to manufacture at scale; the promising wedges (third places, proximity-first products) are early and unproven.',
+      source: 'Foundation for Social Connection',
+      sourceUrl: 'https://www.social-connection.org',
+      confidence: 'low',
+      asOf: '2026-06-09',
+    },
+    organizations: [
+      { name: 'WHO Commission on Social Connection', url: 'https://www.who.int/groups/commission-on-social-connection', kind: 'policy' },
+      { name: 'Foundation for Social Connection', url: 'https://www.social-connection.org', kind: 'nonprofit' },
+    ],
+    people: [
+      { name: 'Vivek Murthy', role: 'former US Surgeon General', url: 'https://www.hhs.gov/surgeongeneral' },
+      { name: 'Julianne Holt-Lunstad', role: 'social-connection researcher, BYU', url: 'https://psychology.byu.edu' },
+    ],
+    waysToHelp: [
+      { mode: 'build', text: 'Build a financially self-sustaining "third place", or a social product measured on offline relationships formed.' },
+      { mode: 'research', text: 'Study which interventions actually reduce loneliness, not just engagement.' },
+    ],
+    lastUpdated: '2026-06-09',
     name: 'Loneliness & social isolation',
     tier: 'emerging',
     tagline:
@@ -880,7 +1303,227 @@ export const problems: Problem[] = [
     ],
     asOf: TODAY,
   },
+  {
+    slug: 'extreme-poverty',
+    name: 'Extreme poverty',
+    tier: 'welfare',
+    domain: 'poverty',
+    tagline:
+      'Lift the ~700 million people living on less than $2.15 a day into stable prosperity.',
+    description:
+      'Extreme poverty is the canonical proof that humanity can solve its biggest problems: the share of people living below the international poverty line fell from ~38% in 1990 to under 9% before the pandemic, the fastest decline in human history. The unfinished work is concentrated in Sub-Saharan Africa and fragile states, where economic growth, direct cash transfers, and proven public-health interventions still have enormous, measurable returns.',
+    humansAffected: {
+      value: 700_000_000,
+      unit: 'humans',
+      source: 'World Bank — Poverty and Inequality Platform',
+      sourceUrl: 'https://pip.worldbank.org',
+      confidence: 'high',
+      asOf: '2026-06-09',
+    },
+    severity: {
+      value: 0.9,
+      unit: 'share of wellbeing (for those affected)',
+      source: 'estimated — extreme poverty dominates almost every other welfare measure for those experiencing it',
+      confidence: 'med',
+      asOf: '2026-06-09',
+    },
+    scale: {
+      value: 700_000_000,
+      unit: 'people in extreme poverty (below $2.15/day)',
+      trend: 'improving',
+      series: [
+        { year: 1990, value: 2_000_000_000 },
+        { year: 2000, value: 1_500_000_000 },
+        { year: 2010, value: 1_000_000_000 },
+        { year: 2019, value: 650_000_000 },
+        { year: 2022, value: 700_000_000 },
+      ],
+      source: 'World Bank / Our World in Data: extreme poverty fell ~65% since 1990, then ticked up slightly with COVID-19 and inflation.',
+      sourceUrl: 'https://ourworldindata.org/extreme-poverty',
+      confidence: 'high',
+      asOf: '2026-06-09',
+    },
+    neglectedness: {
+      score: 4,
+      rationale: 'Large aid flows exist, but the most evidence-backed tools (direct cash transfers, growth-enabling reform) are still underused relative to their proven returns.',
+      source: 'GiveDirectly; J-PAL',
+      sourceUrl: 'https://www.povertyactionlab.org',
+      confidence: 'med',
+      asOf: '2026-06-09',
+    },
+    tractability: {
+      score: 8,
+      rationale: 'Among the most rigorously evidenced causes anywhere: randomized trials show cash transfers and public-health interventions reliably raise incomes and save lives.',
+      source: 'J-PAL (Banerjee & Duflo, Nobel 2019)',
+      sourceUrl: 'https://www.povertyactionlab.org',
+      confidence: 'high',
+      asOf: '2026-06-09',
+    },
+    organizations: [
+      { name: 'GiveDirectly', url: 'https://www.givedirectly.org', kind: 'nonprofit' },
+      { name: 'World Bank', url: 'https://www.worldbank.org', kind: 'data / finance' },
+      { name: 'J-PAL', url: 'https://www.povertyactionlab.org', kind: 'research' },
+    ],
+    people: [
+      { name: 'Esther Duflo', role: 'development economist, MIT / J-PAL', url: 'https://economics.mit.edu/people/faculty/esther-duflo' },
+      { name: 'Rory Stewart', role: 'president, GiveDirectly', url: 'https://www.givedirectly.org' },
+    ],
+    waysToHelp: [
+      { mode: 'donate', text: 'Give directly to people in extreme poverty, or to GiveWell top charities.', url: 'https://www.givedirectly.org' },
+      { mode: 'build', text: 'Build fintech and identity rails that reach the unbanked at near-zero cost.' },
+      { mode: 'career', text: 'Development economics, randomized evaluation, or global-health delivery.' },
+    ],
+    lastUpdated: '2026-06-09',
+    scores: {
+      welfareBCR: {
+        value: 30,
+        unit: '$ of benefit per $ spent',
+        source: 'estimated from cash-transfer and public-health cost-effectiveness (GiveWell / Copenhagen Consensus)',
+        sourceUrl: 'https://www.givewell.org',
+        confidence: 'med',
+        asOf: '2026-06-09',
+      },
+      xriskITN: null,
+      utilityDelta: {
+        value: 0.4,
+        unit: 'state-of-art vs possible',
+        source: 'estimated — the tools exist; the gap is delivery and growth, not invention',
+        confidence: 'low',
+        asOf: '2026-06-09',
+      },
+    },
+    sources: [
+      { title: 'Our World in Data — Extreme Poverty', url: 'https://ourworldindata.org/extreme-poverty' },
+      { title: 'World Bank — Poverty and Inequality Platform', url: 'https://pip.worldbank.org' },
+    ],
+    asOf: '2026-06-09',
+  },
+  {
+    slug: 'climate-change',
+    name: 'Climate change',
+    tier: 'welfare',
+    domain: 'climate',
+    tagline:
+      'Decarbonize the global economy fast enough to limit warming, while keeping energy cheap and abundant.',
+    description:
+      'Climate change is a problem of getting clean energy and industry cheaper than the dirty incumbents, fast. The optimistic case is strong: solar, wind, and batteries have fallen ~90% in cost in a decade and are now the cheapest power in history. Emissions are still rising, so the work is real, but the frontier is concrete: industrial heat, cement, steel, aviation, and durable carbon removal. The framing here is not sacrifice, it is abundance: the same cheap clean energy that limits warming also lifts living standards.',
+    humansAffected: {
+      value: 8_200_000_000,
+      unit: 'humans',
+      source: 'IPCC AR6 — climate impacts are global',
+      sourceUrl: 'https://www.ipcc.ch/report/ar6/syr/',
+      confidence: 'high',
+      asOf: '2026-06-09',
+    },
+    severity: {
+      value: 0.2,
+      unit: 'share of global GDP at risk (long-run estimates)',
+      source: 'range of integrated-assessment and macro estimates; wide uncertainty',
+      confidence: 'low',
+      asOf: '2026-06-09',
+    },
+    scale: {
+      value: 37_400_000_000,
+      unit: 'tonnes of CO2 emitted per year (fossil)',
+      trend: 'worsening',
+      series: [
+        { year: 1990, value: 22_700_000_000 },
+        { year: 2000, value: 25_500_000_000 },
+        { year: 2010, value: 33_100_000_000 },
+        { year: 2023, value: 37_400_000_000 },
+      ],
+      source: 'Global Carbon Project: fossil CO2 emissions are still rising, even as the clean-energy share of new capacity climbs fast.',
+      sourceUrl: 'https://ourworldindata.org/co2-emissions',
+      confidence: 'high',
+      asOf: '2026-06-09',
+    },
+    neglectedness: {
+      score: 3,
+      rationale: 'Climate is now very well funded overall, but the hard-to-abate frontier (industrial heat, cement, steel, aviation, carbon removal) remains comparatively underfunded.',
+      source: 'IEA World Energy Investment',
+      sourceUrl: 'https://www.iea.org/reports/world-energy-investment-2024',
+      confidence: 'med',
+      asOf: '2026-06-09',
+    },
+    tractability: {
+      score: 7,
+      rationale: 'For power, the cost curves already won. The remaining wedges (industry, aviation, removal) are genuine engineering frontiers with clear targets.',
+      source: 'Our World in Data — cheap renewables',
+      sourceUrl: 'https://ourworldindata.org/cheap-renewables-growth',
+      confidence: 'high',
+      asOf: '2026-06-09',
+    },
+    organizations: [
+      { name: 'Global Carbon Project', url: 'https://www.globalcarbonproject.org', kind: 'data' },
+      { name: 'Breakthrough Energy', url: 'https://www.breakthroughenergy.org', kind: 'catalytic capital' },
+      { name: 'RMI', url: 'https://rmi.org', kind: 'research / policy' },
+    ],
+    people: [
+      { name: 'Hannah Ritchie', role: 'energy + environment, Our World in Data', url: 'https://www.hannahritchie.com' },
+      { name: 'Jesse Jenkins', role: 'energy systems, Princeton ZERO Lab', url: 'https://mae.princeton.edu/people/jesse-jenkins' },
+    ],
+    waysToHelp: [
+      { mode: 'build', text: 'Build industrial decarbonization, clean firm power, or durable carbon removal.' },
+      { mode: 'policy', text: 'Work on permitting reform, carbon pricing, and clean-energy deployment.' },
+      { mode: 'career', text: 'Climate engineering, project finance, or energy-systems modeling.' },
+    ],
+    lastUpdated: '2026-06-09',
+    scores: {
+      welfareBCR: {
+        value: 10,
+        unit: '$ of benefit per $ spent',
+        source: 'wide range across interventions (Copenhagen Consensus); efficiency and clean-power deployment score highest',
+        confidence: 'low',
+        asOf: '2026-06-09',
+      },
+      xriskITN: null,
+      utilityDelta: {
+        value: 0.5,
+        unit: 'state-of-art vs possible',
+        source: 'estimated — power is largely solved on cost; industry and removal are the open frontier',
+        confidence: 'med',
+        asOf: '2026-06-09',
+      },
+    },
+    sources: [
+      { title: 'Our World in Data — CO2 Emissions', url: 'https://ourworldindata.org/co2-emissions' },
+      { title: 'IPCC AR6 Synthesis Report', url: 'https://www.ipcc.ch/report/ar6/syr/' },
+    ],
+    asOf: '2026-06-09',
+  },
 ]
 
 export const getProblemBySlug = (slug: string): Problem | undefined =>
   problems.find((p) => p.slug === slug)
+
+/** Domains present in the dataset, in a sensible display order, for the home filter. */
+export const DOMAINS: Domain[] = [
+  'ai',
+  'bio',
+  'health',
+  'energy',
+  'climate',
+  'poverty',
+  'education',
+  'science',
+  'longevity',
+  'social',
+  'governance',
+]
+
+export const DOMAIN_LABEL: Record<Domain, string> = {
+  ai: 'AI',
+  bio: 'Biosecurity',
+  health: 'Health',
+  energy: 'Energy',
+  climate: 'Climate',
+  poverty: 'Poverty',
+  education: 'Education',
+  science: 'Science',
+  longevity: 'Longevity',
+  social: 'Social',
+  governance: 'Governance',
+}
+
+export const getProblemsByDomain = (domain: Domain): Problem[] =>
+  problems.filter((p) => p.domain === domain)
