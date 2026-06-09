@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { problems } from '@/data/problems'
+import { questLevels } from '@/data/journey'
 import { companies } from '@/data/companies'
 import { publicCompanies } from '@/data/public-companies'
 import { founders } from '@/data/founders'
@@ -19,6 +20,7 @@ import ThemeToggle from './ThemeToggle'
 import { FeedbackButton } from './FeedbackWidget'
 
 const dataTabs = [
+  { name: 'The Quest', href: '/journey', count: questLevels.length, tone: 'amber' },
   { name: 'Problems', href: '/', count: problems.length, tone: 'amber' },
   { name: 'Radar', href: '/radar', count: problems.length, tone: 'amber' },
   { name: 'Globe', href: '/globe', count: publicCompanies.length, tone: 'cyan' },
