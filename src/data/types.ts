@@ -91,10 +91,68 @@ export type Sector = {
   furtherReading: { title: string; url: string; by?: string }[]
 }
 
+/**
+ * Primary domain facet for the home dashboard filter. One word, mutually
+ * exclusive, so visitors can slice the index the way 80,000 Hours and Our
+ * World in Data do. (Distinct from `sectors`, which is a multi-cluster tag.)
+ */
+export type Domain =
+  | 'health'
+  | 'energy'
+  | 'ai'
+  | 'bio'
+  | 'poverty'
+  | 'governance'
+  | 'education'
+  | 'climate'
+  | 'science'
+  | 'longevity'
+  | 'social'
+
+/** Direction of travel for a problem's headline number. */
+export type Trend = 'improving' | 'worsening' | 'flat'
+
+/**
+ * The headline scale measure: one number, its unit, the direction it is moving,
+ * and a sparse real time-series for the sparkline. Trend is the optimism signal:
+ * most things are improving, and we show it.
+ */
+export type ScaleMeasure = {
+  value: number
+  unit: string
+  trend: Trend
+  /** Sparse, real anchor points (year ascending) for the sparkline. */
+  series?: { year: number; value: number }[]
+  source: string
+  sourceUrl?: string
+  confidence: Confidence
+  asOf: string
+}
+
+/** A 0-10 judgment (neglectedness, tractability) with a reasoned, cited rationale. */
+export type ScoredJudgment = {
+  score: number // 0-10
+  rationale: string
+  source: string
+  sourceUrl?: string
+  confidence: Confidence
+  asOf: string
+}
+
+export type Organization = { name: string; url: string; kind: string }
+export type Person = { name: string; role: string; url?: string }
+export type WayToHelp = {
+  mode: 'build' | 'fund' | 'research' | 'donate' | 'career' | 'policy'
+  text: string
+  url?: string
+}
+
 export type Problem = {
   slug: string
   name: string
   tier: Tier
+  /** Primary domain facet for the home dashboard filter. */
+  domain?: Domain
   /** Sector cluster slugs this problem belongs to. A problem can sit in 1-N sectors. */
   sectors?: string[]
   tagline: string
@@ -125,6 +183,20 @@ export type Problem = {
   capitalRequired?: SourcedNumber
   /** Before/after success vision for the problem. */
   transformation?: Transformation
+  /** Headline scale + trend (improving/worsening) + optional sparkline series. */
+  scale?: ScaleMeasure
+  /** How crowded the field is. Low score = neglected = high opportunity. 0-10. */
+  neglectedness?: ScoredJudgment
+  /** How much traction effort buys right now. 0-10. */
+  tractability?: ScoredJudgment
+  /** Key organizations working on it. */
+  organizations?: Organization[]
+  /** People worth following on this problem. */
+  people?: Person[]
+  /** Concrete ways to help or build, for non-founders and founders alike. */
+  waysToHelp?: WayToHelp[]
+  /** ISO date this entry's content was last reviewed. Shown on every page. */
+  lastUpdated?: string
   scores: LensScore
   sources: { title: string; url: string }[]
   asOf: string
