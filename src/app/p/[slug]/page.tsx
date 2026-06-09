@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import ScoreBar from '@/components/ScoreBar'
+import MediaFeed from '@/components/MediaFeed'
 import SourceBadge from '@/components/SourceBadge'
 import TierPill from '@/components/TierPill'
 import { problems, getProblemBySlug } from '@/data/problems'
@@ -754,6 +755,25 @@ export default async function ProblemPage({
                 ))}
               </div>
             )}
+          </section>
+
+          <section className="mb-16">
+            <div className="flex items-baseline justify-between mb-5 border-b border-hair pb-3">
+              <h2 className="font-serif text-2xl text-ink-100">
+                Writing about this right now
+              </h2>
+              <Link
+                href={`/media?problem=${problem.slug}`}
+                className="font-mono text-[11px] text-ink-500 hover:text-amber-300 transition-colors"
+              >
+                full feed &rarr;
+              </Link>
+            </div>
+            <MediaFeed
+              problemSlug={problem.slug}
+              limit={6}
+              emptyLabel="No coverage logged yet. The next ingest cron will populate this."
+            />
           </section>
 
           <section className="border-t border-hair pt-6">
