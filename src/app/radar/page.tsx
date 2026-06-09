@@ -2,11 +2,9 @@ import type { Metadata } from 'next'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import EmailCapture from '@/components/EmailCapture'
-import RadarClient, { type RadarRow } from '@/components/RadarClient'
-import { problems, DOMAIN_LABEL } from '@/data/problems'
-import { getCompaniesForProblem } from '@/data/companies'
-import { getEcosystemForProblem } from '@/data/ecosystem'
-import { opportunityScore, importanceScore, supplyScore } from '@/lib/priority'
+import RadarClient from '@/components/RadarClient'
+import DataFreshness from '@/components/DataFreshness'
+import { computeRadarRows } from '@/lib/radar'
 
 export const metadata: Metadata = {
   title: 'The Radar | optimism.fun',
@@ -15,27 +13,7 @@ export const metadata: Metadata = {
 }
 
 export default function RadarPage() {
-  const rows: RadarRow[] = problems
-    .map((p) => {
-      const companies = getCompaniesForProblem(p.slug).length
-      const capital = getEcosystemForProblem(p.slug).length
-      const s = { companies, capital }
-      return {
-        slug: p.slug,
-        name: p.name,
-        tagline: p.tagline,
-        domain: p.domain ?? null,
-        domainLabel: p.domain ? DOMAIN_LABEL[p.domain] : null,
-        trend: p.scale?.trend ?? null,
-        series: p.scale?.series ?? null,
-        companies,
-        capital,
-        demand: Math.round(importanceScore(p) * 100),
-        supply: Math.round(supplyScore(p, s) * 100),
-        opportunity: opportunityScore(p, s),
-      }
-    })
-    .sort((a, b) => b.opportunity - a.opportunity)
+  const rows = computeRadarRows()
 
   return (
     <>
@@ -55,6 +33,7 @@ export default function RadarPage() {
               divided by how well-served it already is. The biggest gaps are the best places
               to start. This is step zero.
             </p>
+            <DataFreshness className="mt-5" />
           </div>
         </section>
 
