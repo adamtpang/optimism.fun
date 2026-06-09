@@ -1,0 +1,125 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   optimism.fun · COLOR TOKENS
+   Terminal palette. Dark is the canonical brand surface (true-black with a
+   sky-blue accent); light is a clean white companion theme.
+
+   Two forms are exposed for every surface/ink value:
+     · space-separated RGB triplets (e.g. --ink-100: 246 245 242) for alpha
+       composition via rgb(var(--ink-100) / 0.4)
+     · ready-to-use hex aliases (e.g. --text-primary) for plain CSS/JSX
+
+   Accent note: in the source code the sky-blue accent is named `amber-*` for
+   legacy continuity (~86 call sites). Its semantic role is THE bright accent.
+   Here it is named honestly: --accent.
+   ────────────────────────────────────────────────────────────────────────── */
+
+:root,
+[data-theme='dark'] {
+  /* Base surfaces (RGB triplets) */
+  --bg: 8 8 10;          /* @kind color */ /* true black canvas */
+  --fg: 246 245 242;     /* @kind color */ /* warm off-white */
+  --paper: 19 16 13;     /* @kind color */ /* paper surface — warmer black */
+
+  /* Ink scale — 100 = brightest text, 900 = darkest surface */
+  --ink-100: 246 245 242; /* @kind color */
+  --ink-200: 217 215 209; /* @kind color */
+  --ink-300: 156 154 147; /* @kind color */
+  --ink-400: 109 107 101; /* @kind color */
+  --ink-500: 116 114 107; /* @kind color */
+  --ink-600: 74 72 68;    /* @kind color */
+  --ink-700: 42 41 38;    /* @kind color */
+  --ink-800: 24 23 26;    /* @kind color */
+  --ink-900: 15 14 17;    /* @kind color */
+
+  /* Semantic terminal tones — muted on dark */
+  --terminal-green: 92 156 112;   /* @kind color */
+  --terminal-rose: 194 96 112;    /* @kind color */
+  --terminal-violet: 139 123 194; /* @kind color */
+  --terminal-cyan: 107 152 168;   /* @kind color */
+
+  /* Hairline + lattice helpers */
+  --line: 246 245 242;            /* @kind color */
+  --line-opacity: 0.08;           /* @kind other */
+  --line-strong-opacity: 0.16;    /* @kind other */
+  --grid-opacity: 0.015;          /* @kind other */
+  --glow-opacity: 0.04;           /* @kind other */
+
+  color-scheme: dark;
+
+  /* ── Hex aliases (resolved per theme) ───────────────────────────────── */
+  --surface-canvas: #08080a;
+  --surface-paper: #13100d;
+  --surface-raised: #0f0e11;   /* ink-900 */
+  --surface-hover: #18171a;    /* ink-800 */
+
+  --text-primary: #f6f5f2;     /* ink-100 */
+  --text-secondary: #9c9a93;   /* ink-300 */
+  --text-tertiary: #6d6b65;    /* ink-400 */
+  --text-muted: #74726b;       /* ink-500 */
+  --text-faint: #4a4844;       /* ink-600 */
+}
+
+/* Light — clean white, slate ink, sky-blue accent. Optimistic. */
+[data-theme='light'] {
+  --bg: 255 255 255;     /* @kind color */
+  --fg: 15 23 42;        /* @kind color */ /* slate-900 */
+  --paper: 248 250 252;  /* @kind color */ /* slate-50 */
+
+  --ink-100: 15 23 42;    /* @kind color */ /* slate-900 — body text */
+  --ink-200: 30 41 59;    /* @kind color */ /* slate-800 */
+  --ink-300: 51 65 85;    /* @kind color */ /* slate-700 — secondary text */
+  --ink-400: 71 85 105;   /* @kind color */ /* slate-600 — tertiary text */
+  --ink-500: 100 116 139; /* @kind color */ /* slate-500 — muted labels */
+  --ink-600: 148 163 184; /* @kind color */ /* slate-400 — decorative labels */
+  --ink-700: 203 213 225; /* @kind color */ /* slate-300 — dividers */
+  --ink-800: 226 232 240; /* @kind color */ /* slate-200 — hover surface */
+  --ink-900: 241 245 249; /* @kind color */ /* slate-100 — card surface */
+
+  --terminal-green: 21 128 61;   /* @kind color */ /* green-700 */
+  --terminal-rose: 190 18 60;    /* @kind color */ /* rose-700 */
+  --terminal-violet: 109 40 217; /* @kind color */ /* violet-700 */
+  --terminal-cyan: 14 116 144;   /* @kind color */ /* cyan-700 */
+
+  --line: 15 23 42;            /* @kind color */
+  --line-opacity: 0.10;        /* @kind other */
+  --line-strong-opacity: 0.18; /* @kind other */
+  --grid-opacity: 0.04;        /* @kind other */
+  --glow-opacity: 0.06;        /* @kind other */
+
+  color-scheme: light;
+
+  --surface-canvas: #ffffff;
+  --surface-paper: #f8fafc;
+  --surface-raised: #f1f5f9;
+  --surface-hover: #e2e8f0;
+
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-tertiary: #475569;
+  --text-muted: #64748b;
+  --text-faint: #94a3b8;
+}
+
+/* ── Accent (sky blue) — identical in both themes ─────────────────────────
+   The single bright punch of the brand. Scale runs light → dark.            */
+:root {
+  --accent-50:  #f0f9ff;  /* sky-50  — faint wash / selection */
+  --accent-100: #e0f2fe;  /* sky-100 */
+  --accent-200: #bae6fd;  /* sky-200 */
+  --accent-300: #38bdf8;  /* sky-400 — bright on black */
+  --accent:     #0ea5e9;  /* sky-500 — PRIMARY accent (the "amber-300" of code) */
+  --accent-600: #0284c7;  /* sky-600 — hover / pressed */
+  --accent-700: #0369a1;  /* sky-700 — heavy borders / focus rings / paper-copper */
+  --accent-800: #075985;  /* sky-800 */
+
+  /* Semantic terminal hex aliases (resolve through the active theme) */
+  --signal-green: rgb(var(--terminal-green));
+  --signal-rose: rgb(var(--terminal-rose));
+  --signal-violet: rgb(var(--terminal-violet));
+  --signal-cyan: rgb(var(--terminal-cyan));
+
+  /* Confidence ↔ tone mapping */
+  --confidence-high: rgb(var(--terminal-green));
+  --confidence-med: var(--accent);
+  --confidence-low: rgb(var(--terminal-rose));
+}
