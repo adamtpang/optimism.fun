@@ -6,6 +6,10 @@
       "schedule": "0 12 * * *"
     },
     {
+      "path": "/api/cron/newsletter",
+      "schedule": "0 13 * * 1"
+    },
+    {
       "path": "/api/cron/media-ingest",
       "schedule": "30 13 * * *"
     }

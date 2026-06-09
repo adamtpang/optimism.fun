@@ -326,6 +326,45 @@ export type Founder = {
   asOf: string
 }
 
+/** Treated as preformatted text today; renderer will line-break and preserve
+ * paragraph whitespace. Upgrade to a markdown renderer when an entry exists
+ * that meaningfully needs headings / lists / links. */
+export type MarkdownDoc = string
+
+export type WhitepaperCta = {
+  /** Who this CTA is talking to. */
+  for: 'founder' | 'allocator'
+  /** The actual call — one or two sentences. */
+  body: string
+  /** Optional outbound URL (apply form, RFS landing, etc.). */
+  url?: string
+  /** Label for the action button. */
+  ctaLabel?: string
+}
+
+/**
+ * Hand-curated weekly two-part drop for a single problem.
+ *
+ * - blackpaper: the deep dive — why it matters, the data, the populations
+ *   affected, what's been tried, what's failing.
+ * - whitepaper: the proposed solution — spec, market size, what a startup
+ *   would build, who would back it. YC-RFS voice.
+ *
+ * Lives in src/data/whitepapers.ts. Newsletter cron generates a draft and
+ * emails the editor; the editor moves the finalized doc into the array.
+ */
+export type WhitepaperDoc = {
+  slug: string
+  problemSlug: string
+  week: number
+  publishedAt: string
+  blackpaper: MarkdownDoc
+  whitepaper: MarkdownDoc
+  cta?: WhitepaperCta
+  authors?: string[]
+  newsletter?: { subject: string; preheader: string }
+}
+
 export type MediaSourceKind = 'substack' | 'youtube' | 'x' | 'blog' | 'podcast'
 
 export type MediaSource = {
