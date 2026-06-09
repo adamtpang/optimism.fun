@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import LiveIndicators from '@/components/LiveIndicators'
 import Link from 'next/link'
 
 export const metadata = {
@@ -143,6 +144,19 @@ export default function MethodologyPage() {
                   about methodology and did not sell rank placement. We are holding the same
                   line.
                 </p>
+              </section>
+
+              <section>
+                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
+                  Live data, refreshed daily
+                </h2>
+                <p className="mb-5">
+                  Some scale numbers are not static seeds. A daily cron pulls them straight from
+                  the World Bank&rsquo;s World Development Indicators, writes the full series to our
+                  database, and stamps each with the source&rsquo;s own last-published date. The
+                  values below are read live from that table. This is the first of many feeds.
+                </p>
+                <LiveIndicators />
               </section>
 
               <section>
