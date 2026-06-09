@@ -21,6 +21,7 @@ import { FeedbackButton } from './FeedbackWidget'
 const dataTabs = [
   { name: 'Problems', href: '/', count: problems.length, tone: 'amber' },
   { name: 'Radar', href: '/radar', count: problems.length, tone: 'amber' },
+  { name: 'Globe', href: '/globe', count: publicCompanies.length, tone: 'cyan' },
   { name: 'Sectors', href: '/sector', count: sectors.length, tone: 'amber' },
   { name: 'Requests', href: '/rfs', count: requestsForStartups.length, tone: 'amber' },
   { name: 'Explanations', href: '/voices', count: voices.length, tone: 'violet' },
