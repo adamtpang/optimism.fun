@@ -73,8 +73,16 @@ export default function Navbar() {
               v0.1
             </span>
             <Link
-              href="/methodology"
+              href="/manifesto"
               className={`transition-colors ${
+                isActive('/manifesto') ? 'text-amber-300' : 'text-ink-300 hover:text-ink-100'
+              }`}
+            >
+              manifesto
+            </Link>
+            <Link
+              href="/methodology"
+              className={`hidden sm:inline transition-colors ${
                 isActive('/methodology') ? 'text-amber-300' : 'text-ink-300 hover:text-ink-100'
               }`}
             >
