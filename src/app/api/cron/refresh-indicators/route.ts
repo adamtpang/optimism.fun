@@ -16,6 +16,8 @@
 import { NextResponse } from 'next/server'
 import { fetchWdi } from '@/lib/sources/worldbank'
 import { allLiveIndicators } from '@/data/data-sources'
+import { isDbConfigured } from '@/lib/db'
+import { persistSeries } from '@/lib/indicators'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -42,10 +44,32 @@ async function run(req: Request) {
   if (!auth.ok) return NextResponse.json({ ok: false, error: auth.error }, { status: auth.status })
 
   const fetchedAt = new Date().toISOString()
+  const dbOn = isDbConfigured()
 
   const results = await Promise.all(
     allLiveIndicators.map(async (ind) => {
       const wdi = await fetchWdi(ind.countryIso3, ind.indicator, { revalidateSeconds: 0 })
+
+      // Persist the full series (one row per year, upserted) when the DB is on.
+      // Best-effort: a write failure for one indicator must not fail the run.
+      let written = 0
+      if (dbOn && wdi) {
+        try {
+          written = await persistSeries(
+            {
+              sourceId: ind.sourceId,
+              indicator: ind.indicator,
+              problemSlug: ind.problemSlug,
+              countryIso3: ind.countryIso3,
+              sourceLastUpdated: wdi.sourceLastUpdated,
+            },
+            wdi,
+          )
+        } catch {
+          written = 0
+        }
+      }
+
       return {
         problemSlug: ind.problemSlug,
         indicator: ind.indicator,
@@ -55,20 +79,22 @@ async function run(req: Request) {
         latest: wdi?.latest ?? null,
         sourceLastUpdated: wdi?.sourceLastUpdated ?? null,
         points: wdi?.series.length ?? 0,
+        rowsWritten: written,
       }
     }),
   )
 
   const fetched = results.filter((r) => r.ok).length
-  // Persistence hook: when an `indicators` table exists in Neon, upsert here.
-  // Until then we return the live values (always real) and skip writing.
+  const rowsWritten = results.reduce((sum, r) => sum + r.rowsWritten, 0)
   return NextResponse.json({
     ok: true,
     fetchedAt,
     source: 'worldbank-wdi',
     fetched,
     total: results.length,
-    persisted: false,
+    persisted: dbOn && rowsWritten > 0,
+    rowsWritten,
+    dbConfigured: dbOn,
     results,
   })
 }
