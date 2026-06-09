@@ -19,3 +19,8 @@ export function formatPercent(n: number, digits = 0): string {
 export function formatScore(n: number): string {
   return n.toFixed(1)
 }
+
+export function formatYears(n: number): string {
+  if (n >= 100) return `${(n / 100).toFixed(0)}c` // centuries
+  return `${n}y`
+}

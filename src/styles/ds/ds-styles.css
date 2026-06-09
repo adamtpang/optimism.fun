@@ -1,0 +1,13 @@
+/* ════════════════════════════════════════════════════════════════════════
+   optimism.fun — DESIGN SYSTEM · GLOBAL ENTRY
+   Humanity's quest log. Terminal palette, sky-blue accent, Fraunces serif.
+
+   This file is a manifest of @import lines only. Consumers link this one file
+   and inherit every token, font-face, and base style below.
+   ════════════════════════════════════════════════════════════════════════ */
+
+@import url('tokens/fonts.css');        /* webfonts (must lead) */
+@import url('tokens/colors.css');       /* surfaces, ink, accent, terminal tones */
+@import url('tokens/typography.css');   /* families, scales, tracking */
+@import url('tokens/spacing.css');      /* spacing, radii, borders, shadows, motion */
+@import url('tokens/base.css');         /* body, lattice background, utilities */

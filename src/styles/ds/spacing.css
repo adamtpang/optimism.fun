@@ -1,0 +1,56 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   optimism.fun · SPACING, RADII, BORDERS, SHADOWS
+
+   The system is grid-flavoured and tight. Layouts snap to a 32px lattice; the
+   max content width is 7xl (80rem). Radii are SMALL — this is a terminal, not
+   a consumer app: 4px is the default, 8px is the largest you'll see. Borders
+   are hairlines built from the foreground colour at low opacity, so they track
+   the theme. Real shadows are rare and soft; structure comes from lines.
+   ────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Spacing scale (4px base) */
+  --space-0: 0;
+  --space-1: 0.25rem;   /* 4 */
+  --space-2: 0.5rem;    /* 8 */
+  --space-3: 0.75rem;   /* 12 */
+  --space-4: 1rem;      /* 16 */
+  --space-5: 1.5rem;    /* 24 */
+  --space-6: 2rem;      /* 32 — the lattice pitch */
+  --space-8: 3rem;      /* 48 */
+  --space-10: 4rem;     /* 64 */
+  --space-14: 5.5rem;   /* 88 */
+  --space-16: 7rem;     /* 112 — section padding */
+
+  /* The background grid pitch */
+  --lattice: 32px;
+
+  /* Layout */
+  --container-max: 80rem;   /* max-w-7xl */
+  --container-prose: 56rem; /* max-w-4xl — editorial pages */
+  --gutter: 1.5rem;         /* px-6 */
+
+  /* Radii — small by design */
+  --radius-none: 0;
+  --radius-sm: 0.25rem;   /* 4 — default */
+  --radius-md: 0.375rem;  /* 6 */
+  --radius-lg: 0.5rem;    /* 8 — the largest */
+  --radius-pill: 9999px;  /* only for avatars / dots */
+
+  /* Hairline borders (theme-following, built from --line + opacity) */
+  --border-hair: 1px solid rgb(var(--line) / var(--line-opacity));
+  --border-hair-strong: 1px solid rgb(var(--line) / var(--line-strong-opacity));
+  --border-accent: 1px solid rgb(14 165 233 / 0.4); /* @kind other */
+
+  /* Shadows — soft, used sparingly (popovers, dialogs) */
+  --shadow-pop: 0 8px 28px -8px rgb(0 0 0 / 0.55);
+  --shadow-dialog: 0 24px 60px -16px rgb(0 0 0 / 0.65);
+
+  /* Focus ring — accent */
+  --ring-accent: 0 0 0 1px rgb(14 165 233 / 0.6);
+
+  /* Motion — quiet. Color transitions, no bounces. */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1); /* @kind other */
+  --duration-fast: 120ms; /* @kind other */
+  --duration-base: 200ms; /* @kind other */
+}

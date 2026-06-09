@@ -14,11 +14,13 @@ import { ecosystem } from '@/data/ecosystem'
 import { progress } from '@/data/progress'
 import { requestsForStartups } from '@/data/rfs'
 import { seededMedia } from '@/data/media'
+import { sectors } from '@/data/sectors'
 import ThemeToggle from './ThemeToggle'
 import { FeedbackButton } from './FeedbackWidget'
 
 const dataTabs = [
   { name: 'Problems', href: '/', count: problems.length, tone: 'amber' },
+  { name: 'Sectors', href: '/sector', count: sectors.length, tone: 'amber' },
   { name: 'Requests', href: '/rfs', count: requestsForStartups.length, tone: 'amber' },
   { name: 'Explanations', href: '/voices', count: voices.length, tone: 'violet' },
   { name: 'Media', href: '/media', count: seededMedia.length, tone: 'cyan' },
@@ -73,8 +75,16 @@ export default function Navbar() {
               v0.1
             </span>
             <Link
-              href="/methodology"
+              href="/manifesto"
               className={`transition-colors ${
+                isActive('/manifesto') ? 'text-amber-300' : 'text-ink-300 hover:text-ink-100'
+              }`}
+            >
+              manifesto
+            </Link>
+            <Link
+              href="/methodology"
+              className={`hidden sm:inline transition-colors ${
                 isActive('/methodology') ? 'text-amber-300' : 'text-ink-300 hover:text-ink-100'
               }`}
             >

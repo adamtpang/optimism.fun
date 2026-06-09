@@ -9,6 +9,7 @@ import { publicCompanies } from '@/data/public-companies'
 import { ecosystem } from '@/data/ecosystem'
 import { voices } from '@/data/voices'
 import { founders } from '@/data/founders'
+import { sectors } from '@/data/sectors'
 
 export default function Home() {
   const solutionCount = companies.length + publicCompanies.length
@@ -43,6 +44,32 @@ export default function Home() {
           className="px-6 pt-10 pb-14 max-w-7xl mx-auto scroll-mt-24"
         >
           <ProblemTable problems={problems} />
+
+          {/* Sector chip strip — pick a cluster instead of scanning the table */}
+          <div className="mt-8 border-t border-hair pt-6">
+            <div className="flex items-baseline justify-between mb-4">
+              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
+                or browse by sector
+              </p>
+              <Link
+                href="/sector"
+                className="font-mono text-[11px] text-ink-500 hover:text-amber-300 transition-colors"
+              >
+                all sectors &rarr;
+              </Link>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {sectors.map((s) => (
+                <Link
+                  key={s.slug}
+                  href={`/sector/${s.slug}`}
+                  className="border border-hair hover:border-amber-300/60 px-3 py-1.5 font-mono text-[11px] text-ink-300 hover:text-amber-300 transition-colors"
+                >
+                  {s.name}
+                </Link>
+              ))}
+            </div>
+          </div>
         </section>
 
         {/* The pipeline: explanations → solutions → coordination (talent + capital). */}
@@ -165,6 +192,78 @@ export default function Home() {
             >
               See the receipts &rarr;
             </Link>
+          </div>
+        </section>
+
+        {/* 06 — Already happening. The market is already pricing problem-solving. */}
+        <section className="border-b border-hair">
+          <div className="max-w-4xl mx-auto px-6 py-16 md:py-20">
+            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-4">
+              06 &middot; already happening
+            </p>
+            <h2 className="font-serif text-3xl md:text-5xl text-ink-100 leading-[1.05] mb-6">
+              The market has already started{' '}
+              <span className="text-amber-300">pricing the solutions.</span>
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8 mb-8">
+              <p className="font-serif text-lg text-ink-300 leading-relaxed">
+                The world&rsquo;s largest companies are already worth more than{' '}
+                <Link
+                  href="/companies"
+                  className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                >
+                  $100T combined
+                </Link>{' '}
+                — and most of that valuation traces back to a single quest: someone picked a
+                hard problem and shipped a solution at scale. The leaderboard above ranks
+                where the next dollar should go.
+              </p>
+              <p className="font-serif text-lg text-ink-300 leading-relaxed">
+                GDP growth has no physical ceiling — only a willingness ceiling. As long as
+                we keep picking good problems and solving them, the curve compounds. Some
+                quests are{' '}
+                <span className="text-amber-300">power-law</span>: aligned AI, cheap fusion,
+                disease eradication. Hit one and the whole table shifts up.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <Link
+                href="/companies"
+                className="font-mono text-[11px] uppercase tracking-wider text-amber-300 border border-amber-300/40 px-4 py-2 hover:bg-amber-300/[0.08] transition-colors"
+              >
+                Who&rsquo;s building &rarr;
+              </Link>
+              <Link
+                href="/ecosystem"
+                className="font-mono text-[11px] uppercase tracking-wider text-ink-300 border border-hair px-4 py-2 hover:border-ink-400 hover:text-ink-100 transition-colors"
+              >
+                Who&rsquo;s funding &rarr;
+              </Link>
+              <a
+                href="https://foundersfund.com/2023/06/choose-good-quests/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-[11px] uppercase tracking-wider text-ink-300 border border-hair px-4 py-2 hover:border-ink-400 hover:text-ink-100 transition-colors"
+              >
+                Founders Fund · choose good quests &rarr;
+              </a>
+              <a
+                href="https://patrickcollison.com/progress"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-[11px] uppercase tracking-wider text-ink-300 border border-hair px-4 py-2 hover:border-ink-400 hover:text-ink-100 transition-colors"
+              >
+                Collison &middot; progress &rarr;
+              </a>
+              <a
+                href="https://www.ycombinator.com/rfs"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-[11px] uppercase tracking-wider text-ink-300 border border-hair px-4 py-2 hover:border-ink-400 hover:text-ink-100 transition-colors"
+              >
+                Y Combinator &middot; RFS &rarr;
+              </a>
+            </div>
           </div>
         </section>
 

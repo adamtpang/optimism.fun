@@ -1,0 +1,45 @@
+<!-- @dsCard group="Components" viewport="700x320" name="ScoreBar & StatPair" subtitle="Instrument-style metric rows · header stat readouts" -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  body { margin: 0; padding: 28px 32px; background: var(--surface-canvas); }
+  .wrap { display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px; align-items: start; }
+  .col { display: flex; flex-direction: column; }
+  .head { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-faint); margin-bottom: 10px; }
+  .pairs { display: flex; flex-direction: column; gap: 14px; }
+</style>
+</head>
+<body class="lattice-bg">
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="../../_ds_bundle.js"></script>
+  <script type="text/babel">
+    const { ScoreBar, StatPair } = window.OptimismFunDesignSystem_a3f244
+    ReactDOM.createRoot(document.getElementById('root')).render(
+      <div className="wrap">
+        <div className="col">
+          <div className="head">scorecard · aligned ai</div>
+          <ScoreBar label="welfare · bcr" value={487} max={500} color="green" format={(n)=>`${n}×`} confidence="high" source="Copenhagen Consensus" />
+          <ScoreBar label="x-risk · itn" value={8.4} max={10} color="rose" confidence="med" />
+          <ScoreBar label="utility δ" value={62} max={100} color="accent" format={(n)=>`${n}%`} confidence="med" />
+          <ScoreBar label="capital req" value={null} />
+        </div>
+        <div className="col">
+          <div className="head">header stats</div>
+          <div className="pairs">
+            <StatPair label="problems" value={18} tone="accent" size="lg" />
+            <StatPair label="requests" value={42} tone="violet" />
+            <StatPair label="solutions" value={126} tone="cyan" />
+            <StatPair label="voices" value={37} tone="green" />
+          </div>
+        </div>
+      </div>
+    )
+  </script>
+</body>
+</html>
