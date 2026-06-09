@@ -7,10 +7,13 @@ import { TIER_LABEL } from '@/data/types'
 import { companies } from '@/data/companies'
 import { voices } from '@/data/voices'
 import { formatHumans, formatScore, formatYears, formatUSD } from '@/lib/format'
+import { priorityScore, isRising } from '@/lib/priority'
 import TierPill from './TierPill'
+import TrendBadge from './TrendBadge'
 
 type Lens = 'balanced' | 'welfare' | 'xrisk' | 'utility'
 type SortKey =
+  | 'priority'
   | 'composite'
   | 'humans'
   | 'welfare'
@@ -70,8 +73,9 @@ function compositeScore(p: Problem, lens: Lens): number {
 
 export default function ProblemTable({ problems }: { problems: Problem[] }) {
   const [lens, setLens] = useState<Lens>('balanced')
-  const [sortKey, setSortKey] = useState<SortKey>('composite')
+  const [sortKey, setSortKey] = useState<SortKey>('priority')
   const [sortDir, setSortDir] = useState<'desc' | 'asc'>('desc')
+  const [risingOnly, setRisingOnly] = useState(false)
   const [tierFilter, setTierFilter] = useState<Set<Tier>>(new Set(ALL_TIERS))
   const [visibleCols, setVisibleCols] = useState<Set<ColKey>>(new Set(ALL_COLS))
   const [colsOpen, setColsOpen] = useState(false)
@@ -144,9 +148,11 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
   const rows = useMemo(() => {
     const decorated = problems
       .filter((p) => tierFilter.has(p.tier))
+      .filter((p) => !risingOnly || isRising(p))
       .map((p) => ({
         p,
         composite: compositeScore(p, lens),
+        priority: priorityScore(p),
         companyCount: companyCounts.get(p.slug) ?? 0,
         voiceCount: voiceCounts.get(p.slug) ?? 0,
       }))
@@ -154,6 +160,10 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
       let av = 0
       let bv = 0
       switch (sortKey) {
+        case 'priority':
+          av = a.priority
+          bv = b.priority
+          break
         case 'composite':
           av = a.composite
           bv = b.composite
@@ -191,7 +201,7 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
       return sortDir === 'desc' ? bv - av : av - bv
     })
     return decorated
-  }, [problems, lens, sortKey, sortDir, tierFilter, companyCounts, voiceCounts])
+  }, [problems, lens, sortKey, sortDir, risingOnly, tierFilter, companyCounts, voiceCounts])
 
   function toggleSort(key: SortKey) {
     if (sortKey === key) setSortDir(sortDir === 'desc' ? 'asc' : 'desc')
@@ -335,6 +345,17 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
               </button>
             )
           })}
+          <button
+            onClick={() => setRisingOnly((v) => !v)}
+            className={`px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider border transition-colors ${
+              risingOnly
+                ? 'bg-terminal-rose/10 border-terminal-rose/60 text-terminal-rose'
+                : 'border-hair text-ink-400 hover:text-ink-100 hover:border-ink-400'
+            }`}
+            title="Show only problems whose headline number is getting worse"
+          >
+            ↘ rising
+          </button>
         </div>
 
         {/* Column picker */}
@@ -481,12 +502,15 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
                     {(i + 1).toString().padStart(2, '0')}
                   </td>
                   <td className="px-3 py-3">
-                    <Link
-                      href={`/p/${p.slug}`}
-                      className="block font-sans text-sm font-medium text-ink-100 group-hover:text-amber-300 transition-colors"
-                    >
-                      {p.name}
-                    </Link>
+                    <div className="flex items-center gap-2">
+                      <Link
+                        href={`/p/${p.slug}`}
+                        className="block font-sans text-sm font-medium text-ink-100 group-hover:text-amber-300 transition-colors"
+                      >
+                        {p.name}
+                      </Link>
+                      {p.scale?.trend && <TrendBadge trend={p.scale.trend} showLabel={false} />}
+                    </div>
                     <p className="mt-0.5 text-[11px] text-ink-500 line-clamp-1 max-w-md">
                       {p.tagline}
                     </p>
