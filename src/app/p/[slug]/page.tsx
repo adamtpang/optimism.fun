@@ -16,6 +16,8 @@ import { formatHumans, formatUSD, formatPercent, formatYears } from '@/lib/forma
 import Sparkline from '@/components/Sparkline'
 import TrendBadge from '@/components/TrendBadge'
 import { priorityScore, importanceScore, urgencyScore } from '@/lib/priority'
+import { getCapitalFlow } from '@/data/capital-flows'
+import { computeAllocations, fmtRatio, fmtUsdCompact } from '@/lib/allocation'
 
 const WAY_LABEL: Record<string, string> = {
   build: 'Build',
@@ -68,6 +70,8 @@ export default async function ProblemPage({
   const problemSectors = getSectorsForProblem(slug)
     .map((s) => getSectorBySlug(s))
     .filter((s): s is NonNullable<typeof s> => Boolean(s))
+  const capitalFlow = getCapitalFlow(slug)
+  const allocation = computeAllocations().get(slug)
 
   return (
     <>
@@ -163,6 +167,87 @@ export default async function ProblemPage({
                 ) : (
                   problem.scale.source
                 )}
+              </p>
+            </div>
+          </section>
+        )}
+
+        {/* Capital on it — the allocation layer: what the world actually spends here */}
+        {capitalFlow && (
+          <section className="border-b border-hair">
+            <div className="max-w-5xl mx-auto px-6 py-8 flex flex-wrap items-center justify-between gap-6">
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+                  The capital on it
+                </p>
+                <div className="flex items-baseline gap-3 flex-wrap">
+                  <span className="font-mono text-4xl md:text-5xl tabular-nums text-ink-100">
+                    {fmtUsdCompact(capitalFlow.usdPerYear.value)}
+                    <span className="text-xl text-ink-400">/yr</span>
+                  </span>
+                  <span className="font-mono text-sm text-ink-400">
+                    {capitalFlow.momentum === 'rising' && '↗ rising'}
+                    {capitalFlow.momentum === 'falling' && '↘ falling'}
+                    {capitalFlow.momentum === 'flat' && '→ flat'}
+                  </span>
+                  {allocation?.verdict && (
+                    <span
+                      className={`font-mono text-[10px] uppercase tracking-ultra-wide border px-2 py-1 ${
+                        allocation.verdict === 'underallocated'
+                          ? 'text-amber-300 border-amber-300/50'
+                          : allocation.verdict === 'overallocated'
+                            ? 'text-terminal-rose border-rose-500/40'
+                            : 'text-ink-400 border-hair'
+                      }`}
+                    >
+                      {allocation.verdict}
+                      {allocation.ratio != null && (
+                        <span className="text-ink-500"> · {fmtRatio(allocation.ratio)} fair share</span>
+                      )}
+                    </span>
+                  )}
+                </div>
+                <p className="text-sm text-ink-400 mt-2 max-w-xl leading-relaxed">{capitalFlow.scope}</p>
+              </div>
+              {capitalFlow.series && capitalFlow.series.length >= 2 && (
+                <div className="flex flex-col items-end gap-1">
+                  <Sparkline
+                    series={capitalFlow.series.map((s) => ({ year: s.year, value: s.usd }))}
+                    trend={
+                      capitalFlow.momentum === 'rising'
+                        ? 'improving'
+                        : capitalFlow.momentum === 'falling'
+                          ? 'worsening'
+                          : 'flat'
+                    }
+                    width={220}
+                    height={56}
+                    strokeWidth={2}
+                  />
+                  <span className="font-mono text-[10px] text-ink-500 tabular-nums">
+                    {capitalFlow.series[0].year} – {capitalFlow.series[capitalFlow.series.length - 1].year}
+                  </span>
+                </div>
+              )}
+            </div>
+            <div className="max-w-5xl mx-auto px-6 pb-6">
+              <p className="font-mono text-[11px] text-ink-500">
+                <span className="text-ink-600">source:</span>{' '}
+                {capitalFlow.usdPerYear.sourceUrl ? (
+                  <a
+                    href={capitalFlow.usdPerYear.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                  >
+                    {capitalFlow.usdPerYear.source}
+                  </a>
+                ) : (
+                  capitalFlow.usdPerYear.source
+                )}{' '}
+                <span className="text-ink-600">
+                  · confidence {capitalFlow.usdPerYear.confidence} · estimate, improvable by PR
+                </span>
               </p>
             </div>
           </section>

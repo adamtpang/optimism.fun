@@ -449,3 +449,27 @@ export type ProblemCandidate = {
   createdAt: string
   updatedAt: string
 }
+
+/** Direction of capital over the last ~3 years (distinct from Trend, which tracks the problem itself). */
+export type CapitalMomentum = 'rising' | 'falling' | 'flat'
+
+/** Is the capital pointed at a problem proportional to its demand? */
+export type AllocationVerdict = 'underallocated' | 'balanced' | 'overallocated'
+
+/**
+ * Estimated annual capital deployed at a problem — the PitchBook/NVCA-style
+ * "where the money actually goes" layer. Always an order-of-magnitude estimate
+ * from a named public source, never a silent guess; `scope` says exactly what
+ * is and is not counted so the number is falsifiable.
+ */
+export type CapitalFlow = {
+  problemSlug: string
+  /** Estimated capital per year at the problem (USD). */
+  usdPerYear: SourcedNumber
+  /** Direction of that capital over ~3 years. */
+  momentum: CapitalMomentum
+  /** What the estimate counts / excludes. */
+  scope: string
+  /** Sparse recent series for momentum context, where defensible. */
+  series?: { year: number; usd: number }[]
+}

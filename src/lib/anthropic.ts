@@ -2,7 +2,7 @@
  * Thin wrapper around the Anthropic SDK. Gracefully reports unconfigured
  * state via `isAnthropicConfigured()` so callers can degrade.
  *
- * Default model is Claude Opus 4.7 — chosen for high-stakes reasoning
+ * Default model is Claude Opus 4.8 — chosen for high-stakes reasoning
  * (scoring candidate problems, drafting blackpapers / whitepapers). Lighter
  * calls can pass a different model id.
  */
@@ -10,7 +10,7 @@ import Anthropic from '@anthropic-ai/sdk'
 
 let cached: Anthropic | null = null
 
-export const DEFAULT_MODEL = 'claude-opus-4-7'
+export const DEFAULT_MODEL = 'claude-opus-4-8'
 
 export function isAnthropicConfigured(): boolean {
   return Boolean(process.env.ANTHROPIC_API_KEY)
