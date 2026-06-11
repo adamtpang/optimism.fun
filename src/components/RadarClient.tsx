@@ -3,8 +3,9 @@
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import posthog from 'posthog-js'
-import type { Domain, Trend } from '@/data/types'
+import type { AllocationVerdict, CapitalMomentum, Domain, Trend } from '@/data/types'
 import { DOMAINS, DOMAIN_LABEL } from '@/data/problems'
+import { fmtUsdCompact } from '@/lib/allocation'
 import Sparkline from './Sparkline'
 import TrendBadge from './TrendBadge'
 
@@ -21,6 +22,22 @@ export type RadarRow = {
   demand: number // 0..100
   supply: number // 0..100
   opportunity: number // 0..100
+  capitalUsd: number | null
+  capitalMomentum: CapitalMomentum | null
+  allocationRatio: number | null
+  allocationVerdict: AllocationVerdict | null
+}
+
+const VERDICT_STYLE: Record<AllocationVerdict, string> = {
+  underallocated: 'text-amber-300 border-amber-300/50',
+  balanced: 'text-ink-400 border-hair',
+  overallocated: 'text-terminal-rose border-rose-500/40',
+}
+
+const MOMENTUM_ARROW: Record<CapitalMomentum, string> = {
+  rising: '↗',
+  falling: '↘',
+  flat: '→',
 }
 
 function track(event: string, props?: Record<string, unknown>) {
@@ -143,10 +160,24 @@ export default function RadarClient({ rows }: { rows: RadarRow[] }) {
                       {r.domainLabel}
                     </span>
                   )}
+                  {r.allocationVerdict && (
+                    <span
+                      className={`font-mono text-[10px] uppercase tracking-ultra-wide border px-1.5 py-0.5 ${VERDICT_STYLE[r.allocationVerdict]}`}
+                    >
+                      {r.allocationVerdict}
+                    </span>
+                  )}
                 </div>
                 <p className="mt-0.5 text-[11px] text-ink-500 line-clamp-1 max-w-md">{r.tagline}</p>
                 <p className="mt-0.5 font-mono text-[10px] text-ink-600 tabular-nums">
                   {r.companies} cos · {r.capital} funds on it
+                  {r.capitalUsd != null && (
+                    <>
+                      {' '}
+                      · {fmtUsdCompact(r.capitalUsd)}/yr
+                      {r.capitalMomentum ? ` ${MOMENTUM_ARROW[r.capitalMomentum]}` : ''}
+                    </>
+                  )}
                 </p>
               </div>
 
@@ -188,7 +219,11 @@ export default function RadarClient({ rows }: { rows: RadarRow[] }) {
       <p className="mt-4 font-mono text-[11px] text-ink-500 leading-relaxed">
         <span className="text-amber-300">opportunity</span> = demand (humans affected × severity ×
         market) divided by supply (companies, capital, and solution quality already on it), nudged
-        by urgency. Higher = a bigger, more urgent, less-served gap. Full method on the{' '}
+        by urgency. Higher = a bigger, more urgent, less-served gap.{' '}
+        <span className="text-amber-300">allocation</span> compares each problem&rsquo;s share of
+        real capital ($/yr, sourced estimates) to its share of demand: under half its fair share =
+        underallocated, over double = overallocated. Arrows = 3-year capital momentum. Full method
+        on the{' '}
         <Link
           href="/methodology"
           className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
