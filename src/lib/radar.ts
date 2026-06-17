@@ -4,6 +4,7 @@ import { getCompaniesForProblem } from '@/data/companies'
 import { getEcosystemForProblem } from '@/data/ecosystem'
 import { opportunityScore, importanceScore, supplyScore } from '@/lib/priority'
 import { computeAllocations } from '@/lib/allocation'
+import { getInLimitCap } from '@/data/in-limit'
 
 /**
  * Compute the opportunity-ranked radar rows (demand vs supply per problem),
@@ -19,6 +20,7 @@ export function computeRadarRows(): RadarRow[] {
       const capital = getEcosystemForProblem(p.slug).length
       const s = { companies, capital }
       const alloc = allocations.get(p.slug)
+      const prize = getInLimitCap(p.slug)
       return {
         slug: p.slug,
         name: p.name,
@@ -36,6 +38,7 @@ export function computeRadarRows(): RadarRow[] {
         capitalMomentum: alloc?.momentum ?? null,
         allocationRatio: alloc?.ratio ?? null,
         allocationVerdict: alloc?.verdict ?? null,
+        inLimitUsd: prize?.marketCap.value ?? null,
       }
     })
     .sort((a, b) => b.opportunity - a.opportunity)

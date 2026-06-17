@@ -17,6 +17,7 @@ import Sparkline from '@/components/Sparkline'
 import TrendBadge from '@/components/TrendBadge'
 import { priorityScore, importanceScore, urgencyScore } from '@/lib/priority'
 import { getCapitalFlow } from '@/data/capital-flows'
+import { getInLimitCap } from '@/data/in-limit'
 import { computeAllocations, fmtRatio, fmtUsdCompact } from '@/lib/allocation'
 
 const WAY_LABEL: Record<string, string> = {
@@ -72,6 +73,7 @@ export default async function ProblemPage({
     .filter((s): s is NonNullable<typeof s> => Boolean(s))
   const capitalFlow = getCapitalFlow(slug)
   const allocation = computeAllocations().get(slug)
+  const prize = getInLimitCap(slug)
 
   return (
     <>
@@ -249,6 +251,38 @@ export default async function ProblemPage({
                   · confidence {capitalFlow.usdPerYear.confidence} · estimate, improvable by PR
                 </span>
               </p>
+            </div>
+          </section>
+        )}
+
+        {/* The prize at the limit — the upside half of the trade */}
+        {prize && (
+          <section className="border-b border-hair surface-paper">
+            <div className="max-w-5xl mx-auto px-6 py-8">
+              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-paper-copper mb-2">
+                The prize at the limit
+              </p>
+              <div className="flex items-baseline gap-3 flex-wrap">
+                <span className="font-mono text-4xl md:text-5xl tabular-nums text-ink-100">
+                  {fmtUsdCompact(prize.marketCap.value)}
+                </span>
+                <span className="text-sm text-ink-400">
+                  in-the-limit market cap, if the team executes perfectly
+                </span>
+              </div>
+              <p className="text-sm text-ink-300 mt-3 max-w-2xl leading-relaxed">{prize.reasoning}</p>
+              <p className="font-mono text-[11px] text-ink-500 mt-3">
+                <span className="text-ink-600">comparable:</span> {prize.comparable}{' '}
+                <span className="text-ink-600">· confidence {prize.marketCap.confidence} · a ceiling, not a forecast</span>
+              </p>
+              {allocation?.verdict === 'underallocated' && capitalFlow && (
+                <p className="font-mono text-[11px] text-amber-300/90 mt-4 max-w-2xl leading-relaxed">
+                  The trade: demand is high, only {fmtUsdCompact(capitalFlow.usdPerYear.value)}/yr of capital
+                  is flowing ({allocation.ratio != null ? fmtRatio(allocation.ratio) : ''} its fair share), and the
+                  prize at the limit is {fmtUsdCompact(prize.marketCap.value)}. This is a Request for Startups and a
+                  Request for Investors at once.
+                </p>
+              )}
             </div>
           </section>
         )}

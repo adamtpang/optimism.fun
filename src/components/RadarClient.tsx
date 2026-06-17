@@ -26,6 +26,7 @@ export type RadarRow = {
   capitalMomentum: CapitalMomentum | null
   allocationRatio: number | null
   allocationVerdict: AllocationVerdict | null
+  inLimitUsd: number | null
 }
 
 const VERDICT_STYLE: Record<AllocationVerdict, string> = {
@@ -176,6 +177,12 @@ export default function RadarClient({ rows }: { rows: RadarRow[] }) {
                       {' '}
                       · {fmtUsdCompact(r.capitalUsd)}/yr
                       {r.capitalMomentum ? ` ${MOMENTUM_ARROW[r.capitalMomentum]}` : ''}
+                    </>
+                  )}
+                  {r.inLimitUsd != null && (
+                    <>
+                      {' '}
+                      · <span className="text-amber-300/80">{fmtUsdCompact(r.inLimitUsd)} prize</span>
                     </>
                   )}
                 </p>
