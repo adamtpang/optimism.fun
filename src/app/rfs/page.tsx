@@ -15,11 +15,13 @@ import EmailCapture from '@/components/EmailCapture'
 import TierPill from '@/components/TierPill'
 import { problems } from '@/data/problems'
 import { requestsForStartups, getRequestsForProblem } from '@/data/rfs'
+import { getInLimitCap } from '@/data/in-limit'
+import { fmtUsdCompact } from '@/lib/allocation'
 
 export const metadata: Metadata = {
-  title: "Requests for Startups | optimism.fun",
+  title: "Requests for Startups & Investors | optimism.fun",
   description:
-    "Humanity's Requests for Startups — concrete, buildable companies someone should start to attack the highest-ranked problems. Modeled on YC's RFS and Founders Fund's Choose Good Quests.",
+    "Humanity's Requests for Startups are also Requests for Investors — the same concrete companies, seen from both sides, each tagged with the in-the-limit market cap if the team executes perfectly. Modeled on YC's RFS and Founders Fund's Choose Good Quests.",
 }
 
 // Problems that actually have requests, in ranked order (problems.ts order).
@@ -33,9 +35,9 @@ export default function RfsPage() {
       <Navbar />
       <main>
         <PageHeader
-          kicker="humanity's requests for startups · v0.1"
-          title="Choose a good quest."
-          lede="These are concrete companies someone should build to attack humanity's highest-ranked problems. In the genre of YC's Requests for Startups, held to Founders Fund's Choose Good Quests test: important if it works, a genuine frontier, and unambiguously good. You do not need to build one of these. But if you are looking for what to do with your one life — start here."
+          kicker="requests for startups · requests for investors · v0.1"
+          title="Two sides of one coin."
+          lede="Each request is one object seen from both sides: to a founder it says build this; to an investor it says fund this. Concrete companies that attack humanity's highest-ranked problems — in the genre of YC's Requests for Startups, held to Founders Fund's Choose Good Quests test, and tagged with the in-the-limit market cap: what the company is worth if the team executes perfectly. If you are looking for what to do with your one life, or where the next dollar should go — start here."
           rightStats={[
             { label: 'requests', value: requestsForStartups.length, tone: 'amber' },
             { label: 'problems', value: groups.length, tone: 'violet' },
@@ -85,20 +87,30 @@ export default function RfsPage() {
 
         {/* The requests, grouped by ranked problem */}
         <section className="max-w-5xl mx-auto px-6 py-14 space-y-16">
-          {groups.map(({ problem, requests }) => (
+          {groups.map(({ problem, requests }) => {
+            const prize = getInLimitCap(problem.slug)
+            return (
             <div key={problem.slug}>
               <div className="flex flex-wrap items-baseline justify-between gap-3 mb-6 border-b border-hair pb-3">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 flex-wrap">
                   <TierPill tier={problem.tier} />
                   <h2 className="font-serif text-2xl md:text-3xl text-ink-100">
                     {problem.name}
                   </h2>
+                  {prize && (
+                    <span
+                      className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 border border-amber-300/40 px-2 py-1"
+                      title="In-the-limit market cap: what the winning company is worth at perfect execution"
+                    >
+                      {fmtUsdCompact(prize.marketCap.value)} prize at the limit
+                    </span>
+                  )}
                 </div>
                 <Link
-                  href={`/p/${problem.slug}/whitepaper`}
+                  href={`/p/${problem.slug}`}
                   className="font-mono text-[11px] uppercase tracking-ultra-wide text-amber-300 hover:text-amber-200 transition-colors"
                 >
-                  read the whitepaper →
+                  the trade: demand · capital · prize →
                 </Link>
               </div>
 
@@ -154,7 +166,8 @@ export default function RfsPage() {
                 ))}
               </div>
             </div>
-          ))}
+            )
+          })}
         </section>
 
         {/* Closer + newsletter */}

@@ -473,3 +473,22 @@ export type CapitalFlow = {
   /** Sparse recent series for momentum context, where defensible. */
   series?: { year: number; usd: number }[]
 }
+
+/**
+ * The prize at the limit — the equity value of the company that wins a problem
+ * if its team executes perfectly. This is the upside half of the trade
+ * (demand + thin capital + a huge in-limit prize = the opportunity), and the
+ * number that flips a Request for Startups into a Request for Investors.
+ *
+ * Deliberately a ceiling, not a forecast: confidence is low by construction,
+ * anchored to a NAMED comparable, with the reasoning shown so it is arguable.
+ */
+export type InLimitCap = {
+  problemSlug: string
+  /** In-the-limit equity value at perfect execution (USD). */
+  marketCap: SourcedNumber
+  /** The real company/asset that anchors the ceiling. */
+  comparable: string
+  /** Why this is the ceiling — the logic of the prize. */
+  reasoning: string
+}
