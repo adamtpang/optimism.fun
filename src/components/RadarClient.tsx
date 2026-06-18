@@ -22,6 +22,9 @@ export type RadarRow = {
   demand: number // 0..100
   supply: number // 0..100
   opportunity: number // 0..100
+  demandComposite: number // 0..100, triangulated across signal classes
+  demandCorroboration: number // # of demand classes with a live signal
+  demandConsidered: number // # of demand classes the model considers
   capitalUsd: number | null
   capitalMomentum: CapitalMomentum | null
   allocationRatio: number | null
@@ -190,6 +193,22 @@ export default function RadarClient({ rows }: { rows: RadarRow[] }) {
 
               {/* demand vs supply bars */}
               <div className="flex flex-col gap-1.5">
+                <div
+                  className="flex items-center justify-between font-mono text-[9px] tabular-nums text-ink-600"
+                  title={`Triangulated demand: ${r.demandComposite}/100 from ${r.demandCorroboration} of ${r.demandConsidered} signal classes (burden, willingness-to-pay, capital, research, policy, expert priors)`}
+                >
+                  <span className="uppercase">demand {r.demandComposite}</span>
+                  <span className="flex items-center gap-0.5" aria-label={`${r.demandCorroboration} of ${r.demandConsidered} demand signals`}>
+                    {Array.from({ length: r.demandConsidered }).map((_, j) => (
+                      <span
+                        key={j}
+                        className={j < r.demandCorroboration ? 'text-amber-300' : 'text-ink-700'}
+                      >
+                        ●
+                      </span>
+                    ))}
+                  </span>
+                </div>
                 <div className="flex items-center gap-1.5">
                   <span className="font-mono text-[9px] uppercase text-ink-500 w-10">dem</span>
                   <div className="h-1 flex-1 bg-ink-800">
@@ -226,7 +245,10 @@ export default function RadarClient({ rows }: { rows: RadarRow[] }) {
       <p className="mt-4 font-mono text-[11px] text-ink-500 leading-relaxed">
         <span className="text-amber-300">opportunity</span> = demand (humans affected × severity ×
         market) divided by supply (companies, capital, and solution quality already on it), nudged
-        by urgency. Higher = a bigger, more urgent, less-served gap.{' '}
+        by urgency. Higher = a bigger, more urgent, less-served gap. The{' '}
+        <span className="text-amber-300">●</span> dots show how many independent demand signals
+        (burden, willingness-to-pay, capital, research, policy, expert priors) corroborate the
+        number — more dots = more credible.{' '}
         <span className="text-amber-300">allocation</span> compares each problem&rsquo;s share of
         real capital ($/yr, sourced estimates) to its share of demand: under half its fair share =
         underallocated, over double = overallocated. Arrows = 3-year capital momentum. Full method

@@ -90,6 +90,96 @@ export default function MethodologyPage() {
 
               <section>
                 <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
+                  Detecting demand: humanity&rsquo;s market research
+                </h2>
+                <p className="mb-4">
+                  Demand for a problem&rsquo;s solution is what the world is{' '}
+                  <em>already paying</em> &mdash; in suffering, money, capital, research, and
+                  policy &mdash; to make it go away. The trap is mistaking{' '}
+                  <span className="text-ink-100">attention</span> (hype, news spikes, search
+                  volume) for demand. Attention is cheap and faddish; we treat it as a{' '}
+                  <em>crowding</em> signal, not demand. So we detect demand by triangulating
+                  revealed-preference signal classes, and never let one noisy number move the
+                  ranking on its own.
+                </p>
+                <div className="space-y-3 mb-4">
+                  <div className="rounded border border-hair p-4">
+                    <p className="text-amber-300 text-xs uppercase tracking-wider mb-1">
+                      burden &middot; who, how badly
+                    </p>
+                    <p className="text-sm text-ink-400">
+                      Affected population × per-capita severity. Live sources:{' '}
+                      <span className="text-ink-200">
+                        IHME Global Burden of Disease, WHO, World Bank, Our World in Data
+                      </span>
+                      .
+                    </p>
+                  </div>
+                  <div className="rounded border border-hair p-4">
+                    <p className="text-amber-300 text-xs uppercase tracking-wider mb-1">
+                      willingness to pay &middot; revealed spend
+                    </p>
+                    <p className="text-sm text-ink-400">
+                      The addressable market the world already pays into &mdash; household,
+                      government, and enterprise spend. National accounts and sector TAM.
+                    </p>
+                  </div>
+                  <div className="rounded border border-hair p-4">
+                    <p className="text-amber-300 text-xs uppercase tracking-wider mb-1">
+                      capital flux &middot; smart money + momentum
+                    </p>
+                    <p className="text-sm text-ink-400">
+                      Estimated venture, grant, and R&amp;D dollars flowing at the problem, and
+                      whether they&rsquo;re rising. Crunchbase / Dealroom, NIH RePORTER, NSF,
+                      philanthropy.
+                    </p>
+                  </div>
+                  <div className="rounded border border-hair p-4">
+                    <p className="text-ink-300 text-xs uppercase tracking-wider mb-1">
+                      research &amp; policy &middot; frontier and institutions{' '}
+                      <span className="text-ink-600 normal-case">(feeds coming online)</span>
+                    </p>
+                    <p className="text-sm text-ink-400">
+                      Publication and patent intensity (OpenAlex, NIH RePORTER, The Lens) and
+                      institutional demand &mdash; legislation, procurement, prizes. Wired into
+                      the model; awaiting their live feeds.
+                    </p>
+                  </div>
+                  <div className="rounded border border-hair p-4">
+                    <p className="text-amber-300 text-xs uppercase tracking-wider mb-1">
+                      expert priors &middot; credible prioritizers
+                    </p>
+                    <p className="text-sm text-ink-400">
+                      Convergence of institutions that rank problems with a transparent
+                      methodology &mdash; 80,000 Hours, Open Philanthropy, GiveWell, Copenhagen
+                      Consensus, YC RFS, Founders Fund. When several agree independently, that
+                      is signal.
+                    </p>
+                  </div>
+                </div>
+                <p>
+                  The composite weights revealed-preference classes above softer priors,
+                  log-normalizes each against a named ceiling, and applies a{' '}
+                  <span className="text-ink-100">corroboration gate</span>: a problem&rsquo;s
+                  demand isn&rsquo;t trusted until at least two independent signal classes agree
+                  &mdash; a lone signal is discounted. A class with no credible source yet is{' '}
+                  dropped from the blend, never counted as a silent zero. The{' '}
+                  <span className="text-amber-300">●</span> dots on the{' '}
+                  <Link
+                    href="/radar"
+                    className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                  >
+                    radar
+                  </Link>{' '}
+                  show how many classes corroborate each number. The most valuable problems are
+                  where demand is high but attention and capital are{' '}
+                  <em>low</em> &mdash; that gap is the founder&rsquo;s and the
+                  allocator&rsquo;s edge.
+                </p>
+              </section>
+
+              <section>
+                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
                   Time and capital are order-of-magnitude estimates
                 </h2>
                 <p className="mb-4">
