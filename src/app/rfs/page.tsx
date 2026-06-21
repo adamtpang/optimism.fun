@@ -7,16 +7,17 @@
  * analysis behind it.
  */
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import PageHeader from '@/components/PageHeader'
 import EmailCapture from '@/components/EmailCapture'
-import TierPill from '@/components/TierPill'
+import RfsBoard, { type RfsGroupData } from '@/components/RfsBoard'
 import { problems } from '@/data/problems'
 import { requestsForStartups, getRequestsForProblem } from '@/data/rfs'
+import { getEcosystemForProblem } from '@/data/ecosystem'
 import { getInLimitCap } from '@/data/in-limit'
-import { fmtUsdCompact } from '@/lib/allocation'
+import { getCapitalFlow } from '@/data/capital-flows'
+import { computeAllocations } from '@/lib/allocation'
 
 export const metadata: Metadata = {
   title: "Requests for Startups & Investors | optimism.fun",
@@ -25,9 +26,46 @@ export const metadata: Metadata = {
 }
 
 // Problems that actually have requests, in ranked order (problems.ts order).
-const groups = problems
-  .map((p) => ({ problem: p, requests: getRequestsForProblem(p.slug) }))
-  .filter((g) => g.requests.length > 0)
+// For each, pre-compute the two-sided action data: who funds it (ecosystem),
+// the prize at the limit, the capital flowing, and the allocation verdict.
+const allocations = computeAllocations()
+
+const groups: RfsGroupData[] = problems
+  .map((p): RfsGroupData | null => {
+    const requests = getRequestsForProblem(p.slug)
+    if (requests.length === 0) return null
+    const prize = getInLimitCap(p.slug)
+    const flow = getCapitalFlow(p.slug)
+    const alloc = allocations.get(p.slug)
+    return {
+      problemSlug: p.slug,
+      problemName: p.name,
+      tier: p.tier,
+      prizeUsd: prize?.marketCap.value ?? null,
+      capitalUsd: flow?.usdPerYear.value ?? null,
+      momentum: flow?.momentum ?? null,
+      ratio: alloc?.ratio ?? null,
+      verdict: alloc?.verdict ?? null,
+      funders: getEcosystemForProblem(p.slug).map((e) => ({
+        slug: e.slug,
+        name: e.name,
+        type: e.type,
+        url: e.url,
+        thesis: e.thesis,
+        bestFor: e.bestFor,
+      })),
+      requests: requests.map((r) => ({
+        slug: r.slug,
+        title: r.title,
+        pitch: r.pitch,
+        whyNow: r.whyNow,
+        shape: r.shape,
+        successLooksLike: r.successLooksLike,
+        goodQuest: r.goodQuest,
+      })),
+    }
+  })
+  .filter((g): g is RfsGroupData => g !== null)
 
 export default function RfsPage() {
   return (
@@ -85,90 +123,8 @@ export default function RfsPage() {
           </div>
         </section>
 
-        {/* The requests, grouped by ranked problem */}
-        <section className="max-w-5xl mx-auto px-6 py-14 space-y-16">
-          {groups.map(({ problem, requests }) => {
-            const prize = getInLimitCap(problem.slug)
-            return (
-            <div key={problem.slug}>
-              <div className="flex flex-wrap items-baseline justify-between gap-3 mb-6 border-b border-hair pb-3">
-                <div className="flex items-center gap-3 flex-wrap">
-                  <TierPill tier={problem.tier} />
-                  <h2 className="font-serif text-2xl md:text-3xl text-ink-100">
-                    {problem.name}
-                  </h2>
-                  {prize && (
-                    <span
-                      className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 border border-amber-300/40 px-2 py-1"
-                      title="In-the-limit market cap: what the winning company is worth at perfect execution"
-                    >
-                      {fmtUsdCompact(prize.marketCap.value)} prize at the limit
-                    </span>
-                  )}
-                </div>
-                <Link
-                  href={`/p/${problem.slug}`}
-                  className="font-mono text-[11px] uppercase tracking-ultra-wide text-amber-300 hover:text-amber-200 transition-colors"
-                >
-                  the trade: demand · capital · prize →
-                </Link>
-              </div>
-
-              <div className="space-y-4">
-                {requests.map((r) => (
-                  <article
-                    key={r.slug}
-                    className="border border-hair p-6 hover:border-hair-strong transition-colors"
-                  >
-                    <h3 className="font-serif text-xl md:text-2xl text-ink-100 mb-3">
-                      {r.title}
-                    </h3>
-                    <p className="font-serif text-lg text-ink-200 leading-relaxed mb-5">
-                      {r.pitch}
-                    </p>
-
-                    <div className="grid md:grid-cols-3 gap-px bg-ink-700/40 border border-hair mb-4">
-                      <div className="bg-[rgb(var(--bg))] p-4">
-                        <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1.5">
-                          Why now
-                        </p>
-                        <p className="text-sm text-ink-300 leading-relaxed">
-                          {r.whyNow}
-                        </p>
-                      </div>
-                      <div className="bg-[rgb(var(--bg))] p-4">
-                        <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1.5">
-                          The shape of it
-                        </p>
-                        <p className="text-sm text-ink-300 leading-relaxed">
-                          {r.shape}
-                        </p>
-                      </div>
-                      <div className="bg-[rgb(var(--bg))] p-4">
-                        <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1.5">
-                          Success looks like
-                        </p>
-                        <p className="text-sm text-ink-300 leading-relaxed">
-                          {r.successLooksLike}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3 border-l-2 border-amber-300/50 pl-4">
-                      <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 whitespace-nowrap mt-0.5">
-                        good quest
-                      </span>
-                      <p className="text-sm text-ink-300 leading-relaxed italic">
-                        {r.goodQuest}
-                      </p>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-            )
-          })}
-        </section>
+        {/* The requests — a two-sided action board (Build it / Fund it) */}
+        <RfsBoard groups={groups} />
 
         {/* Closer + newsletter */}
         <section className="border-t border-hair">

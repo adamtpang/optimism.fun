@@ -259,6 +259,49 @@ export const TIER_COLOR: Record<Tier, string> = {
   emerging: 'purple',
 }
 
+/**
+ * Demand detection — "humanity's market research."
+ *
+ * Demand for a problem's solution is what the world is ALREADY paying — in
+ * suffering, money, capital, research, and policy — to make it go away. We
+ * detect it by triangulating revealed-preference signal classes, never a
+ * single stated opinion. `attention` is tracked too, but as a crowding signal
+ * (how noticed a problem is), not as demand: the best opportunities are high
+ * demand with low attention.
+ *
+ * Each class maps to credible, programmatic, mostly-open data sources. The
+ * composite lives in lib/demand.ts; live feeds (IHME GBD, capital + research
+ * flux) slot into the same shape as they come online.
+ */
+export type DemandClass =
+  | 'burden' // who is affected, how badly — IHME GBD, WHO, World Bank, OWID
+  | 'wtp' // willingness to pay — market size, household + gov spend
+  | 'capital' // smart money flowing in — VC / grant / R&D, with momentum
+  | 'research' // frontier intensity — OpenAlex, NIH RePORTER, patents
+  | 'policy' // institutional demand — legislation, procurement, prizes
+  | 'expert' // credible prioritizers — 80k Hours, Open Phil, GiveWell, RFS
+  | 'attention' // how noticed — Trends, Wikipedia, GDELT (crowding, not demand)
+
+/** What kind of institution a credible prioritizer is. */
+export type ExpertPriorKind = 'cause-prioritization' | 'philanthropy' | 'rfs'
+
+/**
+ * A credible institution's published prioritization — used as the `expert`
+ * demand class. These are the humans who already rank humanity's problems with
+ * a transparent, citable methodology. Distinct from ecosystem.ts, which is the
+ * capital that funds the work; this is the prior on what's worth funding.
+ */
+export type ExpertPrior = {
+  slug: string
+  org: string
+  kind: ExpertPriorKind
+  url: string
+  /** Which ranked problems this institution lists as a top priority. */
+  problemSlugs: string[]
+  /** One line on the methodology, so the prior is auditable. */
+  note: string
+}
+
 export const ECOSYSTEM_TYPE_LABEL: Record<EcosystemType, string> = {
   grant: 'Grant',
   fellowship: 'Fellowship',
