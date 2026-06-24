@@ -7,7 +7,7 @@ import FitFinder from '@/components/FitFinder'
 export const metadata: Metadata = {
   title: 'Founder-Problem Fit | optimism.fun',
   description:
-    'Find your life’s work. Two questions — what you can’t stop thinking about, and how you build — turn into the handful of humanity’s problems that could be your founder-problem fit, each as an actionable quest.',
+    'Find your life’s work. An AI interview does market research on your behalf — it learns who you are in the economy, then points you at the handful of humanity’s problems that could be your founder-problem fit, each as an actionable quest.',
 }
 
 export default function FitPage() {
@@ -26,8 +26,9 @@ export default function FitPage() {
             <p className="text-ink-400 leading-relaxed max-w-2xl text-base">
               The best founders have a deep, almost unreasonable fit with one problem — Hassabis
               with intelligence, Jobs with the product. Founder-problem fit matters more than
-              market or skills. Answer two questions and we will point your obsession and your
-              archetype at the problems that could be yours, each turned into an actionable quest.
+              market or skills. Let the AI interview you — it learns who you are in the economy and
+              points you at the problems that could be yours, each as an actionable quest. In a
+              hurry? Take the quick two-question version instead.
             </p>
           </div>
         </section>
