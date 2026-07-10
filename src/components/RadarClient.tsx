@@ -195,7 +195,7 @@ export default function RadarClient({ rows }: { rows: RadarRow[] }) {
               <div className="flex flex-col gap-1.5">
                 <div
                   className="flex items-center justify-between font-mono text-[9px] tabular-nums text-ink-600"
-                  title={`Triangulated demand: ${r.demandComposite}/100 from ${r.demandCorroboration} of ${r.demandConsidered} signal classes (burden, willingness-to-pay, capital, research, policy, expert priors)`}
+                  title={`Triangulated demand: ${r.demandComposite}/100 from ${r.demandCorroboration} of ${r.demandConsidered} signal classes (burden, willingness-to-pay, capital, research, policy, expert priors, queues & shortages)`}
                 >
                   <span className="uppercase">demand {r.demandComposite}</span>
                   <span className="flex items-center gap-0.5" aria-label={`${r.demandCorroboration} of ${r.demandConsidered} demand signals`}>
@@ -246,9 +246,10 @@ export default function RadarClient({ rows }: { rows: RadarRow[] }) {
         <span className="text-amber-300">opportunity</span> = demand (humans affected × severity ×
         market) divided by supply (companies, capital, and solution quality already on it), nudged
         by urgency. Higher = a bigger, more urgent, less-served gap. The{' '}
+        {/* keep this list in sync with CLASS_LABEL in lib/demand.ts */}
         <span className="text-amber-300">●</span> dots show how many independent demand signals
-        (burden, willingness-to-pay, capital, research, policy, expert priors) corroborate the
-        number — more dots = more credible.{' '}
+        (burden, willingness-to-pay, capital, research, policy, expert priors, queues &amp;
+        shortages) corroborate the number — more dots = more credible.{' '}
         <span className="text-amber-300">allocation</span> compares each problem&rsquo;s share of
         real capital ($/yr, sourced estimates) to its share of demand: under half its fair share =
         underallocated, over double = overallocated. Arrows = 3-year capital momentum. Full method
