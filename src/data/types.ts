@@ -280,6 +280,7 @@ export type DemandClass =
   | 'research' // frontier intensity — OpenAlex, NIH RePORTER, patents
   | 'policy' // institutional demand — legislation, procurement, prizes
   | 'expert' // credible prioritizers — 80k Hours, Open Phil, GiveWell, RFS
+  | 'queues' // demand markets fail to clear — shortages, waitlists, backlogs
   | 'attention' // how noticed — Trends, Wikipedia, GDELT (crowding, not demand)
 
 /** What kind of institution a credible prioritizer is. */

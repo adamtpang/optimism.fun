@@ -47,15 +47,20 @@ const WEIGHTS: Record<Exclude<DemandClass, 'attention'>, number> = {
   research: 0.12,
   policy: 0.06,
   expert: 0.1,
+  // Queues: demand markets fail to clear (shortages, waitlists, backlogs).
+  // Weights renormalize over present classes, so adding this class leaves
+  // static scores untouched until a live queue signal actually exists.
+  queues: 0.09,
 }
 
-const CLASS_LABEL: Record<DemandClass, string> = {
+export const CLASS_LABEL: Record<DemandClass, string> = {
   burden: 'Burden',
   wtp: 'Willingness to pay',
   capital: 'Capital flux',
   research: 'Research intensity',
   policy: 'Policy demand',
   expert: 'Expert priors',
+  queues: 'Queues & shortages',
   attention: 'Attention (crowding)',
 }
 
@@ -83,8 +88,10 @@ export type DemandReadout = {
   components: DemandComponent[]
 }
 
-/** Build the per-class signals for a problem from the data we have today. */
-function components(p: Problem): DemandComponent[] {
+/** Build the per-class signals for a problem from the data we have today.
+ *  Exported so the live layer (lib/demand-live.ts) can start from the static
+ *  components and overlay live-fetched signals before recomposing. */
+export function buildComponents(p: Problem): DemandComponent[] {
   // Burden: magnitude of affected humans, weighted by per-capita severity.
   // Always present — every ranked problem has an affected population.
   const burden = clamp01(0.6 * quantityScore(p) + 0.4 * severityScore(p))
@@ -143,16 +150,27 @@ function components(p: Problem): DemandComponent[] {
       weight: WEIGHTS.expert,
       source: expert != null ? 'cause-prioritization registry' : null,
     },
+    {
+      class: 'queues',
+      label: CLASS_LABEL.queues,
+      strength: null, // static path has no queue data; lit live by demand-live.ts
+      weight: WEIGHTS.queues,
+      source: null,
+    },
   ]
 }
 
 /**
- * Compose the demand classes into a single 0..100 score. Weights renormalize
+ * Compose demand components into a single 0..100 score. Weights renormalize
  * over present classes; a sub-2-class signal is discounted (corroboration
- * gate) so a problem can't rank on one number alone.
+ * gate) so a problem can't rank on one number alone. Shared by the static
+ * path below and the live path in lib/demand-live.ts.
  */
-export function demandScore(p: Problem): DemandReadout {
-  const comps = components(p)
+export function composeDemand(comps: DemandComponent[]): {
+  score: number
+  corroboration: number
+  considered: number
+} {
   const present = comps.filter((c) => c.strength != null)
   const totalWeight = present.reduce((s, c) => s + c.weight, 0)
 
@@ -164,13 +182,21 @@ export function demandScore(p: Problem): DemandReadout {
   // Corroboration gate: one lone signal is weak evidence of real demand.
   const gate = present.length >= 2 ? 1 : 0.6
 
+  return {
+    score: Math.round(clamp01(blend * gate) * 100),
+    corroboration: present.length,
+    considered: comps.length,
+  }
+}
+
+export function demandScore(p: Problem): DemandReadout {
+  const comps = buildComponents(p)
+  const composed = composeDemand(comps)
   const flow = getCapitalFlow(p.slug)
 
   return {
     problemSlug: p.slug,
-    score: Math.round(clamp01(blend * gate) * 100),
-    corroboration: present.length,
-    considered: comps.length,
+    ...composed,
     momentum: flow?.momentum ?? null,
     components: comps,
   }

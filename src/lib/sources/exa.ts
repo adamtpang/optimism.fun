@@ -303,3 +303,115 @@ export async function sourceProblemCandidates(
   }
   return out
 }
+
+// ---------------------------------------------------------------------------
+// Queue signals — Exa Agent as the extractor for demand data with NO API.
+// Queues are demand that markets fail to clear (waiting = a suppressed price
+// signal). The sources below publish numbers only as web pages / reports, so
+// Exa's structured research turns them into rows for the `queues` demand
+// class. Async + slow: call from a cron/route, never at page render.
+// ---------------------------------------------------------------------------
+
+export type QueueSignal = {
+  problemSlug: string
+  metric: string
+  value: number
+  unit: string
+  asOf: string
+  sourceTitle: string
+  sourceUrl: string
+}
+
+const QUEUE_TARGETS: { problemSlug: string; ask: string }[] = [
+  {
+    problemSlug: 'energy-abundance',
+    ask: 'Total active generation + storage capacity (GW) waiting in US grid interconnection queues, per the latest LBNL "Queued Up" report',
+  },
+  {
+    problemSlug: 'housing-construction',
+    ask: 'Current US rental vacancy rate (%) per the latest Census Bureau Housing Vacancies and Homeownership release, plus the most-cited current estimate of the US housing shortage in units if available',
+  },
+  {
+    problemSlug: 'longevity',
+    ask: 'Number of candidates currently on the US national organ transplant waiting list, per OPTN/UNOS national data',
+  },
+]
+
+const QUEUE_SCHEMA = {
+  type: 'object',
+  properties: {
+    signals: {
+      type: 'array',
+      maxItems: 6,
+      items: {
+        type: 'object',
+        properties: {
+          problemSlug: { type: 'string' },
+          metric: { type: 'string' },
+          value: { type: 'number' },
+          unit: { type: 'string' },
+          asOf: { type: 'string', description: 'Date or period the number refers to' },
+          sourceTitle: { type: 'string' },
+          sourceUrl: { type: 'string', format: 'uri' },
+        },
+        required: ['problemSlug', 'metric', 'value', 'unit', 'sourceUrl'],
+      },
+    },
+  },
+  required: ['signals'],
+} as const
+
+/**
+ * One Exa Agent run extracting the queue metrics above with citations.
+ * Returns [] when Exa is unconfigured or the run fails — never throws.
+ */
+export async function sourceQueueSignals(
+  opts: { effort?: ExaEffort; timeoutMs?: number } = {},
+): Promise<QueueSignal[]> {
+  if (!isExaConfigured()) return []
+
+  const query = `Extract the following demand-queue statistics, each with its authoritative source URL and the date the number refers to. Only report numbers you can cite; omit anything you cannot verify.
+
+${QUEUE_TARGETS.map((t) => `- problemSlug "${t.problemSlug}": ${t.ask}`).join('\n')}`
+
+  const created = await createRun({
+    query,
+    effort: opts.effort ?? 'medium',
+    outputSchema: QUEUE_SCHEMA,
+  })
+  if (!created?.id) return []
+
+  const run = TERMINAL.includes(created.status)
+    ? created
+    : await pollUntilFinished(created.id, { timeoutMs: opts.timeoutMs })
+  if (!run || run.status !== 'completed') return []
+
+  const structured = run.output?.structured as { signals?: unknown[] } | undefined
+  const list = Array.isArray(structured?.signals) ? structured!.signals! : []
+  const allowed = new Set(QUEUE_TARGETS.map((t) => t.problemSlug))
+
+  const out: QueueSignal[] = []
+  for (const raw of list) {
+    const s = raw as Partial<QueueSignal>
+    if (
+      typeof s.problemSlug === 'string' &&
+      allowed.has(s.problemSlug) &&
+      typeof s.metric === 'string' &&
+      typeof s.value === 'number' &&
+      Number.isFinite(s.value) &&
+      typeof s.unit === 'string' &&
+      typeof s.sourceUrl === 'string'
+    ) {
+      out.push({
+        problemSlug: s.problemSlug,
+        metric: s.metric,
+        value: s.value,
+        unit: s.unit,
+        asOf: typeof s.asOf === 'string' ? s.asOf : 'unspecified',
+        sourceTitle: typeof s.sourceTitle === 'string' ? s.sourceTitle : s.sourceUrl,
+        sourceUrl: s.sourceUrl,
+      })
+    }
+  }
+  return out
+}
