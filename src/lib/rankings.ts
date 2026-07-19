@@ -3,15 +3,20 @@
  * highest-demand companies that AREN'T being built yet.
  *
  * Altitude matters: we rank Requests for Startups (specific, buildable
- * companies = the leaf nodes), NOT the 12 coarse problems. Each RFS inherits
- * its problem's demand-gap metrics from the radar, then is scored and tiered.
+ * companies = the leaf nodes), NOT the 12 coarse problems.
  *
- * The ranking metric is the opportunity spine — demand × (1 − supply) × urgency
- * (lib/priority.ts) — the literal "high demand, undersupplied" quantity, blended
- * with the triangulated demand composite and gated by how ready-to-build the
- * quest is (confidence). Raw demand is deliberately NOT the metric: supply
- * chases demand, so the head of the demand curve is the MOST contested. The
- * opportunity is the residual — the gap.
+ *   score = demand × quest-gap × readiness
+ *
+ *   demand    = the problem's triangulated demand composite (from the radar /
+ *               demand map). Shared by sibling quests under one problem — that
+ *               is correct; they serve the same underlying demand.
+ *   quest-gap = 1 − questSupply, where questSupply blends the problem's overall
+ *               supply with THIS quest's own crowding. This is the sibling
+ *               differentiator: the residual, at the quest altitude.
+ *   readiness = a confidence discount, so a ready frontier outranks a maybe.
+ *
+ * Raw demand is deliberately NOT the metric: supply chases demand, so the head
+ * of the demand curve is the most contested. The opportunity is the gap.
  */
 import type { CapitalMomentum, AllocationVerdict, Confidence, Crowding } from '@/data/types'
 import { requestsForStartups } from '@/data/rfs'
