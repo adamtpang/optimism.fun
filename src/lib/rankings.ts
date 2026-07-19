@@ -13,7 +13,7 @@
  * chases demand, so the head of the demand curve is the MOST contested. The
  * opportunity is the residual — the gap.
  */
-import type { CapitalMomentum, AllocationVerdict, Confidence } from '@/data/types'
+import type { CapitalMomentum, AllocationVerdict, Confidence, Crowding } from '@/data/types'
 import { requestsForStartups } from '@/data/rfs'
 import { computeRadarRows } from '@/lib/radar'
 
@@ -29,16 +29,20 @@ export type RankedQuest = {
   whyNow: string
   goodQuest: string
   confidence: Confidence
+  /** How contested THIS specific quest is (quest-level supply). */
+  crowding: Crowding
   problemSlug: string
   problemName: string
   domainLabel: string | null
-  /** Triangulated demand for the underlying problem, 0..100. */
+  /** Triangulated demand for the underlying problem, 0..100 (shared by siblings). */
   demand: number
-  /** How well-served the problem already is, 0..100. */
+  /** The problem's overall supply, 0..100 (shared by siblings). */
   supply: number
-  /** The undersupply — 100 − supply. Higher = more unbuilt. */
+  /** Quest-level supply: problem supply blended with this quest's crowding, 0..100. */
+  questSupply: number
+  /** The quest-level undersupply — 100 − questSupply. Differentiates siblings. */
   gap: number
-  /** Radar opportunity: demand × (1 − supply) × urgency, 0..100. */
+  /** Quest opportunity: demand × quest-gap, 0..100. */
   opportunity: number
   /** In-the-limit market cap ceiling (the prize), USD. */
   prizeUsd: number | null
@@ -53,13 +57,17 @@ const clamp = (x: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, x
 // Readiness gate: a lower-confidence quest is discounted, never zeroed.
 const CONFIDENCE_MULT: Record<Confidence, number> = { high: 1, med: 0.93, low: 0.84 }
 
+// How much each crowding level counts as quest-level supply (0..1).
+const CROWDING_SUPPLY: Record<Crowding, number> = { open: 0.2, contested: 0.5, crowded: 0.8 }
+
 /**
- * Compose one quest's ranking score. Opportunity is the spine; the triangulated
- * demand composite is a secondary vote; confidence gates readiness.
+ * Quest-level supply, 0..1. Blends the problem's overall supply with how
+ * contested THIS specific approach is — crowding weighted higher (0.55) so
+ * sibling quests under one problem actually separate. This is the whole point:
+ * demand is shared by siblings; the differentiator is the quest's own gap.
  */
-function questScore(opportunity: number, demandComposite: number, confidence: Confidence): number {
-  const raw = 0.72 * opportunity + 0.28 * demandComposite
-  return Math.round(clamp(raw * CONFIDENCE_MULT[confidence], 0, 100))
+function questSupplyFrac(problemSupply: number, crowding: Crowding): number {
+  return clamp(0.45 * (problemSupply / 100) + 0.55 * CROWDING_SUPPLY[crowding], 0, 1)
 }
 
 /**
@@ -84,8 +92,16 @@ export function computeQuestRankings(): RankedQuest[] {
       const p = byProblem.get(rfs.problemSlug)
       if (!p) return null
       const confidence = rfs.confidence ?? 'low'
+      const crowding = rfs.crowding ?? 'contested'
       const demand = p.demandComposite
-      const supply = p.supply
+
+      const supplyFrac = questSupplyFrac(p.supply, crowding)
+      const questSupply = Math.round(supplyFrac * 100)
+      const gap = Math.round((1 - supplyFrac) * 100)
+      // Quest opportunity = demand × quest-gap — the residual at this altitude.
+      const opportunity = Math.round(demand * (1 - supplyFrac))
+      const score = Math.round(clamp(opportunity * CONFIDENCE_MULT[confidence], 0, 100))
+
       return {
         slug: rfs.slug,
         title: rfs.title,
@@ -93,17 +109,19 @@ export function computeQuestRankings(): RankedQuest[] {
         whyNow: rfs.whyNow,
         goodQuest: rfs.goodQuest,
         confidence,
+        crowding,
         problemSlug: rfs.problemSlug,
         problemName: p.name,
         domainLabel: p.domainLabel,
         demand,
-        supply,
-        gap: clamp(100 - supply, 0, 100),
-        opportunity: p.opportunity,
+        supply: p.supply,
+        questSupply,
+        gap,
+        opportunity,
         prizeUsd: p.inLimitUsd,
         momentum: p.capitalMomentum,
         allocationVerdict: p.allocationVerdict,
-        score: questScore(p.opportunity, demand, confidence),
+        score,
       }
     })
     .filter((q): q is NonNullable<typeof q> => q !== null)

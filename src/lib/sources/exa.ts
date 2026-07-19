@@ -17,7 +17,7 @@
  * network / parse / non-terminal failure also resolves to [] rather than
  * throwing, so the cron never hard-fails on Exa.
  */
-import type { Tier } from '@/data/types'
+import type { Tier, Crowding } from '@/data/types'
 // Type-only import: erased at compile time, so this does NOT pull the Neon
 // runtime (db.ts) into this module's bundle.
 import type { UpsertCandidate } from '@/lib/candidates'
@@ -410,6 +410,112 @@ ${QUEUE_TARGETS.map((t) => `- problemSlug "${t.problemSlug}": ${t.ask}`).join('\
         asOf: typeof s.asOf === 'string' ? s.asOf : 'unspecified',
         sourceTitle: typeof s.sourceTitle === 'string' ? s.sourceTitle : s.sourceUrl,
         sourceUrl: s.sourceUrl,
+      })
+    }
+  }
+  return out
+}
+
+// ---------------------------------------------------------------------------
+// Quest crowding — Exa as the live competitor-count sourcer for the startup
+// power rankings. Each quest carries an editorial `crowding` prior; this
+// refreshes it into a real count of companies currently building that specific
+// thing, which is the quest-level supply that differentiates sibling quests.
+// Async + slow: call from a cron/route, never at page render.
+// ---------------------------------------------------------------------------
+
+export type QuestCrowdingSignal = {
+  questSlug: string
+  competitorCount: number
+  crowding: Crowding
+  exampleCompetitors: string[]
+  sourceUrl: string | null
+}
+
+/** Map a real competitor count to the coarse crowding band the ranking uses. */
+export function crowdingFromCount(n: number): Crowding {
+  if (n <= 1) return 'open'
+  if (n <= 4) return 'contested'
+  return 'crowded'
+}
+
+const QUEST_CROWDING_SCHEMA = {
+  type: 'object',
+  properties: {
+    quests: {
+      type: 'array',
+      maxItems: 30,
+      items: {
+        type: 'object',
+        properties: {
+          questSlug: { type: 'string' },
+          competitorCount: {
+            type: 'number',
+            description: 'Number of companies/startups currently building this specific thing',
+          },
+          exampleCompetitors: { type: 'array', items: { type: 'string' }, maxItems: 5 },
+          sourceUrl: { type: 'string', format: 'uri' },
+        },
+        required: ['questSlug', 'competitorCount'],
+      },
+    },
+  },
+  required: ['quests'],
+} as const
+
+/**
+ * One Exa Agent run counting the real competitor landscape for each quest.
+ * Returns [] when Exa is unconfigured or the run fails — never throws.
+ */
+export async function sourceQuestCrowding(
+  quests: { slug: string; title: string; shape: string }[],
+  opts: { effort?: ExaEffort; timeoutMs?: number } = {},
+): Promise<QuestCrowdingSignal[]> {
+  if (!isExaConfigured() || quests.length === 0) return []
+
+  const query = `For each startup idea below, count how many companies or funded startups are CURRENTLY building this specific thing (not the broad category — the specific approach described). Return the count, up to 5 example company names, and a source URL. Be conservative; only count real, operating companies.
+
+${quests.map((q) => `- questSlug "${q.slug}" — ${q.title}: ${q.shape}`).join('\n')}`
+
+  const created = await createRun({
+    query,
+    effort: opts.effort ?? 'medium',
+    outputSchema: QUEST_CROWDING_SCHEMA,
+  })
+  if (!created?.id) return []
+
+  const run = TERMINAL.includes(created.status)
+    ? created
+    : await pollUntilFinished(created.id, { timeoutMs: opts.timeoutMs })
+  if (!run || run.status !== 'completed') return []
+
+  const structured = run.output?.structured as { quests?: unknown[] } | undefined
+  const list = Array.isArray(structured?.quests) ? structured!.quests! : []
+  const allowed = new Set(quests.map((q) => q.slug))
+
+  const out: QuestCrowdingSignal[] = []
+  for (const raw of list) {
+    const s = raw as {
+      questSlug?: unknown
+      competitorCount?: unknown
+      exampleCompetitors?: unknown
+      sourceUrl?: unknown
+    }
+    if (
+      typeof s.questSlug === 'string' &&
+      allowed.has(s.questSlug) &&
+      typeof s.competitorCount === 'number' &&
+      Number.isFinite(s.competitorCount)
+    ) {
+      const count = Math.max(0, Math.round(s.competitorCount))
+      out.push({
+        questSlug: s.questSlug,
+        competitorCount: count,
+        crowding: crowdingFromCount(count),
+        exampleCompetitors: Array.isArray(s.exampleCompetitors)
+          ? (s.exampleCompetitors.filter((x) => typeof x === 'string') as string[]).slice(0, 5)
+          : [],
+        sourceUrl: typeof s.sourceUrl === 'string' ? s.sourceUrl : null,
       })
     }
   }

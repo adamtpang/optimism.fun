@@ -9,7 +9,16 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import type { RankedQuest, QuestTier } from '@/lib/rankings'
+import type { Crowding } from '@/data/types'
 import { fmtUsdCompact } from '@/lib/allocation'
+
+// Quest-level supply signal. open = wide-open frontier (the opportunity),
+// crowded = contested. Ordinal good→bad, so a diverging green→rose hue.
+const CROWDING_META: Record<Crowding, { label: string; tone: string }> = {
+  open: { label: 'open field', tone: 'text-terminal-green' },
+  contested: { label: 'contested', tone: 'text-amber-300' },
+  crowded: { label: 'crowded', tone: 'text-terminal-rose' },
+}
 
 const TIER_META: Record<
   QuestTier,
@@ -89,6 +98,12 @@ function QuestRow({ q }: { q: RankedQuest }) {
                 underfunded
               </span>
             )}
+            <span
+              className={`font-mono text-[9px] uppercase tracking-wide ${CROWDING_META[q.crowding].tone} border border-hair px-1.5 py-0.5 rounded`}
+              title="How contested this specific quest already is (quest-level supply)"
+            >
+              {CROWDING_META[q.crowding].label}
+            </span>
           </div>
           <p className="mt-1 text-ink-400 text-[12.5px] leading-snug line-clamp-2">{q.pitch}</p>
         </div>
@@ -137,7 +152,10 @@ function QuestRow({ q }: { q: RankedQuest }) {
               </Link>
             </span>
             <span>demand {q.demand}</span>
-            <span>supply {q.supply}</span>
+            <span title="Problem supply blended with this quest's crowding">
+              quest supply {q.questSupply} ({CROWDING_META[q.crowding].label})
+            </span>
+            <span>gap {q.gap}</span>
             <span>opportunity {q.opportunity}</span>
             <span>confidence {q.confidence}</span>
           </div>

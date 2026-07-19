@@ -63,21 +63,22 @@ export default function RankingsPage() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 font-mono text-[11px] leading-relaxed text-ink-400">
               <div>
                 <p className="text-ink-100 mb-1">1 · Opportunity, not demand</p>
-                Score spine = demand × (1 − supply) × urgency. Raw demand is anti-ranked on
-                purpose — the biggest demand is the most contested.
+                Score = demand × quest-gap × readiness. Raw demand is anti-ranked on purpose —
+                the biggest demand is the most contested. The opportunity is the residual gap.
               </div>
               <div>
-                <p className="text-ink-100 mb-1">2 · Triangulated demand</p>
+                <p className="text-ink-100 mb-1">2 · Quest-level gap</p>
+                The gap uses each quest&apos;s own <span className="text-ink-200">crowding</span>{' '}
+                — how contested this exact approach is — not just its problem&apos;s supply, so
+                sibling quests under one problem separate.
+              </div>
+              <div>
+                <p className="text-ink-100 mb-1">3 · Triangulated demand</p>
                 The demand term is the composite from the{' '}
                 <Link href="/demand" className="text-amber-300 hover:underline">
                   demand map
                 </Link>{' '}
                 — burden, willingness-to-pay, capital, research, queues — never one signal.
-              </div>
-              <div>
-                <p className="text-ink-100 mb-1">3 · Ready-to-build gate</p>
-                Each quest is discounted by confidence: a real why-now frontier outranks a
-                someday-maybe, even at equal demand.
               </div>
               <div>
                 <p className="text-ink-100 mb-1">4 · Tiers</p>
@@ -88,10 +89,10 @@ export default function RankingsPage() {
             </div>
             <p className="mt-5 font-mono text-[10px] text-ink-600 max-w-3xl leading-relaxed">
               Conjectures, open to refutation — each quest&apos;s good-quest line is the
-              falsifiable claim. Coming next: the demand term goes fully live per-quest (not
-              per-problem) as Exa sources demand data at the sub-problem altitude, and a
-              &ldquo;why-now&rdquo; frontier axis (research + cost-curve acceleration) replaces
-              confidence as the readiness gate.
+              falsifiable claim. Crowding is an editorial prior today, refreshed into a live
+              competitor count by Exa (&ldquo;N companies are already building this&rdquo;).
+              Coming next: a &ldquo;why-now&rdquo; frontier axis (research + cost-curve
+              acceleration) replacing confidence as the readiness gate.
             </p>
           </div>
         </section>
