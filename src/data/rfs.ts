@@ -14,6 +14,7 @@ export const requestsForStartups: RequestForStartup[] = [
   // ─── AI safety & alignment ───────────────────────────────────────────────
   {
     slug: 'interpretability-as-a-service',
+    crowding: 'contested',
     problemSlug: 'ai-safety',
     title: 'The MRI machine for neural networks',
     pitch:
@@ -31,6 +32,7 @@ export const requestsForStartups: RequestForStartup[] = [
   },
   {
     slug: 'agentic-eval-grid',
+    crowding: 'crowded',
     problemSlug: 'ai-safety',
     title: 'The adversarial eval grid for agents',
     pitch:
@@ -48,6 +50,7 @@ export const requestsForStartups: RequestForStartup[] = [
   },
   {
     slug: 'hardware-enforced-containment',
+    crowding: 'open',
     problemSlug: 'ai-safety',
     title: 'Hardware-enforced AI containment',
     pitch:
@@ -67,6 +70,7 @@ export const requestsForStartups: RequestForStartup[] = [
   // ─── Biosecurity & pandemic preparedness ─────────────────────────────────
   {
     slug: 'pathogen-agnostic-early-warning',
+    crowding: 'open',
     problemSlug: 'biosecurity',
     title: 'Pathogen-agnostic early warning',
     pitch:
@@ -84,6 +88,7 @@ export const requestsForStartups: RequestForStartup[] = [
   },
   {
     slug: 'days-not-months-biomanufacturing',
+    crowding: 'open',
     problemSlug: 'biosecurity',
     title: 'Days-not-months vaccine manufacturing',
     pitch:
@@ -101,6 +106,7 @@ export const requestsForStartups: RequestForStartup[] = [
   },
   {
     slug: 'far-uvc-as-infrastructure',
+    crowding: 'open',
     problemSlug: 'biosecurity',
     title: 'Far-UVC as building infrastructure',
     pitch:
@@ -120,6 +126,7 @@ export const requestsForStartups: RequestForStartup[] = [
   // ─── Energy abundance ────────────────────────────────────────────────────
   {
     slug: 'fission-permitting-unlock',
+    crowding: 'open',
     problemSlug: 'energy-abundance',
     title: 'The fission permitting unlock',
     pitch:
@@ -137,6 +144,7 @@ export const requestsForStartups: RequestForStartup[] = [
   },
   {
     slug: 'geothermal-via-oilfield-tooling',
+    crowding: 'contested',
     problemSlug: 'energy-abundance',
     title: 'Geothermal everywhere via oilfield tooling',
     pitch:
@@ -154,6 +162,7 @@ export const requestsForStartups: RequestForStartup[] = [
   },
   {
     slug: 'hundred-hour-storage',
+    crowding: 'contested',
     problemSlug: 'energy-abundance',
     title: 'Hundred-hour grid storage',
     pitch:
@@ -173,6 +182,7 @@ export const requestsForStartups: RequestForStartup[] = [
   // ─── Low-cost housing & construction ─────────────────────────────────────
   {
     slug: 'factory-housing-that-scales',
+    crowding: 'contested',
     problemSlug: 'housing-construction',
     title: 'The factory-built housing company that actually scales',
     pitch:
@@ -190,6 +200,7 @@ export const requestsForStartups: RequestForStartup[] = [
   },
   {
     slug: 'entitlement-as-an-api',
+    crowding: 'open',
     problemSlug: 'housing-construction',
     title: 'Permitting and entitlement as an API',
     pitch:
@@ -209,6 +220,7 @@ export const requestsForStartups: RequestForStartup[] = [
   // ─── Pedagogy at scale ───────────────────────────────────────────────────
   {
     slug: 'bloom-two-sigma-tutor',
+    crowding: 'crowded',
     problemSlug: 'pedagogy',
     title: 'The Bloom 2-sigma tutor',
     pitch:
@@ -226,6 +238,7 @@ export const requestsForStartups: RequestForStartup[] = [
   },
   {
     slug: 'skills-credential-standard',
+    crowding: 'contested',
     problemSlug: 'pedagogy',
     title: 'Credentialing that routes around the diploma',
     pitch:
@@ -245,6 +258,7 @@ export const requestsForStartups: RequestForStartup[] = [
   // ─── Infectious disease ──────────────────────────────────────────────────
   {
     slug: 'single-encounter-tb-cure',
+    crowding: 'open',
     problemSlug: 'infectious-disease',
     title: 'Single-encounter curatives for TB',
     pitch:
@@ -262,6 +276,7 @@ export const requestsForStartups: RequestForStartup[] = [
   },
   {
     slug: 'gene-drive-vector-control',
+    crowding: 'open',
     problemSlug: 'infectious-disease',
     title: 'Safe, reversible gene-drive vector control',
     pitch:
@@ -279,6 +294,7 @@ export const requestsForStartups: RequestForStartup[] = [
   },
   {
     slug: 'sub-dollar-diagnostics',
+    crowding: 'contested',
     problemSlug: 'infectious-disease',
     title: 'Point-of-care diagnostics under a dollar',
     pitch:
@@ -298,6 +314,7 @@ export const requestsForStartups: RequestForStartup[] = [
   // ─── Scientific productivity ─────────────────────────────────────────────
   {
     slug: 'autonomous-lab',
+    crowding: 'contested',
     problemSlug: 'scientific-productivity',
     title: 'The autonomous lab',
     pitch:
@@ -315,6 +332,7 @@ export const requestsForStartups: RequestForStartup[] = [
   },
   {
     slug: 'replication-layer',
+    crowding: 'open',
     problemSlug: 'scientific-productivity',
     title: 'The replication layer',
     pitch:
@@ -332,6 +350,7 @@ export const requestsForStartups: RequestForStartup[] = [
   },
   {
     slug: 'fast-grants-as-a-product',
+    crowding: 'open',
     problemSlug: 'scientific-productivity',
     title: 'Fast grants as a standing product',
     pitch:
@@ -351,6 +370,7 @@ export const requestsForStartups: RequestForStartup[] = [
   // ─── Longevity & aging ───────────────────────────────────────────────────
   {
     slug: 'aging-as-an-indication',
+    crowding: 'open',
     problemSlug: 'longevity',
     title: 'Aging as an FDA-recognized indication',
     pitch:
@@ -368,6 +388,7 @@ export const requestsForStartups: RequestForStartup[] = [
   },
   {
     slug: 'healthspan-diagnostic',
+    crowding: 'contested',
     problemSlug: 'longevity',
     title: 'The healthspan diagnostic',
     pitch:
@@ -387,6 +408,7 @@ export const requestsForStartups: RequestForStartup[] = [
   // ─── Fertility decline & demographic stagnation ──────────────────────────
   {
     slug: 'order-of-magnitude-cheaper-ivf',
+    crowding: 'contested',
     problemSlug: 'fertility-decline',
     title: 'Order-of-magnitude cheaper IVF',
     pitch:
@@ -404,6 +426,7 @@ export const requestsForStartups: RequestForStartup[] = [
   },
   {
     slug: 'cost-of-family-formation',
+    crowding: 'open',
     problemSlug: 'fertility-decline',
     title: 'The cost-of-family-formation attack',
     pitch:
@@ -423,6 +446,7 @@ export const requestsForStartups: RequestForStartup[] = [
   // ─── Loneliness & social isolation ───────────────────────────────────────
   {
     slug: 'third-places-as-a-business',
+    crowding: 'open',
     problemSlug: 'loneliness',
     title: 'Third places as a business model',
     pitch:
@@ -440,6 +464,7 @@ export const requestsForStartups: RequestForStartup[] = [
   },
   {
     slug: 'proximity-over-feeds',
+    crowding: 'contested',
     problemSlug: 'loneliness',
     title: 'Proximity over feeds',
     pitch:

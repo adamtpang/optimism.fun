@@ -1,5 +1,14 @@
 export type Confidence = 'low' | 'med' | 'high'
 
+/**
+ * How contested a specific quest already is — quest-level supply, distinct from
+ * the problem's overall supply. `open` = wide-open frontier (few or no players,
+ * highest opportunity); `crowded` = many well-funded competitors. An editorial
+ * prior today (like `confidence`), refreshable into a live competitor count by
+ * the Exa quest-crowding sourcer.
+ */
+export type Crowding = 'open' | 'contested' | 'crowded'
+
 export type SourcedNumber = {
   value: number
   unit?: string
@@ -73,6 +82,12 @@ export type RequestForStartup = {
    */
   goodQuest: string
   confidence: Confidence
+  /**
+   * Quest-level supply: how contested THIS specific approach already is,
+   * distinct from the problem's overall supply. Differentiates sibling quests
+   * under the same problem. Editorial prior, refreshed by Exa.
+   */
+  crowding: Crowding
   asOf: string
 }
 
