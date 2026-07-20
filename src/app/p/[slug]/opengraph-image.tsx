@@ -66,7 +66,10 @@ export default async function Image({ params }: { params: Promise<{ slug: string
         {/* top: brand + tier */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, color: ink, fontSize: 26, fontWeight: 600 }}>
-            <span style={{ color: accent }}>◆</span> optimism.fun
+            {/* Diamond drawn as a rotated square, not the ◆ glyph — next/og
+                (Satori) can't fetch a font for ◆ and errors on every render. */}
+            <div style={{ width: 18, height: 18, background: accent, transform: 'rotate(45deg)' }} />
+            optimism.fun
           </div>
           <div style={{ display: 'flex', fontSize: 20, letterSpacing: 2, textTransform: 'uppercase', color: accent, border: `1px solid ${accent}`, borderRadius: 4, padding: '6px 14px' }}>
             {TIER_LABEL[p.tier]}
