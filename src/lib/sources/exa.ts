@@ -521,3 +521,116 @@ ${quests.map((q) => `- questSlug "${q.slug}" — ${q.title}: ${q.shape}`).join('
   }
   return out
 }
+
+// ---------------------------------------------------------------------------
+// Allocator profiles — Exa pointed at the people who actually write cheques.
+// For each allocator in data/ecosystem.ts, source the operational facts a
+// founder needs and that no static file stays current on: typical cheque size,
+// what they say they are funding RIGHT NOW, whether applications are open,
+// the next deadline, and the real contact path.
+// ---------------------------------------------------------------------------
+
+export type AllocatorProfile = {
+  slug: string
+  checkSizeMinUsd: number | null
+  checkSizeMaxUsd: number | null
+  currentPriorities: string[]
+  applicationsOpen: boolean | null
+  nextDeadline: string | null
+  applyUrl: string | null
+  contactPath: string | null
+  sourceUrl: string | null
+}
+
+const ALLOCATOR_SCHEMA = {
+  type: 'object',
+  properties: {
+    allocators: {
+      type: 'array',
+      maxItems: 30,
+      items: {
+        type: 'object',
+        properties: {
+          slug: { type: 'string' },
+          checkSizeMinUsd: { type: 'number', description: 'Typical minimum cheque in USD' },
+          checkSizeMaxUsd: { type: 'number', description: 'Typical maximum cheque in USD' },
+          currentPriorities: {
+            type: 'array',
+            items: { type: 'string' },
+            maxItems: 6,
+            description: 'What they publicly say they are funding right now',
+          },
+          applicationsOpen: { type: 'boolean' },
+          nextDeadline: { type: 'string', description: 'ISO date or a plain description' },
+          applyUrl: { type: 'string', format: 'uri' },
+          contactPath: {
+            type: 'string',
+            description: 'The realistic route in: open application, warm intro, cold email, referral',
+          },
+          sourceUrl: { type: 'string', format: 'uri' },
+        },
+        required: ['slug'],
+      },
+    },
+  },
+  required: ['allocators'],
+} as const
+
+/**
+ * One Exa Agent run profiling a set of allocators. Returns [] when Exa is
+ * unconfigured or the run fails — never throws.
+ */
+export async function sourceAllocatorProfiles(
+  allocators: { slug: string; name: string; url?: string }[],
+  opts: { effort?: ExaEffort; timeoutMs?: number } = {},
+): Promise<AllocatorProfile[]> {
+  if (!isExaConfigured() || allocators.length === 0) return []
+
+  const query = `For each funder below, find the current operational facts a founder needs in order to approach them. Report only what you can verify from their own site or a credible recent source; omit any field you cannot verify rather than guessing.
+
+For each: typical cheque size range in USD, what they publicly say they are funding right now, whether applications are currently open, the next deadline if any, the application URL, and the realistic route in (open application, warm intro, cold email, or referral).
+
+${allocators.map((a) => `- slug "${a.slug}": ${a.name}${a.url ? ` (${a.url})` : ''}`).join('\n')}`
+
+  const created = await createRun({
+    query,
+    effort: opts.effort ?? 'medium',
+    outputSchema: ALLOCATOR_SCHEMA,
+  })
+  if (!created?.id) return []
+
+  const run = TERMINAL.includes(created.status)
+    ? created
+    : await pollUntilFinished(created.id, { timeoutMs: opts.timeoutMs })
+  if (!run || run.status !== 'completed') return []
+
+  const structured = run.output?.structured as { allocators?: unknown[] } | undefined
+  const list = Array.isArray(structured?.allocators) ? structured!.allocators! : []
+  const allowed = new Set(allocators.map((a) => a.slug))
+
+  const num = (v: unknown): number | null =>
+    typeof v === 'number' && Number.isFinite(v) && v > 0 ? v : null
+  const str = (v: unknown): string | null =>
+    typeof v === 'string' && v.trim() ? v.trim() : null
+
+  const out: AllocatorProfile[] = []
+  for (const raw of list) {
+    const a = raw as Record<string, unknown>
+    const slug = str(a.slug)
+    if (!slug || !allowed.has(slug)) continue
+    out.push({
+      slug,
+      checkSizeMinUsd: num(a.checkSizeMinUsd),
+      checkSizeMaxUsd: num(a.checkSizeMaxUsd),
+      currentPriorities: Array.isArray(a.currentPriorities)
+        ? (a.currentPriorities.filter((x) => typeof x === 'string') as string[]).slice(0, 6)
+        : [],
+      applicationsOpen: typeof a.applicationsOpen === 'boolean' ? a.applicationsOpen : null,
+      nextDeadline: str(a.nextDeadline),
+      applyUrl: str(a.applyUrl),
+      contactPath: str(a.contactPath),
+      sourceUrl: str(a.sourceUrl),
+    })
+  }
+  return out
+}
