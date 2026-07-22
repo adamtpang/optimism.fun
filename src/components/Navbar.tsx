@@ -13,6 +13,7 @@ import { countries } from '@/data/countries'
 import { crypto } from '@/data/crypto'
 import { voices } from '@/data/voices'
 import { ecosystem } from '@/data/ecosystem'
+import { capitalPools } from '@/data/capital-map'
 import { progress } from '@/data/progress'
 import { requestsForStartups } from '@/data/rfs'
 import { seededMedia } from '@/data/media'
@@ -27,6 +28,7 @@ const dataTabs = [
   { name: 'Problems', href: '/', count: problems.length, tone: 'amber' },
   { name: 'Demand', href: '/demand', count: problems.length, tone: 'amber' },
   { name: 'Rankings', href: '/rankings', count: requestsForStartups.length, tone: 'amber' },
+  { name: 'Capital', href: '/capital', count: capitalPools.length, tone: 'cyan' },
   { name: 'Radar', href: '/radar', count: problems.length, tone: 'amber' },
   { name: 'Sectors', href: '/sector', count: sectors.length, tone: 'amber' },
   { name: 'Requests', href: '/rfs', count: requestsForStartups.length, tone: 'amber' },
@@ -37,7 +39,7 @@ const dataTabs = [
   { name: 'Progress', href: '/progress', count: progress.length, tone: 'green' },
   { name: 'Countries', href: '/countries', count: countries.length, tone: 'green' },
   { name: 'Crypto', href: '/crypto', count: crypto.length, tone: 'violet' },
-  { name: 'Capital', href: '/ecosystem', count: ecosystem.length, tone: 'cyan' },
+  { name: 'Allocators', href: '/ecosystem', count: ecosystem.length, tone: 'cyan' },
 ] as const
 
 const TONE: Record<'amber' | 'cyan' | 'green' | 'violet', string> = {

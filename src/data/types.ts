@@ -9,6 +9,63 @@ export type Confidence = 'low' | 'med' | 'high'
  */
 export type Crowding = 'open' | 'contested' | 'crowded'
 
+/* ── The capital map (data/capital-map.ts) ───────────────────────────────── */
+
+export type CapitalPoolKind =
+  | 'asset-manager'
+  | 'sovereign'
+  | 'pension'
+  | 'endowment'
+  | 'family-office'
+  | 'corporate'
+  | 'government'
+
+/**
+ * A pool of capital. The load-bearing field is `deployableShare`: AUM is not
+ * deployability. An index fund is enormous and still unable to back anything new.
+ */
+export type CapitalPool = {
+  slug: string
+  name: string
+  kind: CapitalPoolKind
+  url?: string
+  /** Total assets (a stock) or an annual flow — see `unit`. */
+  total: SourcedNumber
+  /**
+   * 0..1 — the share that could realistically move into something new.
+   * EDITORIAL estimate, not a reported figure. The judgment call in the file.
+   */
+  deployableShare: number
+  note: string
+}
+
+/** Why capital that wants to move stays put. */
+export type BlockerType =
+  | 'permitting' // the law says no, or says wait years
+  | 'queue' // the physical infrastructure does not exist yet
+  | 'no-buyer' // real value, uncapturable, so no firm sells it
+  | 'horizon' // the asset outlives the fund that would hold it
+  | 'legibility' // the capital never sees the opportunity or the person
+  | 'jurisdiction' // returns are real, rule of law is not
+  | 'mandate' // the money is legally forbidden from moving
+
+/** Who realistically removes the blocker. */
+export type AttackableBy = 'code' | 'capital' | 'policy' | 'atoms'
+
+/** Capital that would flow to a destination but is dammed. */
+export type DammedFlow = {
+  slug: string
+  destination: string
+  /** Links the dam back to a ranked problem, where one applies. */
+  problemSlug?: string
+  waiting: SourcedNumber
+  blocker: BlockerType
+  blockerDetail: string
+  unlock: string
+  attackableBy: AttackableBy
+  scope: string
+}
+
 export type SourcedNumber = {
   value: number
   unit?: string
