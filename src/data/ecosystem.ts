@@ -19,6 +19,18 @@ export const ecosystem: EcosystemEntity[] = [
       'Run by Tyler Cowen at the Mercatus Center. Extremely short application, decisions in weeks, no strings attached. The operational embodiment of permissionless innovation.',
   },
   {
+    slug: '1517-medici',
+    name: '1517 Fund · Medici Project',
+    type: 'grant',
+    url: 'https://www.1517fund.com/medici',
+    thesis: 'Minimum $1k, no strings, no equity. A five-minute video is the whole application.',
+    problemSlugs: ['scientific-productivity', 'pedagogy', 'ai-safety', 'energy-abundance'],
+    bestFor:
+      'Students, dropouts, and renegade builders with a prototype and no credentials, based in North America.',
+    description:
+      'Run by the cofounders of the Thiel Fellowship, who backed Vitalik Buterin, Dylan Field, and Laura Deming at $100k. Medici is the micro-grant version: rolling, reviewed in about two weeks, paid by Venmo, and explicitly a gift rather than an investment. The lowest-friction first dollars available to a young builder.',
+  },
+  {
     slug: 'thiel-fellowship',
     name: 'Thiel Fellowship',
     type: 'fellowship',
