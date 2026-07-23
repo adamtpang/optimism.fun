@@ -100,9 +100,16 @@ function QuestRow({ q }: { q: RankedQuest }) {
             )}
             <span
               className={`font-mono text-[9px] uppercase tracking-wide ${CROWDING_META[q.crowding].tone} border border-hair px-1.5 py-0.5 rounded`}
-              title="How contested this specific quest already is (quest-level supply)"
+              title={
+                q.crowdingSource === 'sourced'
+                  ? `${q.competitorCount} companies found building this (live sourced)`
+                  : 'Editorial estimate, not yet sourced'
+              }
             >
               {CROWDING_META[q.crowding].label}
+              {q.crowdingSource === 'sourced' && q.competitorCount != null && (
+                <span className="ml-1 text-ink-400">n={q.competitorCount}</span>
+              )}
             </span>
           </div>
           <p className="mt-1 text-ink-400 text-[12.5px] leading-snug line-clamp-2">{q.pitch}</p>
@@ -144,6 +151,18 @@ function QuestRow({ q }: { q: RankedQuest }) {
             </p>
             <p className="text-ink-300 text-[13px] leading-relaxed">{q.goodQuest}</p>
           </div>
+          {q.crowdingSource === 'sourced' && (
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-wide text-ink-400 mb-1">
+                Already building this ({q.competitorCount} found)
+              </p>
+              <p className="text-ink-300 text-[13px] leading-relaxed">
+                {q.exampleCompetitors.length > 0
+                  ? q.exampleCompetitors.join(' · ')
+                  : 'No named competitors found. Open field.'}
+              </p>
+            </div>
+          )}
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 font-mono text-[10px] text-ink-500">
             <span>
               attacks{' '}
