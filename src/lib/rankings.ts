@@ -20,6 +20,7 @@
  */
 import type { CapitalMomentum, AllocationVerdict, Confidence, Crowding } from '@/data/types'
 import { requestsForStartups } from '@/data/rfs'
+import { getSourcedCrowding } from '@/data/quest-crowding'
 import { computeRadarRows } from '@/lib/radar'
 
 export type QuestTier = 'S' | 'A' | 'B' | 'C'
@@ -36,6 +37,11 @@ export type RankedQuest = {
   confidence: Confidence
   /** How contested THIS specific quest is (quest-level supply). */
   crowding: Crowding
+  /** Whether crowding came from a live competitor count or an editorial prior. */
+  crowdingSource: 'sourced' | 'editorial'
+  /** Real companies found building this, when sourced. */
+  competitorCount: number | null
+  exampleCompetitors: string[]
   problemSlug: string
   problemName: string
   domainLabel: string | null
@@ -97,7 +103,10 @@ export function computeQuestRankings(): RankedQuest[] {
       const p = byProblem.get(rfs.problemSlug)
       if (!p) return null
       const confidence = rfs.confidence ?? 'low'
-      const crowding = rfs.crowding ?? 'contested'
+      // A live competitor count beats the editorial prior. Sourcing falsified
+      // roughly half the priors, so where real data exists it wins.
+      const sourced = getSourcedCrowding(rfs.slug)
+      const crowding = sourced?.crowding ?? rfs.crowding ?? 'contested'
       const demand = p.demandComposite
 
       const supplyFrac = questSupplyFrac(p.supply, crowding)
@@ -115,6 +124,9 @@ export function computeQuestRankings(): RankedQuest[] {
         goodQuest: rfs.goodQuest,
         confidence,
         crowding,
+        crowdingSource: sourced ? ('sourced' as const) : ('editorial' as const),
+        competitorCount: sourced?.competitorCount ?? null,
+        exampleCompetitors: sourced?.exampleCompetitors ?? [],
         problemSlug: rfs.problemSlug,
         problemName: p.name,
         domainLabel: p.domainLabel,
