@@ -31,7 +31,28 @@ function contact(): string {
   return process.env.OPENALEX_CONTACT ?? 'adamtpang@gmail.com'
 }
 
-export async function fetchOpenAlexCount(
+// OpenAlex asks for at most ~10 requests/second. A page render fans out one
+// call per problem, and firing all of them at once got exactly one throttled
+// per run — a different problem each time, which silently dropped that
+// problem's research signal. Serialise through one queue with a gap instead.
+// Same pattern as lib/sources/nih.ts, and the reason it exists.
+let queue: Promise<unknown> = Promise.resolve()
+const GAP_MS = 120
+
+function enqueue<T>(job: () => Promise<T>): Promise<T> {
+  const result = queue.then(job)
+  queue = result.catch(() => undefined).then(() => new Promise((r) => setTimeout(r, GAP_MS)))
+  return result
+}
+
+export function fetchOpenAlexCount(
+  search: string,
+  opts: { fromDate?: string; revalidateSeconds?: number } = {},
+): Promise<OpenAlexResult | null> {
+  return enqueue(() => fetchOpenAlexCountNow(search, opts))
+}
+
+async function fetchOpenAlexCountNow(
   search: string,
   opts: { fromDate?: string; revalidateSeconds?: number } = {},
 ): Promise<OpenAlexResult | null> {
