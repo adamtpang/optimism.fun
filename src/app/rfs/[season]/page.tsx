@@ -11,6 +11,8 @@ import { fmtUsdCompact } from '@/lib/allocation'
 import HeroFigure from '@/components/HeroFigure'
 import AnnotatedFigure from '@/components/AnnotatedFigure'
 import PriorsVsSourced, { PriorsVsSourcedTable } from '@/components/PriorsVsSourced'
+import StarterPackBlock from '@/components/StarterPackBlock'
+import { getStarterPack, buildClaudeCodePrompt } from '@/data/starter-packs'
 
 export function generateStaticParams() {
   return rfsSeasons.map((s) => ({ season: s.slug }))
@@ -203,6 +205,24 @@ export default async function SeasonPage({
                         {q.problemName}
                       </Link>
                     </p>
+
+                    {(() => {
+                      const pack = getStarterPack(q.slug)
+                      if (!pack) return null
+                      return (
+                        <StarterPackBlock
+                          pack={pack}
+                          prompt={buildClaudeCodePrompt(pack, {
+                            title: q.title,
+                            problemName: q.problemName,
+                            demand: q.demand,
+                            gap: q.gap,
+                            competitorCount: q.competitorCount,
+                            exampleCompetitors: q.exampleCompetitors,
+                          })}
+                        />
+                      )
+                    })()}
                   </div>
                 </article>
               )
