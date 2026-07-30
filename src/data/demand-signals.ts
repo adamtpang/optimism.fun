@@ -6,14 +6,16 @@
  * never a survey, never social exhaust.
  *
  * Three live classes today (each endpoint verified against the real API):
- *   burden   — WHO GHO OData + Our World in Data grapher (world aggregates)
- *   research — NIH RePORTER v2 funded-project counts (frontier intensity)
+ *   burden   — WHO GHO OData, Our World in Data, World Bank WDI (world aggregates)
+ *   research — OpenAlex work counts across every discipline, with NIH RePORTER
+ *              funded-project counts as a biomedical corroboration
  *   queues   — openFDA current drug shortages (demand markets fail to clear)
  *
- * Sparse on purpose: a problem with no defensible feed gets nothing, and the
- * demand composite renormalizes (lib/demand.ts). Wrong-instrument mappings
- * (e.g. NIH for AI safety) are deliberately omitted — a biomedical funder is
- * not a truthful research-intensity proxy for a non-biomedical problem.
+ * A problem with no defensible feed gets nothing and the composite renormalizes
+ * (lib/demand.ts) — never a silent zero. The instrument has to be truthful for
+ * the domain: NIH alone scored disease problems high and gave energy, housing,
+ * and pedagogy a research signal of zero, which measured the sensor rather than
+ * the world. OpenAlex is the cross-domain fix, so every problem carries one.
  */
 
 export type BurdenFeed =
@@ -25,7 +27,17 @@ export type BurdenFeed =
 
 export type DemandSignalFeeds = {
   burden?: BurdenFeed
-  /** NIH RePORTER advanced text search (research intensity). */
+  /**
+   * OpenAlex title/abstract search — the PRIMARY research-intensity signal,
+   * because it covers every discipline and so is comparable across problems.
+   * Every problem should have one.
+   */
+  openAlexSearch?: string
+  /**
+   * NIH RePORTER advanced text search. Biomedical only, so it is a corroborating
+   * dollar-weighted signal rather than the cross-domain one; used as a fallback
+   * where OpenAlex is absent.
+   */
   nihSearch?: string
   /** openFDA therapeutic_category for current-shortage counts (queues). */
   fdaCategory?: string
@@ -33,6 +45,7 @@ export type DemandSignalFeeds = {
 
 export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
   'extreme-poverty': {
+    openAlexSearch: 'extreme poverty', // 3,344
     burden: {
       kind: 'wdi',
       indicator: 'SI.POV.DDAY',
@@ -41,6 +54,7 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     },
   },
   'climate-change': {
+    openAlexSearch: 'climate adaptation', // 62,972
     burden: {
       kind: 'owid',
       slug: 'annual-co2-emissions',
@@ -50,6 +64,7 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     nihSearch: 'climate change health',
   },
   'fertility-decline': {
+    openAlexSearch: 'fertility decline', // 8,092
     burden: {
       kind: 'wdi',
       indicator: 'SP.DYN.TFRT.IN',
@@ -59,6 +74,7 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     nihSearch: 'infertility',
   },
   pedagogy: {
+    openAlexSearch: 'tutoring', // 25,046 — 'pedagogy' alone is 237k, too broad
     burden: {
       kind: 'wdi',
       indicator: 'SE.ADT.LITR.ZS',
@@ -67,6 +83,7 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     },
   },
   longevity: {
+    openAlexSearch: 'longevity|healthspan', // 45,631
     burden: {
       kind: 'gho',
       code: 'WHOSIS_000001',
@@ -77,6 +94,7 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     fdaCategory: 'Oncology',
   },
   'infectious-disease': {
+    openAlexSearch: 'malaria|tuberculosis', // 85,516
     burden: {
       kind: 'gho',
       code: 'MALARIA_EST_DEATHS',
@@ -87,10 +105,21 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     fdaCategory: 'Anti-Infective',
   },
   biosecurity: {
+    openAlexSearch: 'biosecurity', // 7,530
     nihSearch: 'pandemic preparedness',
   },
   loneliness: {
+    openAlexSearch: 'loneliness', // 26,374
     nihSearch: 'loneliness',
+  },
+  'energy-abundance': {
+    openAlexSearch: 'decarbonization', // 31,890 — 'energy transition' at 193k is too broad
+  },
+  'housing-construction': {
+    openAlexSearch: 'housing affordability', // 9,050
+  },
+  'scientific-productivity': {
+    openAlexSearch: 'metascience', // 378 — genuinely a tiny field, which is the signal
   },
 }
 
@@ -113,10 +142,18 @@ export const demandSignalSources = [
     cadence: 'continuous, tracks upstream sources',
   },
   {
+    id: 'openalex',
+    name: 'OpenAlex',
+    url: 'https://openalex.org',
+    feeds: 'research (all disciplines)',
+    access: 'Open API, no key (CC0)',
+    cadence: 'continuous',
+  },
+  {
     id: 'nih-reporter',
     name: 'NIH RePORTER',
     url: 'https://reporter.nih.gov',
-    feeds: 'research',
+    feeds: 'research (biomedical $)',
     access: 'Open API, no key',
     cadence: 'weekly',
   },

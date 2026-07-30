@@ -24,6 +24,7 @@ import { demandSignalRegistry } from '@/data/demand-signals'
 import { fetchGho } from '@/lib/sources/who'
 import { fetchOwid } from '@/lib/sources/owid'
 import { fetchWdi } from '@/lib/sources/worldbank'
+import { fetchOpenAlexCount } from '@/lib/sources/openalex'
 import { fetchNihProjectCount } from '@/lib/sources/nih'
 import { fetchFdaShortages } from '@/lib/sources/openfda'
 
@@ -69,7 +70,7 @@ async function liveComponentsFor(p: Problem): Promise<LiveDemandComponent[]> {
   const comps: LiveDemandComponent[] = buildComponents(p)
   if (!feeds) return comps
 
-  const [burden, nih, fda] = await Promise.all([
+  const [burden, openalex, nih, fda] = await Promise.all([
     feeds.burden
       ? feeds.burden.kind === 'gho'
         ? fetchGho(feeds.burden.code)
@@ -77,6 +78,7 @@ async function liveComponentsFor(p: Problem): Promise<LiveDemandComponent[]> {
           ? fetchOwid(feeds.burden.slug, { extraParams: feeds.burden.extraParams })
           : fetchWdi('WLD', feeds.burden.indicator)
       : Promise.resolve(null),
+    feeds.openAlexSearch ? fetchOpenAlexCount(feeds.openAlexSearch) : Promise.resolve(null),
     feeds.nihSearch ? fetchNihProjectCount(feeds.nihSearch) : Promise.resolve(null),
     feeds.fdaCategory ? fetchFdaShortages({ category: feeds.fdaCategory }) : Promise.resolve(null),
   ])
@@ -107,10 +109,31 @@ async function liveComponentsFor(p: Problem): Promise<LiveDemandComponent[]> {
         },
       }
     }
-    if (c.class === 'research' && nih) {
-      // ~20k funded projects/yr on a topic ≈ the NIH frontier fully saturated.
-      const strength = logNorm(nih.projectCount, 20_000)
+    if (c.class === 'research' && openalex) {
+      // OpenAlex is preferred: it covers every discipline, so the number is
+      // comparable problem-to-problem. Ceiling calibrated to the observed
+      // range across all 11 registry terms on 2026-07-20 — metascience 378 at
+      // the floor, malaria|tuberculosis 85,516 at the top.
+      const strength = logNorm(openalex.workCount, 100_000)
       if (strength == null) return c // zero matches = absent signal, keep static
+      return {
+        ...c,
+        strength,
+        source: 'OpenAlex (live)',
+        live: {
+          value: openalex.workCount,
+          unit: 'papers',
+          label: `Papers on “${openalex.search}” since ${openalex.fromDate.slice(0, 4)}`,
+          asOf: `since ${openalex.fromDate.slice(0, 4)}`,
+          source: 'OpenAlex',
+          url: openalex.url,
+        },
+      }
+    }
+    if (c.class === 'research' && nih) {
+      // Fallback only, and biomedical-biased — see the registry docstring.
+      const strength = logNorm(nih.projectCount, 20_000)
+      if (strength == null) return c
       return {
         ...c,
         strength,
