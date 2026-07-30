@@ -162,7 +162,6 @@ export function getSectorBySlug(slug: string): Sector | undefined {
 /** Tag map: problem slug → list of sector slugs. Defined here so problems.ts
  *  doesn't have to know about sectors. Single source of truth. */
 export const PROBLEM_TO_SECTORS: Record<string, string[]> = {
-  'ai-safety': ['ai-and-x-risk'],
   'biosecurity': ['bio-and-pandemic-risk', 'ai-and-x-risk'],
   'energy-abundance': ['energy-and-abundance'],
   'housing-construction': ['shelter-and-construction'],

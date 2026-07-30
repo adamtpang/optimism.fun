@@ -20,7 +20,7 @@ export const expertPriors: ExpertPrior[] = [
     org: '80,000 Hours',
     kind: 'cause-prioritization',
     url: 'https://80000hours.org/problem-profiles/',
-    problemSlugs: ['ai-safety', 'biosecurity', 'infectious-disease', 'extreme-poverty'],
+    problemSlugs: ['biosecurity', 'infectious-disease', 'extreme-poverty'],
     note: 'Importance × Tractability × Neglectedness profiles; ranks AI and catastrophic biorisk as top priorities.',
   },
   {
@@ -29,7 +29,6 @@ export const expertPriors: ExpertPrior[] = [
     kind: 'philanthropy',
     url: 'https://www.openphilanthropy.org/focus/',
     problemSlugs: [
-      'ai-safety',
       'biosecurity',
       'infectious-disease',
       'extreme-poverty',
@@ -59,7 +58,7 @@ export const expertPriors: ExpertPrior[] = [
     org: 'Founders Fund · Good Quests',
     kind: 'rfs',
     url: 'https://foundersfund.com/2023/06/choose-good-quests/',
-    problemSlugs: ['ai-safety', 'energy-abundance', 'biosecurity', 'longevity'],
+    problemSlugs: ['energy-abundance', 'biosecurity', 'longevity'],
     note: 'The "important × frontier × unambiguously good" rubric; portfolio concentrates in hard tech, energy, defense, and bio.',
   },
   {
@@ -68,7 +67,6 @@ export const expertPriors: ExpertPrior[] = [
     kind: 'rfs',
     url: 'https://www.ycombinator.com/rfs',
     problemSlugs: [
-      'ai-safety',
       'energy-abundance',
       'longevity',
       'housing-construction',

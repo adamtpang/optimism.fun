@@ -10,7 +10,6 @@ export const ecosystem: EcosystemEntity[] = [
     problemSlugs: [
       'scientific-productivity',
       'pedagogy',
-      'ai-safety',
       'longevity',
       'fertility-decline',
     ],
@@ -24,7 +23,7 @@ export const ecosystem: EcosystemEntity[] = [
     type: 'grant',
     url: 'https://www.1517fund.com/medici',
     thesis: 'Minimum $1k, no strings, no equity. A five-minute video is the whole application.',
-    problemSlugs: ['scientific-productivity', 'pedagogy', 'ai-safety', 'energy-abundance'],
+    problemSlugs: ['scientific-productivity', 'pedagogy', 'energy-abundance'],
     bestFor:
       'Students, dropouts, and renegade builders with a prototype and no credentials, based in North America.',
     description:
@@ -37,7 +36,6 @@ export const ecosystem: EcosystemEntity[] = [
     url: 'https://thielfellowship.org',
     thesis: '$100k to stop out of school and build something important.',
     problemSlugs: [
-      'ai-safety',
       'energy-abundance',
       'housing-construction',
       'longevity',
@@ -146,7 +144,7 @@ export const ecosystem: EcosystemEntity[] = [
     type: 'vc',
     url: 'https://foundersfund.com',
     thesis: 'Contrarian hard tech that rebuilds the industrial base.',
-    problemSlugs: ['ai-safety', 'energy-abundance', 'biosecurity', 'longevity'],
+    problemSlugs: ['energy-abundance', 'biosecurity', 'longevity'],
     bestFor: 'Scaling massive hard-tech quests, space, defense, biotech, fusion.',
     description:
       "Portfolio: SpaceX, Anduril, Varda, Flock Safety, Palantir. Publishers of the \"Choose Good Quests\" thesis that named this category.",
@@ -168,7 +166,7 @@ export const ecosystem: EcosystemEntity[] = [
     type: 'vc',
     url: 'https://luxcapital.com',
     thesis: 'Counter-conventional science at the edges of physics and biology.',
-    problemSlugs: ['longevity', 'scientific-productivity', 'biosecurity', 'ai-safety'],
+    problemSlugs: ['longevity', 'scientific-productivity', 'biosecurity'],
     bestFor: 'Technical founders at the frontier who need contrarian conviction capital.',
     description:
       'Portfolio spans neurotech, robotics, genomics, space, and AI. Known for betting on emerging fields before they have categories.',

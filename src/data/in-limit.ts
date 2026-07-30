@@ -16,19 +16,6 @@ const TODAY = '2026-06-11'
 
 export const inLimitCaps: InLimitCap[] = [
   {
-    problemSlug: 'ai-safety',
-    marketCap: {
-      value: 3_000_000_000_000,
-      unit: 'USD (in-limit market cap)',
-      source: 'ceiling estimate, anchored to a frontier AI lab',
-      confidence: 'low',
-      asOf: TODAY,
-    },
-    comparable: 'a leading frontier lab (Anthropic / OpenAI trajectory)',
-    reasoning:
-      'The lab that makes superhuman AI reliably safe is also the lab the world trusts to deploy it. Safety is not a cost center here; it is the moat that lets the dominant AI platform exist. The ceiling is a meaningful share of the entire AI market.',
-  },
-  {
     problemSlug: 'energy-abundance',
     marketCap: {
       value: 2_000_000_000_000,

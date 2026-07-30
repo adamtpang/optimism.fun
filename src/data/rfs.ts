@@ -12,60 +12,6 @@ const ASOF = '2026-05-16'
 
 export const requestsForStartups: RequestForStartup[] = [
   // ─── AI safety & alignment ───────────────────────────────────────────────
-  {
-    slug: 'interpretability-as-a-service',
-    crowding: 'contested',
-    problemSlug: 'ai-safety',
-    title: 'The MRI machine for neural networks',
-    pitch:
-      'Every frontier lab ships models it cannot read. Deception and goal-misgeneralization are invisible until they are catastrophic. Build the hosted interpretability layer that flags dangerous circuits before deployment.',
-    whyNow:
-      'Mechanistic interpretability went from toy circuits to production-scale feature extraction in three years. The labs now want this and cannot all build it in-house.',
-    shape:
-      'An API + dashboard that ingests model weights or activations and returns a risk report: deceptive features, situational awareness, sandbagging, capability spikes. Sells to labs, evaluators, and eventually regulators.',
-    successLooksLike:
-      'No frontier model is deployed without an interpretability sign-off, the way no bridge opens without an inspection.',
-    goodQuest:
-      'If alignment is unsolved, nothing else on this list matters; reading model internals is the genuine scientific frontier and there is no downside to seeing clearly.',
-    confidence: 'med',
-    asOf: ASOF,
-  },
-  {
-    slug: 'agentic-eval-grid',
-    crowding: 'crowded',
-    problemSlug: 'ai-safety',
-    title: 'The adversarial eval grid for agents',
-    pitch:
-      'Autonomous agents are shipping with benchmark suites built for chatbots. We are grading self-driving cars with a written test. Build the continuously-updated red-team grid that stress-tests agents at the capability frontier.',
-    whyNow:
-      'Agentic deployment went mainstream in 2025–26; incident rate is climbing and no standard adversarial harness exists.',
-    shape:
-      'A hosted eval platform that runs agents through escalating adversarial scenarios — tool misuse, prompt injection, multi-step deception — and issues a capability + safety profile that updates as new attacks are discovered.',
-    successLooksLike:
-      'Every deployed agent carries a current, adversarial safety rating, and the rating actually predicts field failures.',
-    goodQuest:
-      'Important because agents act in the world, a frontier because the attack surface is unmapped, and good because better evals help cautious and bold builders alike.',
-    confidence: 'med',
-    asOf: ASOF,
-  },
-  {
-    slug: 'hardware-enforced-containment',
-    crowding: 'open',
-    problemSlug: 'ai-safety',
-    title: 'Hardware-enforced AI containment',
-    pitch:
-      'Alignment that lives only in software can be jailbroken or fine-tuned away. Build the trusted-execution + tamper-evident compute layer that makes a model’s deployment envelope physically enforceable.',
-    whyNow:
-      'Confidential-computing silicon (TEEs, secure enclaves at GPU scale) finally exists at the performance tier frontier models need.',
-    shape:
-      'A compute substrate + attestation protocol where a model can only run inside a verified policy envelope; weight exfiltration and unsanctioned fine-tuning are cryptographically detectable.',
-    successLooksLike:
-      'Frontier weights cannot be silently stolen or repurposed, and deployment limits are enforced by physics, not promises.',
-    goodQuest:
-      'A real hardware/cryptography frontier, decisive if model theft is the dominant risk path, and net-good regardless of takeoff speed.',
-    confidence: 'low',
-    asOf: ASOF,
-  },
 
   // ─── Biosecurity & pandemic preparedness ─────────────────────────────────
   {

@@ -30,9 +30,6 @@ export type SourcedCrowding = {
 const ASOF = '2026-07-20'
 
 export const sourcedCrowding: SourcedCrowding[] = [
-  { questSlug: 'interpretability-as-a-service', competitorCount: 4, crowding: 'contested', exampleCompetitors: ['HatCat', 'Beterp', 'Rotalabs'], asOf: ASOF },
-  { questSlug: 'agentic-eval-grid', competitorCount: 4, crowding: 'contested', exampleCompetitors: ['Adversa AI', 'EvalGuard', 'ContextQA'], asOf: ASOF },
-  { questSlug: 'hardware-enforced-containment', competitorCount: 3, crowding: 'contested', exampleCompetitors: ['enclawed', 'Prem', 'H33'], asOf: ASOF },
   { questSlug: 'pathogen-agnostic-early-warning', competitorCount: 3, crowding: 'contested', exampleCompetitors: ['Ginkgo Biosecurity / Concentric', 'Fusion Genomics', 'Perimeter'], asOf: ASOF },
   { questSlug: 'days-not-months-biomanufacturing', competitorCount: 5, crowding: 'crowded', exampleCompetitors: ['BioNTech', 'Univercells Technologies', 'Pharmadule Morimatsu'], asOf: ASOF },
   { questSlug: 'far-uvc-as-infrastructure', competitorCount: 5, crowding: 'crowded', exampleCompetitors: ['Visium', 'Harmony', 'Beacon'], asOf: ASOF },

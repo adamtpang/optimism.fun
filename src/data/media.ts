@@ -108,18 +108,6 @@ export const seededMedia: MediaItem[] = [
     status: 'live',
   },
   {
-    id: 'notboring-ai-aligned-by-default',
-    title: "What 'aligned by default' would actually mean",
-    url: 'https://www.notboring.co/p/aligned-by-default',
-    sourceId: 'substack:not-boring',
-    publishedAt: '2025-11-29',
-    excerpt:
-      'A non-technical walk through the alignment debate, the deployment gates, and what would have to be true for civilization to keep agency.',
-    problemSlugs: ['ai-safety'],
-    sectorSlugs: ['ai-and-x-risk'],
-    status: 'live',
-  },
-  {
     id: 'rop-longevity-not-too-late',
     title: "It's not too late on longevity — but the clock is loud",
     url: 'https://rootsofprogress.org/longevity-not-too-late',
