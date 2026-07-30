@@ -22,17 +22,6 @@ export const voices: Voice[] = [
     ],
     positions: [
       {
-        problemSlug: 'ai-safety',
-        stance:
-          'AI safety is a knowledge problem, not a limit problem. Aligned AGI is achievable through better explanations, not through halting development.',
-        quote:
-          'All evils are caused by insufficient knowledge. Problems are inevitable. Problems are soluble.',
-        source: 'The Beginning of Infinity, chapter 1',
-        sourceUrl:
-          'https://www.amazon.com/Beginning-Infinity-Explanations-Transform-World/dp/0143121359',
-        asOf: TODAY,
-      },
-      {
         problemSlug: 'pedagogy',
         stance:
           'Bad explanations waste billions of childhood hours. Good explanations compound across generations. Pedagogy is an epistemology problem.',
@@ -83,13 +72,6 @@ export const voices: Voice[] = [
         quote:
           'Population collapse due to low birth rates is a much bigger risk to civilization than global warming.',
         source: 'Public statements, 2022-2024',
-        asOf: TODAY,
-      },
-      {
-        problemSlug: 'ai-safety',
-        stance:
-          'Co-founded OpenAI originally because of concerns about unaligned AI. Has continued to treat AI alignment as an existential priority.',
-        source: 'OpenAI founding announcement (2015); subsequent public statements',
         asOf: TODAY,
       },
       {
@@ -279,14 +261,6 @@ export const voices: Voice[] = [
         source: 'Talent (with Daniel Gross, 2022)',
         asOf: TODAY,
       },
-      {
-        problemSlug: 'ai-safety',
-        stance:
-          'Emergent Ventures has funded AI-safety projects and unconventional alignment researchers under the "fast grants" model.',
-        source: 'Emergent Ventures grant cohorts',
-        sourceUrl: 'https://www.mercatus.org/emergent-ventures',
-        asOf: TODAY,
-      },
     ],
   },
   {
@@ -333,14 +307,6 @@ export const voices: Voice[] = [
         problemSlug: 'longevity',
         stance:
           'Human lifespan extension is on the canonical list of "good quests that require massively leveled heroes."',
-        source: 'Choose Good Quests',
-        sourceUrl: 'https://traestephens.substack.com/p/choose-good-quests',
-        asOf: TODAY,
-      },
-      {
-        problemSlug: 'ai-safety',
-        stance:
-          'AGI is named on the good-quest list. Hard-tech builders, not only researchers, need to be at the center of the safety conversation.',
         source: 'Choose Good Quests',
         sourceUrl: 'https://traestephens.substack.com/p/choose-good-quests',
         asOf: TODAY,

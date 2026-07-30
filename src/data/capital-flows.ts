@@ -98,25 +98,6 @@ export const capitalFlows: CapitalFlow[] = [
     ],
   },
   {
-    problemSlug: 'ai-safety',
-    usdPerYear: {
-      value: 600_000_000,
-      unit: 'USD/yr',
-      source: 'Open Philanthropy grants database + public AI-safety-institute budgets (estimate)',
-      sourceUrl: 'https://www.openphilanthropy.org/grants/',
-      confidence: 'low',
-      asOf: '2025-12-01',
-    },
-    momentum: 'rising',
-    scope:
-      'Dedicated alignment/safety research: philanthropy, safety institutes, disclosed lab safety teams. Excludes undisclosed internal lab spend. For contrast, AI capability investment exceeds $200B/yr — a ~300:1 asymmetry.',
-    series: [
-      { year: 2020, usd: 80_000_000 },
-      { year: 2022, usd: 300_000_000 },
-      { year: 2024, usd: 600_000_000 },
-    ],
-  },
-  {
     problemSlug: 'biosecurity',
     usdPerYear: {
       value: 4_000_000_000,

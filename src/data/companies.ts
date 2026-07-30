@@ -6,31 +6,10 @@ const src = (title: string, url: string) => ({ title, url })
 
 export const companies: Company[] = [
   {
-    slug: 'anthropic',
-    name: 'Anthropic',
-    url: 'https://www.anthropic.com',
-    problemSlugs: ['ai-safety'],
-    marketCap: null,
-    valuation: {
-      value: 61_500_000_000,
-      unit: 'USD',
-      source: 'reported Series F early 2025',
-      sourceUrl: 'https://www.anthropic.com/news/anthropic-raises-series-e-at-usd61-5b-post-money-valuation',
-      confidence: 'high',
-      asOf: TODAY,
-    },
-    stage: 'private',
-    country: 'USA',
-    description:
-      'AI safety company building Claude. Constitutional AI, mechanistic interpretability, and frontier-scale alignment research.',
-    sources: [src('Anthropic', 'https://www.anthropic.com')],
-    asOf: TODAY,
-  },
-  {
     slug: 'openai',
     name: 'OpenAI',
     url: 'https://openai.com',
-    problemSlugs: ['ai-safety', 'scientific-productivity'],
+    problemSlugs: ['scientific-productivity'],
     marketCap: null,
     valuation: {
       value: 157_000_000_000,
@@ -44,62 +23,6 @@ export const companies: Company[] = [
     description:
       'Originally nonprofit research lab, now capped-profit. Safety and superalignment teams alongside capabilities work.',
     sources: [src('OpenAI', 'https://openai.com')],
-    asOf: TODAY,
-  },
-  {
-    slug: 'conjecture',
-    name: 'Conjecture',
-    url: 'https://www.conjecture.dev',
-    problemSlugs: ['ai-safety'],
-    marketCap: null,
-    valuation: null,
-    stage: 'private',
-    country: 'UK',
-    description:
-      'Alignment-focused AI lab. Runs Conjecture Institute for critical rationalist research on AI safety.',
-    sources: [src('Conjecture', 'https://www.conjecture.dev')],
-    asOf: TODAY,
-  },
-  {
-    slug: 'redwood-research',
-    name: 'Redwood Research',
-    url: 'https://www.redwoodresearch.org',
-    problemSlugs: ['ai-safety'],
-    marketCap: null,
-    valuation: null,
-    stage: 'nonprofit',
-    country: 'USA',
-    description:
-      'Applied alignment research, adversarial evaluation, AI control, and mechanistic interpretability.',
-    sources: [src('Redwood Research', 'https://www.redwoodresearch.org')],
-    asOf: TODAY,
-  },
-  {
-    slug: 'arc-evals',
-    name: 'METR (formerly ARC Evals)',
-    url: 'https://metr.org',
-    problemSlugs: ['ai-safety'],
-    marketCap: null,
-    valuation: null,
-    stage: 'nonprofit',
-    country: 'USA',
-    description:
-      'Third-party evaluation of frontier AI models for dangerous capabilities. Pre-deployment testing protocols.',
-    sources: [src('METR', 'https://metr.org')],
-    asOf: TODAY,
-  },
-  {
-    slug: 'goodfire',
-    name: 'Goodfire',
-    url: 'https://www.goodfire.ai',
-    problemSlugs: ['ai-safety'],
-    marketCap: null,
-    valuation: null,
-    stage: 'private',
-    country: 'USA',
-    description:
-      'Mechanistic interpretability as a product, tools for editing model internals rather than just observing.',
-    sources: [src('Goodfire', 'https://www.goodfire.ai')],
     asOf: TODAY,
   },
   {
