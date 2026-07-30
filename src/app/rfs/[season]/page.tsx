@@ -6,7 +6,11 @@ import Footer from '@/components/Footer'
 import EmailCapture from '@/components/EmailCapture'
 import { rfsSeasons, getSeason } from '@/data/rfs-seasons'
 import { computeQuestRankings } from '@/lib/rankings'
+import { computePriorAccuracy } from '@/lib/prior-accuracy'
 import { fmtUsdCompact } from '@/lib/allocation'
+import HeroFigure from '@/components/HeroFigure'
+import AnnotatedFigure from '@/components/AnnotatedFigure'
+import PriorsVsSourced, { PriorsVsSourcedTable } from '@/components/PriorsVsSourced'
 
 export function generateStaticParams() {
   return rfsSeasons.map((s) => ({ season: s.slug }))
@@ -39,6 +43,7 @@ export default async function SeasonPage({
   const ranked = computeQuestRankings()
   const bySlug = new Map(ranked.map((q) => [q.slug, q]))
   const featured = s.questSlugs.map((slug) => bySlug.get(slug)).filter(Boolean)
+  const accuracy = computePriorAccuracy()
 
   const published = new Date(s.published).toLocaleDateString('en-US', {
     year: 'numeric',
@@ -85,6 +90,46 @@ export default async function SeasonPage({
                 {para}
               </p>
             ))}
+          </div>
+        </section>
+
+        {/* the evidence — full-bleed, wider than the prose it interrupts */}
+        <section className="border-b border-hair bg-ink-900/30">
+          <div className="max-w-6xl mx-auto px-6 py-12">
+            <div className="grid lg:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] gap-8 lg:gap-12 items-start">
+              <HeroFigure
+                value={`${accuracy.wrong} of ${accuracy.compared}`}
+                label="Priors the data overturned"
+                caption={
+                  accuracy.errorsAllOneDirection
+                    ? `And every single miss went the same way: ${accuracy.tooOptimistic} of ${accuracy.wrong} guessed the field emptier than it was. That is a bias, not noise.`
+                    : `${accuracy.tooOptimistic} guessed too empty, ${accuracy.tooPessimistic} too crowded.`
+                }
+              />
+
+              <AnnotatedFigure
+                claim="I guessed how contested each quest was. The data disagreed, and always in the same direction."
+                standfirst="Each row is one quest. The light dot is what I guessed before looking; the dark dot is what a search for real companies actually found. Sorted by size of the error."
+                callouts={[
+                  {
+                    x: 52,
+                    y: 1,
+                    text: 'every miss points right — busier than guessed',
+                    leader: 'none',
+                  },
+                  {
+                    x: 62,
+                    y: 74,
+                    text: `${accuracy.correct} guesses held`,
+                    leader: 'left',
+                  },
+                ]}
+                source="Sourced via Exa Agent against production, 2026-07-20. Bands: open = 0-1 companies found, contested = 2-4, crowded = 5+."
+                tableView={<PriorsVsSourcedTable rows={accuracy.rows} />}
+              >
+                <PriorsVsSourced rows={accuracy.rows} />
+              </AnnotatedFigure>
+            </div>
           </div>
         </section>
 
