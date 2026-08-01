@@ -27,6 +27,7 @@ const dataTabs = [
   { name: 'The Quest', href: '/journey', count: questLevels.length, tone: 'amber' },
   { name: 'Problems', href: '/', count: problems.length, tone: 'amber' },
   { name: 'Demand', href: '/demand', count: problems.length, tone: 'amber' },
+  { name: 'Under-supplied', href: '/underserved', count: problems.length, tone: 'amber' },
   { name: 'Rankings', href: '/rankings', count: requestsForStartups.length, tone: 'amber' },
   { name: 'Capital', href: '/capital', count: capitalPools.length, tone: 'cyan' },
   { name: 'Radar', href: '/radar', count: problems.length, tone: 'amber' },
