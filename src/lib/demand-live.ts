@@ -26,6 +26,8 @@ import { fetchOwid } from '@/lib/sources/owid'
 import { fetchWdi } from '@/lib/sources/worldbank'
 import { fetchOpenAlexCount } from '@/lib/sources/openalex'
 import { fetchFormDCount } from '@/lib/sources/edgar'
+import { fetchFederalRegisterCount } from '@/lib/sources/federal-register'
+import { fetchUsaSpendingAwards } from '@/lib/sources/usaspending'
 import { fetchNihProjectCount } from '@/lib/sources/nih'
 import { fetchFdaShortages } from '@/lib/sources/openfda'
 
@@ -71,7 +73,7 @@ async function liveComponentsFor(p: Problem): Promise<LiveDemandComponent[]> {
   const comps: LiveDemandComponent[] = buildComponents(p)
   if (!feeds) return comps
 
-  const [burden, openalex, edgar, nih, fda] = await Promise.all([
+  const [burden, openalex, edgar, fedreg, usaspend, nih, fda] = await Promise.all([
     feeds.burden
       ? feeds.burden.kind === 'gho'
         ? fetchGho(feeds.burden.code)
@@ -82,6 +84,12 @@ async function liveComponentsFor(p: Problem): Promise<LiveDemandComponent[]> {
     feeds.openAlexSearch ? fetchOpenAlexCount(feeds.openAlexSearch) : Promise.resolve(null),
     feeds.edgar
       ? fetchFormDCount(feeds.edgar.q, { kind: feeds.edgar.kind })
+      : Promise.resolve(null),
+    feeds.federalRegisterTerm
+      ? fetchFederalRegisterCount(feeds.federalRegisterTerm)
+      : Promise.resolve(null),
+    feeds.usaSpendingTerm
+      ? fetchUsaSpendingAwards(feeds.usaSpendingTerm)
       : Promise.resolve(null),
     feeds.nihSearch ? fetchNihProjectCount(feeds.nihSearch) : Promise.resolve(null),
     feeds.fdaCategory ? fetchFdaShortages({ category: feeds.fdaCategory }) : Promise.resolve(null),
@@ -113,6 +121,29 @@ async function liveComponentsFor(p: Problem): Promise<LiveDemandComponent[]> {
         },
       }
     }
+    if (c.class === 'policy' && fedreg) {
+      // Lights a class that was dark: strength comes straight from regulatory
+      // attention, since nothing static ever populated it. ~700 documents in
+      // the window is the observed top of the range (nuclear energy), so the
+      // ceiling sits just above it.
+      const strength = logNorm(fedreg.documentCount, 800)
+      if (strength == null) return c // zero documents = absent, not a zero score
+      const rules =
+        fedreg.rulemakingCount != null ? `, ${fedreg.rulemakingCount} of them rulemaking` : ''
+      return {
+        ...c,
+        strength,
+        source: 'Federal Register (live)',
+        live: {
+          value: fedreg.documentCount,
+          unit: 'federal documents',
+          label: `US rulemaking mentioning “${fedreg.term}” since ${fedreg.fromDate.slice(0, 4)}${rules}`,
+          asOf: `since ${fedreg.fromDate}`,
+          source: 'Federal Register',
+          url: fedreg.url,
+        },
+      }
+    }
     if (c.class === 'capital' && edgar && feeds.edgar) {
       // Corroborate, do not re-derive. The sourced $/yr in capital-flows.ts
       // covers ALL capital (government, philanthropic, corporate); Form D sees
@@ -132,6 +163,22 @@ async function liveComponentsFor(p: Problem): Promise<LiveDemandComponent[]> {
           asOf: `since ${edgar.fromDate}`,
           source: 'SEC EDGAR',
           url: edgar.url,
+        },
+      }
+    }
+    // Public capital, for the 6 problems the SEC's taxonomy cannot see. Same
+    // observation-not-strength rule as EDGAR: capital-flows.ts still owns the
+    // number, because an award count is not dollars.
+    if (c.class === 'capital' && usaspend) {
+      return {
+        ...c,
+        live: {
+          value: usaspend.awardCount,
+          unit: 'federal awards',
+          label: `Federal grants and contracts mentioning “${usaspend.term}” since ${usaspend.fromDate.slice(0, 4)}`,
+          asOf: `since ${usaspend.fromDate}`,
+          source: 'USAspending',
+          url: usaspend.url,
         },
       }
     }

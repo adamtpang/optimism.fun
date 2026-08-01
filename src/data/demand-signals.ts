@@ -52,10 +52,24 @@ export type DemandSignalFeeds = {
    * exactly the bias that NIH-only research had before OpenAlex.
    */
   edgar?: { q: string; kind: 'industry-group' | 'keyword' }
+  /**
+   * Federal Register search term — the `policy` class. Regulatory attention as
+   * institutional demand. Covers all 11 problems, because the Federal Register
+   * regulates everything, which is exactly what EDGAR's taxonomy could not do.
+   */
+  federalRegisterTerm?: string
+  /**
+   * USAspending keyword — PUBLIC capital (federal grants + contracts), the
+   * counterpart to EDGAR's private raises in the `capital` class. Covers the
+   * 6 problems EDGAR cannot see.
+   */
+  usaSpendingTerm?: string
 }
 
 export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
   'extreme-poverty': {
+    federalRegisterTerm: 'poverty', // FR 194
+    usaSpendingTerm: 'poverty', // US 5,185 awards
     openAlexSearch: 'extreme poverty', // 3,344
     burden: {
       kind: 'wdi',
@@ -65,6 +79,8 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     },
   },
   'climate-change': {
+    federalRegisterTerm: 'climate adaptation', // FR 31
+    usaSpendingTerm: 'climate adaptation', // US 323 awards
     openAlexSearch: 'climate adaptation', // 62,972
     edgar: { q: 'climate', kind: 'keyword' }, // 180 filings
     burden: {
@@ -76,6 +92,8 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     nihSearch: 'climate change health',
   },
   'fertility-decline': {
+    federalRegisterTerm: 'fertility', // FR 43
+    usaSpendingTerm: 'fertility', // US 673 awards
     openAlexSearch: 'fertility decline', // 8,092
     edgar: { q: 'fertility', kind: 'keyword' }, // 5 filings
     burden: {
@@ -87,6 +105,8 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     nihSearch: 'infertility',
   },
   pedagogy: {
+    federalRegisterTerm: 'tutoring', // FR 25
+    usaSpendingTerm: 'tutoring', // US 571 awards
     openAlexSearch: 'tutoring', // 25,046 — 'pedagogy' alone is 237k, too broad
     burden: {
       kind: 'wdi',
@@ -96,6 +116,9 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     },
   },
   longevity: {
+    federalRegisterTerm: 'longevity', // FR 63 — 'aging' returns 1,847 and matches
+    //                                  "aging infrastructure"/"aging aircraft", not the problem
+    usaSpendingTerm: 'aging research', // US 374 awards
     openAlexSearch: 'longevity|healthspan', // 45,631
     edgar: { q: 'longevity', kind: 'keyword' }, // 31 filings
     burden: {
@@ -108,6 +131,8 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     fdaCategory: 'Oncology',
   },
   'infectious-disease': {
+    federalRegisterTerm: 'tuberculosis', // FR 44
+    usaSpendingTerm: 'malaria', // US 1,299 awards
     openAlexSearch: 'malaria|tuberculosis', // 85,516
     burden: {
       kind: 'gho',
@@ -119,22 +144,32 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     fdaCategory: 'Anti-Infective',
   },
   biosecurity: {
+    federalRegisterTerm: 'biosecurity', // FR 33
+    usaSpendingTerm: 'pandemic preparedness', // US 132 awards
     openAlexSearch: 'biosecurity', // 7,530
     nihSearch: 'pandemic preparedness',
   },
   loneliness: {
+    federalRegisterTerm: 'loneliness', // FR 15
+    usaSpendingTerm: 'loneliness', // US 193 awards
     openAlexSearch: 'loneliness', // 26,374
     nihSearch: 'loneliness',
   },
   'energy-abundance': {
+    federalRegisterTerm: 'geothermal', // FR 114
+    usaSpendingTerm: 'geothermal', // US 241 awards
     openAlexSearch: 'decarbonization', // 31,890 — 'energy transition' at 193k is too broad
     edgar: { q: '"Other Energy"', kind: 'industry-group' }, // 389 filings
   },
   'housing-construction': {
+    federalRegisterTerm: 'housing affordability', // FR 316
+    usaSpendingTerm: 'housing affordability', // US 23 awards
     openAlexSearch: 'housing affordability', // 9,050
     edgar: { q: '"Construction"', kind: 'industry-group' }, // 317 filings
   },
   'scientific-productivity': {
+    federalRegisterTerm: 'scientific integrity', // FR 258
+    usaSpendingTerm: 'research infrastructure', // US 995 awards
     openAlexSearch: 'metascience', // 378 — genuinely a tiny field, which is the signal
   },
 }
@@ -182,6 +217,22 @@ export const demandSignalSources = [
     cadence: 'continuous, ~15 days after first sale',
   },
   {
+    id: 'federal-register',
+    name: 'Federal Register',
+    url: 'https://www.federalregister.gov',
+    feeds: 'policy (US rulemaking)',
+    access: 'Open API, no key (public domain)',
+    cadence: 'daily',
+  },
+  {
+    id: 'usaspending',
+    name: 'USAspending',
+    url: 'https://www.usaspending.gov',
+    feeds: 'capital (federal awards)',
+    access: 'Open API, no key (public domain)',
+    cadence: 'daily',
+  },
+  {
     id: 'openfda-shortages',
     name: 'openFDA Drug Shortages',
     url: 'https://open.fda.gov/apis/drug/drugshortages/',
@@ -200,4 +251,4 @@ export const demandSignalSources = [
 ] as const
 
 /** Classes with a live feed wired today; the rest are seeded/awaiting feeds. */
-export const LIVE_CLASSES = ['burden', 'research', 'queues'] as const
+export const LIVE_CLASSES = ['burden', 'research', 'queues', 'capital', 'policy'] as const

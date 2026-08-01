@@ -22,6 +22,8 @@ import { fetchOwid } from '@/lib/sources/owid'
 import { fetchWdi } from '@/lib/sources/worldbank'
 import { fetchOpenAlexCount } from '@/lib/sources/openalex'
 import { fetchFormDCount } from '@/lib/sources/edgar'
+import { fetchFederalRegisterCount } from '@/lib/sources/federal-register'
+import { fetchUsaSpendingAwards } from '@/lib/sources/usaspending'
 import { fetchNihProjectCount } from '@/lib/sources/nih'
 import { fetchFdaShortages } from '@/lib/sources/openfda'
 import { isExaConfigured, sourceQueueSignals } from '@/lib/sources/exa'
@@ -60,7 +62,7 @@ export async function POST(req: Request) {
   const entries = Object.entries(demandSignalRegistry)
   const signals = await Promise.all(
     entries.map(async ([slug, feeds]) => {
-      const [burden, papers, raises, research, queues] = await Promise.all([
+      const [burden, papers, raises, rulemaking, awards, research, queues] = await Promise.all([
         feeds.burden
           ? feeds.burden.kind === 'gho'
             ? fetchGho(feeds.burden.code, { revalidateSeconds: 0 })
@@ -77,6 +79,12 @@ export async function POST(req: Request) {
         feeds.edgar
           ? fetchFormDCount(feeds.edgar.q, { kind: feeds.edgar.kind, revalidateSeconds: 0 })
           : null,
+        feeds.federalRegisterTerm
+          ? fetchFederalRegisterCount(feeds.federalRegisterTerm, { revalidateSeconds: 0 })
+          : null,
+        feeds.usaSpendingTerm
+          ? fetchUsaSpendingAwards(feeds.usaSpendingTerm, { revalidateSeconds: 0 })
+          : null,
         feeds.nihSearch ? fetchNihProjectCount(feeds.nihSearch) : null,
         feeds.fdaCategory
           ? fetchFdaShortages({ category: feeds.fdaCategory, revalidateSeconds: 0 })
@@ -87,6 +95,8 @@ export async function POST(req: Request) {
         burden: burden?.latest ?? null,
         papers: papers?.workCount ?? null,
         privateRaises: raises?.filingCount ?? null,
+        federalDocs: rulemaking?.documentCount ?? null,
+        federalAwards: awards?.awardCount ?? null,
         researchProjects: research?.projectCount ?? null,
         currentShortages: queues?.currentCount ?? null,
       }
@@ -113,6 +123,8 @@ export async function POST(req: Request) {
           s.burden ||
           s.papers != null ||
           s.privateRaises != null ||
+          s.federalDocs != null ||
+          s.federalAwards != null ||
           s.researchProjects != null ||
           s.currentShortages != null,
       ).length,
