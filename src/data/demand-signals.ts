@@ -64,11 +64,20 @@ export type DemandSignalFeeds = {
    * 6 problems EDGAR cannot see.
    */
   usaSpendingTerm?: string
+  /**
+   * English Wikipedia article title — ATTENTION, treated as crowding rather
+   * than demand (lib/demand.ts weights attention at zero on purpose). Every
+   * title below was checked against the live API: the endpoint 404s on some
+   * canonical titles while serving their redirects, and a wrong title fails
+   * silently as "no attention" rather than erroring.
+   */
+  wikipediaArticle?: string
 }
 
 export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
   'extreme-poverty': {
     federalRegisterTerm: 'poverty', // FR 194
+    wikipediaArticle: 'Extreme_poverty', // 113,575 views
     usaSpendingTerm: 'poverty', // US 5,185 awards
     openAlexSearch: 'extreme poverty', // 3,344
     burden: {
@@ -80,6 +89,7 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
   },
   'climate-change': {
     federalRegisterTerm: 'climate adaptation', // FR 31
+    wikipediaArticle: 'Global_warming', // 144,460 — 'Climate_change' 404s on this API
     usaSpendingTerm: 'climate adaptation', // US 323 awards
     openAlexSearch: 'climate adaptation', // 62,972
     edgar: { q: 'climate', kind: 'keyword' }, // 180 filings
@@ -93,6 +103,7 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
   },
   'fertility-decline': {
     federalRegisterTerm: 'fertility', // FR 43
+    wikipediaArticle: 'Sub-replacement_fertility', // 99,443 views
     usaSpendingTerm: 'fertility', // US 673 awards
     openAlexSearch: 'fertility decline', // 8,092
     edgar: { q: 'fertility', kind: 'keyword' }, // 5 filings
@@ -106,6 +117,7 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
   },
   pedagogy: {
     federalRegisterTerm: 'tutoring', // FR 25
+    wikipediaArticle: 'Education', // 873,320 views
     usaSpendingTerm: 'tutoring', // US 571 awards
     openAlexSearch: 'tutoring', // 25,046 — 'pedagogy' alone is 237k, too broad
     burden: {
@@ -118,6 +130,7 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
   longevity: {
     federalRegisterTerm: 'longevity', // FR 63 — 'aging' returns 1,847 and matches
     //                                  "aging infrastructure"/"aging aircraft", not the problem
+    wikipediaArticle: 'Longevity', // 145,378 views
     usaSpendingTerm: 'aging research', // US 374 awards
     openAlexSearch: 'longevity|healthspan', // 45,631
     edgar: { q: 'longevity', kind: 'keyword' }, // 31 filings
@@ -132,6 +145,7 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
   },
   'infectious-disease': {
     federalRegisterTerm: 'tuberculosis', // FR 44
+    wikipediaArticle: 'Infectious_disease', // 85,599 views
     usaSpendingTerm: 'malaria', // US 1,299 awards
     openAlexSearch: 'malaria|tuberculosis', // 85,516
     burden: {
@@ -145,30 +159,35 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
   },
   biosecurity: {
     federalRegisterTerm: 'biosecurity', // FR 33
+    wikipediaArticle: 'Biosecurity', // 26,844 views
     usaSpendingTerm: 'pandemic preparedness', // US 132 awards
     openAlexSearch: 'biosecurity', // 7,530
     nihSearch: 'pandemic preparedness',
   },
   loneliness: {
     federalRegisterTerm: 'loneliness', // FR 15
+    wikipediaArticle: 'Social_isolation', // 158,920 — 'Loneliness' 404s on this API
     usaSpendingTerm: 'loneliness', // US 193 awards
     openAlexSearch: 'loneliness', // 26,374
     nihSearch: 'loneliness',
   },
   'energy-abundance': {
     federalRegisterTerm: 'geothermal', // FR 114
+    wikipediaArticle: 'Renewable_energy', // 485,879 views
     usaSpendingTerm: 'geothermal', // US 241 awards
     openAlexSearch: 'decarbonization', // 31,890 — 'energy transition' at 193k is too broad
     edgar: { q: '"Other Energy"', kind: 'industry-group' }, // 389 filings
   },
   'housing-construction': {
     federalRegisterTerm: 'housing affordability', // FR 316
+    wikipediaArticle: 'Affordable_housing', // 80,001 views
     usaSpendingTerm: 'housing affordability', // US 23 awards
     openAlexSearch: 'housing affordability', // 9,050
     edgar: { q: '"Construction"', kind: 'industry-group' }, // 317 filings
   },
   'scientific-productivity': {
     federalRegisterTerm: 'scientific integrity', // FR 258
+    wikipediaArticle: 'Metascience', // 41,069 — 'Replication_crisis' 404s on this API
     usaSpendingTerm: 'research infrastructure', // US 995 awards
     openAlexSearch: 'metascience', // 378 — genuinely a tiny field, which is the signal
   },
@@ -230,6 +249,14 @@ export const demandSignalSources = [
     url: 'https://www.usaspending.gov',
     feeds: 'capital (federal awards)',
     access: 'Open API, no key (public domain)',
+    cadence: 'daily',
+  },
+  {
+    id: 'wikipedia',
+    name: 'Wikimedia Pageviews',
+    url: 'https://wikimedia.org/api/rest_v1/',
+    feeds: 'attention (crowding, not demand)',
+    access: 'Open API, no key (CC0)',
     cadence: 'daily',
   },
   {

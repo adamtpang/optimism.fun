@@ -28,6 +28,7 @@ import { fetchOpenAlexCount } from '@/lib/sources/openalex'
 import { fetchFormDCount } from '@/lib/sources/edgar'
 import { fetchFederalRegisterCount } from '@/lib/sources/federal-register'
 import { fetchUsaSpendingAwards } from '@/lib/sources/usaspending'
+import { fetchWikipediaPageviews } from '@/lib/sources/wikipedia'
 import { fetchNihProjectCount } from '@/lib/sources/nih'
 import { fetchFdaShortages } from '@/lib/sources/openfda'
 
@@ -66,14 +67,24 @@ export type DemandRow = {
   corroboration: number
   considered: number
   components: LiveDemandComponent[]
+  /**
+   * Attention, as CROWDING rather than demand — deliberately NOT a component.
+   * Keeping it out of `components` keeps it out of the composite and out of
+   * the corroboration count, which is the point: eyeballs are not evidence
+   * that a problem matters, and counting them as such would invert the thesis
+   * that the best opportunities are high demand with low attention.
+   */
+  attention: LiveValue | null
 }
 
-async function liveComponentsFor(p: Problem): Promise<LiveDemandComponent[]> {
+async function liveComponentsFor(
+  p: Problem,
+): Promise<{ components: LiveDemandComponent[]; attention: LiveValue | null }> {
   const feeds = demandSignalRegistry[p.slug]
   const comps: LiveDemandComponent[] = buildComponents(p)
-  if (!feeds) return comps
+  if (!feeds) return { components: comps, attention: null }
 
-  const [burden, openalex, edgar, fedreg, usaspend, nih, fda] = await Promise.all([
+  const [burden, openalex, edgar, fedreg, usaspend, wiki, nih, fda] = await Promise.all([
     feeds.burden
       ? feeds.burden.kind === 'gho'
         ? fetchGho(feeds.burden.code)
@@ -91,6 +102,9 @@ async function liveComponentsFor(p: Problem): Promise<LiveDemandComponent[]> {
     feeds.usaSpendingTerm
       ? fetchUsaSpendingAwards(feeds.usaSpendingTerm)
       : Promise.resolve(null),
+    feeds.wikipediaArticle
+      ? fetchWikipediaPageviews(feeds.wikipediaArticle)
+      : Promise.resolve(null),
     feeds.nihSearch ? fetchNihProjectCount(feeds.nihSearch) : Promise.resolve(null),
     feeds.fdaCategory ? fetchFdaShortages({ category: feeds.fdaCategory }) : Promise.resolve(null),
   ])
@@ -106,7 +120,7 @@ async function liveComponentsFor(p: Problem): Promise<LiveDemandComponent[]> {
           }
     : null
 
-  return comps.map((c): LiveDemandComponent => {
+  const mapped = comps.map((c): LiveDemandComponent => {
     if (c.class === 'burden' && burden?.latest && feeds.burden && burdenMeta) {
       // Corroborate, don't re-derive: static strength stays, live number rides along.
       return {
@@ -241,6 +255,20 @@ async function liveComponentsFor(p: Problem): Promise<LiveDemandComponent[]> {
     }
     return c
   })
+
+  return {
+    components: mapped,
+    attention: wiki
+      ? {
+          value: wiki.monthlyAverage,
+          unit: 'monthly readers',
+          label: `Wikipedia readers of “${wiki.article.replace(/_/g, ' ')}”`,
+          asOf: `avg over ${wiki.months} months`,
+          source: 'Wikimedia',
+          url: wiki.url,
+        }
+      : null,
+  }
 }
 
 /**
@@ -251,7 +279,7 @@ async function liveComponentsFor(p: Problem): Promise<LiveDemandComponent[]> {
 export async function computeDemandRows(): Promise<DemandRow[]> {
   const rows = await Promise.all(
     problems.map(async (p) => {
-      const components = await liveComponentsFor(p)
+      const { components, attention } = await liveComponentsFor(p)
       const composed = composeDemand(components)
       return {
         slug: p.slug,
@@ -260,6 +288,7 @@ export async function computeDemandRows(): Promise<DemandRow[]> {
         domainLabel: p.domain ? DOMAIN_LABEL[p.domain] : null,
         ...composed,
         components,
+        attention,
       }
     }),
   )
