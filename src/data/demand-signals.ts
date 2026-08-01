@@ -41,6 +41,17 @@ export type DemandSignalFeeds = {
   nihSearch?: string
   /** openFDA therapeutic_category for current-shortage counts (queues). */
   fdaCategory?: string
+  /**
+   * SEC EDGAR Form D query — live US private capital formation, attached to the
+   * `capital` class as an OBSERVATION, never as its strength.
+   *
+   * Deliberately sparse. Verified 2026-07-20 over 2025-01-01 onward, the SEC's
+   * taxonomy simply cannot see most social problems: biosecurity 0, loneliness
+   * 0, tutoring 0, metascience 0, poverty 1. Those get no mapping at all,
+   * because a zero here would measure the instrument rather than the world —
+   * exactly the bias that NIH-only research had before OpenAlex.
+   */
+  edgar?: { q: string; kind: 'industry-group' | 'keyword' }
 }
 
 export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
@@ -55,6 +66,7 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
   },
   'climate-change': {
     openAlexSearch: 'climate adaptation', // 62,972
+    edgar: { q: 'climate', kind: 'keyword' }, // 180 filings
     burden: {
       kind: 'owid',
       slug: 'annual-co2-emissions',
@@ -65,6 +77,7 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
   },
   'fertility-decline': {
     openAlexSearch: 'fertility decline', // 8,092
+    edgar: { q: 'fertility', kind: 'keyword' }, // 5 filings
     burden: {
       kind: 'wdi',
       indicator: 'SP.DYN.TFRT.IN',
@@ -84,6 +97,7 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
   },
   longevity: {
     openAlexSearch: 'longevity|healthspan', // 45,631
+    edgar: { q: 'longevity', kind: 'keyword' }, // 31 filings
     burden: {
       kind: 'gho',
       code: 'WHOSIS_000001',
@@ -114,9 +128,11 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
   },
   'energy-abundance': {
     openAlexSearch: 'decarbonization', // 31,890 — 'energy transition' at 193k is too broad
+    edgar: { q: '"Other Energy"', kind: 'industry-group' }, // 389 filings
   },
   'housing-construction': {
     openAlexSearch: 'housing affordability', // 9,050
+    edgar: { q: '"Construction"', kind: 'industry-group' }, // 317 filings
   },
   'scientific-productivity': {
     openAlexSearch: 'metascience', // 378 — genuinely a tiny field, which is the signal
@@ -156,6 +172,14 @@ export const demandSignalSources = [
     feeds: 'research (biomedical $)',
     access: 'Open API, no key',
     cadence: 'weekly',
+  },
+  {
+    id: 'sec-edgar',
+    name: 'SEC EDGAR · Form D',
+    url: 'https://www.sec.gov/edgar/search/',
+    feeds: 'capital (new US private raises)',
+    access: 'Open full-text search, no key (public domain)',
+    cadence: 'continuous, ~15 days after first sale',
   },
   {
     id: 'openfda-shortages',
