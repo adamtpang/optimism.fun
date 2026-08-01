@@ -25,6 +25,7 @@ import { fetchGho } from '@/lib/sources/who'
 import { fetchOwid } from '@/lib/sources/owid'
 import { fetchWdi } from '@/lib/sources/worldbank'
 import { fetchOpenAlexCount } from '@/lib/sources/openalex'
+import { fetchFormDCount } from '@/lib/sources/edgar'
 import { fetchNihProjectCount } from '@/lib/sources/nih'
 import { fetchFdaShortages } from '@/lib/sources/openfda'
 
@@ -70,7 +71,7 @@ async function liveComponentsFor(p: Problem): Promise<LiveDemandComponent[]> {
   const comps: LiveDemandComponent[] = buildComponents(p)
   if (!feeds) return comps
 
-  const [burden, openalex, nih, fda] = await Promise.all([
+  const [burden, openalex, edgar, nih, fda] = await Promise.all([
     feeds.burden
       ? feeds.burden.kind === 'gho'
         ? fetchGho(feeds.burden.code)
@@ -79,6 +80,9 @@ async function liveComponentsFor(p: Problem): Promise<LiveDemandComponent[]> {
           : fetchWdi('WLD', feeds.burden.indicator)
       : Promise.resolve(null),
     feeds.openAlexSearch ? fetchOpenAlexCount(feeds.openAlexSearch) : Promise.resolve(null),
+    feeds.edgar
+      ? fetchFormDCount(feeds.edgar.q, { kind: feeds.edgar.kind })
+      : Promise.resolve(null),
     feeds.nihSearch ? fetchNihProjectCount(feeds.nihSearch) : Promise.resolve(null),
     feeds.fdaCategory ? fetchFdaShortages({ category: feeds.fdaCategory }) : Promise.resolve(null),
   ])
@@ -106,6 +110,28 @@ async function liveComponentsFor(p: Problem): Promise<LiveDemandComponent[]> {
           asOf: String(burden.latest.year),
           source: burdenMeta.source,
           url: burdenMeta.url,
+        },
+      }
+    }
+    if (c.class === 'capital' && edgar && feeds.edgar) {
+      // Corroborate, do not re-derive. The sourced $/yr in capital-flows.ts
+      // covers ALL capital (government, philanthropic, corporate); Form D sees
+      // only new US private raises. Letting a filing count set the strength
+      // would quietly redefine the class, so the live number rides along and
+      // the static strength stands.
+      const scope =
+        feeds.edgar.kind === 'industry-group'
+          ? `industry group ${feeds.edgar.q.replace(/"/g, '')}`
+          : `mentioning “${feeds.edgar.q}”`
+      return {
+        ...c,
+        live: {
+          value: edgar.filingCount,
+          unit: edgar.capped ? 'raises (10k+)' : 'new US private raises',
+          label: `Form D filings ${scope}, since ${edgar.fromDate.slice(0, 4)}`,
+          asOf: `since ${edgar.fromDate}`,
+          source: 'SEC EDGAR',
+          url: edgar.url,
         },
       }
     }
