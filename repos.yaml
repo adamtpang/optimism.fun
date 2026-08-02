@@ -1,0 +1,22 @@
+# repos.yaml v0 — see github.com/adamtpang/repo-protocol
+repo: optimism.fun
+is: Ranks humanity's biggest unsolved problems from live public data.
+url: https://optimism.fun
+cluster: legibility-engines
+ranks: problems
+
+provides:
+  - ai-ranking: Claude scores and ranks entities from live public sources
+  - data-sources: OWID, World Bank, WHO, OpenFDA fetch+cache adapters
+
+stack: [next, neon, anthropic, posthog]
+
+kin:
+  - repo: pokedex.life
+    why: same ranking engine, applied to people instead of problems
+  - repo: portal.voyage
+    why: same ranking engine, applied to places instead of problems
+  - repo: ness.city
+    why: consumes the problem ranking as civic bounties
+
+canon: adamtpang/repo-protocol
