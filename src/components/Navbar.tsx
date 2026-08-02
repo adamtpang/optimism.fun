@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { problems } from '@/data/problems'
-import { questLevels } from '@/data/journey'
+import { questStages } from '@/data/journey'
 import { ARCHETYPE_LIST } from '@/data/archetypes'
 import { companies } from '@/data/companies'
 import { publicCompanies } from '@/data/public-companies'
@@ -25,7 +25,7 @@ import { FeedbackButton } from './FeedbackWidget'
 const dataTabs = [
   { name: 'Globe', href: '/globe', count: publicCompanies.length, tone: 'cyan' },
   { name: 'Your Fit', href: '/fit', count: ARCHETYPE_LIST.length, tone: 'amber' },
-  { name: 'The Quest', href: '/journey', count: questLevels.length, tone: 'amber' },
+  { name: 'The Quest', href: '/journey', count: questStages.length, tone: 'amber' },
   { name: 'Problems', href: '/', count: problems.length, tone: 'amber' },
   { name: 'Demand', href: '/demand', count: problems.length, tone: 'amber' },
   { name: 'Under-supplied', href: '/underserved', count: problems.length, tone: 'amber' },
