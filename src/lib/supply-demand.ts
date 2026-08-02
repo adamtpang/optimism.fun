@@ -34,7 +34,16 @@ import { getCompaniesForProblem } from '@/data/companies'
 import { verdictFor } from '@/lib/allocation'
 import { computeDemandRows } from '@/lib/demand-live'
 
-export type SupplyKind = 'research' | 'public-capital' | 'private-capital' | 'companies'
+export type SupplyKind =
+  | 'research'
+  | 'public-capital'
+  | 'private-capital'
+  | 'companies'
+  // Attention is not effort, but it IS saturation: a problem the world is
+  // already staring at is more contested for the same amount of need. It sits
+  // here rather than in the demand composite, where lib/demand.ts pointedly
+  // weights it at zero.
+  | 'attention'
 
 export type SupplySignal = {
   kind: SupplyKind
@@ -70,6 +79,7 @@ const KIND_LABEL: Record<SupplyKind, { label: string; unit: string }> = {
   'public-capital': { label: 'Public money', unit: 'federal awards' },
   'private-capital': { label: 'Private money', unit: 'new raises' },
   companies: { label: 'Companies', unit: 'on the index' },
+  attention: { label: 'Attention', unit: 'monthly readers' },
 }
 
 /** Sum a map's values, never returning 0 (which would divide by zero). */
@@ -92,6 +102,7 @@ export async function computeSupplyDemand(): Promise<SupplyDemandRow[]> {
     'public-capital': new Map(),
     'private-capital': new Map(),
     companies: new Map(),
+    attention: new Map(),
   }
 
   for (const p of problems) {
@@ -114,6 +125,8 @@ export async function computeSupplyDemand(): Promise<SupplyDemandRow[]> {
 
     const companies = getCompaniesForProblem(p.slug).length
     if (companies > 0) supply.companies.set(p.slug, companies)
+
+    if (row?.attention) supply.attention.set(p.slug, row.attention.value)
   }
 
   const totals: Record<SupplyKind, number> = {
@@ -121,6 +134,7 @@ export async function computeSupplyDemand(): Promise<SupplyDemandRow[]> {
     'public-capital': totalOf(supply['public-capital']),
     'private-capital': totalOf(supply['private-capital']),
     companies: totalOf(supply.companies),
+    attention: totalOf(supply.attention),
   }
 
   const rows: SupplyDemandRow[] = problems.map((p) => {

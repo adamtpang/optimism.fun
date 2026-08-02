@@ -103,8 +103,17 @@ export default async function UnderservedPage() {
               <p>
                 <span className="text-ink-100">Supply is live and sourced.</span> Research from
                 OpenAlex, public money from USAspending, private money from SEC Form D filings,
-                companies from the index. The headline is a geometric mean across whichever
-                signals exist, so a 0.1× and a 10× cancel to parity instead of averaging to 5×.
+                companies from the index, and attention from Wikipedia pageviews. The headline is
+                a geometric mean across whichever signals exist, so a 0.1× and a 10× cancel to
+                parity instead of averaging to 5×.
+              </p>
+              <p>
+                <span className="text-ink-100">Attention counts as crowding, never as demand.</span>{' '}
+                A problem the world is already staring at is more contested for the same amount of
+                need, so eyeballs belong on this side of the ratio. Google Trends was rejected for
+                it: no free official API, and it returns relative values re-normalised per request,
+                so two terms fetched separately cannot honestly be compared. Wikipedia pageviews
+                are absolute, bot-filtered, and CC0.
               </p>
               <p className="text-ink-600">
                 Bands are deliberately blunt — under 0.5× is under-supplied, over 2× is
