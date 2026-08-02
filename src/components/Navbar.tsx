@@ -14,6 +14,7 @@ import { crypto } from '@/data/crypto'
 import { voices } from '@/data/voices'
 import { ecosystem } from '@/data/ecosystem'
 import { capitalPools } from '@/data/capital-map'
+import { watchedTerms } from '@/data/watched-terms'
 import { progress } from '@/data/progress'
 import { requestsForStartups } from '@/data/rfs'
 import { seededMedia } from '@/data/media'
@@ -28,6 +29,7 @@ const dataTabs = [
   { name: 'Problems', href: '/', count: problems.length, tone: 'amber' },
   { name: 'Demand', href: '/demand', count: problems.length, tone: 'amber' },
   { name: 'Under-supplied', href: '/underserved', count: problems.length, tone: 'amber' },
+  { name: 'Trends', href: '/trends', count: watchedTerms.length, tone: 'cyan' },
   { name: 'Rankings', href: '/rankings', count: requestsForStartups.length, tone: 'amber' },
   { name: 'Capital', href: '/capital', count: capitalPools.length, tone: 'cyan' },
   { name: 'Radar', href: '/radar', count: problems.length, tone: 'amber' },
