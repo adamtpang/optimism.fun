@@ -6,8 +6,12 @@ cluster: legibility-engines
 ranks: problems
 
 provides:
-  - ai-ranking: Claude scores and ranks entities from live public sources
-  - data-sources: OWID, World Bank, WHO, OpenFDA fetch+cache adapters
+  - id: ai-ranking
+    what: Claude scores and ranks entities from live public sources
+    at: src/lib/rankings.ts
+  - id: data-sources
+    what: OWID, World Bank, WHO, OpenFDA fetch+cache adapters
+    at: src/lib/sources
 
 stack: [next, neon, anthropic, posthog]
 
