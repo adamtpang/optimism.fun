@@ -19,6 +19,7 @@ import { progress } from '@/data/progress'
 import { requestsForStartups } from '@/data/rfs'
 import { seededMedia } from '@/data/media'
 import { sectors } from '@/data/sectors'
+import { coverageGapCandidates } from '@/data/coverage'
 import ThemeToggle from './ThemeToggle'
 import { FeedbackButton } from './FeedbackWidget'
 
@@ -29,6 +30,7 @@ const dataTabs = [
   { name: 'Problems', href: '/', count: problems.length, tone: 'amber' },
   { name: 'Demand', href: '/demand', count: problems.length, tone: 'amber' },
   { name: 'Under-supplied', href: '/underserved', count: problems.length, tone: 'amber' },
+  { name: 'Coverage', href: '/coverage', count: coverageGapCandidates.length, tone: 'cyan' },
   { name: 'Trends', href: '/trends', count: watchedTerms.length, tone: 'cyan' },
   { name: 'Rankings', href: '/rankings', count: requestsForStartups.length, tone: 'amber' },
   { name: 'Capital', href: '/capital', count: capitalPools.length, tone: 'cyan' },
