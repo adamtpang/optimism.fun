@@ -432,6 +432,35 @@ export type PublicCompany = {
   asOf: string
 }
 
+/**
+ * A disclosed capital commitment by one of the wealthiest people on earth
+ * toward something that isn't a fully solved problem yet — the "money at the
+ * frontier is a leading indicator" thesis. Only disclosed figures count: a
+ * funding round, a pledge with a number, a foundation's public grant. Never
+ * an interview quote about what someone is "interested in".
+ */
+export type FrontierBet = {
+  vehicle: string // "Altos Labs", "Blue Origin", "Bezos Earth Fund"
+  description: string // one line on what it's actually for
+  amount?: SourcedNumber
+  /** Links to an existing ranked problem, if this bet validates one. */
+  problemSlug?: string
+  /** If this bet points at something NOT on the index, name the gap here. */
+  gapLabel?: string
+  source: string
+  sourceUrl: string
+}
+
+/**
+ * How a person's disclosed giving relates to the frontier-bet thesis.
+ * Not everyone fits it — that is itself the finding, not a bug in the data.
+ */
+export type FrontierPattern =
+  | 'frontier-bets' // funding unproven, high-risk science/tech ahead of the market
+  | 'conventional-philanthropy' // large-scale giving to established causes (global health, poverty)
+  | 'prestige-giving' // arts, alma mater, national-sovereignty framed gifts
+  | 'scaling-proven-tech' // buying more of what already works, not funding the unproven
+
 export type Founder = {
   rank: number
   name: string
@@ -440,6 +469,8 @@ export type Founder = {
   country: string
   age?: number
   asOf: string
+  frontierBets?: FrontierBet[]
+  frontierPattern?: FrontierPattern
 }
 
 /** Treated as preformatted text today; renderer will line-break and preserve

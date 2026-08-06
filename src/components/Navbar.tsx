@@ -41,6 +41,7 @@ const dataTabs = [
   { name: 'Media', href: '/media', count: seededMedia.length, tone: 'cyan' },
   { name: 'Solutions', href: '/companies', count: publicCompanies.length, tone: 'cyan' },
   { name: 'People', href: '/founders', count: founders.length, tone: 'amber' },
+  { name: 'Frontier', href: '/frontier', count: founders.length, tone: 'amber' },
   { name: 'Progress', href: '/progress', count: progress.length, tone: 'green' },
   { name: 'Countries', href: '/countries', count: countries.length, tone: 'green' },
   { name: 'Crypto', href: '/crypto', count: crypto.length, tone: 'violet' },
