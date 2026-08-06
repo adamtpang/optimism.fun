@@ -85,7 +85,7 @@ export default function FoundersPage() {
             </a>
             {' · '}
             <span className="text-ink-600">as of</span> {founders[0]?.asOf} ·
-            <span className="text-ink-600"> top 10 only for v0.1, more coming</span>
+            <span className="text-ink-600"> top {founders.length} only for v0.1, more coming</span>
           </p>
         </section>
       </main>

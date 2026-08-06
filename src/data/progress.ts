@@ -113,6 +113,61 @@ export const progress: ProgressMilestone[] = [
     confidence: 'high',
     asOf: TODAY,
   },
+  // Civilizational-scale milestones — added 2026-08-06 to close a gap: every
+  // metric above is a welfare/development curve. None of them measure the
+  // frontier bets tracked on /frontier (energy capture, space, longevity).
+  // Two swaps from the original proposal, for honesty: "days since last Mars
+  // milestone" isn't a real trend metric, so cost-to-orbit stands in as the
+  // actual enabling curve for Mars colonization. "Rejuvenation therapies in
+  // Phase 2+ trials" has no verifiable current aggregate count — Lifespan.io's
+  // roadmap renders client-side with no citable snapshot number — so healthy
+  // life expectancy (HALE) stands in: a real, WHO-sourced measure of whether
+  // humanity is compressing morbidity, not just delaying death.
+  {
+    slug: 'kardashev-scale',
+    name: 'Kardashev scale (energy civilization type)',
+    description:
+      'How much of a star’s available energy a civilization has learned to harness, on Kardashev’s Type 0-to-3 scale. Type 1 is full use of everything a home planet receives. This is the closest thing to a single number for "how advanced is humanity," and by design it does not care about GDP or population — only energy captured and put to use.',
+    unit: 'Kardashev type (1.0 = full planetary energy capture)',
+    format: 'absolute',
+    baseline: { year: 1973, value: 0.7 },
+    latest: { year: 2026, value: 0.7276 },
+    direction: 'up',
+    source: 'Carl Sagan’s 1973 estimate; Kardashev1.com live tracker',
+    sourceUrl: 'https://www.kardashev1.com/',
+    confidence: 'low',
+    asOf: '2026-08-06',
+  },
+  {
+    slug: 'cost-to-orbit',
+    name: 'Cost to reach orbit',
+    description:
+      'USD per kilogram to low Earth orbit. This is the actual enabling metric behind Mars colonization — not a countdown or a mission tracker, but the cost curve that has to keep collapsing before Mars is anything other than a demonstration flight. Reusability is the whole story: the Space Shuttle was marketed as reusable and was still more expensive per kilogram than the expendable Saturn V that preceded it.',
+    unit: 'USD per kg to low Earth orbit',
+    format: 'usd',
+    baseline: { year: 1981, value: 60_000 },
+    latest: { year: 2026, value: 2_720 },
+    direction: 'down',
+    source: 'Space Launch Cost Comparison 2026 (nexi.fund); NASA Space Shuttle program cost history',
+    sourceUrl: 'https://nexi.fund/space-launch-cost-comparison-2026/',
+    confidence: 'med',
+    asOf: '2026-08-06',
+  },
+  {
+    slug: 'healthy-life-expectancy',
+    name: 'Healthy life expectancy (HALE)',
+    description:
+      'Years a newborn can expect to live in good health — distinct from life expectancy above, which counts every year alive regardless of health. This is the real longevity-progress metric: adding years to a life is easy to overstate as progress if most of those years are spent sick. HALE only rises when disease and disability compress, not just when death is delayed.',
+    unit: 'years lived in good health',
+    format: 'years',
+    baseline: { year: 2000, value: 58.6 },
+    latest: { year: 2019, value: 63.5 },
+    direction: 'up',
+    source: 'WHO · Global Burden of Disease Study 2019',
+    sourceUrl: 'https://www.who.int/data/gho/indicator-metadata-registry/imr-details/7752',
+    confidence: 'high',
+    asOf: '2026-08-06',
+  },
 ]
 
 export const getProgressBySlug = (slug: string) =>

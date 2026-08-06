@@ -109,7 +109,7 @@ export default function FrontierPage() {
               Technology comes down a cost curve. Solar, gene sequencing, and satellite launch were
               all once luxuries only the wealthiest could buy at the price the frontier demands —
               then the price fell and everyone got the solution. So instead of asking what humanity
-              needs in the abstract, this page asks a narrower question: what are the ten richest
+              needs in the abstract, this page asks a narrower question: what are the richest
               people on earth putting real, disclosed capital behind right now, before it&apos;s
               cheap? Their money is a leading indicator of demand, not a trailing one.
             </p>
@@ -133,7 +133,7 @@ export default function FrontierPage() {
         {/* per-person cards */}
         <section className="max-w-4xl mx-auto px-6 py-12">
           <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-6">
-            Disclosed capital, top 10 by net worth
+            Disclosed capital, top {founders.length} by net worth
           </p>
           <div className="space-y-6">
             {founders.map((f) => (
@@ -238,7 +238,7 @@ export default function FrontierPage() {
                 Not everyone buys the frontier.
               </h2>
               <p className="text-ink-400 leading-relaxed max-w-2xl mb-6 text-sm">
-                {betters.length} of {founders.length} in the top 10 fit the thesis. The other{' '}
+                {betters.length} of {founders.length} fit the thesis. The other{' '}
                 {others.length} don&apos;t, and forcing them into the narrative would be dishonest —
                 their giving is real and large, just a different pattern.
               </p>
@@ -287,7 +287,7 @@ export default function FrontierPage() {
                 is.
               </p>
               <p>
-                <span className="text-ink-100">Top 10 for v0.1.</span> Same caveat as{' '}
+                <span className="text-ink-100">Top {founders.length} so far.</span> Same caveat as{' '}
                 <Link href="/founders" className="text-amber-300 hover:underline">/founders</Link> —
                 more coming. Some bets shown here (Calico, Altos Labs) are company- or
                 consortium-funded, not solely personal; where a personal share isn&apos;t disclosed,

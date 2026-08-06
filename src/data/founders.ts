@@ -1,5 +1,9 @@
-// Top 10 from Forbes 40th annual billionaires list (March 2026), via Wikipedia.
-// Source: en.wikipedia.org/wiki/The_World%27s_Billionaires
+// Top 19 from the 2026 World's Billionaires rankings. Ranks 1-10 via Wikipedia
+// (en.wikipedia.org/wiki/The_World%27s_Billionaires); ranks 11-19 net worth
+// figures via a real-time aggregator (beinsure.com/world-richest-people),
+// since Wikipedia's table only carries the top 10 — cross-check before
+// trusting exact rank order past 10, real-time lists disagree by a few
+// billion and a rank or two depending on the day.
 // Net worth in USD.
 //
 // frontierBets: disclosed capital commitments researched 2026-08-06 for the
@@ -192,6 +196,110 @@ export const founders: Founder[] = [
       amount: { value: 280_000_000, unit: 'EUR for 10 proton accelerators (2021 agreement)', source: 'Fundación Amancio Ortega', confidence: 'high', asOf: RESEARCHED },
       source: 'Amancio Ortega Foundation — Wikipedia',
       sourceUrl: 'https://en.wikipedia.org/wiki/Amancio_Ortega_Foundation',
+    },
+  ]),
+  mk(11, 'Rob Walton', 132_000_000_000, 'Walmart', 'USA', undefined, 'conventional-philanthropy', [
+    {
+      vehicle: 'Rob Walton School of Conservation Futures, ASU',
+      description: 'Environmental conservation education and workforce development — institution-building, not unproven science.',
+      amount: { value: 115_000_000, unit: 'USD donated (Oct 2025)', source: 'ASU Newsroom', confidence: 'high', asOf: RESEARCHED },
+      source: 'ASU Newsroom — $115 million gift will establish Rob Walton School of Conservation Futures',
+      sourceUrl: 'https://newsroom.asu.edu/press-releases/115-million-gift-will-establish-rob-walton-school-conservation-futures',
+    },
+  ]),
+  mk(12, 'Jim Walton', 129_000_000_000, 'Walmart', 'USA', undefined, undefined, []),
+  mk(13, 'Steve Ballmer', 125_000_000_000, 'Microsoft', 'USA', 69, 'conventional-philanthropy', [
+    {
+      vehicle: 'Ballmer Group',
+      description: 'Economic mobility for children and families in the US — $767M given in 2024 alone.',
+      amount: { value: 3_000_000_000, unit: 'USD distributed over the past five years', source: 'Chronicle of Philanthropy', confidence: 'med', asOf: RESEARCHED },
+      source: 'Chronicle of Philanthropy — Power Couple Giving: The 10-Year Journey of Steve and Connie Ballmer',
+      sourceUrl: 'https://www.philanthropy.com/news/power-couple-giving-the-10-year-journey-of-steve-and-connie-ballmer/',
+    },
+    {
+      vehicle: 'USAFacts',
+      description: 'Founded and solely funded a nonpartisan project to make government data legible to citizens — measurement infrastructure, not a frontier science bet, but the closest thing on this list to this site’s own "measure so we can manage" thesis.',
+      amount: { value: 10_000_000, unit: 'USD to build the database', source: 'Influence Watch', confidence: 'med', asOf: RESEARCHED },
+      source: 'Influence Watch — USAFacts',
+      sourceUrl: 'https://www.influencewatch.org/non-profit/usafacts/',
+    },
+  ]),
+  mk(14, 'Carlos Slim Helú', 122_000_000_000, 'América Móvil (Telecom)', 'Mexico', 86, 'scaling-proven-tech', [
+    {
+      vehicle: 'Instituto Carlos Slim de la Salud',
+      description: 'Funded 653M+ polio vaccines across 33 African countries and a COVID-19 vaccine supply deal for Latin America — proven vaccines deployed at scale, not new science.',
+      amount: { value: 500_000_000, unit: 'USD initial endowment (2007)', source: 'PMC / Carlos Slim Foundation', confidence: 'high', asOf: RESEARCHED },
+      problemSlug: 'infectious-disease',
+      source: 'Carlos Slim Foundation — Health',
+      sourceUrl: 'https://fundacioncarlosslim.org/english/en-cifras/salud/',
+    },
+  ]),
+  mk(15, 'Alice Walton', 120_000_000_000, 'Walmart', 'USA', 76, 'conventional-philanthropy', [
+    {
+      vehicle: 'Alice L. Walton School of Medicine',
+      description: 'A new "whole health" medical school with free tuition, plus a 30-year, $700M affiliation with Mercy to expand healthcare access in the Heartland — new delivery model, not unproven biology.',
+      amount: { value: 250_000_000, unit: 'USD founding gift', source: 'Forbes', confidence: 'high', asOf: RESEARCHED },
+      source: 'Forbes — America’s Richest Woman Donates $250 Million To Fund Medical School',
+      sourceUrl: 'https://www.forbes.com/sites/mattdurot/2024/10/01/americas-richest-woman-donates-250-million-to-fund-medical-school-in-her-name/',
+    },
+  ]),
+  mk(16, 'Michael Bloomberg', 109_000_000_000, 'Bloomberg LP', 'USA', 84, 'conventional-philanthropy', [
+    {
+      vehicle: 'Bloomberg Philanthropies — tobacco control',
+      description: 'MPOWER tobacco-control policy and advocacy across 110+ countries — a proven public-health intervention scaled by funding and policy pressure, not new science.',
+      amount: { value: 1_600_000_000, unit: 'USD donated since 2007', source: 'Vital Strategies', confidence: 'high', asOf: RESEARCHED },
+      source: 'Vital Strategies — Michael Bloomberg’s extraordinary contribution to tobacco control',
+      sourceUrl: 'https://vitalstrategies.org/press/michael-bloombergs-extraordinary-contribution-of-nearly-a-billion-dollars-t',
+    },
+  ]),
+  mk(17, 'Changpeng Zhao', 107_000_000_000, 'Binance', 'Canada / UAE', 49, 'conventional-philanthropy', [
+    {
+      vehicle: 'Giggle Academy',
+      description: 'Free on-chain education platform, reaching 70,000+ children — access, not frontier research.',
+      source: 'Gate News — CZ promotes education with the Giggle Academy initiative',
+      sourceUrl: 'https://www.gate.com/news/detail/15626786',
+    },
+    {
+      vehicle: 'Open-source biotech grant',
+      description: 'Modest, real exception to the pattern above — funded an open-source biotech research project.',
+      amount: { value: 10_000_000, unit: 'USD in BNB donated', source: 'Lifestyles Magazine', confidence: 'med', asOf: RESEARCHED },
+      source: 'Lifestyles Magazine — $10M donation to open-source biotech project by Changpeng Zhao',
+      sourceUrl: 'https://lifestylesmagazine.com/latest-news/10-million-donation-to-open-source-biotech-project-by-changpeng-zhao-underscores-the-growing-trend-of-using-digital-assets-to-support-meaningful-causes-and-highlights-the-potential-for-blockchain-tec/',
+    },
+  ]),
+  mk(18, 'Bill Gates', 106_000_000_000, 'Microsoft', 'USA', 70, 'frontier-bets', [
+    {
+      vehicle: 'TerraPower',
+      description: 'Next-generation Natrium nuclear reactors — over $1.4B in private financing.',
+      amount: { value: 1_400_000_000, unit: 'USD private financing to date', source: 'Canary Media / Carbon Credits', confidence: 'high', asOf: RESEARCHED },
+      problemSlug: 'energy-abundance',
+      source: 'Carbon Credits — Nvidia Invests in Bill Gates’ TerraPower',
+      sourceUrl: 'https://carboncredits.com/nvidia-invests-in-bill-gates-terrapower-which-closes-650m-for-natrium-nuclear-reactor/',
+    },
+    {
+      vehicle: 'Breakthrough Energy Ventures',
+      description: 'Climate-tech venture fund co-founded with Bezos and others, 110+ companies backed.',
+      amount: { value: 3_500_000_000, unit: 'USD committed capital', source: 'Crunchbase News', confidence: 'high', asOf: RESEARCHED },
+      problemSlug: 'climate-change',
+      source: 'Crunchbase News — Bill Gates, Jeff Bezos backed Breakthrough Energy Ventures',
+      sourceUrl: 'https://benzinga.com/news/24/08/40359364/bill-gates-jeff-bezos-and-jack-ma-backed-breakthrough-energy-ventures-nears-1b-goal-for-climate-focu',
+    },
+    {
+      vehicle: 'Dementia Discovery Fund + Alzheimer’s startups',
+      description: 'Personal (non-foundation) venture bets on Alzheimer’s treatments — the same disease-category gap Sergey Brin’s Parkinson’s giving surfaces, independently confirmed by a second billionaire.',
+      amount: { value: 100_000_000, unit: 'USD personal investment (2017-18)', source: 'Scientific American', confidence: 'high', asOf: RESEARCHED },
+      gapLabel: 'Neurodegenerative disease',
+      source: 'Scientific American — Bill Gates Invests $100 Million of Personal Money to Fight Alzheimer’s',
+      sourceUrl: 'https://www.scientificamerican.com/article/bill-gates-invests-100-million-of-personal-money-to-fight-alzheimer-rsquo-s/',
+    },
+  ]),
+  mk(19, 'Thomas Peterffy', 104_000_000_000, 'Interactive Brokers', 'Hungary / USA', 81, 'conventional-philanthropy', [
+    {
+      vehicle: 'Peterffy Foundation',
+      description: 'Climate policy, Indigenous land-back causes, and finance/engineering education — modest relative to net worth ($172M in foundation assets).',
+      amount: { value: 7_400_000, unit: 'USD distributed in 2023', source: 'Influence Watch', confidence: 'med', asOf: RESEARCHED },
+      source: 'Influence Watch — Peterffy Foundation',
+      sourceUrl: 'https://www.influencewatch.org/non-profit/peterffy-foundation/',
     },
   ]),
 ]
