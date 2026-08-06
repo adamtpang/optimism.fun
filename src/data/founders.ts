@@ -302,4 +302,82 @@ export const founders: Founder[] = [
       sourceUrl: 'https://www.influencewatch.org/non-profit/peterffy-foundation/',
     },
   ]),
+  mk(20, 'Françoise Bettencourt Meyers', 95_000_000_000, 'L’Oréal', 'France', 71, 'frontier-bets', [
+    {
+      vehicle: 'Institut de France brain-research foundation',
+      description: 'Personal $100M gift (2018) to found a foundation for the study of the human brain — the third billionaire on this page whose giving lands on neurodegenerative disease, after Brin and Gates.',
+      amount: { value: 100_000_000, unit: 'USD donated (2018)', source: 'Empire Magazine', confidence: 'med', asOf: RESEARCHED },
+      gapLabel: 'Neurodegenerative disease',
+      source: 'Empire Magazine — The Life and Legacy of Francoise Bettencourt Meyers',
+      sourceUrl: 'https://www.theempiremag.com/the-life-and-legacy-of-francoise-bettencourt-meyers-the-richest-woman-in-the-world/',
+    },
+    {
+      vehicle: 'Fondation Bettencourt Schueller — life sciences',
+      description: 'Cumulative funding for biomedical research since 1990, plus science prizes.',
+      amount: { value: 257_000_000, unit: 'EUR cumulative since 1990', source: 'Inserm Newsroom', confidence: 'high', asOf: RESEARCHED },
+      problemSlug: 'scientific-productivity',
+      source: 'Inserm — The Bettencourt Schueller Foundation reveals its scientific prize winners',
+      sourceUrl: 'https://presse.inserm.fr/en/the-bettencourt-schueller-foundation-reveals-the-varied-and-far-reaching-list-of-the-winners-of-its-scientific-prizes/55875/',
+    },
+  ]),
+  mk(21, 'Gautam Adani', 91_000_000_000, 'Adani Group (infrastructure)', 'India', 63, 'frontier-bets', [
+    {
+      vehicle: 'Adani Green — green hydrogen and renewables',
+      description: 'Pledged $70B by 2030 across the green-energy value chain, including a 1M-ton/year green hydrogen production target — one of the largest single corporate energy-transition commitments anywhere.',
+      amount: { value: 70_000_000_000, unit: 'USD pledged by 2030', source: 'Gulf News', confidence: 'med', asOf: RESEARCHED },
+      problemSlug: 'energy-abundance',
+      source: 'Gulf News — India’s Adani pledges $70 billion for clean energy',
+      sourceUrl: 'https://gulfnews.com/business/energy/indias-adani-pledges-70-billion-for-clean-energy-and-green-data-centers-1.83630078',
+    },
+  ]),
+  mk(22, 'Mukesh Ambani', 89_000_000_000, 'Reliance Industries', 'India', 68, 'frontier-bets', [
+    {
+      vehicle: 'Dhirubhai Ambani Green Energy Giga Complex',
+      description: 'Five giga-factories (solar, batteries, electrolysers, fuel cells, power electronics) on 5,000 acres in Jamnagar. $10B from Reliance’s own resources committed first; a further $75-81B multi-year target has been announced but is less certain.',
+      amount: { value: 10_000_000_000, unit: 'USD, initial phase from internal resources', source: 'Forbes / Time', confidence: 'med', asOf: RESEARCHED },
+      problemSlug: 'energy-abundance',
+      source: 'Time — Asia’s Richest Man Plans $10 Billion Push Into Green Energy',
+      sourceUrl: 'https://time.com/6075823/mukesh-ambani-green-energy/',
+    },
+  ]),
+  mk(23, 'Giancarlo Devasini', 89_000_000_000, 'Tether, Bitfinex (crypto)', 'Italy', 61, undefined, []),
+  mk(24, 'Julia Koch', 81_000_000_000, 'Koch Industries', 'USA', 63, 'frontier-bets', [
+    {
+      vehicle: 'Koch Institute for Integrative Cancer Research, MIT',
+      description: 'A $100M gift made by her late husband David H. Koch in 2007, funding the family wealth she now holds — the second billionaire on this page whose giving lands on cancer, after Ellison.',
+      amount: { value: 100_000_000, unit: 'USD donated (2007)', source: 'MIT News', confidence: 'high', asOf: RESEARCHED },
+      gapLabel: 'Cancer',
+      source: 'MIT News — David H. Koch gives $100 million to MIT for cancer research',
+      sourceUrl: 'https://news.mit.edu/2007/koch-institute-1009',
+    },
+  ]),
+  mk(25, 'Charles Koch', 73_000_000_000, 'Koch Industries', 'USA', 90, undefined, []),
+  mk(26, 'Masayoshi Son', 72_000_000_000, 'SoftBank, telecom & investments', 'Japan', 68, 'frontier-bets', [
+    {
+      vehicle: 'Stargate / OpenAI',
+      description: 'Chairman of the Stargate AI-infrastructure project (up to $500B in total scope across partners) and led a $41B SoftBank investment into OpenAI. This is compute/energy infrastructure for AI, a distinct thing from the "AI safety" welfare-problem this index deliberately excluded — flagged here as revealed capital, not a recommendation to rank AI as a problem.',
+      amount: { value: 41_000_000_000, unit: 'USD, SoftBank-led OpenAI investment', source: 'Multiple 2026 reports', confidence: 'med', asOf: RESEARCHED },
+      gapLabel: 'AI compute infrastructure',
+      source: 'International Finance — Stargate: Masayoshi Son’s next big bet',
+      sourceUrl: 'https://internationalfinance.com/magazine/technology-magazine/stargate-masayoshi-sons-next-big-bet/',
+    },
+  ]),
+  mk(27, 'Zhang Yiming', 69_000_000_000, 'ByteDance (TikTok)', 'China', 42, 'conventional-philanthropy', [
+    {
+      vehicle: 'Fangmei Education Development Fund',
+      description: 'Hometown education fund in Fujian province — teacher training, edtech, vocational education infrastructure. A $28.9M follow-on gift came in 2023.',
+      amount: { value: 77_300_000, unit: 'USD donated (2021)', source: 'Bloomberg', confidence: 'high', asOf: RESEARCHED },
+      source: 'Bloomberg — ByteDance Founder Donates $77 Million to Education Fund',
+      sourceUrl: 'https://www.bloomberg.com/news/articles/2021-06-22/bytedance-founder-donates-77-million-to-education-fund',
+    },
+  ]),
+  mk(28, 'Tadashi Yanai', 69_000_000_000, 'Fast Retailing (Uniqlo)', 'Japan', 77, 'conventional-philanthropy', [
+    {
+      vehicle: 'UNHCR refugee support',
+      description: 'Personal and Fast Retailing giving to UNHCR since 2006 — clothing, funds, and emergency response (Bangladesh, Ukraine). Humanitarian relief, not frontier research.',
+      amount: { value: 10_000_000, unit: 'USD personal commitment over three years (2016)', source: 'UNHCR', confidence: 'high', asOf: RESEARCHED },
+      source: 'UNHCR — Fast Retailing and UNHCR Announce New Agreement',
+      sourceUrl: 'https://www.unhcr.org/us/news/news-releases/fast-retailing-and-unhcr-announce-new-agreement',
+    },
+  ]),
 ]
