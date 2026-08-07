@@ -430,6 +430,16 @@ export type PublicCompany = {
   marketCap: SourcedNumber
   country: string
   asOf: string
+  /**
+   * 3-year market-cap growth, where both a real historical and current
+   * snapshot exist (companiesmarketcap.com's Time Machine tool, Aug 2023 vs
+   * asOf). value is percent growth (373 = +373%). Omitted, not guessed,
+   * where the company wasn't in the top ~66 by market cap in Aug 2023 --
+   * true for several of today's biggest risers (Palantir, Micron, SK Hynix),
+   * whose exact 2023 rank/value would need a per-company lookup this pass
+   * didn't do.
+   */
+  growth3yr?: SourcedNumber
 }
 
 /**
