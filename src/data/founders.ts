@@ -380,4 +380,95 @@ export const founders: Founder[] = [
       sourceUrl: 'https://www.unhcr.org/us/news/news-releases/fast-retailing-and-unhcr-announce-new-agreement',
     },
   ]),
+  mk(29, 'Jeff Yass', 67_000_000_000, 'Susquehanna International Group (trading)', 'USA', 67, 'prestige-giving', [
+    {
+      vehicle: 'University of Austin + school-choice political spending',
+      description: '$100M tuition-free gift to a free-speech-focused university, alongside $209M+ over a decade on school-choice political advocacy (PACs, candidates) — ideologically framed spending, not neutral established-cause giving or frontier research.',
+      amount: { value: 100_000_000, unit: 'USD to University of Austin', source: 'Lifestyles Magazine', confidence: 'high', asOf: RESEARCHED },
+      source: 'CNBC — Republican megadonor Jeff Yass gives millions to shape schools, courts',
+      sourceUrl: 'https://www.cnbc.com/2024/04/09/jeff-yass-millions-to-influence-schools-courts-and-markets.html',
+    },
+  ]),
+  mk(30, 'Dieter Schwarz', 64_000_000_000, 'Schwarz Gruppe (Lidl, Kaufland)', 'Germany', 86, 'frontier-bets', [
+    {
+      vehicle: 'Innovation Park AI (IPAI), Heilbronn',
+      description: 'A €3B AI research and startup campus explicitly aimed at giving Europe an OpenAI-class competitor — his foundation’s direct contribution is smaller, the total scope is state- and Schwarz-Group-backed. Same gap as Masayoshi Son’s Stargate bet, independently, from a different continent.',
+      amount: { value: 50_000_000, unit: 'EUR from Dieter Schwarz Stiftung directly (total campus scope ~€3B, mixed funding)', source: 'Science|Business', confidence: 'med', asOf: RESEARCHED },
+      gapLabel: 'AI compute infrastructure',
+      source: 'Sifted — Germany’s richest man wants to ensure Europe has an OpenAI rival',
+      sourceUrl: 'https://sifted.eu/articles/heilbronn-franken-ai',
+    },
+  ]),
+  mk(31, 'Germán Larrea Mota Velasco', 61_000_000_000, 'Grupo México (mining)', 'Mexico', 71, undefined, []),
+  mk(32, 'Robin Zeng', 60_000_000_000, 'CATL (batteries)', 'China', 57, 'conventional-philanthropy', [
+    {
+      vehicle: 'Shanghai Jiao Tong University',
+      description: 'His alma mater — $291M in CATL shares (2026), on top of a prior $166M gift in 2021. University giving, not a frontier-science bet distinct from his own company’s core battery business.',
+      amount: { value: 291_000_000, unit: 'USD in CATL shares (2026)', source: 'Caproasia', confidence: 'high', asOf: RESEARCHED },
+      source: 'Caproasia — Robin Zeng donates $291 million to Shanghai Jiao Tong University',
+      sourceUrl: 'https://www.caproasia.com/2026/04/04/china-269-billion-ev-energy-storage-battery-giant-catl-billionaire-co-founder-ceo-robin-zeng-yuqun-with-62-billion-fortune-donates-291-million-5-million-catl-shares-to-shanghai-jiao-tong-univ/',
+    },
+  ]),
+  mk(33, 'Zhong Shanshan', 58_000_000_000, 'Nongfu Spring (beverages)', 'China', 71, 'conventional-philanthropy', [
+    {
+      vehicle: 'Zhuji High School education fund',
+      description: 'RMB100M personal gift to an education fund in his hometown — modest relative to net worth, conventional local giving.',
+      amount: { value: 14_000_000, unit: 'USD (RMB100M)', source: 'AAStocks', confidence: 'med', asOf: RESEARCHED },
+      source: 'AAStocks — Nongfu Spring’s Zhong Shanshan Donates RMB100M to Education Fund',
+      sourceUrl: 'http://www.aastocks.com/en/mobile/news.aspx?newsid=NOW.1485657&newssource=AAFN',
+    },
+  ]),
+  mk(34, 'Ken Griffin', 51_000_000_000, 'Citadel (hedge funds)', 'USA', 57, 'conventional-philanthropy', [
+    {
+      vehicle: 'Harvard University',
+      description: 'Over $500M cumulative to his alma mater, including the $300M naming gift for the Griffin Graduate School of Arts and Sciences — elite-university giving, not a distinct frontier-science bet.',
+      amount: { value: 500_000_000, unit: 'USD cumulative', source: 'Bloomberg', confidence: 'high', asOf: RESEARCHED },
+      source: 'Bloomberg — Citadel’s Ken Griffin Gives $300 Million to Harvard University',
+      sourceUrl: 'https://www.bloomberg.com/news/articles/2023-04-11/citadel-s-ken-griffin-gives-300-million-to-harvard-university',
+    },
+  ]),
+  mk(35, 'Iris Fontbona', 47_000_000_000, 'Antofagasta (mining), beverages', 'Chile', 82, 'conventional-philanthropy', [
+    {
+      vehicle: 'Chilean Telethon + Fundación Luksic',
+      description: 'Annual gifts to Chile’s children’s-disability telethon (~$5.5M) and a family foundation funding a local school — modest relative to a $47B fortune, and purely domestic/local, not frontier research.',
+      amount: { value: 5_500_000, unit: 'USD (record 2016 Telethon gift)', source: 'Leaders League / Mining.com', confidence: 'med', asOf: RESEARCHED },
+      source: 'The CEO — Iris Fontbona: Chile’s Mining Magnate and Philanthropist',
+      sourceUrl: 'https://www.theceo.in/leaders/iris-fontbona',
+    },
+  ]),
+  mk(36, 'Giovanni Ferrero', 47_000_000_000, 'Ferrero (Nutella)', 'Italy', 60, 'conventional-philanthropy', [
+    {
+      vehicle: 'Ferrero Foundation',
+      description: 'Founded 1983, focused on Ferrero employees and retirees (scholarships, healthcare, social programs) rather than external causes. Giovanni Ferrero’s personal giving is deliberately low-profile and undisclosed in amount.',
+      source: 'Ferrero Group — Ferrero Foundation',
+      sourceUrl: 'https://www.ferrero.com/int/en/about-us/our-people/ferrero-foundation',
+    },
+  ]),
+  mk(37, 'Li Ka-shing', 47_000_000_000, 'Diversified (CK Hutchison)', 'Hong Kong', 97, 'frontier-bets', [
+    {
+      vehicle: 'Horizons Ventures — Cortical Labs',
+      description: 'Led a $10M round into an Australian biotech growing living brain cells into "biocomputers" — literally biological brain-computer interfaces, the same gap Musk’s Neuralink surfaces from a completely different technical direction.',
+      amount: { value: 10_000_000, unit: 'USD, Series round led', source: 'Yahoo Finance', confidence: 'med', asOf: RESEARCHED },
+      gapLabel: 'Brain-computer interfaces',
+      source: 'Yahoo Finance — Billionaire Li Ka-Shing Funds Startup Growing Brain Cell "Biocomputers"',
+      sourceUrl: 'https://finance.yahoo.com/news/alive-billionaire-li-ka-shing-191221596.html',
+    },
+    {
+      vehicle: 'Horizons Ventures — deep science portfolio',
+      description: 'Broader venture arm with a stated focus on regenerative medicine and cell therapy across 200+ portfolio companies — $350M raised recently for continued deep-tech investment.',
+      amount: { value: 350_000_000, unit: 'USD raised for continued deployment', source: 'Family Capital', confidence: 'med', asOf: RESEARCHED },
+      problemSlug: 'longevity',
+      source: 'Family Capital — Investment Office of the Year: Horizons Ventures',
+      sourceUrl: 'https://www.famcap.com/2020/12/investment-office-of-the-year-horizons-ventures/',
+    },
+  ]),
+  mk(38, 'Ma Huateng', 46_000_000_000, 'Tencent (online games)', 'China', 54, 'conventional-philanthropy', [
+    {
+      vehicle: 'Tencent Sustainable Social Value program',
+      description: 'A $7.7B (RMB 50B) corporate pledge spanning healthcare, rural revitalization, education, and renewable energy — announced in 2021 alongside rising Chinese regulatory scrutiny of Big Tech. Too broad to map to one problem, and driven partly by political pressure rather than personal conviction alone.',
+      amount: { value: 7_700_000_000, unit: 'USD (RMB 50B) pledged, 2021', source: 'Forbes', confidence: 'high', asOf: RESEARCHED },
+      source: 'Forbes — Tencent Pledges Additional $7.7 Billion For Social Philanthropy Projects',
+      sourceUrl: 'https://www.forbes.com/sites/ywang/2021/08/19/tencent-warns-of-more-regulations-pledges-additional-77-billion-for-social-philanthropy-projects/',
+    },
+  ]),
 ]
