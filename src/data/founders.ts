@@ -471,4 +471,98 @@ export const founders: Founder[] = [
       sourceUrl: 'https://www.forbes.com/sites/ywang/2021/08/19/tencent-warns-of-more-regulations-pledges-additional-77-billion-for-social-philanthropy-projects/',
     },
   ]),
+  mk(39, 'Lukas Walton', 44_000_000_000, 'Walmart', 'USA', 39, 'frontier-bets', [
+    {
+      vehicle: 'Builders Vision',
+      description: 'A $15B self-funded impact platform across climate, sustainable food systems, and ocean conservation — one of the largest single individual commitments to impact investing anywhere.',
+      amount: { value: 15_000_000_000, unit: 'USD deployed', source: 'New York Business Excellence', confidence: 'high', asOf: RESEARCHED },
+      problemSlug: 'climate-change',
+      source: 'Forbes — Lukas Walton’s Builders Vision Reveals How It’s Deployed $3 Billion (updated to $15B total)',
+      sourceUrl: 'https://www.forbes.com/sites/amyfeldman/2023/10/17/exclusive-lukas-waltons-builders-vision-reveals-how-its-deployed-3-billion-to-change-the-world/',
+    },
+    {
+      vehicle: 'Builders Vision — ocean conservation',
+      description: 'Reef restoration (Coral Vita micro-fragmentation), sustainable seaweed farming, and Bahamas nature-bond projects — the ocean/marine-ecosystem gap this session’s /coverage audit already flagged from SDG14, now independently validated by real capital.',
+      amount: { value: 260_000_000, unit: 'USD committed', source: 'Forbes', confidence: 'high', asOf: RESEARCHED },
+      gapLabel: 'Ocean & marine ecosystems',
+      source: 'Forbes — Lukas Walton’s Builders Vision',
+      sourceUrl: 'https://www.forbes.com/sites/amyfeldman/2023/10/17/exclusive-lukas-waltons-builders-vision-reveals-how-its-deployed-3-billion-to-change-the-world/',
+    },
+  ]),
+  mk(40, 'Mark Mateschitz', 44_000_000_000, 'Red Bull', 'Austria', 32, 'frontier-bets', [
+    {
+      vehicle: 'Alpine Biodiversity Trust + climate-innovation fund',
+      description: '€100M pledged over 5 years for Tyrolean forest rewilding, plus a separate €250M fund backing startups in reusable packaging, green logistics, and athlete-nutrition science.',
+      amount: { value: 350_000_000, unit: 'USD combined (€100M + €250M)', source: 'Daily Citizen', confidence: 'med', asOf: RESEARCHED },
+      problemSlug: 'climate-change',
+      source: 'Daily Citizen — Mark Mateschitz: heir to Red Bull’s empire powering a $45B eco-sports and media revolution',
+      sourceUrl: 'https://citizendaily.news/mark-mateschitz/',
+    },
+  ]),
+  mk(41, 'Rafaela Aponte-Diamant', 44_000_000_000, 'Mediterranean Shipping Company', 'Italy', 60, 'frontier-bets', [
+    {
+      vehicle: 'MSC Foundation',
+      description: 'Marine ecosystem restoration, coastal-community healthcare, and disaster relief — including funding a new hospital ship with Mercy Ships. Same ocean/marine gap Lukas Walton’s Builders Vision surfaces, independently, from shipping wealth rather than retail wealth.',
+      gapLabel: 'Ocean & marine ecosystems',
+      source: 'MSC Foundation — About Us',
+      sourceUrl: 'https://www.mscfoundation.org/about',
+    },
+  ]),
+  mk(42, 'Gianluigi Aponte', 44_000_000_000, 'Mediterranean Shipping Company', 'Italy', 85, 'frontier-bets', [
+    {
+      vehicle: 'MSC Foundation',
+      description: 'Chair of the MSC Foundation board — same family foundation as Rafaela Aponte-Diamant, marine conservation and humanitarian relief.',
+      gapLabel: 'Ocean & marine ecosystems',
+      source: 'MSC Foundation — About Us',
+      sourceUrl: 'https://www.mscfoundation.org/about',
+    },
+  ]),
+  mk(43, 'John Mars', 43_000_000_000, 'Mars, Incorporated (candy, pet food)', 'USA', 89, undefined, []),
+  mk(44, 'Jacqueline Mars', 43_000_000_000, 'Mars, Incorporated (candy, pet food)', 'USA', 86, undefined, []),
+  mk(45, 'Klaus-Michael Kuehne', 42_000_000_000, 'Kuehne+Nagel (logistics)', 'Germany', 88, 'conventional-philanthropy', [
+    {
+      vehicle: 'Kuehne Logistics University + University Hospital Hamburg-Eppendorf',
+      description: 'University and hospital funding — $112M and $22M respectively — plus HELP Logistics, which trains public-health logisticians in Malawi on vaccine cold-chain delivery. That last piece is a real, if small, infectious-disease-delivery bet.',
+      amount: { value: 112_000_000, unit: 'USD to Kuehne Logistics University', source: 'VIPFortunes / Kuehne Foundation', confidence: 'med', asOf: RESEARCHED },
+      problemSlug: 'infectious-disease',
+      source: 'Kuehne+Nagel — Vaccine logistics for a complex world',
+      sourceUrl: 'https://www.kuehne-nagel.com/us/market-insights/healthcare/vaccine-logistics',
+    },
+  ]),
+  mk(46, 'William Ding', 41_000_000_000, 'NetEase (online games)', 'China', 54, 'conventional-philanthropy', [
+    {
+      vehicle: 'Zhejiang NetEase Charity Foundation',
+      description: 'Disaster relief and education giving — modest and undisclosed in full amount relative to net worth. His well-known tech-driven pig farm is a business venture, not disclosed philanthropy.',
+      source: 'Grokipedia — Ding Lei',
+      sourceUrl: 'https://grokipedia.com/page/Ding_Lei',
+    },
+  ]),
+  mk(47, 'Andrea Pignataro', 41_000_000_000, 'ION Group (financial software)', 'Italy', 57, 'conventional-philanthropy', [
+    {
+      vehicle: 'ION Management Science Lab, University of Utah',
+      description: 'Deliberately private philanthropy; this and gifts to Doctors Without Borders and the Children’s Defense Fund are the only disclosed pieces.',
+      amount: { value: 12_000_000, unit: 'USD donated', source: 'University of Utah Eccles School of Business', confidence: 'high', asOf: RESEARCHED },
+      source: 'Eccles School of Business — University of Utah announces $12 million gift',
+      sourceUrl: 'https://eccles.utah.edu/news/university-of-utah-announces-12-million-gift-to-fund-ion-management-science-lab/',
+    },
+  ]),
+  mk(48, 'Stephen Schwarzman', 40_000_000_000, 'Blackstone (investments)', 'USA', 78, 'frontier-bets', [
+    {
+      vehicle: 'MIT Stephen A. Schwarzman College of Computing',
+      description: 'Part of a $1B total MIT commitment — the single largest computing/AI investment by an American academic institution, 50 new faculty hired. A third billionaire on the AI compute infrastructure gap, after Son and Schwarz, via education/research rather than data centers.',
+      amount: { value: 350_000_000, unit: 'USD donated (2018)', source: 'Bloomberg', confidence: 'high', asOf: RESEARCHED },
+      gapLabel: 'AI compute infrastructure',
+      source: 'Bloomberg — Schwarzman Gives $350 Million for MIT College of Computing',
+      sourceUrl: 'https://www.bloomberg.com/news/articles/2018-10-15/steve-schwarzman-gives-350-million-for-mit-college-of-computing',
+    },
+  ]),
+  mk(49, 'Abigail Johnson', 40_000_000_000, 'Fidelity Investments', 'USA', 63, 'conventional-philanthropy', [
+    {
+      vehicle: 'Fidelity Foundation',
+      description: 'Multi-generational family foundation (founded 1965 by her father and grandfather, not her alone) — $500M+ cumulative across arts, education, health, and national parks.',
+      amount: { value: 500_000_000, unit: 'USD distributed since 1965 (family-run, not solely personal)', source: 'Inside Philanthropy', confidence: 'med', asOf: RESEARCHED },
+      source: 'Inside Philanthropy — How Abigail Johnson and her family give',
+      sourceUrl: 'https://www.insidephilanthropy.com/home/old-money-quiet-support-how-abigail-johnson-and-her-family-give',
+    },
+  ]),
 ]
