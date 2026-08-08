@@ -565,4 +565,88 @@ export const founders: Founder[] = [
       sourceUrl: 'https://www.insidephilanthropy.com/home/old-money-quiet-support-how-abigail-johnson-and-her-family-give',
     },
   ]),
+  mk(50, 'Thomas Frist Jr.', 41_100_000_000, 'HCA Healthcare (hospitals)', 'USA', 87, 'conventional-philanthropy', [
+    {
+      vehicle: 'Frist Foundation',
+      description: 'Local Nashville community and arts giving (Frist Center for the Visual Arts) — modest relative to net worth, no distinct frontier-science bet found.',
+      source: 'Tennessee Encyclopedia — Frist Foundation',
+      sourceUrl: 'https://tennesseeencyclopedia.net/entries/frist-foundation/',
+    },
+  ]),
+  mk(51, 'Alain Wertheimer', 39_400_000_000, 'Chanel', 'France', 77, undefined, []),
+  mk(52, 'Gerard Wertheimer', 39_400_000_000, 'Chanel', 'France', 75, undefined, []),
+  mk(53, 'Savitri Jindal', 39_100_000_000, 'Jindal Group (steel, power, mining)', 'India', 75, 'frontier-bets', [
+    {
+      vehicle: 'Jindal Foundation',
+      description: '$100M/year across education, healthcare, and cancer treatment centers in rural India — a fourth billionaire on the cancer gap, and the first via treatment delivery rather than research.',
+      amount: { value: 100_000_000, unit: 'USD per year', source: 'Business Outreach', confidence: 'med', asOf: RESEARCHED },
+      gapLabel: 'Cancer',
+      source: 'VIPFortunes — Savitri Jindal',
+      sourceUrl: 'https://vipfortunes.com/savitri-jindal',
+    },
+  ]),
+  mk(54, 'He Xiangjian', 33_200_000_000, 'Midea Group (appliances)', 'China', 83, 'frontier-bets', [
+    {
+      vehicle: 'He Xiangjian Science Fund',
+      description: 'A $428M science fund launched 2023, explicitly focused on AI and climate research — separate from his broader $1.1B in conventional Chinese charitable giving (elderly care, poverty alleviation).',
+      amount: { value: 428_000_000, unit: 'USD', source: 'Yahoo Finance', confidence: 'high', asOf: RESEARCHED },
+      problemSlug: 'climate-change',
+      source: 'Yahoo Finance — He Xiangjian creates US$428 million science fund focused on AI and climate research',
+      sourceUrl: 'https://finance.yahoo.com/news/chinese-billionaire-xiangjian-founder-home-093000564.html',
+    },
+  ]),
+  mk(55, 'Marilyn Simons', 32_500_000_000, 'Renaissance Technologies (finance)', 'USA', undefined, 'frontier-bets', [
+    {
+      vehicle: 'Simons Foundation',
+      description: 'Over $4B given since 1994 for flexible, long-horizon basic research in math and the sciences — one of the largest basic-science funders in the US, plus a $500M gift to Stony Brook in 2024.',
+      amount: { value: 4_000_000_000, unit: 'USD given since 1994', source: 'Inside Philanthropy', confidence: 'high', asOf: RESEARCHED },
+      problemSlug: 'scientific-productivity',
+      source: 'Simons Foundation — Our History',
+      sourceUrl: 'https://www.simonsfoundation.org/about/our-history/',
+    },
+    {
+      vehicle: 'Simons Foundation Autism Research Initiative (SFARI)',
+      description: '$725M+ pledged to autism research since 2003, started after her daughter’s diagnosis — a distinct neurodevelopmental-research gap, not on the index.',
+      amount: { value: 725_000_000, unit: 'USD pledged to date', source: 'Wikipedia', confidence: 'high', asOf: RESEARCHED },
+      gapLabel: 'Autism & neurodevelopmental research',
+      source: 'Wikipedia — Simons Foundation Autism Research Initiative',
+      sourceUrl: 'https://en.wikipedia.org/wiki/Simons_Foundation_Autism_Research_Initiative',
+    },
+  ]),
+  mk(56, 'Phil Knight', 31_100_000_000, 'Nike', 'USA', 88, 'frontier-bets', [
+    {
+      vehicle: 'OHSU Knight Cancer Institute',
+      description: '$2B pledged with his wife Penny in 2025 — the single largest gift ever to a US university, college, or health institution. A third billionaire on the cancer gap, after Ellison and Julia Koch, at ten times either of their gifts.',
+      amount: { value: 2_000_000_000, unit: 'USD pledged (2025)', source: 'CNBC', confidence: 'high', asOf: RESEARCHED },
+      gapLabel: 'Cancer',
+      source: 'OHSU News — Knight Cancer Institute receives record $2 billion commitment',
+      sourceUrl: 'https://news.ohsu.edu/2025/08/14/ohsu-knight-cancer-institute-receives-record-2-billion-commitment-from-phil-and-penny-knight',
+    },
+  ]),
+  mk(57, 'Lakshmi Mittal', 31_000_000_000, 'ArcelorMittal (steel)', 'India', 75, 'conventional-philanthropy', [
+    {
+      vehicle: 'Mittal Foundation / LNM Foundation',
+      description: 'Education, child health, and poverty alleviation — $25M to Harvard, £15M to a London children’s hospital. Broad conventional giving, no distinct frontier bet.',
+      source: 'Gulf News — Lakshmi Mittal donates $25m to Harvard University',
+      sourceUrl: 'https://gulfnews.com/world/asia/india/lakshmi-mittal-donates-25m-to-harvard-university-1.2107905',
+    },
+  ]),
+  mk(58, 'Shiv Nadar', 30_900_000_000, 'HCL Technologies', 'India', 80, 'conventional-philanthropy', [
+    {
+      vehicle: 'Shiv Nadar Foundation',
+      description: '$1.7B+ cumulative, primarily VidyaGyan — free boarding schools for gifted rural children across Uttar Pradesh. India’s most generous individual donor four of the last five years; education access, not frontier research.',
+      amount: { value: 1_700_000_000, unit: 'USD cumulative', source: 'TIME100 Philanthropy', confidence: 'high', asOf: RESEARCHED },
+      source: 'Business Today — Hurun India Philanthropy List 2025',
+      sourceUrl: 'https://www.businesstoday.in/india/story/hurun-india-philanthropy-list-2025-shiv-nadar-tops-list-with-rs2708-cr-donation-check-full-list-501042-2025-11-06',
+    },
+  ]),
+  mk(59, 'Henry Samueli', 30_800_000_000, 'Broadcom (semiconductors)', 'USA', 71, 'conventional-philanthropy', [
+    {
+      vehicle: 'UCI and UCLA engineering + integrative medicine',
+      description: '$500M+ across the Samueli Schools of Engineering at UCLA and UC Irvine and a college of integrative health sciences — university-building, not a distinct frontier-science bet.',
+      amount: { value: 500_000_000, unit: 'USD cumulative', source: 'UCI Samueli School of Engineering', confidence: 'high', asOf: RESEARCHED },
+      source: 'UCI Engineering — How Broadcom’s Henry Samueli Is Giving Away Billions',
+      sourceUrl: 'https://engineering.uci.edu/how-broadcom-s-henry-samueli-giving-away-billions',
+    },
+  ]),
 ]
