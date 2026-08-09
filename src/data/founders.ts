@@ -649,4 +649,65 @@ export const founders: Founder[] = [
       sourceUrl: 'https://engineering.uci.edu/how-broadcom-s-henry-samueli-giving-away-billions',
     },
   ]),
+  mk(60, 'Eric Schmidt', 35_500_000_000, 'Google, Alphabet', 'USA', 71, 'frontier-bets', [
+    {
+      vehicle: 'Schmidt Sciences — AI2050',
+      description: '$125M over 5 years for a fellowship on beneficial/trustworthy AI. A fifth billionaire on the AI compute infrastructure gap, after Son, Schwarz, Schwarzman, and — from the research-safety angle rather than hardware — this one closest in spirit to the AI-safety welfare-problem this index already excluded by deliberate decision.',
+      amount: { value: 125_000_000, unit: 'USD over 5 years', source: 'Inside Philanthropy', confidence: 'high', asOf: RESEARCHED },
+      gapLabel: 'AI compute infrastructure',
+      source: 'Inside Philanthropy — AI2050: Eric and Wendy Schmidt’s Optimistic AI Research Fellowship',
+      sourceUrl: 'https://www.insidephilanthropy.com/home/aiai2050-eric-and-wendy-schmidts-optimistic-ai-research-fellowship',
+    },
+    {
+      vehicle: 'Schmidt Ocean Institute',
+      description: 'Partners with Schmidt Sciences on the Ocean Biogeochemistry Virtual Institute — a fourth billionaire on the ocean/marine-ecosystem gap, after Walton and both Apontes.',
+      gapLabel: 'Ocean & marine ecosystems',
+      source: 'Wikipedia — Schmidt Sciences',
+      sourceUrl: 'https://en.wikipedia.org/wiki/Schmidt_Sciences',
+    },
+  ]),
+  mk(61, 'Idan Ofer', 34_600_000_000, 'Shipping, energy, diversified', 'Israel', 65, 'frontier-bets', [
+    {
+      vehicle: 'Idan & Batia Ofer Family Foundation — cancer research',
+      description: 'Sustained support for Prof. Ronit Satchi-Fainaro’s cancer research at Tel Aviv University, alongside a $42M gift to London Business School (education, not frontier). A fifth billionaire on the cancer gap, after Ellison, Julia Koch, Savitri Jindal, and Phil Knight.',
+      gapLabel: 'Cancer',
+      source: 'Idan & Batia Ofer Family Foundation',
+      sourceUrl: 'https://foundationguide.org/service-categories/idan-batia-ofer-foundation/',
+    },
+  ]),
+  mk(62, 'Eyal Ofer', 33_600_000_000, 'Shipping, real estate, diversified', 'Israel', 76, 'conventional-philanthropy', [
+    {
+      vehicle: 'Eyal & Marilyn Ofer Family Foundation',
+      description: 'Arts and museum funding (Tel Aviv Museum of Art, $5M) alongside general education and healthcare giving — conventional, not a distinct frontier bet.',
+      amount: { value: 5_000_000, unit: 'USD to Tel Aviv Museum of Art (2019)', source: 'Globes', confidence: 'high', asOf: RESEARCHED },
+      source: 'Globes — Eyal Ofer to donate $5m to Tel Aviv Museum of Art',
+      sourceUrl: 'https://en.globes.co.il/en/article-eyal-ofer-to-donate-5m-to-tel-aviv-museum-of-art-1001278098',
+    },
+  ]),
+  mk(63, 'Zheng Shuliang', 33_200_000_000, 'China Hongqiao Group (aluminum)', 'China', 68, undefined, []),
+  mk(64, 'Robert Pera', 31_700_000_000, 'Ubiquiti Networks', 'USA', 48, 'conventional-philanthropy', [
+    {
+      vehicle: 'Robert J. Pera Foundation + Grizzlies Foundation',
+      description: 'Local Memphis youth development, education, and health programs tied to his NBA team ownership — modest and low-profile relative to net worth.',
+      source: 'ProPublica Nonprofit Explorer — Robert J Pera Foundation',
+      sourceUrl: 'https://projects.propublica.org/nonprofits/organizations/871254834',
+    },
+  ]),
+  mk(65, 'Michal Strnad', 31_100_000_000, 'Czechoslovak Group (defense manufacturing)', 'Czech Republic', 33, 'conventional-philanthropy', [
+    {
+      vehicle: 'CSG Foundation',
+      description: 'Established 2025 for education, community development, and assistance to those in need — new, undisclosed in amount, and the company itself only just IPO’d.',
+      source: 'European Correspondent — Meet the world’s wealthiest defence boss',
+      sourceUrl: 'https://europeancorrespondent.com/en/r/meet-the-worlds-wealthiest-defence-boss',
+    },
+  ]),
+  mk(66, 'Elaine Marshall', 30_900_000_000, 'Koch, Inc. (inherited stake)', 'USA', 84, 'conventional-philanthropy', [
+    {
+      vehicle: 'Marshall Legacy Foundation',
+      description: 'Education and healthcare giving through a family foundation with $30.5M in assets — modest relative to a $30.9B fortune, low public profile.',
+      amount: { value: 30_500_000, unit: 'USD foundation assets (2024)', source: 'ProPublica', confidence: 'med', asOf: RESEARCHED },
+      source: 'ProPublica Nonprofit Explorer — Marshall Legacy Foundation',
+      sourceUrl: 'https://projects.propublica.org/nonprofits/organizations/467206339',
+    },
+  ]),
 ]
