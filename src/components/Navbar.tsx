@@ -20,8 +20,11 @@ import { requestsForStartups } from '@/data/rfs'
 import { seededMedia } from '@/data/media'
 import { sectors } from '@/data/sectors'
 import { coverageGapCandidates } from '@/data/coverage'
+import { SIGNAL_CATEGORIES } from '@/lib/signals/categories'
 import ThemeToggle from './ThemeToggle'
 import { FeedbackButton } from './FeedbackWidget'
+
+const SIGNAL_CATEGORY_COUNT = SIGNAL_CATEGORIES.length
 
 const dataTabs = [
   { name: 'Globe', href: '/globe', count: publicCompanies.length, tone: 'cyan' },
@@ -41,6 +44,7 @@ const dataTabs = [
   { name: 'Media', href: '/media', count: seededMedia.length, tone: 'cyan' },
   { name: 'Solutions', href: '/companies', count: publicCompanies.length, tone: 'cyan' },
   { name: 'Movers', href: '/movers', count: publicCompanies.filter((c) => c.growth3yr).length, tone: 'amber' },
+  { name: 'Signals', href: '/signals', count: SIGNAL_CATEGORY_COUNT, tone: 'cyan' },
   { name: 'People', href: '/founders', count: founders.length, tone: 'amber' },
   { name: 'Frontier', href: '/frontier', count: founders.length, tone: 'amber' },
   { name: 'Progress', href: '/progress', count: progress.length, tone: 'green' },
