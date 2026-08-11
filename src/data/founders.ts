@@ -710,4 +710,97 @@ export const founders: Founder[] = [
       sourceUrl: 'https://projects.propublica.org/nonprofits/organizations/467206339',
     },
   ]),
+  mk(67, 'Melinda French Gates', 30_300_000_000, 'Pivotal Ventures', 'USA', 61, 'frontier-bets', [
+    {
+      vehicle: 'Pivotal Ventures — women’s power and health',
+      description: '$1B pledged through 2026 for women’s political and economic power, plus a further $600M specifically for women’s reproductive and midlife health. Directly fills the gender-inequality gap the /coverage audit flagged from the SDGs — the clearest match on this whole page between a billionaire’s giving and a named taxonomy gap.',
+      amount: { value: 1_000_000_000, unit: 'USD pledged through 2026', source: 'Pivotal', confidence: 'high', asOf: RESEARCHED },
+      gapLabel: 'Gender inequality',
+      source: 'Pivotal — Melinda French Gates Announces $1B Commitment to Advance Women Globally',
+      sourceUrl: 'https://www.pivotal.com/articles/melinda-french-gates-announces-1billlion-commitment-to-advance-women-globally',
+    },
+  ]),
+  mk(68, 'Stefan Quandt', 30_100_000_000, 'BMW (automotive)', 'Germany', 59, 'conventional-philanthropy', [
+    {
+      vehicle: 'Stiftung Charité / BMW Foundation Herbert Quandt',
+      description: '€30M to the BMW Foundation alongside Susanne Klatten, plus board involvement in Stiftung Charité’s life-sciences funding programs.',
+      amount: { value: 30_000_000, unit: 'EUR to BMW Foundation', source: 'BMW Group press', confidence: 'med', asOf: RESEARCHED },
+      source: 'BMW Group — foundations consolidation announcement',
+      sourceUrl: 'https://www.press.bmwgroup.com/africa-dom-easteurope/article/detail/T0258028EN/',
+    },
+  ]),
+  mk(69, 'Reinhold Würth', 30_100_000_000, 'Würth Group (hardware)', 'Germany', 90, 'prestige-giving', [
+    {
+      vehicle: 'Museum Würth / Kunsthalle Würth',
+      description: 'A 17,000-piece art collection displayed across free-admission museums in six European countries — cultural patronage, no disclosed dollar figure, not a research or welfare bet.',
+      source: 'Würth Group — kunstkultur.wuerth.com',
+      sourceUrl: 'https://kunstkultur.wuerth.com/artsculture/startpage.php',
+    },
+  ]),
+  mk(70, 'Len Blavatnik', 29_900_000_000, 'Access Industries (diversified)', 'USA / UK', 68, 'frontier-bets', [
+    {
+      vehicle: 'Blavatnik Awards for Young Scientists + Blavatnik School of Government',
+      description: '$30M multi-year commitment funding early-career scientists across the US, UK, and Israel, plus a £75M (~$114M) gift that founded Oxford’s Blavatnik School of Government — roughly $500M in disclosed giving total, concentrated on accelerating scientific output.',
+      amount: { value: 500_000_000, unit: 'USD disclosed total', source: 'Forbes', confidence: 'med', asOf: RESEARCHED },
+      problemSlug: 'scientific-productivity',
+      source: 'Forbes — Billionaire Len Blavatnik Pledges $30M To Fund Young Scientists',
+      sourceUrl: 'https://www.forbes.com/sites/afontevecchia/2013/06/03/billionaire-len-blavatnik-pledges-30m-to-fund-young-scientists-and-keep-innovation-in-the-u-s/',
+    },
+  ]),
+  mk(71, 'Susanne Klatten', 29_700_000_000, 'BMW / Altana (automotive, chemicals)', 'Germany', 64, 'conventional-philanthropy', [
+    {
+      vehicle: 'SKala Initiative + Stiftung Charité',
+      description: '€88M across 95 nonprofit projects via SKala, plus board-level funding of Charité’s life-sciences research programs alongside Stefan Quandt.',
+      amount: { value: 88_000_000, unit: 'EUR across 95 projects', source: 'PHINEO — SKala Initiative', confidence: 'med', asOf: RESEARCHED },
+      problemSlug: 'scientific-productivity',
+      source: 'PHINEO — SKala: Gemeinsam Menschen bewegen',
+      sourceUrl: 'https://www.phineo.org/en/projects/skala-initiative',
+    },
+  ]),
+  mk(72, 'Jack Ma', 29_100_000_000, 'Alibaba (technology)', 'China', 61, 'conventional-philanthropy', [
+    {
+      vehicle: 'Jack Ma Foundation',
+      description: 'Rural teacher training (100 teachers/yr, $75M+ pledged) and Xixi Wetland conservation ($14.26M) — real but modest relative to net worth, domestic and conventional.',
+      amount: { value: 300_000_000, unit: 'USD distributed or pledged, foundation lifetime', source: 'Devex', confidence: 'med', asOf: RESEARCHED },
+      source: 'Jack Ma Foundation — Our Work',
+      sourceUrl: 'https://www.jackmafoundation.org.cn/our-work/',
+    },
+  ]),
+  mk(73, 'MacKenzie Scott', 28_600_000_000, 'Former Amazon stake', 'USA', 56, 'conventional-philanthropy', [
+    {
+      vehicle: 'Yield Giving',
+      description: 'The largest and most unusual philanthropic commitment on this entire page: $26.2B given away since 2019 across 2,700+ grants, all unrestricted — no strings, no reporting requirements, full trust in the grantee. Causes are broad and established (not a frontier-science bet), but the giving methodology itself is genuinely novel.',
+      amount: { value: 26_200_000_000, unit: 'USD donated since 2019', source: 'Benzinga', confidence: 'high', asOf: RESEARCHED },
+      source: 'Fortune — MacKenzie Scott gave away more than $7 billion last year',
+      sourceUrl: 'https://fortune.com/article/mackenzie-scott-not-on-top-philanthropist-list-depite-7-billion-donations/',
+    },
+  ]),
+  mk(74, 'Aliko Dangote', 28_500_000_000, 'Dangote Group (cement, manufacturing)', 'Nigeria', 69, 'frontier-bets', [
+    {
+      vehicle: 'Dangote Foundation',
+      description: 'Africa’s largest private foundation ($1.25B endowment, +$700M since). A $100M joint program with the Gates Foundation treats childhood malnutrition in Nigeria — the same gap flagged as a draft candidate on this site’s own /admin/candidates queue, independently validated by Africa’s richest person.',
+      amount: { value: 100_000_000, unit: 'USD, joint 5-year malnutrition program with Gates Foundation', source: 'Billionaires.Africa', confidence: 'high', asOf: RESEARCHED },
+      source: 'Billionaires.Africa — Aliko Dangote gave $47 million to charity in six months of 2026',
+      sourceUrl: 'https://www.billionaires.africa/2026/06/12/africas-richest-man-has-publicly-donated-47-million-to-charity-so-far-in-2026/',
+    },
+  ]),
+  mk(75, 'Peter Thiel', 28_400_000_000, 'PayPal, Founders Fund (finance & investments)', 'USA', 58, 'frontier-bets', [
+    {
+      vehicle: 'Breakout Labs + SENS Research Foundation',
+      description: '$7M seeded into ~24 hard-science biotech companies since 2011 via Breakout Labs, plus $3.5M to the Methuselah Foundation and direct support for SENS — anti-aging research, in the same spirit as Bezos’s Altos Labs and Page/Brin’s Calico bets.',
+      amount: { value: 7_000_000, unit: 'USD via Breakout Labs', source: 'FierceBiotech', confidence: 'med', asOf: RESEARCHED },
+      problemSlug: 'longevity',
+      source: 'FierceBiotech — Thiel’s Breakout Labs fuels four new life science companies',
+      sourceUrl: 'https://www.fiercebiotech.com/biotech/thiel-s-breakout-labs-fuels-four-new-life-science-companies',
+    },
+  ]),
+  mk(76, 'Daniel Gilbert', 27_900_000_000, 'Rocket Companies (mortgage lending)', 'USA', 64, 'conventional-philanthropy', [
+    {
+      vehicle: 'Rocket Community Fund + Bedrock Detroit',
+      description: '$5.6B in downtown Detroit real estate development (Bedrock) plus a dedicated $500M, 10-year commitment to Detroit neighborhoods (property-tax debt relief, community investment) — place-based urban revitalization, a pattern distinct from every other entry on this page: it blurs real-estate investment and philanthropy rather than sitting cleanly in either.',
+      amount: { value: 500_000_000, unit: 'USD, 10-year Detroit neighborhoods commitment', source: 'Rocket Community Fund', confidence: 'high', asOf: RESEARCHED },
+      source: 'Rocket Community Fund — Five Years In: Progress on $500 Million Commitment',
+      sourceUrl: 'https://www.rocketcommunityfund.org/2026/03/26/five-years-in-rocket-community-fund-and-gilbert-family-foundation-share-progress-on-500-million-commitment-to-building-opportunity-in-detroit-neighborhoods/',
+    },
+  ]),
 ]
