@@ -155,36 +155,38 @@ export default async function MediaIndex({
                   : 'text-ink-400 border-hair'
                 return (
                   <li key={item.id} className="border-b border-hair last:border-b-0">
-                    <a
-                      href={item.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block bg-ink-900 hover:bg-ink-800/50 transition-colors p-4 group"
-                    >
-                      <div className="flex items-baseline gap-2 mb-1.5">
-                        <span
-                          className={`font-mono text-[9px] uppercase tracking-ultra-wide border px-1.5 py-px ${kindColor}`}
-                        >
-                          {kindLabel}
-                        </span>
-                        {source && (
-                          <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
-                            {source.name}
-                            {source.author ? ` · ${source.author}` : ''}
+                    <div className="bg-ink-900 hover:bg-ink-800/50 transition-colors p-4 group">
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block"
+                      >
+                        <div className="flex items-baseline gap-2 mb-1.5">
+                          <span
+                            className={`font-mono text-[9px] uppercase tracking-ultra-wide border px-1.5 py-px ${kindColor}`}
+                          >
+                            {kindLabel}
                           </span>
-                        )}
-                        <span className="ml-auto font-mono text-[10px] text-ink-600 tabular-nums">
-                          {formatDate(item.publishedAt)}
-                        </span>
-                      </div>
-                      <p className="font-sans text-sm text-ink-100 group-hover:text-amber-300 transition-colors leading-snug">
-                        {item.title}
-                      </p>
-                      {item.excerpt && (
-                        <p className="mt-1 text-[12px] text-ink-400 leading-relaxed line-clamp-2">
-                          {item.excerpt}
+                          {source && (
+                            <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
+                              {source.name}
+                              {source.author ? ` · ${source.author}` : ''}
+                            </span>
+                          )}
+                          <span className="ml-auto font-mono text-[10px] text-ink-600 tabular-nums">
+                            {formatDate(item.publishedAt)}
+                          </span>
+                        </div>
+                        <p className="font-sans text-sm text-ink-100 group-hover:text-amber-300 transition-colors leading-snug">
+                          {item.title}
                         </p>
-                      )}
+                        {item.excerpt && (
+                          <p className="mt-1 text-[12px] text-ink-400 leading-relaxed line-clamp-2">
+                            {item.excerpt}
+                          </p>
+                        )}
+                      </a>
                       <div className="mt-2 flex flex-wrap gap-1.5">
                         {item.problemSlugs.map((slug) => {
                           const p = problems.find((x) => x.slug === slug)
@@ -194,14 +196,13 @@ export default async function MediaIndex({
                               key={slug}
                               href={`/p/${slug}`}
                               className="font-mono text-[9px] uppercase tracking-ultra-wide text-ink-400 hover:text-amber-300 border border-hair hover:border-amber-300/60 px-1.5 py-px"
-                              onClick={(e) => e.stopPropagation()}
                             >
                               {p.name.toLowerCase().split(/[ &]/)[0]}
                             </Link>
                           )
                         })}
                       </div>
-                    </a>
+                    </div>
                   </li>
                 )
               })}
