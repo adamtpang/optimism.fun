@@ -904,4 +904,92 @@ export const founders: Founder[] = [
       sourceUrl: 'https://www.flyingdoctor.org.au/sant/news/mrs-gina-rinehart-and-rinehart-medical-foundation-donate-6-million-royal-flying-doctor/',
     },
   ]),
+  mk(87, 'Yu Yong', 25_400_000_000, 'Cathay Fortune Corp / China Molybdenum (mining)', 'China', 65, 'conventional-philanthropy', [
+    {
+      vehicle: 'CMOC Group community investment (corporate, not personal)',
+      description: 'CMOC (China Molybdenum), the Yu-chaired mining group behind his fortune, discloses only modest community spending — RMB 3.21M on education programs in 2023 across all its global operations. No personal foundation or individually attributed gift with a disclosed dollar figure surfaces for Yu Yong himself.',
+      amount: { value: 450_000, unit: 'USD (RMB 3.21M, CMOC 2023 education spend, corporate not personal)', source: 'CMOC Group', confidence: 'low', asOf: RESEARCHED },
+      source: 'CMOC Group — Thriving Communities: Education',
+      sourceUrl: 'https://en.cmoc.com/html/SustainableDevelopment/ThrivingCommunities/Education/',
+    },
+  ]),
+  mk(88, 'Stuart Hoegner', 24_700_000_000, 'Tether / Bitfinex (Ifinex) — stablecoin issuer, ~13% equity stake', 'Canada', undefined, 'conventional-philanthropy', [
+    {
+      vehicle: 'No disclosed personal philanthropy found',
+      description: 'Long-time general counsel of Tether and Bitfinex (retired as GC in early 2025, remains an Ifinex equityholder). Extremely private: no foundation, pledge, or gift with a disclosed dollar figure surfaces in public records, unlike almost every other billionaire at this rank.',
+      source: 'Forbes — Stuart Hoegner',
+      sourceUrl: 'https://www.forbes.com/profile/stuart-hoegner/',
+    },
+  ]),
+  mk(89, 'Huang Shilin', 24_400_000_000, 'CATL (EV batteries)', 'China', 59, 'conventional-philanthropy', [
+    {
+      vehicle: 'No individually disclosed personal philanthropy found',
+      description: 'CATL, the battery giant Huang co-founded and helped lead until stepping back from operating roles in 2022, and its chairman Zeng Yuquan disclosed roughly RMB 1.6B ($220M+) in combined giving 2018-2022 across education, poverty alleviation, and disaster relief — but the underlying reporting attributes essentially all of it to Zeng personally and to the company, not to Huang. No individually attributed gift or personal foundation tied to Huang Shilin was found.',
+      source: 'Sina Finance — 宁德时代：从造富到共富',
+      sourceUrl: 'https://finance.sina.com.cn/tech/roll/2023-02-08/doc-imyeyaiy3187623.shtml',
+    },
+  ]),
+  mk(90, 'Christy Walton', 24_300_000_000, 'Walmart (widow of John Walton)', 'USA', 77, 'frontier-bets', [
+    {
+      vehicle: 'Alumbra Innovations Foundation',
+      description: 'Her own vehicle (est. 2018, independent of the main Walton Family Foundation, where she no longer sits on the board), funding “ocean vitality” and land/water stewardship centered on Baja California Sur, Mexico. Grantmaking grew from $1.4M (2019) to $27M (2023) on a $138M endowment — a fifth billionaire on this page’s ocean/marine gap, after both Waltons (Lukas), the Apontes, and Schmidt.',
+      amount: { value: 27_000_000, unit: 'USD/yr grantmaking (2023), $138M endowment', source: 'Inside Philanthropy', confidence: 'med', asOf: RESEARCHED },
+      gapLabel: 'Ocean & marine ecosystems',
+      source: 'Inside Philanthropy — The Quiet Donors of America’s Richest Family: Three Low-Profile Walton Foundations',
+      sourceUrl: 'https://www.insidephilanthropy.com/home/the-quiet-donors-of-americas-richest-family-three-low-profile-walton-foundations',
+    },
+  ]),
+  mk(91, 'Stefan Persson', 24_200_000_000, 'H&M (fashion retail)', 'Sweden', 78, 'conventional-philanthropy', [
+    {
+      vehicle: 'H&M Foundation',
+      description: 'Textile-industry sustainability, circularity, and social-inclusion programs, funded entirely by the Persson family since the foundation went independent in 2013 — steady corporate-adjacent philanthropy, not frontier research.',
+      amount: { value: 210_000_000, unit: 'USD (SEK 2.1 billion cumulative since 2013)', source: 'H&M Foundation', confidence: 'high', asOf: RESEARCHED },
+      source: 'H&M Foundation — Our Story',
+      sourceUrl: 'https://hmfoundation.com/our-story/',
+    },
+  ]),
+  mk(92, 'Gennady Timchenko', 24_200_000_000, 'Novatek / Volga Group (energy)', 'Russia', 73, 'conventional-philanthropy', [
+    {
+      vehicle: 'Elena and Gennady Timchenko Charitable Foundation',
+      description: 'Domestic Russian giving to elderly care, family and children’s support, and culture/sport. TASS cites Forbes Russia ranking it among the country’s largest private charity foundations, but neither outlet discloses a specific annual dollar figure. EU/US-sanctioned since 2014.',
+      source: 'TASS — Russian businessman Timchenko says charity projects unaffected by US sanctions',
+      sourceUrl: 'https://tass.com/russia/758542',
+    },
+  ]),
+  mk(93, 'David Tepper', 23_700_000_000, 'Appaloosa Management (hedge fund)', 'USA', 68, 'prestige-giving', [
+    {
+      vehicle: 'Tepper School of Business, Carnegie Mellon University (his alma mater)',
+      description: '$55M in 2004 (then the largest gift in CMU history) plus $67M in 2013 to build a new home for the business school that bears his name — classic naming-rights, alma-mater giving, not frontier research.',
+      amount: { value: 125_000_000, unit: 'USD cumulative (2004 + 2013 gifts)', source: 'Carnegie Mellon University', confidence: 'high', asOf: RESEARCHED },
+      source: 'Carnegie Mellon University — $67 million gift funds new home for Tepper School of Business',
+      sourceUrl: 'https://www.cmu.edu/news/stories/archives/2013/november/nov14_teppergift.html',
+    },
+  ]),
+  mk(94, 'Harry Triguboff', 23_400_000_000, 'Meriton Group (real estate)', 'Australia', 93, 'conventional-philanthropy', [
+    {
+      vehicle: 'Harry Triguboff Foundation',
+      description: 'Roughly A$3M/yr in disclosed giving, including support for Jewish immigration to Israel via the Shorashim Center, plus one-off gifts like A$5,000 to each of the 99 Australian medal winners at the Tokyo Olympics — modest and steady relative to a $23B fortune, not frontier research.',
+      source: 'Meriton — AOC thanks Harry Triguboff for generous donation to Tokyo 2020 medal winners',
+      sourceUrl: 'https://www.meriton.com.au/aoc-thanks-harry-triguboff-for-generous-donation-to-tokyo-2020-medal-winners/',
+    },
+  ]),
+  mk(95, 'Steve Cohen', 23_000_000_000, 'Point72 Asset Management (hedge fund)', 'USA', 69, 'frontier-bets', [
+    {
+      vehicle: 'Cohen Veterans Network + Cohen Veterans Bioscience',
+      description: 'A $275M pledge (2016) built a national network of free mental-health clinics for veterans and their families, paired with Cohen Veterans Bioscience — a nonprofit funding biomarker and diagnostic research for PTSD and traumatic brain injury that the VA and pharma haven’t prioritized.',
+      amount: { value: 275_000_000, unit: 'USD pledge (2016)', source: 'Philanthropy News Digest', confidence: 'high', asOf: RESEARCHED },
+      gapLabel: 'Veteran mental health & PTSD',
+      source: 'Philanthropy News Digest — Steven A. Cohen Pledges $275 Million for Veterans’ Mental Health Care',
+      sourceUrl: 'https://philanthropynewsdigest.org/news/steven-a.-cohen-pledges-275-million-for-veterans-mental-health-care',
+    },
+  ]),
+  mk(96, 'Rupert Murdoch', 22_700_000_000, 'News Corp / Fox Corporation (media)', 'USA', 94, 'prestige-giving', [
+    {
+      vehicle: 'News Corp corporate giving + personal gifts',
+      description: 'Widely reported as reluctant to give personally — his largest documented personal gift is roughly $1M (in memory of Milly Dowler), plus smaller five- and six-figure gifts (a Stony Brook journalism center, the Tony Blair Faith Foundation). His company, News Corp, has been more generous: $20M to the Motion Picture & Television Fund. Industry-adjacent prestige giving, not frontier research.',
+      amount: { value: 20_000_000, unit: 'USD (News Corp corporate gift to MPTF)', source: 'Chronicle of Philanthropy', confidence: 'med', asOf: RESEARCHED },
+      source: 'Chronicle of Philanthropy — Rupert Murdoch’s Firm Gives $20-Million to Hollywood Charity',
+      sourceUrl: 'https://www.philanthropy.com/article/rupert-murdochs-firm-gives-20-million-to-hollywood-charity/',
+    },
+  ]),
 ]
