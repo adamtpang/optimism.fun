@@ -803,4 +803,105 @@ export const founders: Founder[] = [
       sourceUrl: 'https://www.rocketcommunityfund.org/2026/03/26/five-years-in-rocket-community-fund-and-gilbert-family-foundation-share-progress-on-500-million-commitment-to-building-opportunity-in-detroit-neighborhoods/',
     },
   ]),
+  mk(77, 'Lei Jun', 27_900_000_000, 'Xiaomi (technology)', 'China', 56, 'frontier-bets', [
+    {
+      vehicle: 'Wuhan University donation',
+      description: 'The largest individual donation ever given to a Chinese university — basic research across math, physics, chemistry, plus computer-science innovation and talent cultivation, at his alma mater.',
+      amount: { value: 183_000_000, unit: 'USD donated (2023)', source: 'Bloomberg', confidence: 'high', asOf: RESEARCHED },
+      problemSlug: 'scientific-productivity',
+      source: 'Bloomberg — Xiaomi Co-Founder Lei Jun Gifts Record $182 Million to Wuhan University',
+      sourceUrl: 'https://www.bloomberg.com/news/articles/2023-11-29/xiaomi-billionaire-gifts-record-182-million-to-china-university',
+    },
+  ]),
+  mk(78, 'Andreas von Bechtolsheim', 27_900_000_000, 'Arista Networks (technology)', 'Germany / USA', 70, 'conventional-philanthropy', [
+    {
+      vehicle: 'Stanford, Carnegie Mellon, UC Davis engineering education',
+      description: 'Long-standing, quiet support for electrical-engineering education at his alma maters — no single large disclosed figure, modest relative to a $28B fortune.',
+      source: 'Stanford Engineering — Andreas Bechtolsheim, Stanford Engineering Hero',
+      sourceUrl: 'https://engineering.stanford.edu/about/history/heroes/2012-heroes/andreas-bechtolsheim',
+    },
+  ]),
+  mk(79, 'Pham Nhat Vuong', 27_700_000_000, 'Vingroup (diversified)', 'Vietnam', 57, 'frontier-bets', [
+    {
+      vehicle: 'VinUniversity + VinFuture Prize',
+      description: '$182M non-profit university (VinUni), plus VinFuture, a global science and technology prize he founded for breakthrough innovations benefiting humanity — a real, if young, entrant in the same category as the Nobel Prizes.',
+      amount: { value: 182_000_000, unit: 'USD invested in VinUniversity (2019)', source: 'VnExpress International', confidence: 'high', asOf: RESEARCHED },
+      problemSlug: 'scientific-productivity',
+      source: 'VnExpress — Vietnam’s richest man among Asia’s top philanthropists',
+      sourceUrl: 'https://e.vnexpress.net/news/news/vietnam-s-richest-man-among-asia-s-top-philanthropists-forbes-4190315.html',
+    },
+  ]),
+  mk(80, 'Vicky Safra', 27_100_000_000, 'Banking (Safra family)', 'Greece / Brazil', 71, 'frontier-bets', [
+    {
+      vehicle: 'Edmond J. Safra Foundation — Parkinson’s research',
+      description: 'A significant, sustained portfolio of Parkinson’s disease research and patient care at leading universities and institutes worldwide — a fourth billionaire on the neurodegenerative-disease gap, after Brin, Gates, and Bettencourt Meyers.',
+      amount: { value: 100_000_000, unit: 'USD+ in disclosed giving', source: 'Vicky Safra Foundation', confidence: 'med', asOf: RESEARCHED },
+      gapLabel: 'Neurodegenerative disease',
+      source: 'Edmond J. Safra Foundation — News of medical research sponsored',
+      sourceUrl: 'https://www.edmondjsafra.org/2023/03/20/news-of-medical-research-sponsored-by-the-edmond-j-safra-foundation/',
+    },
+  ]),
+  mk(81, 'Jay Y. Lee', 27_000_000_000, 'Samsung Electronics', 'South Korea', 57, 'frontier-bets', [
+    {
+      vehicle: 'Samsung Science & Technology Foundation',
+      description: 'KRW 1.5 trillion (~$1.1B) endowed over 10 years for basic science, materials engineering, and information-technology research — 517 research projects funded to date at Korean universities and public institutes.',
+      amount: { value: 1_100_000_000, unit: 'USD (KRW 1.5 trillion endowment)', source: 'Samsung Global Newsroom', confidence: 'high', asOf: RESEARCHED },
+      problemSlug: 'scientific-productivity',
+      source: 'Samsung Newsroom — Samsung Science & Technology Foundation Announces Grants',
+      sourceUrl: 'https://news.samsung.com/global/samsung-science-technology-foundation-announces-grants-for-basic-science-and-future-technologies',
+    },
+    {
+      vehicle: 'Korea national infectious disease research institute',
+      description: '200 billion won (~$150M) to update the research center and equipment at Korea’s national infectious-disease research institute, alongside 300 billion won for pediatric cancer and rare-disease treatment.',
+      amount: { value: 150_000_000, unit: 'USD (KRW 200 billion)', source: 'KED Global', confidence: 'high', asOf: RESEARCHED },
+      problemSlug: 'infectious-disease',
+      source: 'KED Global — Samsung heirs to donate nearly $3bn in cash, art',
+      sourceUrl: 'https://www.kedglobal.com/inheritance-tax/newsView/ked202104280006',
+    },
+  ]),
+  mk(82, 'Cyrus Poonawalla', 27_000_000_000, 'Serum Institute of India (vaccines)', 'India', 84, 'frontier-bets', [
+    {
+      vehicle: 'Poonawalla Vaccines Research Building, Oxford',
+      description: 'Oxford University’s largest-ever gift for vaccines research, from the founder of the world’s largest vaccine manufacturer by volume (1.3B+ doses). About as direct a match to this index’s infectious-disease problem as any bet on this page.',
+      amount: { value: 63_000_000, unit: 'USD (£50M)', source: 'University of Oxford', confidence: 'high', asOf: RESEARCHED },
+      problemSlug: 'infectious-disease',
+      source: 'University of Oxford — £50m funding for Poonawalla Vaccines Research Building',
+      sourceUrl: 'https://www.ox.ac.uk/news/2021-12-15-50m-funding-poonawalla-vaccines-research-building-oxford-university',
+    },
+  ]),
+  mk(83, 'Rick Cohen', 26_300_000_000, 'C&S Wholesale Grocers', 'USA', 71, 'conventional-philanthropy', [
+    {
+      vehicle: 'Panjandrum Foundation + Holocaust education',
+      description: 'Environment, human rights, women’s issues, and Holocaust education (Keene State College) — real but modest grants, well under $10M/yr disclosed, relative to a $26B fortune. Deliberately low public profile.',
+      source: 'Nonprofit Quarterly — Rick Cohen Is NH’s Richest Person',
+      sourceUrl: 'https://nonprofitquarterly.org/rick-cohen-nhs-richest-person-in-a-list-of-wealthiest-by-state/',
+    },
+  ]),
+  mk(84, 'Israel Englander', 25_800_000_000, 'Millennium Management (hedge fund)', 'USA', 77, 'frontier-bets', [
+    {
+      vehicle: 'Englander Institute for Precision Medicine, Weill Cornell',
+      description: 'A translational precision-medicine research hub, part of $100M+ in disclosed giving concentrated on medical research through the Englander Foundation.',
+      amount: { value: 100_000_000, unit: 'USD+ disclosed giving', source: 'Inside Philanthropy', confidence: 'med', asOf: RESEARCHED },
+      problemSlug: 'scientific-productivity',
+      source: 'Inside Philanthropy — Israel Englander',
+      sourceUrl: 'https://www.insidephilanthropy.com/wall-street-donors/israel-englander.html',
+    },
+  ]),
+  mk(85, 'Dilip Shanghvi', 25_600_000_000, 'Sun Pharmaceutical Industries', 'India', 70, 'scaling-proven-tech', [
+    {
+      vehicle: 'Shantilal Shanghvi Foundation + Sun Foundation',
+      description: 'Rural healthcare infrastructure and medicine access for underserved communities in India — delivering existing, proven healthcare at scale, not funding new frontier research.',
+      source: 'LinkedIn — Dilip Shanghvi: Illuminating the Path of Healthcare Innovation',
+      sourceUrl: 'https://www.linkedin.com/pulse/dilip-shanghvi-illuminating-path-healthcare-innovation',
+    },
+  ]),
+  mk(86, 'Gina Rinehart', 25_500_000_000, 'Hancock Prospecting (mining)', 'Australia', 71, 'conventional-philanthropy', [
+    {
+      vehicle: 'Rinehart Medical Foundation + Australian Olympic sports',
+      description: 'Royal Flying Doctor Service ($6M), St Vincent’s Hospital redevelopment ($5M), and ~$10M/yr to Australian rowing, swimming, and beach volleyball ($80M+ cumulative since 2012) — real domestic giving, concentrated on rural health access and sport, not frontier research.',
+      amount: { value: 80_000_000, unit: 'USD+ to Australian Olympic sports since 2012', source: 'CEOWORLD magazine', confidence: 'med', asOf: RESEARCHED },
+      source: 'Royal Flying Doctor Service — Mrs Gina Rinehart donates $6 million',
+      sourceUrl: 'https://www.flyingdoctor.org.au/sant/news/mrs-gina-rinehart-and-rinehart-medical-foundation-donate-6-million-royal-flying-doctor/',
+    },
+  ]),
 ]
