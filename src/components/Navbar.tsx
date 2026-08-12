@@ -21,6 +21,7 @@ import { seededMedia } from '@/data/media'
 import { sectors } from '@/data/sectors'
 import { coverageGapCandidates } from '@/data/coverage'
 import { SIGNAL_CATEGORIES } from '@/lib/signals/categories'
+import { ages } from '@/data/ages'
 import ThemeToggle from './ThemeToggle'
 import { FeedbackButton } from './FeedbackWidget'
 
@@ -48,6 +49,7 @@ const dataTabs = [
   { name: 'People', href: '/founders', count: founders.length, tone: 'amber' },
   { name: 'Frontier', href: '/frontier', count: founders.length, tone: 'amber' },
   { name: 'Progress', href: '/progress', count: progress.length, tone: 'green' },
+  { name: 'Ages', href: '/ages', count: ages.length, tone: 'green' },
   { name: 'Countries', href: '/countries', count: countries.length, tone: 'green' },
   { name: 'Crypto', href: '/crypto', count: crypto.length, tone: 'violet' },
   { name: 'Allocators', href: '/ecosystem', count: ecosystem.length, tone: 'cyan' },
