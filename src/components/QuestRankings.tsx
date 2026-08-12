@@ -11,6 +11,8 @@ import Link from 'next/link'
 import type { RankedQuest, QuestTier } from '@/lib/rankings'
 import type { Crowding } from '@/data/types'
 import { fmtUsdCompact } from '@/lib/allocation'
+import StarterPackBlock from '@/components/StarterPackBlock'
+import { getStarterPack, buildClaudeCodePrompt } from '@/data/starter-packs'
 
 // Quest-level supply signal. open = wide-open frontier (the opportunity),
 // crowded = contested. Ordinal good→bad, so a diverging green→rose hue.
@@ -70,6 +72,7 @@ function MiniBar({ label, value, tone }: { label: string; value: number; tone: s
 function QuestRow({ q }: { q: RankedQuest }) {
   const [open, setOpen] = useState(false)
   const mo = q.momentum ? MOMENTUM[q.momentum] : null
+  const pack = getStarterPack(q.slug)
 
   return (
     <div className="border-b border-hair last:border-b-0">
@@ -178,6 +181,19 @@ function QuestRow({ q }: { q: RankedQuest }) {
             <span>opportunity {q.opportunity}</span>
             <span>confidence {q.confidence}</span>
           </div>
+          {pack && (
+            <StarterPackBlock
+              pack={pack}
+              prompt={buildClaudeCodePrompt(pack, {
+                title: q.title,
+                problemName: q.problemName,
+                demand: q.demand,
+                gap: q.gap,
+                competitorCount: q.competitorCount,
+                exampleCompetitors: q.exampleCompetitors,
+              })}
+            />
+          )}
         </div>
       )}
     </div>

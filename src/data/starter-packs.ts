@@ -157,6 +157,78 @@ The chemistry is not the bottleneck; landed cost and the last mile are.
 Cite sources. Where numbers are commercially confidential, say so and give the best public proxy.`,
   },
   {
+    questSlug: 'pathogen-agnostic-early-warning',
+    names: [
+      { name: 'Sentinel', note: 'the function, plainly named' },
+      { name: 'Zero Day', note: 'a novel pathogen is the biological equivalent' },
+      { name: 'Effluent', note: 'wastewater is the signal, said straight' },
+    ],
+    riskiestAssumption:
+      'That an automated alarm on an unknown, never-before-seen genome is something any public health authority will act on. Every existing wastewater surveillance program alarms on known, named targets — actioning a true anomaly has no institutional home yet.',
+    firstArtifact:
+      'Partner with one wastewater plant already running known-pathogen surveillance. Sequence the same samples in parallel and measure the lead time your method would have given for a pathogen everyone already agrees was real, against when it was clinically confirmed. Publish the honest number.',
+    gatekeeper:
+      "CDC's National Wastewater Surveillance System and equivalent national programmes, and the WHO genomic surveillance network — none of whom currently have a protocol for acting on an alarm with no name",
+    promptBody: `Build me a research workspace for pathogen-agnostic wastewater early warning.
+
+Sequencing cost is not the bottleneck anymore; the missing piece is proof that lead time is real and a plausible path to someone acting on the alarm.
+1. Find every published wastewater or environmental metagenomic surveillance programme running today (CDC NWSS, WastewaterSCAN, equivalents in the UK, Singapore, EU) — what each one alarms on today, and whether any has ever flagged a genuinely novel target rather than a known one.
+2. For at least two past outbreaks with good public data (mpox 2022, a recent flu variant), reconstruct the date the pathogen was first detectable in wastewater-style samples (from retrospective studies) versus the date of first clinical confirmation. This lead-time number is what the whole idea depends on.
+3. Find the actual institutional pathway: who at CDC, WHO, or a national public health lab would receive an "unknown novel replicating genome detected" alert, and what, if anything, they are authorised to do with it today.
+4. Summarise the state of metagenomic sequencing cost curves (cost per sample, turnaround time) for 2023-2026.
+5. Output a memo: the best-supported lead-time estimate, the single most plausible first institutional partner, and the three reasons this alarm might be ignored even if it fires correctly.
+
+Cite everything with URLs. Where retrospective lead-time data does not exist, say so rather than estimating.`,
+  },
+  {
+    questSlug: 'order-of-magnitude-cheaper-ivf',
+    names: [
+      { name: 'Tenfold', note: 'the entire product claim, as a name' },
+      { name: 'Cassette', note: 'the microfluidic unit that would replace the bench' },
+      { name: 'Throughput', note: 'the metric that actually has to move' },
+    ],
+    riskiestAssumption:
+      "That automating the embryology bench holds live-birth rates steady or improves them — and that a clinic will bet its own liability and accreditation on an automated system before the outcome data exists to justify that bet.",
+    firstArtifact:
+      'A line-by-line cost teardown of one real IVF cycle: embryologist hours, equipment amortization, consumables, clinic overhead. Compare it against what time-lapse incubation and AI embryo grading (Ovation.io, Life Whisperer, and similar, already deployed) have actually automated so far, to find the labor share still genuinely up for grabs.',
+    gatekeeper:
+      'Embryology lab directors and the CLIA / state lab-accreditation bodies that license them — a clinic will not adopt anything that puts its accreditation at risk before the safety case is made',
+    promptBody: `Help me build the cost and evidence model for an order-of-magnitude-cheaper IVF cycle.
+
+The question is not whether automation is possible; it's whether the labor share left to automate is large enough to move the price 10x, and whether outcomes hold.
+1. Break down the fully-loaded cost of one IVF cycle at a typical US clinic: embryologist labor hours per cycle, lab equipment amortization, consumables (media, dishes, needles), physician time, clinic overhead. Use published cost studies and clinic fee schedules.
+2. Research what has already been automated or AI-assisted in the embryology workflow — time-lapse incubators (EmbryoScope and similar), AI embryo grading (Ovation.io, Life Whisperer, others) — and find any published data on their effect on live-birth rate and embryologist hours per cycle.
+3. Identify what remains manual and high-skill (oocyte retrieval prep, ICSI injection, vitrification) and whether any lab has published progress automating those specific steps.
+4. Find the CLIA and state-level accreditation requirements an automated embryology lab would have to satisfy, and how long a novel lab process typically takes to get accredited.
+5. Output a memo: what fraction of current cost is realistically automatable given the state of the art, what live-birth-rate evidence exists for automation so far, and the accreditation path a new entrant would need.
+
+Cite every cost and outcome figure. Flag anywhere you are extrapolating rather than citing a real number.`,
+  },
+  {
+    questSlug: 'third-places-as-a-business',
+    names: [
+      { name: 'The Stoop', note: 'the porch step, the original third place' },
+      { name: 'Regular', note: 'the exact relationship the business exists to create' },
+      { name: 'Commons', note: 'plain, and the whole pitch' },
+    ],
+    riskiestAssumption:
+      'That membership, food, and programming revenue alone can cover real urban rent at a price ordinary people will pay — without sliding into an ad-subsidized attention business or a donor-dependent nonprofit. Nobody has published a durable unit-economics model that clears this bar.',
+    firstArtifact:
+      'A real unit-economics model for one specific location: actual rent comps in one named city, a revenue mix across membership, food and beverage, and events, and the break-even member count. Stress-test it against one operator that has actually survived 3+ years — a run club, boxing gym, or community café — by asking what their real numbers are.',
+    gatekeeper:
+      'Commercial landlords, who default to a national retail or restaurant tenant over an unproven community-space format, and whoever provides the patient, slow-payback capital a physical location needs before it breaks even',
+    promptBody: `Help me build a real unit-economics model for a modern third place.
+
+The demand for in-person belonging is not in question; the open question is whether the business math has ever actually worked without ads or donations.
+1. Find every documented case of a "third place" business model that has survived 3+ years on membership/F&B/events revenue alone — run clubs, climbing gyms, community coffee shops, social clubs like Soho House (note where it tips into luxury-only). For each, whatever revenue mix and pricing data is publicly available.
+2. Pull commercial rent comparables for a 2,000-3,000 sq ft space in three specific neighbourhoods (one expensive, one mid, one cheap US city) to ground the real fixed-cost floor.
+3. Build a break-even model: given that rent, what membership price and count, plus F&B margin, clears it? Show the model, not just the conclusion.
+4. Research how commercial landlords currently evaluate community-space tenants versus retail/restaurant tenants — lease terms, personal guarantees required, typical vacancy tolerance.
+5. Output a memo: the most financially credible existing comp, the break-even math for one realistic location, and the single biggest number that has to be true for this to work.
+
+Use real, cited numbers throughout. Where rent or revenue data is estimated rather than sourced, say so explicitly.`,
+  },
+  {
     questSlug: 'aging-as-an-indication',
     names: [
       { name: 'Indication', note: 'the single regulatory word the company exists to win' },
