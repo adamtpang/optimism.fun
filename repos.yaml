@@ -17,10 +17,14 @@ stack: [next, neon, anthropic, posthog]
 
 kin:
   - repo: pokedex.life
-    why: same ranking engine, applied to people instead of problems
+    why: idea-level kin, not shared code — both rank entities by weighted axes plus hard-constraint filters (see ECOSYSTEM.md); pokedex.life ranks people, this repo ranks problems
   - repo: portal.voyage
-    why: same ranking engine, applied to places instead of problems
+    why: idea-level kin, not shared code — both rank entities by weighted axes plus hard-constraint filters (see ECOSYSTEM.md); portal.voyage ranks places, this repo ranks problems
   - repo: ness.city
     why: consumes the problem ranking as civic bounties
+  - repo: moneymeta.fun
+    why: same legibility-engines ranking pattern (live public data -> S-D-style rank) applied to money instead of problems, same family as pokedex.life (people) and portal.voyage (places); moneymeta.fun ranks income paths from BLS data the way this repo ranks problems from OWID/World Bank/WHO/OpenFDA.
+  - repo: skill.supply
+    why: same legibility-engines pattern, same manifest convention (this repo declares "ranks: problems", skill.supply declares "ranks: candidates"). skill.supply's /skills Skill Market Cap ranks live job-board demand hourly, a real live-data ranking engine same as this one, just applied to talent instead of problems.
 
 canon: ECOSYSTEM.md
