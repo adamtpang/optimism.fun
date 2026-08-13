@@ -26,5 +26,7 @@ kin:
     why: same legibility-engines ranking pattern (live public data -> S-D-style rank) applied to money instead of problems, same family as pokedex.life (people) and portal.voyage (places); moneymeta.fun ranks income paths from BLS data the way this repo ranks problems from OWID/World Bank/WHO/OpenFDA.
   - repo: skill.supply
     why: same legibility-engines pattern, same manifest convention (this repo declares "ranks: problems", skill.supply declares "ranks: candidates"). skill.supply's /skills Skill Market Cap ranks live job-board demand hourly, a real live-data ranking engine same as this one, just applied to talent instead of problems.
+  - repo: themain.quest
+    why: this repo ranks which problems are worth a lifetime of work at civilizational scale, the macro choose-the-quest layer; themain.quest holds whatever quest Adam actually commits to as the one binding goal and runs it day to day, the micro execute-the-quest layer. Same quest-selection thesis, different scale.
 
 canon: ECOSYSTEM.md
