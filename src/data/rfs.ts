@@ -426,6 +426,160 @@ export const requestsForStartups: RequestForStartup[] = [
     confidence: 'low',
     asOf: ASOF,
   },
+
+  // ─── Extreme poverty ──────────────────────────────────────────────────────
+  {
+    slug: 'graduation-approach-cost-collapse',
+    crowding: 'open',
+    problemSlug: 'extreme-poverty',
+    title: 'Graduation-approach cost collapse',
+    pitch:
+      "BRAC's Ultra-Poor Graduation model is the best-evidenced anti-poverty intervention economists have found — income gains that persist a decade later — but it runs ~$5,000 per household because a scarce human coach must personally visit each family for two years. Build the case-management platform that lets one coach run structured, risk-triaged coaching across several times more households.",
+    whyNow:
+      "Group coaching already cuts the costliest program component — coaching, ~30% of total cost — by 30-40% without losing contact frequency, per BRAC's own program data, meaning the caseload constraint is now a software problem, not a proven-impossible one.",
+    shape:
+      'A field-worker app plus a household-risk triage model that decides which families need weekly in-person coaching versus lighter-touch group or remote check-ins, licensed to the national governments and NGOs already running Graduation at state scale.',
+    successLooksLike:
+      'Cost per graduated household falls from ~$5,000 toward $1,500-2,000 without losing the measured income effect, unlocking several times more households per aid dollar.',
+    goodQuest:
+      'The single best-evidenced anti-poverty intervention that exists, blocked by a solvable operations frontier rather than an unproven mechanism, with no credible harm.',
+    confidence: 'med',
+    asOf: ASOF,
+  },
+  {
+    slug: 'anticipatory-cash-infrastructure',
+    crowding: 'contested',
+    problemSlug: 'extreme-poverty',
+    title: 'Anticipatory cash as shared infrastructure',
+    pitch:
+      'When a drought or flood is forecast days out, the households about to be pushed into extreme poverty still wait for money until after the damage lands, because every anticipatory-action program today rebuilds its own forecast-trigger-payment stack from scratch. Build the shared, licensable infrastructure layer any government or NGO plugs into instead of commissioning a bespoke pilot.',
+    whyNow:
+      'Anticipatory cash is proven — $1 spent before a disaster saves up to $34 in post-disaster response in a Nepal ROI study — and WFP scaled its anticipatory-action portfolio to 44 countries in two years, yet each program is still a custom build.',
+    shape:
+      'A forecast-ingestion, trigger-definition, and payment-disbursement API that a Start Network member, government social registry, or small local NGO integrates in weeks instead of running a multi-year pilot, sold as infrastructure-as-a-service rather than run as one more fund.',
+    successLooksLike:
+      'Standing up a new anticipatory-cash corridor for a new hazard or country drops from years to weeks, and NGOs too small to build their own stack can still offer it.',
+    goodQuest:
+      'A real distribution/software frontier under an intervention already proven to work, decisive for the poorest households facing climate shocks, unambiguously good.',
+    confidence: 'med',
+    asOf: ASOF,
+  },
+
+  // ─── Climate change ───────────────────────────────────────────────────────
+  {
+    slug: 'geologic-hydrogen-flow-engineering',
+    crowding: 'contested',
+    problemSlug: 'climate-change',
+    title: 'Making natural hydrogen actually flow',
+    pitch:
+      "Wells worldwide now confirm hydrogen seeping from the earth's crust for free — zero-carbon fuel and fertilizer feedstock with no electrolysis needed. Every current player is a prospector leasing land and drilling wildcats; nobody has solved the real production problem, sustaining commercial flow rates once hydrogen is found. Build the reservoir-stimulation and continuous-extraction technology that turns a discovery well into a production field.",
+    whyNow:
+      "The USGS's first national geologic hydrogen resource assessment (Jan 2025) reclassified natural hydrogen from curiosity to quantifiable resource, and over $500M has gone into exploration since (Koloma $300M+, Mantle8's $34M Series A, May 2026) even as funded players openly say they're changing their approach because production, not discovery, is the open problem.",
+    shape:
+      'A hydrogen-specific reservoir-engineering company — stimulation techniques, in-situ generation acceleration, continuous gas separation — sold to or partnered with exploration companies that have found hydrogen but cannot yet produce it at scale.',
+    successLooksLike:
+      'A commercial-scale hydrogen well sustains flow rates comparable to a conventional gas well, proving natural hydrogen as a scalable, zero-carbon energy source.',
+    goodQuest:
+      "A genuine subsurface-engineering frontier — the science of finding it is ahead of the science of producing it — decisive for cheap zero-carbon hydrogen, good with no plausible downside.",
+    confidence: 'low',
+    asOf: ASOF,
+  },
+  {
+    slug: 'dumpsite-methane-capture',
+    crowding: 'open',
+    problemSlug: 'climate-change',
+    title: 'Methane capture for the open dump, not the landfill',
+    pitch:
+      "Rich-world landfills capture their methane and sell it as pipeline gas or power. The fastest-growing source of dump methane — open, unmanaged dumps across the Global South — captures none of it, venting a super-pollutant next to the neighborhoods that live on top of them. Build the low-capex gas-capture retrofit company for open and semi-engineered dumps in fast-urbanizing countries.",
+    whyNow:
+      "Methane's outsized 20-year warming potency plus the Global Methane Pledge's 2030 target are putting a growing bounty on verified methane destruction just as voluntary carbon markets start paying for it, while waste volumes in low- and middle-income countries are rising faster than anywhere else.",
+    shape:
+      'Modular, low-cost gas-collection wells and flaring/generation units retrofittable onto existing open dumps without a full landfill rebuild, financed by methane-destruction carbon credits plus local power sales.',
+    successLooksLike:
+      "Methane capture becomes standard at the world's largest open dumps the way it already is at engineered US/EU landfills, cutting a major uncounted source of near-term warming.",
+    goodQuest:
+      'An engineering + carbon-finance frontier attacking a real, currently near-zero-capture emissions source, with a direct local health co-benefit and no credible harm.',
+    confidence: 'med',
+    asOf: ASOF,
+  },
+
+  // ─── Neglected tropical diseases ──────────────────────────────────────────
+  {
+    slug: 'onchocerciasis-cure-readiness',
+    crowding: 'open',
+    problemSlug: 'neglected-tropical-diseases',
+    title: 'Building the cure, not just the pill, for river blindness',
+    pitch:
+      "Onchocerciasis has been controlled by an annual ivermectin pill for 30 years because ivermectin only kills the juvenile worms, not the adults — so 200 million people at risk take a drug forever instead of being cured. A macrofilaricide now in Phase II could kill the adult worms outright, but nobody has built the low-cost generic manufacturing and last-mile distribution system to actually deliver a cure once it's approved.",
+    whyNow:
+      "DNDi and Bayer's emodepside — the first drug shown to kill adult O. volvulus worms, not just microfilariae — cleared Phase II part 1 with a favorable safety and efficacy profile, with Part 2 recruitment starting Q3 2026.",
+    shape:
+      "A generic-manufacturing and mass-drug-administration-ready distribution company built now, in partnership with DNDi's access commitments, so approval doesn't sit for years waiting on a manufacturer and delivery network the way it has for other neglected-disease drugs.",
+    successLooksLike:
+      'Within a few years of approval, endemic communities move from lifelong annual dosing to a course of treatment that actually cures onchocerciasis.',
+    goodQuest:
+      'A genuine translate-the-science-to-the-population frontier — the hard part left is manufacturing and distribution, not biology — decisive for 200M+ people, unambiguously good.',
+    confidence: 'med',
+    asOf: ASOF,
+  },
+  {
+    slug: 'broad-spectrum-antivenom',
+    crowding: 'contested',
+    problemSlug: 'neglected-tropical-diseases',
+    title: 'Broad-spectrum antivenom, manufactured at scale',
+    pitch:
+      "Snakebite kills roughly 100,000 people a year and permanently disables hundreds of thousands more, and standard treatment is still 19th-century technology — antivenom raised in horses, species-specific, expensive, needing a cold chain that doesn't exist where most bites happen. Build the company that takes the newly-proven broadly-neutralizing antibody science to GMP manufacturing and WHO prequalification.",
+    whyNow:
+      'Within the past few years, researchers have published human monoclonal antibodies and nanobody cocktails that neutralize toxins across whole snake families in animal models, moving broad-spectrum antivenom from theory to demonstrated feasibility for the first time.',
+    shape:
+      'A recombinant-antibody manufacturing company that licenses the best-validated broadly-neutralizing antibody cocktails from academic labs and takes them through GMP production, clinical trials, and WHO prequalification, replacing horse serum with a scalable, room-temperature-stable biologic.',
+    successLooksLike:
+      'A single, room-temperature-stable antivenom treats bites from most medically important snakes in a region without first identifying the species.',
+    goodQuest:
+      'A real biologics-manufacturing frontier against a WHO-listed neglected disease that kills as many people as some infectious epidemics, with no plausible misuse.',
+    confidence: 'med',
+    asOf: ASOF,
+  },
+
+  // ─── Newborn survival ─────────────────────────────────────────────────────
+  {
+    slug: 'neonatal-sepsis-risk-score',
+    crowding: 'open',
+    problemSlug: 'newborn-survival',
+    title: 'A sepsis risk score that needs no new hardware',
+    pitch:
+      'Neonatal sepsis can kill within hours, but the confirmatory test — a blood culture — takes two to three days, so frontline low-resource facilities either over-treat every newborn with antibiotics or miss the ones who needed them. Skip the hardware race and ship the software: a validated risk-prediction model that runs on vital signs facilities already collect, with no new lab or device required.',
+    whyNow:
+      'Published multivariable and machine-learning models already predict early-onset neonatal sepsis risk from routine low-resource-setting data with real accuracy, and modeling shows a working point-of-care approach could save 100,000-280,000 newborn lives while cutting unnecessary antibiotic use by more than half — the missing piece is a deployed product, not more science.',
+    shape:
+      'A lightweight risk-scoring app that ingests the vitals and basic exam data community health workers and low-resource maternity wards already record, flags high-risk newborns for referral or treatment, and requires zero new hardware or lab infrastructure.',
+    successLooksLike:
+      'Frontline low-resource facilities triage sepsis risk accurately without a lab, cutting both missed cases and antibiotic overuse.',
+    goodQuest:
+      'A genuine deployment-and-validation-at-scale frontier sitting on top of published, unshipped science, decisive for a top-3 cause of newborn death, unambiguously good.',
+    confidence: 'med',
+    asOf: ASOF,
+  },
+
+  // ─── Energy abundance (cont.) ─────────────────────────────────────────────
+  {
+    slug: 'interconnection-queue-underwriting',
+    crowding: 'contested',
+    problemSlug: 'energy-abundance',
+    title: 'Underwriting the interconnection queue',
+    pitch:
+      'More clean energy is stuck waiting for a grid connection than exists on the grid today — 2,061 GW in the US queue alone, a median wait pushing five years — and the bottleneck is financial as much as technical: nobody underwrites the risk of a stuck queue position so it can be de-risked and resold. Build the company that buys, de-risks, and resells interconnection queue positions the way an infrastructure fund de-risks a permit.',
+    whyNow:
+      'PJM reopened its queue in 2026 after a multi-year freeze, and interconnection waits stretching up to 12 years for some load categories have turned queue position itself into a tradeable, underwritable asset rather than a paperwork formality.',
+    shape:
+      'A capital-plus-engineering entity that acquires stalled interconnection positions, applies flexible-interconnection engineering (curtailment agreements, non-firm capacity) to unstick them faster than a full network upgrade would, and sells construction-ready capacity to developers.',
+    successLooksLike:
+      'Time from interconnection application to commercial operation falls from five years toward one, unlocking gigawatts of already-financed clean generation sitting idle in queues today.',
+    goodQuest:
+      'A real capital-markets-plus-grid-engineering frontier that is the actual bottleneck on the energy transition right now, not a hypothetical one, good with no credible downside.',
+    confidence: 'med',
+    asOf: ASOF,
+  },
 ]
 
 export const getRequestsForProblem = (problemSlug: string): RequestForStartup[] =>

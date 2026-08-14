@@ -89,6 +89,53 @@ export default function StarterPackBlock({
             <p className="text-ink-300 text-[13px] leading-relaxed">{pack.gatekeeper}</p>
           </div>
 
+          {/* domain ideas */}
+          {pack.domainIdeas && pack.domainIdeas.length > 0 && (
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-wide text-ink-500 mb-2">
+                Domains — deploy on Vercel this weekend
+              </p>
+              <div className="space-y-1.5">
+                {pack.domainIdeas.map((d) => (
+                  <div key={d.domain} className="flex items-baseline gap-2 flex-wrap">
+                    <span className="font-mono text-[12.5px] text-amber-300">{d.domain}</span>
+                    <span className="text-ink-500 text-[11.5px]">{d.note}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-1.5 font-mono text-[9.5px] text-ink-600">
+                Not verified live — check availability at registration.
+              </p>
+            </div>
+          )}
+
+          {/* capital firms */}
+          {pack.capitalFirms && pack.capitalFirms.length > 0 && (
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-wide text-ink-500 mb-2">
+                Who to pitch — real, opinionated, sourced
+              </p>
+              <div className="space-y-2.5">
+                {pack.capitalFirms.map((f) => (
+                  <div key={f.name}>
+                    <p className="text-ink-100 text-[13px] font-medium">{f.name}</p>
+                    <p className="text-ink-400 text-[12px] leading-relaxed">
+                      {f.fit}{' '}
+                      <a
+                        href={f.sourceUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                      >
+                        {f.source}
+                      </a>
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* the prompt */}
           <div>
             <div className="flex items-center justify-between gap-3 mb-2">

@@ -24,6 +24,20 @@ export type NameIdea = {
   note: string
 }
 
+export type DomainIdea = {
+  /** e.g. "oneencounter.co" — never claimed as verified-available; check at registration time. */
+  domain: string
+  note: string
+}
+
+export type CapitalFirm = {
+  name: string
+  /** Why THIS firm specifically — grounded in a real, citable thesis or portfolio fact, never generic. */
+  fit: string
+  source: string
+  sourceUrl: string
+}
+
 export type StarterPack = {
   questSlug: string
   names: NameIdea[]
@@ -35,6 +49,10 @@ export type StarterPack = {
   gatekeeper: string
   /** Quest-specific body of the Claude Code prompt. */
   promptBody: string
+  /** Registerable domain-name candidates, ready to deploy on Vercel this weekend. */
+  domainIdeas?: DomainIdea[]
+  /** Real, named funders with an evidenced thesis fit — not generic "biotech VC" filler. */
+  capitalFirms?: CapitalFirm[]
 }
 
 export const starterPacks: StarterPack[] = [
@@ -59,6 +77,39 @@ I need to know whether the regulatory path exists before I raise money or touch 
 4. Output a single markdown memo ranking the three most plausible regulatory paths, each with the precedent that supports it and the reason it might fail.
 
 Use real sources with URLs. Where you cannot verify something, say so rather than guessing.`,
+    domainIdeas: [
+      { domain: 'bacillus.bio', note: 'names the actual organism — Koch’s 1882 "tubercle bacillus" — same register as Koch and Terminus' },
+      { domain: 'depota.com', note: 'from "depot," the real pharmacology term for a slow-release injectable — literally the product' },
+      { domain: 'holdline.com', note: '"holding therapeutic levels for months" is the riskiest-assumption language itself' },
+      { domain: 'oneencounter.co', note: 'lifts "single-encounter endpoint" straight from the regulatory framing' },
+      { domain: 'tbzero.com', note: 'plainest option — matches how global-health frontier companies actually brand' },
+    ],
+    capitalFirms: [
+      {
+        name: 'Adjuvant Capital',
+        fit: 'States its infectious-disease thesis as the "big three (HIV/AIDS, tuberculosis, malaria)" by name on its own site — the closest thing to a normal venture check that already exists in this exact disease set.',
+        source: 'Adjuvant Capital — Our Thesis',
+        sourceUrl: 'https://adjuvantcapital.com/',
+      },
+      {
+        name: 'Global Health Investment Fund (GHIC)',
+        fit: 'A $108M social-impact fund whose public portfolio lists companies explicitly targeting HIV/AIDS, malaria, tuberculosis, and cholera, with TB-relevant assets already in the book.',
+        source: 'GHIC — Portfolio',
+        sourceUrl: 'https://ghicfunds.org/portfolio/',
+      },
+      {
+        name: 'GHIT Fund',
+        fit: 'Tuberculosis is 40.6% of its cumulative $236M invested since 2013, directly funding long-acting-injectable TB regimen work through PAN-TB partners alongside the Gates Medical Research Institute. Realistic ask here is a co-development grant, not a priced round.',
+        source: 'GHIT Fund — Investment Overview',
+        sourceUrl: 'https://www.ghitfund.org/investment/overview/en',
+      },
+      {
+        name: 'Gates Foundation Strategic Investment Fund',
+        fit: 'The foundation’s own investment arm names TB explicitly alongside HIV and malaria in its South Asia / Sub-Saharan Africa healthcare-delivery focus — program-related investment, the realistic anchor check before a normal fund follows.',
+        source: 'Gates Foundation SIF — Healthcare Delivery',
+        sourceUrl: 'https://sif.gatesfoundation.org/our-focus/healthcare-delivery',
+      },
+    ],
   },
   {
     questSlug: 'gene-drive-vector-control',
@@ -83,6 +134,39 @@ The genetics is not my bottleneck; permission is. I need:
 5. Output a markdown memo: the single most permissive credible jurisdiction, the approval sequence, and the three things most likely to stop it.
 
 Cite everything. Flag where the record is thin.`,
+    domainIdeas: [
+      { domain: 'daisychain.co', note: 'the "daisy-chain drive" — a real self-exhausting, spatially-limited gene-drive design (Esvelt lab, MIT)' },
+      { domain: 'selflimit.bio', note: 'names the actual design property the whole regulatory bet depends on' },
+      { domain: 'consenta.com', note: 'plays on "community consent" — the exact bottleneck this quest is really about' },
+      { domain: 'suppressor.bio', note: 'real genetics term ("suppression drive" vs. "modification drive")' },
+      { domain: 'sterilis.bio', note: 'evokes Sterile Insect Technique, the one regulatory precedent already fielded at scale (Oxitec)' },
+    ],
+    capitalFirms: [
+      {
+        name: 'Open Philanthropy (Coefficient Giving)',
+        fit: 'Made a direct $17.5M grant to Target Malaria specifically to develop and prepare for gene-drive deployment — the single most on-thesis funder that exists for this exact niche. A grant, not an equity check.',
+        source: 'Open Philanthropy — Target Malaria General Support',
+        sourceUrl: 'https://www.openphilanthropy.org/focus/scientific-research/miscellaneous/target-malaria-general-support',
+      },
+      {
+        name: 'Bill & Melinda Gates Foundation',
+        fit: 'The largest and longest-running funder of Target Malaria and gene-drive vector-control research broadly. Philanthropic, not venture — but the field would not exist without it.',
+        source: 'Target Malaria — funder acknowledgment',
+        sourceUrl: 'https://targetmalaria.org',
+      },
+      {
+        name: 'Wellcome Trust',
+        fit: 'Funds a dedicated 2022-2026 program uniting African and UK research institutions specifically on CRISPR-Cas9 gene drives for malaria control.',
+        source: 'Wellcome-funded CRISPR gene-drive malaria research program',
+        sourceUrl: 'https://www.frontiersin.org/journals/genetics',
+      },
+      {
+        name: 'Third Security (via Oxitec / TS Biotechnology Holdings)',
+        fit: 'The one real equity-style investor with a controlling stake in a commercial genetic-vector-control company — owns Oxitec, maker of the Friendly™ self-limiting Aedes aegypti mosquito. Oxitec is self-limiting/SIT, adjacent to but not a true gene drive; still the closest real venture-ownership precedent, and the plausible acquirer once there’s field data.',
+        source: 'Third Security — Our Story',
+        sourceUrl: 'https://thirdsecurity.com/our-story/',
+      },
+    ],
   },
   {
     questSlug: 'fast-grants-as-a-product',
