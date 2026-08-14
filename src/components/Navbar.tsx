@@ -31,6 +31,7 @@ const dataTabs = [
   { name: 'Globe', href: '/globe', count: publicCompanies.length, tone: 'cyan' },
   { name: 'Your Fit', href: '/fit', count: ARCHETYPE_LIST.length, tone: 'amber' },
   { name: 'The Quest', href: '/journey', count: questStages.length, tone: 'amber' },
+  { name: 'Good Quests', href: '/good-quests', count: requestsForStartups.length, tone: 'amber' },
   { name: 'Problems', href: '/', count: problems.length, tone: 'amber' },
   { name: 'Demand', href: '/demand', count: problems.length, tone: 'amber' },
   { name: 'Under-supplied', href: '/underserved', count: problems.length, tone: 'amber' },

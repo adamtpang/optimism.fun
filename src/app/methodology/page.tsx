@@ -314,16 +314,20 @@ export default function MethodologyPage() {
                 <ul className="space-y-3 text-sm text-ink-400">
                   <li>
                     <a
-                      href="https://foundersfund.com/2023/06/choose-good-quests/"
+                      href="https://traestephens.substack.com/p/choose-good-quests"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
                     >
-                      Founders Fund &middot; &ldquo;Choose Good Quests&rdquo;
+                      Trae Stephens &amp; Markie Wagner &middot; &ldquo;Choose Good Quests&rdquo;
                     </a>{' '}
-                    &mdash; Trae Stephens&rsquo; rubric for what makes a problem worth
-                    attacking: important if it works, a real frontier, unambiguously good.
-                    Anchors our tier definitions.
+                    &mdash; the good&times;hard quest grid: a good quest makes the future
+                    better, a bad one doesn&rsquo;t. Our best people owe the world a hard one.
+                    Gamified on{' '}
+                    <Link href="/good-quests" className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2">
+                      /good-quests
+                    </Link>
+                    .
                   </li>
                   <li>
                     <a
