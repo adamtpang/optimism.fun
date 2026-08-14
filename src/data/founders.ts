@@ -992,4 +992,106 @@ export const founders: Founder[] = [
       sourceUrl: 'https://www.philanthropy.com/article/rupert-murdochs-firm-gives-20-million-to-hollywood-charity/',
     },
   ]),
+  mk(97, 'Henry Nicholas III', 23_800_000_000, 'Broadcom (semiconductors)', 'USA', 66, 'conventional-philanthropy', [
+    {
+      vehicle: 'Nicholas Academic Centers (Henry T. Nicholas III Foundation)',
+      description: 'Broadcom’s co-founder (federal stock-options and drug charges both later resolved without conviction) has quietly put more than $57.7M into free after-school tutoring, SAT prep, and college-admissions support for under-resourced high schoolers in Santa Ana, California — a direct-service bet on educational access rather than research.',
+      amount: { value: 57_700_000, unit: 'USD cumulative', source: 'Orange County Business Journal', confidence: 'high', asOf: RESEARCHED },
+      problemSlug: 'pedagogy',
+      source: 'Orange County Business Journal — OC’s Wealthiest 2025: Henry T. Nicholas III',
+      sourceUrl: 'https://www.ocbj.com/special-report/ocs-wealthiest-2025/ocs-wealthiest-2025-henry-t-nicholas-iii/',
+    },
+  ]),
+  mk(98, 'Kumar Mangalam Birla', 22_800_000_000, 'Aditya Birla Group (conglomerate: metals, cement, telecom, financial services)', 'India', 59, 'conventional-philanthropy', [
+    {
+      vehicle: 'Aditya Birla Centre for Community Initiatives and Rural Development',
+      description: 'The Group’s CSR arm, chaired by his mother Rajashree Birla, runs 42 schools and roughly 18–24 hospitals across India, Thailand, Indonesia, the Philippines, and Egypt on more than Rs 500 crore in global CSR investment — steady, broad-based corporate giving across established causes, not a bet on any single underserved frontier.',
+      amount: { value: 60_000_000, unit: 'USD (Rs 500+ crore global CSR investment)', source: 'Aditya Birla Group', confidence: 'med', asOf: RESEARCHED },
+      source: 'Aditya Birla Group — Driving Sustainable Impact',
+      sourceUrl: 'https://www.adityabirla.com/en/community/our-strategy/',
+    },
+  ]),
+  mk(99, 'Ernest Garcia II', 22_700_000_000, 'Carvana / DriveTime Automotive (used cars, subprime auto loans)', 'USA', 69, 'conventional-philanthropy', [
+    {
+      vehicle: 'Garcia Family Foundation',
+      description: 'A $61M-asset Phoenix foundation funding Arizona education and health causes, including a University of Arizona childhood-disease research grant (the PANDA program) and the Brian Garcia Welcome Center at Phoenix’s homelessness campus, named for his late son. Modest and local relative to a $22.7B fortune.',
+      source: 'Inside Philanthropy — Garcia Family Foundation',
+      sourceUrl: 'https://www.insidephilanthropy.com/find-a-grant-places/arizona-grants/garcia-family-foundation',
+    },
+  ]),
+  mk(100, 'Wang Chuanfu', 22_100_000_000, 'BYD (EVs and batteries)', 'China', 60, 'conventional-philanthropy', [
+    {
+      vehicle: 'BYD 3-billion-yuan Education Charity Fund',
+      description: 'Launched December 30, 2024 alongside BYD’s 30th anniversary and its 10-millionth EV, funding scholarships at 100+ Chinese universities plus NEV-technology exhibits donated to 28 science museums — explicitly framed as building China’s next generation of battery and EV engineers.',
+      amount: { value: 414_000_000, unit: 'USD (RMB 3 billion)', source: 'Gasgoo', confidence: 'high', asOf: RESEARCHED },
+      problemSlug: 'scientific-productivity',
+      source: 'Gasgoo — BYD launches 3-billion-yuan education charity fund to support scholarships, promote NEV tech',
+      sourceUrl: 'https://autonews.gasgoo.com/articles/news/byd-launches-3-billion-yuan-education-charity-fund-to-support-scholarships-promote-nev-tech-70035553',
+    },
+  ]),
+  mk(101, 'Todd Graves', 22_000_000_000, 'Raising Cane’s (fast food)', 'USA', 54, 'conventional-philanthropy', [
+    {
+      vehicle: 'Raising Cane’s community giving ("Cane’s for a Cause")',
+      description: '$25M spread across hometown communities nationwide for the chain’s 25th anniversary in 2021, plus one-off gifts like $1M for 2025 Texas flood relief via the American Red Cross — branded, feel-good local philanthropy rather than a bet on any research frontier.',
+      amount: { value: 25_000_000, unit: 'USD (25th-anniversary community donations, 2021)', source: 'KATC', confidence: 'high', asOf: RESEARCHED },
+      source: 'KATC — Raising Cane’s celebrates 25 years with $25M donation to communities nationwide',
+      sourceUrl: 'https://www.katc.com/news/covering-louisiana/raising-canes-celebrates-25-years-with-25m-donation-to-communities-nationwide',
+    },
+  ]),
+  mk(102, 'John Fredriksen', 21_300_000_000, 'Frontline / Golden Ocean / Seadrill (shipping, tankers, offshore drilling)', 'Cyprus', 81, 'conventional-philanthropy', [
+    {
+      vehicle: 'Inger and John Fredriksen cancer research gifts, Radium Hospital, Oslo',
+      description: 'Named in memory of his wife Inger, who died of cancer in 2006 — the same year the family gave 50 million NOK to Oslo’s Radium Hospital. Norwegian press reports "hundreds of millions" more in NOK to cardiac and oncology research there since the early 2000s: a rare disclosed-dollar commitment from an otherwise famously press-shy shipping magnate.',
+      amount: { value: 7_700_000, unit: 'USD (NOK 50 million, 2006 gift)', source: 'Wikipedia, citing e24.no', confidence: 'med', asOf: RESEARCHED },
+      gapLabel: 'Cancer',
+      source: 'Wikipedia — Kathrine Fredriksen',
+      sourceUrl: 'https://en.wikipedia.org/wiki/Kathrine_Fredriksen',
+    },
+  ]),
+  mk(103, 'Dang Yanbao', 20_600_000_000, 'Ningxia Baofeng Energy Group (coal chemicals)', 'China', 53, 'conventional-philanthropy', [
+    {
+      vehicle: 'Ningxia Yanbao Charity Foundation',
+      description: 'Since 2011 has funneled 10% of Baofeng’s annual profit into scholarships and subsidies for poor families across Ningxia, one of China’s poorest provinces — RMB 302M personally donated in 2019 alone, on a path toward a pledged RMB 6 billion (~$940M) total, aimed squarely at breaking multi-generational rural poverty through education access.',
+      amount: { value: 44_000_000, unit: 'USD (RMB 302 million, 2019 personal donation)', source: 'Wikipedia — Dang Yanbao', confidence: 'high', asOf: RESEARCHED },
+      problemSlug: 'extreme-poverty',
+      source: 'Wikipedia — Dang Yanbao',
+      sourceUrl: 'https://en.wikipedia.org/wiki/Dang_Yanbao',
+    },
+  ]),
+  mk(104, 'Andrey Melnichenko', 20_400_000_000, 'EuroChem / SUEK (fertilizers, coal)', 'Russia', 54, 'conventional-philanthropy', [
+    {
+      vehicle: 'Andrey Melnichenko Foundation + Sirius educational center settlement',
+      description: 'Founded a foundation in 2016 for gifted-student STEM education (the Sirius network, Mendeleev Olympiad); his companies report roughly $500M in cumulative "charitable programs." The most striking recent disclosed figure — 32 billion rubles paid to Putin’s Sirius educational center in 2023 — was reported by The Economist to have coincided with prosecutors dropping a bid to seize his coal company, Sibeco: giving with a legal-settlement flavor, not pure discretionary philanthropy.',
+      amount: { value: 375_000_000, unit: 'USD approx (RUB 32 billion, 2023)', source: 'Meduza, citing The Economist', confidence: 'med', asOf: RESEARCHED },
+      source: 'Meduza — Billionaire Andrey Melnichenko gave 32 billion rubles to Putin’s ‘Sirius educational center’ as Russian prosecutors tried to seize his company',
+      sourceUrl: 'https://meduza.io/en/news/2026/07/10/billionaire-andrei-melnichenko-gave-32-billion-rubles-to-putin-s-sirius-educational-center-as-russian-prosecutors-tried-to-seize-his-company-the-economist-reports',
+    },
+  ]),
+  mk(105, 'Jerry Jones', 19_100_000_000, 'Dallas Cowboys / Comstock Resources (sports team ownership, oil and gas)', 'USA', 83, 'prestige-giving', [
+    {
+      vehicle: 'Gene and Jerry Jones Family–Dallas Cowboys Charities + Arlington Youth Foundation',
+      description: 'A family foundation making modest, growing grants — 79 grants totaling $19.6M since inception, annual giving up from $3.1M in 2020 to $7.3M in 2023 — plus a standing $16.5M commitment (2009–2041) to youth programs in Arlington, the Cowboys’ home city. Classic team-owner civic giving, family name on the building included.',
+      amount: { value: 19_600_000, unit: 'USD cumulative (79 grants)', source: 'Inside Philanthropy', confidence: 'high', asOf: RESEARCHED },
+      source: 'Inside Philanthropy — Gene & Jerry Jones Family Foundation',
+      sourceUrl: 'https://www.insidephilanthropy.com/find-a-grant/grants-j/gene-jerry-jones-family-foundation',
+    },
+  ]),
+  mk(106, 'Andrew Forrest', 18_100_000_000, 'Fortescue Metals Group (iron ore, green energy)', 'Australia', 64, 'frontier-bets', [
+    {
+      vehicle: 'Minderoo Foundation — Flourishing Oceans initiative',
+      description: 'A $100M initiative launched in 2018 to track illegal global fishing fleets and build a marine research station at Exmouth on Australia’s Ningaloo Reef — part of $1.8B+ the Forrests have given to Minderoo since 2001, including a record $5B share donation in 2023, the largest single charitable gift in Australian history.',
+      amount: { value: 100_000_000, unit: 'USD initiative (2018)', source: 'Philanthropy News Digest', confidence: 'high', asOf: RESEARCHED },
+      gapLabel: 'Ocean & marine ecosystems',
+      source: 'Philanthropy News Digest — Minderoo Foundation Launches Marine Research Initiative',
+      sourceUrl: 'https://philanthropynewsdigest.org/news/minderoo-foundation-launches-marine-research-initiative',
+    },
+    {
+      vehicle: 'Minderoo Foundation — Eliminate Cancer Initiative',
+      description: 'A$75M of a record A$400M pledge (2017) went specifically to reward international collaboration among cancer research institutes — an unusual funding structure aimed at breaking down the silo problem in cancer research rather than funding any single lab.',
+      amount: { value: 75_000_000, unit: 'USD (A$75 million, 2017)', source: 'SBS News', confidence: 'high', asOf: RESEARCHED },
+      gapLabel: 'Cancer',
+      source: 'SBS News — Billionaire Andrew Forrest pledges $400m for various charities',
+      sourceUrl: 'http://www.sbs.com.au/news/article/2017/05/22/billionaire-andrew-forrest-pledges-400m-various-charities',
+    },
+  ]),
 ]
