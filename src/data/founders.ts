@@ -1094,4 +1094,119 @@ export const founders: Founder[] = [
       sourceUrl: 'http://www.sbs.com.au/news/article/2017/05/22/billionaire-andrew-forrest-pledges-400m-various-charities',
     },
   ]),
+  mk(107, 'Sarath Ratanavadi', 17_900_000_000, 'Gulf Energy Development (power generation, LNG, telecom infrastructure)', 'Thailand', 61, 'prestige-giving', [
+    {
+      vehicle: 'USC Trojan golf program donation',
+      description: 'Donated $3M to USC’s men’s golf program in 2015; his son was admitted as a walk-on golfer through a special athletics admissions track days later, despite grades an admissions officer called "mediocre at best." One of dozens of cases detailed in a 2024 Los Angeles Times investigation into wealthy families buying admission through minor sports.',
+      amount: { value: 3_000_000, unit: 'USD donated (2015)', source: 'Daily Trojan / LA Times investigation', confidence: 'high', asOf: RESEARCHED },
+      source: 'Daily Trojan — Investigation exposes ‘walk-on’ admission backdoor',
+      sourceUrl: 'https://dailytrojan.com/2024/10/23/investigation-exposes-walk-on-admission-backdoor/',
+    },
+  ]),
+  mk(108, 'Zhong Huijuan', 17_800_000_000, 'Hansoh Pharmaceutical (oncology, CNS, and diabetes drugs)', 'China', 64, undefined, []),
+  mk(109, 'Pierre Chen', 17_800_000_000, 'Yageo Corporation (passive electronic components)', 'Taiwan', 67, 'prestige-giving', [
+    {
+      vehicle: 'YAGEO Foundation art collection — Sanyu’s "Five Nudes"',
+      description: 'Personally paid HK$303M (~US$38.7M) at a 2019 Christie’s Hong Kong evening sale for Sanyu’s Five Nudes, a world auction record for the Chinese-French modernist — bought back into his own YAGEO Foundation collection, which he plans to house in a private museum outside Taipei.',
+      amount: { value: 38_700_000, unit: 'USD (HK$303M) paid at auction (2019)', source: 'The Value', confidence: 'high', asOf: RESEARCHED },
+      source: 'The Value — HK$303m Record-Setting Sanyu’s Five Nudes Reigns Supreme in Hong Kong Auction 2019',
+      sourceUrl: 'https://en.thevalue.com/articles/christies-sanyu-five-nudes-hong-kong-record',
+    },
+  ]),
+  mk(110, 'Lin Tsung-Chi', 17_700_000_000, 'King Slide Works (server rail kits and AI data-center hardware)', 'Taiwan', 85, 'prestige-giving', [
+    {
+      vehicle: 'Huixian Temple reconstruction + hometown elementary school scholarship',
+      description: 'After a deepened religious faith following King Slide’s difficult IPO years, donated NT$20M (~US$650K) toward rebuilding the Huixian Temple’s Tiangong Hall (his daughter and son-in-law gave a further NT$20M+); also funds a small scholarship at Dahu Elementary, his childhood school. Taiwan’s newly-minted richest man remains otherwise intensely private about giving relative to his $17B+ fortune.',
+      amount: { value: 650_000, unit: 'USD (NT$20M) donated toward temple reconstruction', source: 'China Times', confidence: 'med', asOf: RESEARCHED },
+      source: 'China Times — 台灣新科首富在高雄！川湖董座林聰吉篤信濟公「不賣專利」寫傳奇',
+      sourceUrl: 'https://www.chinatimes.com/realtimenews/20260811004091-260410',
+    },
+  ]),
+  mk(111, 'Kwong Siu-hing', 17_650_000_000, 'Sun Hung Kai Properties (real estate)', 'Hong Kong', 96, 'conventional-philanthropy', [
+    {
+      vehicle: 'SHKP-Kwoks’ Foundation — CUHK scholarship programme',
+      description: 'Since 2005, the family foundation has funded a scholarship track bringing top mainland Chinese students from remote provinces to the Chinese University of Hong Kong, plus need-based aid for local students; the foundation has run 80+ charitable projects across nearly 30 universities since inception.',
+      amount: { value: 740_000_000, unit: 'RMB cumulative donations to university programs (20 years)', source: 'Sun Hung Kai Properties', confidence: 'med', asOf: RESEARCHED },
+      problemSlug: 'pedagogy',
+      source: 'Sun Hung Kai Properties — SHKP-Kwoks’ Foundation Supports Outstanding Students from CUHK',
+      sourceUrl: 'https://www.shkp.com/en-US/media/press-releases/shkp-kwoks-foundation-supports-outstanding-students-from-cuhk',
+    },
+  ]),
+  mk(112, 'John Collison', 17_500_000_000, 'Stripe (payments infrastructure)', 'Ireland', 35, 'frontier-bets', [
+    {
+      vehicle: 'Frontier (advance market commitment for carbon removal)',
+      description: 'Stripe (Collison is president) co-launched Frontier in 2022 with Alphabet, Meta, Shopify, and McKinsey: a pre-purchase commitment to buy verified carbon removal from early-stage startups to de-risk a nascent market, growing out of Stripe’s original $1M/year carbon-removal purchasing commitment started in 2019.',
+      amount: { value: 925_000_000, unit: 'USD initial advance market commitment (2022, since expanded to $1.8B)', source: 'CNBC', confidence: 'high', asOf: RESEARCHED },
+      problemSlug: 'climate-change',
+      source: 'CNBC — Stripe, Alphabet, Meta, Shopify, McKinsey spur $925 million carbon capture market',
+      sourceUrl: 'https://www.cnbc.com/2022/04/12/stripe-alphabet-meta-shopify-mckinsey-spur-carbon-capture-market.html',
+    },
+  ]),
+  mk(113, 'Patrick Collison', 17_500_000_000, 'Stripe (payments infrastructure)', 'Ireland', 37, 'frontier-bets', [
+    {
+      vehicle: 'Fast Grants',
+      description: 'Co-founded with economist Tyler Cowen in 2020 after concluding NIH grant cycles moved too slowly for a pandemic; funded 260+ COVID-19 research projects with $10K-$500K awards for variant sequencing, repurposed-drug trials, and rapid testing, turning around in days instead of the usual hundreds.',
+      amount: { value: 50_000_000, unit: 'USD raised and distributed (2020-2022)', source: 'Nature', confidence: 'high', asOf: RESEARCHED },
+      problemSlug: 'scientific-productivity',
+      source: 'Nature — COVID ‘Fast Grants’ sped up pandemic science',
+      sourceUrl: 'https://www.nature.com/articles/d41586-021-02111-7',
+    },
+    {
+      vehicle: 'Arc Institute',
+      description: 'Co-founded in 2021 with Stanford/UC Berkeley scientists Patrick Hsu and Silvana Konermann: an independent nonprofit biomedical research institute giving scientists unrestricted, multi-year funding outside the standard NIH grant-application grind, seeded by Collison alongside Vitalik Buterin and Dustin Moskovitz and Cari Tuna’s Good Ventures.',
+      amount: { value: 650_000_000, unit: 'USD initial endowment commitment (2021)', source: 'Stanford Report', confidence: 'high', asOf: RESEARCHED },
+      problemSlug: 'scientific-productivity',
+      source: 'Stanford Report — Stanford collaboration with Arc Institute aims to expand academic, research and funding opportunities',
+      sourceUrl: 'https://news.stanford.edu/stories/2021/12/stanford-collaboration-arc-institute-aims-expand-academic-research-funding-opportunities',
+    },
+  ]),
+  mk(114, 'George Kaiser', 16_700_000_000, 'BOK Financial / oil and gas', 'USA', 83, 'conventional-philanthropy', [
+    {
+      vehicle: 'George Kaiser Family Foundation',
+      description: 'Signed the Giving Pledge in 2010; has given nearly $4B to his foundation to date (endowment ~$5B as of 2024), with roughly 80% staying in Tulsa to fund early-childhood poverty programs including Educare early-learning centers and the Tulsa Remote cash-incentive relocation program.',
+      amount: { value: 4_000_000_000, unit: 'USD given to foundation to date', source: 'Tulsa World', confidence: 'high', asOf: RESEARCHED },
+      problemSlug: 'extreme-poverty',
+      source: 'Tulsa World — Happy birthday to Tulsa philanthropist George Kaiser: How he and his foundation invest in Tulsa',
+      sourceUrl: 'https://tulsaworld.com/news/local/history/happy-birthday-to-tulsa-philanthropist-george-kaiser-how-he-and-his-foundation-invest-in-tulsa/collection_4bbe5e7f-147f-52a7-9250-491421ef6df4.html',
+    },
+    {
+      vehicle: 'A Gathering Place (public park)',
+      description: 'Funded through GKFF; believed to be the largest single gift to a public park in U.S. history, opened 2018 along the Arkansas River in Tulsa.',
+      amount: { value: 350_000_000, unit: 'USD gift', source: 'Tulsa World', confidence: 'high', asOf: RESEARCHED },
+      source: 'Tulsa World — Happy birthday to Tulsa philanthropist George Kaiser: How he and his foundation invest in Tulsa',
+      sourceUrl: 'https://tulsaworld.com/news/local/history/happy-birthday-to-tulsa-philanthropist-george-kaiser-how-he-and-his-foundation-invest-in-tulsa/collection_4bbe5e7f-147f-52a7-9250-491421ef6df4.html',
+    },
+  ]),
+  mk(115, 'Georg Schaeffler', 16_700_000_000, 'Schaeffler Group (automotive and industrial bearings)', 'Germany', 62, 'conventional-philanthropy', [
+    {
+      vehicle: 'Schaeffler Foundation',
+      description: 'Launched in 2021 to mark Schaeffler Group’s 75th anniversary, funded by Schaeffler AG and IHO Holding (the family holding company Schaeffler controls) with initial capital plus ongoing annual commitments, focused on climate and environmental protection, research and science, and education.',
+      amount: { value: 3_000_000, unit: 'EUR initial capital (2021)', source: 'Process Engineering', confidence: 'med', asOf: RESEARCHED },
+      source: 'Process Engineering — Schaeffler launches global foundation to mark 75th anniversary',
+      sourceUrl: 'https://processengineering.co.uk/article/2031653/schaeffler-launches-global-foundation-to-mark-75th-anniversary',
+    },
+    {
+      vehicle: 'Schaeffler Group COVID-19 relief donations',
+      description: 'Corporate donations during the pandemic: €1M to the German Red Cross and €800K to first-responder organizations in China (2020).',
+      amount: { value: 1_800_000, unit: 'EUR combined (2020)', source: 'Schaeffler Sustainability Report 2021', confidence: 'med', asOf: RESEARCHED },
+      source: 'Schaeffler Sustainability Report 2021 — Social responsibility',
+      sourceUrl: 'https://www.schaeffler-sustainability-report.com/2021/action-fields/employees-and-society/social-responsibility.html',
+    },
+  ]),
+  mk(116, 'John Menard Jr', 16_600_000_000, 'Menards (home improvement retail)', 'USA', 85, 'conventional-philanthropy', [
+    {
+      vehicle: 'Luther Midelfort / Mayo Clinic Health System (Eau Claire, WI)',
+      description: 'Donated $15M in 2008 to fund the Menard Center for Emergency Care and the Menard Transformational Fund for Education at Luther Midelfort in Eau Claire, Wisconsin.',
+      amount: { value: 15_000_000, unit: 'USD donated (2008)', source: 'Newswise', confidence: 'high', asOf: RESEARCHED },
+      source: 'Newswise — Menard Gift to Fund Mayo Clinic Learning System, Luther Midelfort Emergency Center',
+      sourceUrl: 'https://www.newswise.com/articles/menard-gift-to-fund-mayo-clinic-learning-system-luther-midelfort-emergency-center',
+    },
+    {
+      vehicle: 'North Dakota State University — Challey Institute for Global Innovation and Growth',
+      description: 'The Menard family gave $5.5M to endow the Sheila and Robert Challey Institute for Global Innovation and Growth at NDSU, supporting free-market economics research and teaching.',
+      amount: { value: 5_500_000, unit: 'USD gift', source: 'Philanthropy News Digest', confidence: 'high', asOf: RESEARCHED },
+      source: 'Philanthropy News Digest — North Dakota State receives $5.5 million from Menard family',
+      sourceUrl: 'https://philanthropynewsdigest.org/news/north-dakota-state-receives-5.5-million-from-menard-family',
+    },
+  ]),
 ]
