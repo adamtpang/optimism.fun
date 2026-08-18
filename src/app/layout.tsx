@@ -24,10 +24,13 @@ const fraunces = Fraunces({
   variable: '--font-fraunces',
 })
 
+const SITE_URL = 'https://optimism.fun'
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "optimism.fun | Humanity's Quest Log",
   description:
-    "A ranked dashboard of humanity's most important problems. All problems are explainable, all solutions are creatable. Companies, founders, countries, crypto, and capital mapped to the quest they serve.",
+    "optimism.fun ranks humanity's biggest unsolved problems and maps the companies, founders, and capital already working to solve each one.",
   keywords: [
     'optimism',
     'critical rationalism',
@@ -42,7 +45,7 @@ export const metadata: Metadata = {
     title: "optimism.fun | Humanity's Quest Log",
     description:
       "A ranked dashboard of humanity's most important problems, scored on welfare, x-risk, and utility delta. Infinite problems, infinite solutions.",
-    url: 'https://optimism.fun',
+    url: SITE_URL,
     siteName: 'optimism.fun',
     type: 'website',
   },
@@ -52,6 +55,31 @@ export const metadata: Metadata = {
     description:
       "All problems are explainable. All solutions are creatable. A ranked dashboard of humanity's most important problems.",
   },
+}
+
+const organizationLd = {
+  '@type': 'Organization',
+  '@id': `${SITE_URL}/#organization`,
+  name: 'optimism.fun',
+  url: SITE_URL,
+  logo: `${SITE_URL}/brand/optimism-mark.svg`,
+  sameAs: ['https://github.com/adamtpang/optimism.fun'],
+}
+
+const websiteLd = {
+  '@type': 'WebSite',
+  '@id': `${SITE_URL}/#website`,
+  url: SITE_URL,
+  name: 'optimism.fun',
+  description:
+    "optimism.fun ranks humanity's biggest unsolved problems and maps the companies, founders, and capital already working to solve each one.",
+  publisher: { '@id': `${SITE_URL}/#organization` },
+  creator: { '@id': `${SITE_URL}/#organization` },
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [organizationLd, websiteLd],
 }
 
 export default function RootLayout({
@@ -66,6 +94,11 @@ export default function RootLayout({
       className={`${plexSans.variable} ${plexMono.variable} ${fraunces.variable}`}
     >
       <body className="antialiased">
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <PostHogProvider>
           <Providers>{children}</Providers>
         </PostHogProvider>

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
@@ -14,6 +15,15 @@ import { ecosystem } from '@/data/ecosystem'
 import { voices } from '@/data/voices'
 import { founders } from '@/data/founders'
 import { sectors } from '@/data/sectors'
+
+// Canonical is scoped to the homepage here (not on the root layout), so it
+// doesn't cascade as an inherited default onto every other route: Next.js
+// metadata inheritance would otherwise make every page point back at "/".
+export const metadata: Metadata = {
+  alternates: {
+    canonical: '/',
+  },
+}
 
 export default function Home() {
   const solutionCount = companies.length + publicCompanies.length
