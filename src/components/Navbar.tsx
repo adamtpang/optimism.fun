@@ -38,6 +38,7 @@ const dataTabs: NavTab[] = [
   { name: 'Media', href: '/media', count: seededMedia.length, tone: 'cyan' },
   { name: 'Artifacts', href: '/artifacts', count: infographicBriefs.length, tone: 'violet' },
   { name: 'Solutions', href: '/companies', count: publicCompanies.length, tone: 'cyan' },
+  { name: 'Wealth', href: '/wealth', count: publicCompanies.length + countries.length + founders.length, tone: 'violet' },
   { name: 'Movers', href: '/movers', count: publicCompanies.filter((c) => c.growth3yr).length, tone: 'amber' },
   { name: 'Signals', href: '/signals', count: SIGNAL_CATEGORIES.length, tone: 'cyan' },
   { name: 'People', href: '/founders', count: founders.length, tone: 'amber' },
