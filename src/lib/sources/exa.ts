@@ -451,9 +451,16 @@ const QUEST_CROWDING_SCHEMA = {
           questSlug: { type: 'string' },
           competitorCount: {
             type: 'number',
-            description: 'Number of companies/startups currently building this specific thing',
+            description:
+              'Number of REAL entities of any legal structure — companies/funded startups, nonprofits, academic institutes, government programs, or philanthropic funds — already working on this specific thing, not the broad category',
           },
-          exampleCompetitors: { type: 'array', items: { type: 'string' }, maxItems: 5 },
+          exampleCompetitors: {
+            type: 'array',
+            items: { type: 'string' },
+            maxItems: 5,
+            description:
+              'Up to 5 names. For anything that is NOT a company, append its type in parens, e.g. "Institute for Replication (academic)", "Renaissance Philanthropy (nonprofit)", "NIH reproducibility hub (government)".',
+          },
           sourceUrl: { type: 'string', format: 'uri' },
         },
         required: ['questSlug', 'competitorCount'],
@@ -464,8 +471,14 @@ const QUEST_CROWDING_SCHEMA = {
 } as const
 
 /**
- * One Exa Agent run counting the real competitor landscape for each quest.
- * Returns [] when Exa is unconfigured or the run fails — never throws.
+ * One Exa Agent run counting the real competitor landscape for each quest,
+ * across every legal structure — not just for-profit companies. A company-
+ * only query undercounts any quest whose real competition is institutional
+ * (a well-funded nonprofit, an academic replication institute, a government
+ * program) rather than venture-backed — see
+ * HANDOFF_FIT_AND_CROWDING_2026-08-18.md for the two quests this falsely
+ * marked "open" before the fix. Returns [] when Exa is unconfigured or the
+ * run fails — never throws.
  */
 export async function sourceQuestCrowding(
   quests: { slug: string; title: string; shape: string }[],
@@ -473,7 +486,7 @@ export async function sourceQuestCrowding(
 ): Promise<QuestCrowdingSignal[]> {
   if (!isExaConfigured() || quests.length === 0) return []
 
-  const query = `For each startup idea below, count how many companies or funded startups are CURRENTLY building this specific thing (not the broad category — the specific approach described). Return the count, up to 5 example company names, and a source URL. Be conservative; only count real, operating companies.
+  const query = `For each startup idea below, count how many REAL entities are CURRENTLY working on this specific thing (not the broad category — the specific approach described). Search across EVERY legal structure, not just companies: for-profit companies/funded startups, nonprofits, academic institutes and research groups, government programs, and philanthropic funds all count equally — a well-funded nonprofit or academic lab already doing this is just as real a competitor as a venture-backed startup, and missing them makes a genuinely contested space look falsely open. Return the total count, up to 5 example names (append the type in parens for anything that isn't a company, e.g. "Institute for Replication (academic)"), and a source URL. Be conservative; only count real, currently-operating entities.
 
 ${quests.map((q) => `- questSlug "${q.slug}" — ${q.title}: ${q.shape}`).join('\n')}`
 
