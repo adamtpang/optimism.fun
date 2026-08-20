@@ -336,6 +336,56 @@ The regulatory category is the bottleneck. If FDA will not accept a composite en
 
 Cite everything, especially FDA guidance documents and public meeting minutes.`,
   },
+  {
+    questSlug: 'datacenter-power-smoothing',
+    names: [
+      { name: 'Surgewell', note: 'names the exact failure mode it prevents — the GPU-cluster load surge' },
+      { name: 'Steadygrid', note: 'plain, the whole product claim in one word' },
+      { name: 'Wattbuffer', note: 'literal — a buffer for watts, the actual mechanism' },
+    ],
+    riskiestAssumption:
+      'That GPU-cluster power smoothing is genuinely a distinct engineering problem from grid-scale arbitrage storage, not just a relabeled version of it. If existing storage majors (Fluence, Tesla Megapack) can trivially adapt their products, there is no defensible wedge here.',
+    firstArtifact:
+      'A real load-profile teardown: pull public power-draw data from one documented large GPU training run and show, with numbers, how different the transient signature actually is from a typical grid-scale storage discharge curve. If they look the same, the wedge does not exist.',
+    gatekeeper:
+      'Hyperscaler and colocation-operator procurement teams, and FERC, whose co-location rules for behind-the-meter storage at datacenters were still being written as of 2026',
+    promptBody: `Build me a research workspace for evaluating behind-the-meter battery storage tuned to AI datacenter power smoothing.
+
+The riskiest assumption is that this is a genuinely distinct engineering problem from grid-scale arbitrage storage, not just the same product with new marketing. I need:
+1. Pull real, public power-draw data from at least one documented large-scale GPU training run (research papers, hyperscaler engineering blog posts) and characterize the actual load transient: how fast, how large, how frequent the spikes are.
+2. Compare that transient signature against a typical grid-scale arbitrage battery's discharge profile (utility-scale storage case studies) to find the real, specific engineering gap, if one exists.
+3. Find every company currently selling into this space (Fluence, Tesla Megapack, and any datacenter-specific entrants) and what their actual product spec claims about response time and cycling behavior.
+4. Summarize FERC's 2026 rulemaking status on behind-the-meter co-location at datacenters — what's decided, what's still open, and the real regulatory risk of building ahead of the rules.
+5. Output a memo: does a genuine wedge exist, what the first product spec should be, and the three biggest reasons a hyperscaler would say no.
+
+Use real sources with URLs. Where you cannot verify something, say so rather than guessing.`,
+    domainIdeas: [
+      { domain: 'surgewell.com', note: 'names the exact failure mode this product prevents' },
+      { domain: 'steadygrid.co', note: 'plain, the product claim in one word — .co since .com is a stretch' },
+      { domain: 'wattbuffer.com', note: 'literal mechanism name, easy to explain in one sentence' },
+      { domain: 'clusterbalance.io', note: 'names the GPU-cluster-specific angle directly' },
+    ],
+    capitalFirms: [
+      {
+        name: 'National Grid Ventures',
+        fit: 'Just committed $1.75B for a 35% stake in Joulent LLC specifically to build contracted power and electrical infrastructure for US large-load datacenter demand, real, dated, on-thesis strategic capital already active in exactly this space.',
+        source: 'PR Newswire — National Grid Ventures invests $1.75bn in datacenter power',
+        sourceUrl: 'https://www.prnewswire.com/news-releases/national-grid-ventures-to-invest-1-75bn-to-accelerate-power-solutions-for-us-data-centers-and-ai-302815750.html',
+      },
+      {
+        name: 'Brookfield Renewable Partners',
+        fit: 'Acquired Aypa Power for ~$7B enterprise value in 2026, taking its full battery-storage development platform and team, real, recent proof of appetite for scaled power-storage assets serving large-load demand.',
+        source: 'Energy Tech — Brookfield Renewable acquires Aypa Power',
+        sourceUrl: 'https://www.energytech.com/energy-storage/news/55395679/where-the-money-flows-mercom-report-says-energy-storage-attracts-nearly-9b-so-far-in-2026',
+      },
+      {
+        name: 'Breakthrough Energy Ventures',
+        fit: 'Established early-stage climate/energy-infrastructure fund with a real, public thesis covering grid storage and industrial decarbonization, the standard first call for a hard-infra energy startup at seed/Series A.',
+        source: 'Breakthrough Energy — Our Approach',
+        sourceUrl: 'https://www.breakthroughenergy.org',
+      },
+    ],
+  },
 ]
 
 const bySlug = new Map(starterPacks.map((p) => [p.questSlug, p]))

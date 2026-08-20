@@ -563,6 +563,24 @@ export const requestsForStartups: RequestForStartup[] = [
 
   // ─── Energy abundance (cont.) ─────────────────────────────────────────────
   {
+    slug: 'datacenter-power-smoothing',
+    crowding: 'open',
+    problemSlug: 'ai-datacenter-power',
+    title: 'Behind-the-meter battery storage for datacenter power smoothing',
+    pitch:
+      'GPU cluster load spikes whipsaw the grid in a way ordinary datacenter loads never did. Build the fast-response battery system purpose-built for that exact transient signature, not adapted grid-scale arbitrage storage.',
+    whyNow:
+      "FERC's co-location rules for behind-the-meter storage at datacenters were still being written as of 2026 — the regulatory window is open now, not closed, and no player has captured this specific niche yet.",
+    shape:
+      'A battery-plus-power-electronics company selling fast-response, GPU-cluster-tuned smoothing systems directly to hyperscalers and colocation operators, distinct from general grid-scale storage.',
+    successLooksLike:
+      'Datacenter operators treat GPU-cluster power smoothing as a standard purchased line item, the way they already buy UPS systems, and this company is the default vendor.',
+    goodQuest:
+      'A real systems-engineering frontier sitting at the exact chokepoint under the AI buildout, genuinely still open as of 2026, good with no plausible misuse.',
+    confidence: 'med',
+    asOf: '2026-08-20',
+  },
+  {
     slug: 'interconnection-queue-underwriting',
     crowding: 'contested',
     problemSlug: 'energy-abundance',

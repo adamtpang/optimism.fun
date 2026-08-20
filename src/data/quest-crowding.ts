@@ -61,6 +61,7 @@ export const sourcedCrowding: SourcedCrowding[] = [
   { questSlug: 'broad-spectrum-antivenom', competitorCount: 4, crowding: 'contested', exampleCompetitors: ['Centivax / Columbia (academic)', 'DTU Denmark (academic)', 'Ophirex', 'Wellcome Trust snakebite programme (philanthropic fund)'], asOf: '2026-08-20' },
   { questSlug: 'neonatal-sepsis-risk-score', competitorCount: 4, crowding: 'contested', exampleCompetitors: ['Neotree (academic/nonprofit, UCL/Great Ormond Street)', 'Mbarara Regional Referral Hospital algorithm (academic, Uganda)', 'Delhi Neonatal Infection Study ML model (academic, India)', 'GARDP / NeoOBS (nonprofit, Gates-funded)'], asOf: '2026-08-20' },
   { questSlug: 'interconnection-queue-underwriting', competitorCount: 4, crowding: 'contested', exampleCompetitors: ['GridUnity', 'Smarter Grid Solutions', 'Enline', 'GridAstra'], asOf: '2026-08-20' },
+  { questSlug: 'datacenter-power-smoothing', competitorCount: 0, crowding: 'open', exampleCompetitors: [], asOf: '2026-08-20' },
 ]
 
 const bySlug = new Map(sourcedCrowding.map((c) => [c.questSlug, c]))

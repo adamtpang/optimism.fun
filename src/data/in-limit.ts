@@ -146,6 +146,19 @@ export const inLimitCaps: InLimitCap[] = [
       'A company that delivers a genuine tutor-quality education to anyone, in any language, for near-zero marginal cost becomes the default layer for human capital formation worldwide — the closest thing to compounding the entire species.',
   },
   {
+    problemSlug: 'ai-datacenter-power',
+    marketCap: {
+      value: 400_000_000_000,
+      unit: 'USD (in-limit market cap)',
+      source: 'ceiling estimate, anchored to a scaled power-infrastructure major serving the AI-datacenter vertical specifically',
+      confidence: 'low',
+      asOf: '2026-08-20',
+    },
+    comparable: 'NextEra Energy (~$140-160B) scaled 2.5-3x for AI-driven demand growth',
+    reasoning:
+      "Deliberately below the $1T bar most entries here clear, and honestly so: this session's own research found the underlying $1.3T/year power buildout fragments across generation, transmission, and storage sub-markets no single company plausibly captures whole (the same test that disqualifies climate change). The realistic ceiling is a company that becomes the dominant AI-datacenter power infrastructure vendor across several sub-niches at once, not one that tolls the entire buildout.",
+  },
+  {
     problemSlug: 'loneliness',
     marketCap: {
       value: 200_000_000_000,
