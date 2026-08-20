@@ -386,6 +386,336 @@ Use real sources with URLs. Where you cannot verify something, say so rather tha
       },
     ],
   },
+  {
+    questSlug: 'geologic-hydrogen-flow-engineering',
+    names: [
+      { name: 'Sustained Flow', note: 'names the exact metric every current well is missing' },
+      { name: 'Serpentine', note: 'serpentinization, the rock-water reaction that generates the hydrogen' },
+      { name: 'Stimwell', note: 'plain, from "well stimulation" — the actual engineering discipline' },
+    ],
+    riskiestAssumption:
+      'That hydrogen-producing rock reactions can be meaningfully accelerated or sustained by injection (water, heat, catalysts) at commercial flow rates, rather than being a fixed, slow geologic process that no amount of stimulation speeds up. If the reaction kinetics are the hard limit, this is a much smaller company than the exploration land grab implies.',
+    firstArtifact:
+      'A stimulation-literature memo: every published or DOE-funded attempt to accelerate serpentinization or hydrogen-generating reactions in situ, what stimulation method was tried, what flow-rate result (if any) was reported, and whether any well has sustained commercial-comparable flow for more than a few weeks. No lab, no drilling, just the honest state of the evidence.',
+    gatekeeper:
+      'Exploration companies that already hold a discovery well (Koloma, Mantle8, and peers) — they control the only assets worth stimulating, so the first sale is a services or JV deal with one of them, not a landowner or regulator',
+    promptBody: `Build me a research workspace for evaluating geologic hydrogen production/flow-rate engineering, distinct from exploration.
+
+The exploration side of this industry is already funded and crowded (Koloma, Mantle8, Snowfox). My bet is the unsolved problem is downstream: once you've found hydrogen, nobody has proven you can sustain commercial flow rates. I need:
+1. Pull every public source on DOE/ARPA-E's 2023 geologic hydrogen program (the $20M, 16-project award) — which teams worked specifically on stimulation, well-flow modeling, or enhancing/controlling the rate of hydrogen production (not exploration or resource mapping), and what results, if any, have been published since.
+2. Find every published pilot-well result (Vema in Quebec, GeoKiln in Kansas, Koloma's Midcontinent Rift wells, Mantle8's Pyrenees site, and any others) and extract the actual reported flow rate, well duration, and whether stimulation was attempted.
+3. Summarize the current scientific understanding of what limits hydrogen generation rate in situ — serpentinization kinetics, radiolysis rate, rock permeability — and which of those is the binding constraint per the recent Energy & Environmental Science review literature (2025-2026).
+4. Identify every company or research group working specifically on stimulation/enhancement technology (not exploration), and what stage each is at.
+5. Find what technical or commercial terms exploration companies with discovery wells are actually offering to production-technology partners, if any have been reported.
+6. Output a memo: does the flow-rate problem look solvable with known reservoir-engineering techniques (borrowed from geothermal or unconventional gas), or does it look like a hard geochemical ceiling, and who would be the first realistic partner.
+
+Use real sources with URLs. Where you cannot verify something, say so rather than guessing.`,
+    domainIdeas: [
+      { domain: 'sustainedflow.com', note: 'names the exact metric this company exists to deliver — availability not verified' },
+      { domain: 'serpentine.energy', note: 'the real geochemical reaction (serpentinization) that generates natural hydrogen' },
+      { domain: 'stimwell.co', note: 'plain, from "well stimulation," the actual reservoir-engineering discipline being sold' },
+      { domain: 'h2flowrate.com', note: 'literal — the number every current operator cannot yet produce' },
+      { domain: 'ratelimited.energy', note: 'wry — names both the chemistry constraint and the business risk in one phrase' },
+    ],
+    capitalFirms: [
+      {
+        name: 'Breakthrough Energy Ventures',
+        fit: 'Bill Gates-founded climate fund that is a named backer of both major natural-hydrogen exploration companies, Koloma and Mantle8, making it the one investor already fluent in this exact resource and actively looking for the next layer (production) once exploration derisks.',
+        source: 'Hydrogen Insight — Bill Gates-backed Koloma raises private finance',
+        sourceUrl: 'https://www.hydrogeninsight.com/innovation/bill-gates-backed-natural-hydrogen-explorer-koloma-raises-nearly-a-quarter-of-a-billion-dollars-in-private-finance/2-1-1597379',
+      },
+      {
+        name: 'ARPA-E (U.S. Department of Energy)',
+        fit: 'Ran a $20M, 16-project program in 2023 explicitly targeting technologies that "stimulate hydrogen production from mineral deposits" and "enhance or control the rate of hydrogen production" — this is the flow-engineering sub-problem by name, not exploration, and it already funded Koloma Labs directly for well-stimulation modeling. Realistic first ask is a grant or cooperative agreement, not a priced round.',
+        source: 'ARPA-E — $20 Million to 16 Projects Spearheading Exploration of Geologic Hydrogen',
+        sourceUrl: 'https://arpa-e.energy.gov/news-and-media/press-releases/us-department-energy-announces-20-million-16-projects-spearheading',
+      },
+      {
+        name: "Amazon's Climate Pledge Fund",
+        fit: "Participated in Koloma's ~$245M raise specifically for natural hydrogen, one of the few corporate climate funds with direct, dated exposure to this resource class and a stated interest in derisking it toward commercial supply.",
+        source: 'Canary Media — The $245M bid to pull clean hydrogen straight from the earth',
+        sourceUrl: 'https://www.canarymedia.com/articles/hydrogen/the-245m-bid-to-pull-clean-hydrogen-straight-from-the-earth',
+      },
+      {
+        name: 'Mitsubishi Heavy Industries / Osaka Gas',
+        fit: 'Led a $50M strategic round into Koloma in 2024, corporate energy players with existing gas-production and reservoir-engineering expertise who have the clearest commercial reason to fund whoever solves sustained flow rather than just discovery.',
+        source: 'Mitsubishi Heavy Industries — MHI Invests in Geologic Hydrogen Exploration Company: Koloma',
+        sourceUrl: 'https://www.mhi.com/news/241015.html',
+      },
+    ],
+  },
+  {
+    questSlug: 'dumpsite-methane-capture',
+    names: [
+      { name: 'Vent Zero', note: 'the target state — no more unmanaged venting' },
+      { name: 'Biocover', note: 'plain, names the retrofit mechanism directly' },
+      { name: 'Undumped', note: 'wry — reframes the site as a resource, not waste' },
+    ],
+    riskiestAssumption:
+      'That a modular, low-capex retrofit can generate carbon credits a buyer will actually pay for at a price that clears the cost of installing and operating gas capture on a dump nobody engineered to be captured from, before a full landfill rebuild — and that a methodology exists (or can be approved) to verify avoided methane on an open, unmanaged site rather than only an engineered one.',
+    firstArtifact:
+      "A methodology-and-precedent memo: which carbon-credit methodologies (Verra, Gold Standard) currently allow crediting for gas capture on open/unmanaged dumps versus requiring an engineered landfill first, what StratX and any other funded comparable actually built and sold credits against, and a back-of-envelope on whether current credit prices clear the retrofit cost for one real dumpsite.",
+    gatekeeper:
+      'The municipality or waste-site operator who controls physical access to the dump, plus the carbon-credit registry (Verra/Gold Standard) that has to approve the methodology before any credit is sellable',
+    promptBody: `Build me a research workspace for evaluating a modular methane-capture retrofit business for open/unmanaged dumps in the Global South.
+
+The unsolved part is not landfill gas capture in general (that's standard in the US/EU) — it's whether it can be done cheaply, without a full engineered-landfill rebuild, on the open dumps that dominate fast-urbanizing countries, and financed by carbon credits. I need:
+1. Find every real company or funded project doing methane mitigation on open/unmanaged dumps specifically (not engineered landfills) in low- and middle-income countries — StratX and any peers — and extract what technology they use, what stage they're at, and who funded them.
+2. Pull the actual Verra and Gold Standard methodologies that apply to landfill/dumpsite methane crediting, and determine whether any currently certifies avoided-emissions credits for open, unmanaged dumps versus requiring an engineered landfill or active gas-collection system first.
+3. Find real data (WasteMAP or equivalent) on methane output per tonne of waste for a representative open dump in a fast-urbanizing country, and use current voluntary carbon credit prices for methane-destruction credits to estimate whether the revenue would plausibly clear a low-capex retrofit's installation and operating cost.
+4. Identify the largest known open/unmanaged dumpsites by volume or population exposure (e.g. sites already flagged by the Global Methane Hub or Global Methane Pledge waste pathway reporting) as realistic first targets.
+5. Summarize what community/municipal consent or contracting process a comparable waste-sector project had to go through to get physical site access.
+6. Output a memo: does the credit economics plausibly work today, which methodology gap is the real blocker if any, and what the first target site should be.
+
+Use real sources with URLs. Where you cannot verify something, say so rather than guessing.`,
+    domainIdeas: [
+      { domain: 'ventzero.co', note: 'names the target end-state — zero unmanaged methane venting — availability not verified' },
+      { domain: 'dumpcapture.com', note: 'literal and unglamorous, matches how this sector actually talks about itself' },
+      { domain: 'biocover.io', note: 'names the retrofit mechanism (a methane-oxidizing cover) directly' },
+      { domain: 'methanewell.org', note: 'nonprofit-coded for the credit/verification side of the business' },
+      { domain: 'undumped.com', note: 'wry — reframes an open dump as a captured resource rather than a liability' },
+    ],
+    capitalFirms: [
+      {
+        name: 'Neglected Climate Opportunities (Grantham Environmental Trust)',
+        fit: 'Led the 2026 funding round for StratX, a landfill-methane biocover company operating in the Global South, with its managing director stating on the record that "landfill methane is one of the largest unmanaged sources of climate pollution on Earth... yet it has been almost entirely neglected by both policy and capital" — the closest thing to a dedicated investor thesis that exists for this exact niche.',
+        source: 'Tech.eu — StratX raises $1.19M to tackle landfill methane with living biocovers',
+        sourceUrl: 'https://tech.eu/2026/07/14/stratx-raises-119m-to-tackle-landfill-methane-with-living-biocovers/',
+      },
+      {
+        name: 'Terraset',
+        fit: "Made StratX's initial carbon-credit purchase commitment, a real, dated example of a buyer underwriting a Global South dumpsite-methane retrofit through a credit offtake rather than equity — the realistic first revenue partner for this business model.",
+        source: 'Tech.eu — StratX raises $1.19M to tackle landfill methane with living biocovers',
+        sourceUrl: 'https://tech.eu/2026/07/14/stratx-raises-119m-to-tackle-landfill-methane-with-living-biocovers/',
+      },
+      {
+        name: 'Global Methane Hub',
+        fit: 'Runs a dedicated Waste and Circular Economy program that has already put $10M behind methane-reduction work in Latin American and Caribbean cities and funds waste-methane grantees (WasteMAP, Global Green Growth Institute) across Africa and Latin America — a grant-stage funder and site-access door-opener, not an equity check, but the realistic first call for site partnerships.',
+        source: 'Global Methane Hub — $10 Million Investment to Accelerate Methane Reduction in Latin American and Caribbean Cities',
+        sourceUrl: 'https://www.globalmethanehub.org/2025/11/04/global-methane-hub-announces-10-million-investment-to-accelerate-methane-reduction-in-latin-american-and-caribbean-cities/',
+      },
+    ],
+  },
+  {
+    questSlug: 'fission-permitting-unlock',
+    names: [
+      { name: 'Rickover', note: 'named for Hyman Rickover, who proved reactor licensing could move at wartime speed' },
+      { name: 'Docket Zero', note: 'NRC filings are literally called dockets; zero is the added-months target' },
+      { name: 'Safeguard', note: 'the plain word for what a safety case actually is, no cleverness needed' },
+    ],
+    riskiestAssumption:
+      'That the NRC bottleneck is genuinely a paperwork/process problem software can compress, not a political-risk-aversion problem no documentation quality fixes. If reviewers move slowly because saying yes carries career risk regardless of the safety case, better software does not move the timeline.',
+    firstArtifact:
+      "A real teardown of one public NRC licensing docket end to end (Kairos Power's Hermes construction permit or a comparable ADAMS record): every review milestone with actual dates, and which delays were technical versus administrative or discretionary. If most time is discretionary, the wedge is different than if it is paperwork.",
+    gatekeeper:
+      'NRC review staff and the licensing boards that approve design certifications and construction permits, not the utilities or reactor vendors who would buy the software',
+    promptBody: `Build me a research workspace for evaluating a regulatory-tech company that compresses advanced-reactor licensing.
+
+The riskiest assumption is that this is a software-solvable paperwork problem, not a political-risk problem. I need:
+1. Pull NRC's public ADAMS docket record for at least two recent advanced reactor licensing cases (Kairos Power's Hermes, NuScale's design certification, X-energy) and build a timeline of every review milestone with actual dates.
+2. For each, classify delays as technical/engineering review versus administrative, discretionary, or political, using the docket correspondence itself where possible.
+3. Find what the 2024 ADVANCE Act and any 2025-2026 follow-on legislation actually changed about NRC review timelines or fee structures, and whether those changes have shown up in review speed yet.
+4. Identify every company currently selling licensing or compliance software into nuclear (Atomic Canyon and any others) and what workflow they have productized versus what is still manual.
+5. Find public statements from at least one licensing consultant or former NRC staffer on record about where the real bottleneck sits.
+6. Output a memo: is this a software-solvable paperwork problem or a political-risk problem, and what is the smallest wedge that tests the difference.
+
+Use real sources with URLs. Where you cannot verify something, say so rather than guessing.`,
+    domainIdeas: [
+      { domain: 'docketzero.com', note: 'literal NRC-filing term, register matches the Docket Zero name idea' },
+      { domain: 'safetycase.io', note: 'the actual regulatory artifact this replaces, self-explanatory to an engineer' },
+      { domain: 'halflife.dev', note: 'plays on the physics term for a compressed decay-to-zero timeline' },
+      { domain: 'licensedreactor.com', note: 'blunt, describes the end state a customer is actually buying' },
+      { domain: 'rickover.co', note: 'the historical namesake, short and ownable' },
+    ],
+    capitalFirms: [
+      {
+        name: 'Energy Impact Partners (Elevate Future Fund)',
+        fit: "Led the $7M round for Atomic Canyon, an AI platform for nuclear document search and licensing workflows already deployed at PG&E's Diablo Canyon — the closest real precedent to a productized licensing-compression company.",
+        source: 'GlobeNewswire — Atomic Canyon Raises $7M led by Energy Impact Partners',
+        sourceUrl: 'https://www.globenewswire.com/news-release/2025/05/28/3089617/0/en/Atomic-Canyon-Raises-7M-led-by-Energy-Impact-Partners-to-bring-AI-Powered-Innovation-to-Nuclear-Energy.html',
+      },
+      {
+        name: 'Commonweal Ventures',
+        fit: 'States its own thesis as backing companies that "leverage government as a growth lever" and solve regulatory challenges as a wedge into regulated markets — and lists Atomic Canyon by name under "nuclear compliance" in its public Energy & Climate portfolio.',
+        source: 'Commonweal Ventures — Thesis',
+        sourceUrl: 'https://www.commonwealventures.com/thesis',
+      },
+      {
+        name: 'Gigascale Capital',
+        fit: 'Closed a $250M fund in June 2026 explicitly targeting energy and industrial technology where physical build capacity is the binding constraint, with nuclear microreactor developer Radiant already in its portfolio. Weaker fit than the other two: Radiant is a reactor developer, not a licensing/regtech play, so this reflects the fund\'s broader thesis, not a permitting-specific bet.',
+        source: 'Axios — Gigascale Capital announces $250 million fund for rebuilding physical economy',
+        sourceUrl: 'https://www.axios.com/2026/06/01/gigascale-capital-schroepfer-250-million-fund',
+      },
+    ],
+  },
+  {
+    questSlug: 'geothermal-via-oilfield-tooling',
+    names: [
+      { name: 'Roughneck', note: 'the actual job title for oilfield drilling crews, redirected toward geothermal' },
+      { name: 'Firmwell', note: 'plain compound of "firm power" and "well," the entire product claim' },
+      { name: 'Basalt', note: 'the rock target common to closed-loop wells, geologic and grounded' },
+    ],
+    riskiestAssumption:
+      "That directional-drilling cost curves have actually crossed the point where engineered or closed-loop geothermal wells pencil out against a gas peaker on levelized cost today, not just in modeled scenarios, and that displaced O&G crews can be redeployed without a multi-year retraining or certification gap.",
+    firstArtifact:
+      "A real unit-economics teardown of one published EGS or closed-loop project (Fervo's Cape Station data, or a Utah FORGE pilot report): actual drilling cost per well, actual flow or output achieved, and the resulting levelized cost of power compared against a documented gas-peaker LCOE in the same region. If the numbers do not already cross without subsidy, the timing thesis is wrong.",
+    gatekeeper:
+      'State oil and gas well-permitting regulators (Texas RRC, Utah DOGM, and equivalents) and the utility or data-center offtake buyer signing the PPA, not federal energy regulators',
+    promptBody: `Build me a research workspace for evaluating a geothermal developer that redeploys oilfield drilling capability into closed-loop wells.
+
+The riskiest assumption is that the cost curve has already crossed peaker parity, not that it will eventually. I need:
+1. Pull public well-level cost and output data from at least one operating EGS or closed-loop project (Fervo's Cape Station, Utah FORGE, Sage Geosystems, Eavor).
+2. Compare that against a documented natural-gas peaker's levelized cost of electricity in the same region or ISO, using recent EIA or utility filings.
+3. Find how many O&G drilling rigs and crews have actually been redeployed into geothermal so far, named companies and rig counts, versus how many geothermal wells still use new-build purpose-made equipment.
+4. Identify the state-level permitting pathway for a geothermal well versus an oil and gas well in at least two states, and where the process actually diverges.
+5. Find every company pursuing this exact oilfield-to-geothermal strategy (Fervo, XGS, Sage, Eavor, GA Drilling) and what specifically differentiates each approach.
+6. Output a memo: does the unit economics cross today without subsidy, and what is the smallest well or pilot that would prove it in a new geography.
+
+Use real sources with URLs. Where you cannot verify something, say so rather than guessing.`,
+    domainIdeas: [
+      { domain: 'roughneckenergy.com', note: 'literal, matches the Roughneck name idea' },
+      { domain: 'firmwell.com', note: 'plain compound of "firm power" and "well"' },
+      { domain: 'basaltpower.co', note: 'geologic and grounded, names the target formation' },
+      { domain: 'redrig.io', note: '"redirected rig," names the actual mechanism of repurposed drilling equipment' },
+      { domain: 'closedloopgeo.com', note: 'blunt technical descriptor, no cleverness required' },
+    ],
+    capitalFirms: [
+      {
+        name: 'DCVC',
+        fit: "Participated in Fervo Energy's $462M Series E (Dec 2025) — DCVC's standing thesis is deep-tech and hard-infrastructure bets, and Fervo is the clearest live example of the oilfield-to-geothermal redirect actually working at scale.",
+        source: 'Bloomberg — Geothermal Startup Fervo Attracts Investors Including Google',
+        sourceUrl: 'https://www.bloomberg.com/news/articles/2025-12-10/geothermal-startup-fervo-attracts-new-investors-including-google',
+      },
+      {
+        name: 'Devon Energy Corp',
+        fit: "A real, operating shale producer that invested directly in Fervo Energy's Series E — strategic capital from the exact O&G industry this quest proposes redirecting, not a climate fund reasoning about it from outside.",
+        source: 'Fervo Energy — Fervo Energy Raises $462 Million Series E',
+        sourceUrl: 'https://fervoenergy.com/fervo-energy-raises-462-million-series-e-to-accelerate-geothermal-development-and-meet-surging-energy-demand-with-clean-firm-power/',
+      },
+      {
+        name: 'Congruent Ventures',
+        fit: "Early-stage climate-tech fund and repeat Fervo investor across multiple rounds, with a public thesis centered on hard-infrastructure decarbonization rather than software-only climate bets.",
+        source: 'Fervo Energy — Fervo Energy Raises $462 Million Series E',
+        sourceUrl: 'https://fervoenergy.com/fervo-energy-raises-462-million-series-e-to-accelerate-geothermal-development-and-meet-surging-energy-demand-with-clean-firm-power/',
+      },
+      {
+        name: 'TDK Ventures',
+        fit: "Led Rodatherm Energy's $38M Series A for its closed-loop advanced geothermal system, the fund's named bet on closed-loop (not just EGS) well design specifically.",
+        source: 'TDK Ventures — Long Duration Energy Storage',
+        sourceUrl: 'https://tdk-ventures.com/explorations/long-duration-energy-storage/',
+      },
+    ],
+  },
+  {
+    questSlug: 'hundred-hour-storage',
+    names: [
+      { name: 'Centiday', note: 'coined from "centum" (hundred) plus duration, echoes "century" but for hours' },
+      { name: 'Ironclad', note: 'literal for iron-based chemistries, also just means dependable' },
+      { name: 'Longwatt', note: 'plain compound, the whole pitch in one word' },
+    ],
+    riskiestAssumption:
+      'That the winning long-duration chemistry (iron-air, thermal, or mechanical) actually reaches cost parity with new gas-peaker capacity within this decade, rather than needing perpetual subsidy — a technology that is merely cheaper than more lithium but still pricier than a peaker does not win a capacity contract.',
+    firstArtifact:
+      "A real levelized-cost model built from one published commercial deployment's actual reported costs (Form Energy's Minnesota or Georgia projects, or Ore Energy's first grid connection), compared against a documented gas-peaker capacity-contract price in the same market. Days of spreadsheet work, no lab required.",
+    gatekeeper:
+      'State utility regulators approving capacity contracts and the utilities signing multi-decade offtake, not the technology\'s own published performance claims',
+    promptBody: `Build me a research workspace for evaluating a 100-hour-class long-duration storage company.
+
+The riskiest assumption is that this chemistry reaches peaker cost parity on a real timeline, not a modeled one. I need:
+1. Pull real, reported project costs and performance data from at least one operating or under-construction 100-hour-class deployment (Form Energy's Minnesota or Georgia projects, Ore Energy's Netherlands connection, or Hydrostor's compressed-air projects).
+2. Find a documented gas-peaker capacity-contract price in the same regional market (ISO capacity auction results, utility IRP filings) to compare against.
+3. Identify every company currently commercializing 100-hour-class storage (Form Energy, Ore Energy, Hydrostor, ESS Inc, and any others) and what chemistry or mechanism each has bet on, with stated cost targets.
+4. Find what happened to venture funding for long-duration storage in 2025-2026 (reported to have dropped sharply) and separate genuine investor skepticism from a general climate-tech funding pullback.
+5. Summarize what capacity-contract structures (tolling agreements, resource-adequacy contracts) utilities are actually offering long-duration storage today, and whether they are bankable.
+6. Output a memo: which chemistry has the most credible near-term path to peaker parity, and what the smallest pilot deployment would look like.
+
+Use real sources with URLs. Where you cannot verify something, say so rather than guessing.`,
+    domainIdeas: [
+      { domain: 'centiday.com', note: 'coined portmanteau, matches the Centiday name idea' },
+      { domain: 'longwatt.com', note: 'plain compound, states the entire pitch' },
+      { domain: 'ironclad.energy', note: 'literal for iron-based chemistries, also reads as dependable' },
+      { domain: 'hundredhour.io', note: 'blunt numeric descriptor, matches the quest title directly' },
+      { domain: 'peakerparity.com', note: 'names the actual economic threshold the company has to cross' },
+    ],
+    capitalFirms: [
+      {
+        name: 'TPG Rise Climate',
+        fit: "Led Form Energy's $450M Series E, the largest financing round yet for a 100-hour-class iron-air storage company — the anchor institutional check for exactly this asset class.",
+        source: 'Form Energy — Form Energy Announces $450M Series E Financing',
+        sourceUrl: 'https://formenergy.com/form-energy-announces-450m-series-e-financing/',
+      },
+      {
+        name: 'Breakthrough Energy Ventures',
+        fit: 'A repeat investor in Form Energy across multiple rounds, with a standing public thesis explicitly covering long-duration grid storage as a core decarbonization lever.',
+        source: 'Form Energy — Form Energy Announces $450M Series E Financing',
+        sourceUrl: 'https://formenergy.com/form-energy-announces-450m-series-e-financing/',
+      },
+      {
+        name: 'ArcelorMittal (XCarb Innovation Fund)',
+        fit: "A real industrial strategic, not a generalist fund, investing in Form Energy specifically because iron-air batteries consume iron at scale — it now non-exclusively supplies the battery's core feedstock.",
+        source: 'ArcelorMittal — ArcelorMittal makes further investment in Form Energy via XCarb Innovation Fund',
+        sourceUrl: 'https://corporate.arcelormittal.com/media/press-releases/arcelormittal-makes-further-investment-in-form-energy-via-xcarb-innovation-fund',
+      },
+      {
+        name: 'HV Capital',
+        fit: "Co-led Ore Energy's $43M Series A (August 2026) for iron-air batteries marketed explicitly for \"up to 100 hours\" of storage — the most recent, most literally on-thesis round in this exact category.",
+        source: 'EU-Startups — Ore Energy raises €37.3 million to scale iron-air batteries',
+        sourceUrl: 'https://www.eu-startups.com/2026/08/ore-energy-raises-e37-3-million-to-scale-iron-air-batteries-that-store-renewable-power-for-up-to-100-hours/',
+      },
+    ],
+  },
+  {
+    questSlug: 'interconnection-queue-underwriting',
+    names: [
+      { name: 'Queue Jump', note: 'blunt, literally what the product does for a stuck position' },
+      { name: 'Firm Position', note: 'plays on "firm power" and "queue position," the two things being sold' },
+      { name: 'Loadstone', note: 'respells "lodestone" toward "load," the grid term' },
+    ],
+    riskiestAssumption:
+      "That a stuck interconnection position can actually be de-risked with engineering and financial structuring fast enough to resell at a profit before the underlying network-upgrade cost estimate changes again. Grid operators re-run studies and costs move; if a position's economics can shift underneath the deal, this is speculation with worse liquidity than the assets it resembles, not underwriting.",
+    firstArtifact:
+      "A real transaction teardown of one documented queue-position deal (Copia Power's $2.6B sale to EQT, or a specific PJM or MISO queue transfer filed with FERC): what the buyer actually paid for, how they priced the network-upgrade risk, and how long from acquisition to construction-ready. No capital deployed, just the deal structure made legible.",
+    gatekeeper:
+      "The regional grid operators (PJM, MISO, CAISO) whose interconnection study process and cost-allocation rules determine whether a position is actually transferable and at what cost, not the developers selling positions",
+    promptBody: `Build me a research workspace for evaluating a company that buys, de-risks, and resells stuck interconnection queue positions.
+
+The riskiest assumption is that engineering can de-risk a position faster than the underlying cost estimate can move against it. I need:
+1. Find at least three documented interconnection queue-position transfers or platform acquisitions filed with FERC or reported in trade press in 2025-2026 (Copia Power's sale to EQT, any PJM or MISO-specific deals) and pull the actual deal terms where public.
+2. Summarize PJM's 2026 queue reopening rules and MISO or CAISO's current cost-allocation methodology for network upgrades tied to a queue position, so I know exactly what a buyer is taking on.
+3. Research flexible or non-firm interconnection mechanisms (curtailment agreements, last-in-first-out access) as an unsticking tool, and find any real project that used one to accelerate commercial operation.
+4. Identify who is already doing something adjacent to this (Anza Renewables and Energy Capital Partners, or infrastructure funds buying developer platforms with existing queue positions) and how their model differs from buy-derisk-resell.
+5. Find the actual reported aggregate transaction value and deal count for queue-position transfers in 2025 to size the market.
+6. Output a memo: what specifically can be de-risked with engineering versus what is pure regulatory or political risk no amount of capital fixes, and the smallest first deal that would test it.
+
+Use real sources with URLs. Where you cannot verify something, say so rather than guessing.`,
+    domainIdeas: [
+      { domain: 'queuejump.io', note: 'blunt, states the mechanism directly' },
+      { domain: 'firmposition.com', note: 'plays on "firm power" and "queue position"' },
+      { domain: 'loadstone.co', note: 'respelled "lodestone," a grid-term pun' },
+      { domain: 'unstuckgrid.com', note: 'plain description of the outcome being sold' },
+      { domain: 'gridqueue.capital', note: 'literal, signals the capital-markets angle explicitly' },
+    ],
+    capitalFirms: [
+      {
+        name: 'EQT Infrastructure',
+        fit: 'Agreed to acquire Copia Power from Carlyle for roughly $2.6B in 2026 specifically for its integrated power-generation and grid-interconnection-position platform — real, dated, priced proof that queue positions themselves are the valuable asset.',
+        source: 'EQT Group — EQT to acquire Copia Power, a leading integrated power and AI infrastructure platform',
+        sourceUrl: 'https://eqtgroup.com/news/eqt-to-acquire-copia-power-a-leading-integrated-power-and-ai-infrastructure-platform-2026-07-09',
+      },
+      {
+        name: 'ArcLight Capital Partners',
+        fit: 'A specialist power-and-electric-infrastructure investor (being acquired itself by DigitalBridge for $1.05B in 2026) actively closing PJM-interconnected generation deals — exactly the kind of investor who already prices interconnection risk for a living.',
+        source: 'Utility Dive — Data center firm DigitalBridge in $1.1B deal to buy ArcLight',
+        sourceUrl: 'https://www.utilitydive.com/news/digitalbridge-arclight-data-center-deal/821199/',
+      },
+      {
+        name: 'Energy Capital Partners',
+        fit: "Backed the buyout of Anza Renewables via its Energy Transition Opportunities Fund, a tech-enabled marketplace built to de-risk developer procurement and project bottlenecks — one layer upstream of queue-position underwriting specifically, not the exact same model, but the closest existing precedent.",
+        source: 'Business Wire — Anza Completes Separation from Borrego and Receives New Investment from Energy Capital Partners Led Consortium',
+        sourceUrl: 'https://www.businesswire.com/news/home/20230516005316/en/Anza-Completes-Separation-from-Borrego-and-Receives-New-Investment-from-Energy-Capital-Partners-Led-Consortium-to-Transform-Solar-and-Storage-Procurement',
+      },
+    ],
+  },
 ]
 
 const bySlug = new Map(starterPacks.map((p) => [p.questSlug, p]))
