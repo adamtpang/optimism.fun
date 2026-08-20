@@ -1196,6 +1196,13 @@ export const problems: Problem[] = [
       confidence: 'med',
       asOf: '2026-06-09',
     },
+    marketSize: {
+      value: 70_000_000_000,
+      unit: 'USD / year',
+      source: 'World Bank, Poverty, Prosperity, and Planet Report 2024 — total annual income shortfall to close the $2.15/day poverty gap for ~700M people, ~$100/person/year',
+      confidence: 'med',
+      asOf: '2026-08-20',
+    },
     scale: {
       value: 700_000_000,
       unit: 'people in extreme poverty (below $2.15/day)',
@@ -1290,6 +1297,13 @@ export const problems: Problem[] = [
       source: 'range of integrated-assessment and macro estimates; wide uncertainty',
       confidence: 'low',
       asOf: '2026-06-09',
+    },
+    marketSize: {
+      value: 4_500_000_000_000,
+      unit: 'USD / year',
+      source: 'IEA Net Zero Roadmap (2023 update) — required annual clean-energy investment by the early 2030s to stay on a 1.5C-consistent path, up from $1.8T invested in 2023',
+      confidence: 'med',
+      asOf: '2026-08-20',
     },
     scale: {
       value: 37_400_000_000,
