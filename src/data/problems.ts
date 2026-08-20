@@ -1592,6 +1592,127 @@ export const problems: Problem[] = [
     ],
     asOf: TODAY,
   },
+  {
+    slug: 'ai-datacenter-power',
+    domain: 'energy',
+    name: 'AI datacenter power',
+    tier: 'hard-tech',
+    tagline:
+      'The AI compute buildout is no longer chip-constrained. It is power-constrained, and the gap is $1.3 trillion.',
+    description:
+      'Nvidia and the hyperscalers already captured the AI compute layer — Nvidia alone is worth $5.27T (live, companiesmarketcap.com), and hyperscaler AI capex will hit $775-800B in 2026 (CFA Institute / Alcapital Advisory). None of that is bottlenecked by chips anymore. It is bottlenecked by power: nearly 2,300GW of generation and storage sits stuck in US interconnection queues, transformer lead times have stretched from 24-30 months to 5 years, and the three grid-hardware majors (Hitachi Energy, Siemens Energy, GE Vernova) already carry a combined $180B+ backlog with 6+ years of revenue booked. McKinsey\'s own "$7 trillion race to scale data centers" report splits the AI-datacenter buildout through 2030 into ~$3.1T for chips/tech (captured) and ~$1.3T for power: generation, transmission, cooling, and electrical equipment. That $1.3T is not one company\'s market — it fragments into real sub-niches moving at different speeds, some already spoken for (SMR fleets: four vendors hold nearly every hyperscaler off-take deal), some genuinely still open (behind-the-meter battery storage for GPU-cluster load smoothing, still uncaptured as of 2026).',
+    humansAffected: {
+      value: 8_200_000_000,
+      unit: 'humans (indirect)',
+      source: 'Indirect and low-confidence by design: global AI-driven productivity and service gains are gated on this specific power bottleneck, not a direct affliction count like a disease or poverty line.',
+      confidence: 'low',
+      asOf: TODAY,
+    },
+    severity: {
+      value: 0.5,
+      unit: 'share of committed AI infrastructure capex at real risk of multi-year delay',
+      source: 'estimated from interconnection-queue (2,300GW stuck) and transformer-backlog (5yr lead time) data — Lawrence Berkeley National Lab "Queued Up"; Siemens Energy backlog report, Aug 2026',
+      confidence: 'low',
+      asOf: TODAY,
+    },
+    marketSize: {
+      value: 1_300_000_000_000,
+      unit: 'USD / year (through 2030)',
+      source: 'McKinsey, "The cost of compute: A $7 trillion race to scale data centers" — power/generation/transmission/cooling slice of the AI-datacenter buildout, distinct from the ~$3.1T chip/tech slice',
+      sourceUrl: 'https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/the-cost-of-compute-a-7-trillion-dollar-race-to-scale-data-centers',
+      confidence: 'med',
+      asOf: '2026-08-20',
+    },
+    currentSolutionQuality: {
+      value: 0.25,
+      unit: '0-1 (low = high opportunity)',
+      source: 'estimated — real capital is flowing (SMR/gas/battery deals signing), but grid hardware and interconnection reform lag years behind compute demand growth (17% overall, 50% AI-specific in 2025, Spheron Network / arXiv 2605.14109)',
+      confidence: 'low',
+      asOf: '2026-08-20',
+    },
+    timeToImpact: {
+      value: 12,
+      unit: 'years',
+      source: 'OOM estimate — behind-the-meter battery smoothing could scale in 2-4 years; SMR fleets not before 2030 for first power; transformer/grid-steel capacity not materially expanding before 2030',
+      confidence: 'low',
+      asOf: '2026-08-20',
+    },
+    capitalRequired: {
+      value: 1_300_000_000_000,
+      unit: 'USD',
+      source: 'same as marketSize — McKinsey\'s $1.3T power-layer slice of the $7T AI-datacenter buildout through 2030',
+      confidence: 'med',
+      asOf: '2026-08-20',
+    },
+    transformation: {
+      before:
+        'AI datacenter buildout is power-constrained, not chip-constrained: 2,300GW stuck in US interconnection queues, 5-year transformer lead times, and grid-hardware majors already booked 6+ years out. Real capital is chasing SMRs and gas, but nobody has meaningfully attacked GPU-cluster-specific load smoothing yet.',
+      after:
+        'Power stops being the binding constraint on AI compute growth. Interconnection queues clear in months, not years. A real market exists for datacenter-specific power smoothing, grid-scale storage, and fast-deploy generation, not just chip supply.',
+      horizon: '10-15 years',
+      confidence: 'low',
+      asOf: '2026-08-20',
+    },
+    scale: {
+      value: 2_300,
+      unit: 'GW stuck in US interconnection queues',
+      trend: 'worsening',
+      series: [
+        { year: 2020, value: 900 },
+        { year: 2023, value: 1_650 },
+        { year: 2026, value: 2_300 },
+      ],
+      source: 'Quartz / Sightline Climate interconnection-queue tracking',
+      confidence: 'med',
+      asOf: '2026-08-20',
+    },
+    neglectedness: {
+      score: 5,
+      rationale: 'Real capital is flowing to the highest-profile sub-niches (SMR fleets, large gas deals), but the GPU-cluster-specific power-smoothing niche and grid-hardware manufacturing capacity remain genuinely underbuilt relative to the pace of AI compute demand growth.',
+      source: 'Precedence Research (battery market); Siemens Energy backlog report, Aug 2026',
+      confidence: 'low',
+      asOf: '2026-08-20',
+    },
+    tractability: {
+      score: 6,
+      rationale: 'Real deals are already closing at meaningful scale (Chevron/Microsoft 2.67GW gas deal, ProEnergy/Crusoe 650MW) proving the mechanism works; the open sub-niches (battery smoothing, aeroderivative gas) have shorter deploy timelines (12-24 months) than the site\'s typical hard-tech problem.',
+      source: 'TechCrunch (Chevron/Microsoft); Data Center Dynamics (ProEnergy)',
+      confidence: 'med',
+      asOf: '2026-08-20',
+    },
+    organizations: [
+      { name: 'Oklo', url: 'https://oklo.com', kind: 'company (SMR)' },
+      { name: 'X-Energy', url: 'https://x-energy.com', kind: 'company (SMR)' },
+      { name: 'ProEnergy', url: 'https://proenergy.com', kind: 'company (aeroderivative gas)' },
+      { name: 'Siemens Energy', url: 'https://www.siemens-energy.com', kind: 'company (grid hardware)' },
+    ],
+    people: [
+      { name: 'Jacob DeWitte', role: 'co-founder & CEO, Oklo', url: 'https://oklo.com' },
+    ],
+    waysToHelp: [
+      { mode: 'build', text: 'Build behind-the-meter battery storage tuned to GPU-cluster load smoothing, the genuinely open sub-niche as of 2026.' },
+      { mode: 'policy', text: 'FERC co-location rules for behind-the-meter storage at datacenters are still being written — real leverage for anyone engaging that process now.' },
+      { mode: 'career', text: 'Power electronics, grid interconnection engineering, or project finance for fast-deploy generation.' },
+    ],
+    lastUpdated: '2026-08-20',
+    scores: {
+      welfareBCR: null,
+      xriskITN: null,
+      utilityDelta: {
+        value: 0.3,
+        unit: 'state-of-art vs what real deals already prove is buildable',
+        source: 'estimated — SMR/gas deals prove the mechanism works at gigawatt scale; battery-smoothing and grid-hardware capacity lag far behind',
+        confidence: 'low',
+        asOf: TODAY,
+      },
+    },
+    sources: [
+      { title: 'McKinsey — The cost of compute: A $7 trillion race to scale data centers', url: 'https://www.mckinsey.com/industries/technology-media-and-telecommunications/our-insights/the-cost-of-compute-a-7-trillion-dollar-race-to-scale-data-centers' },
+      { title: 'Spheron Network — AI datacenter power constraints, 2026', url: 'https://www.spheron.network/blog/ai-data-center-power-constraints-2026/' },
+      { title: 'companiesmarketcap.com — live market capitalization data', url: 'https://companiesmarketcap.com' },
+    ],
+    asOf: TODAY,
+  },
 ]
 
 export const getProblemBySlug = (slug: string): Problem | undefined =>
