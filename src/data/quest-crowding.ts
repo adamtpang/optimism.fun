@@ -15,6 +15,15 @@
  * ranking uses: 0-1 = open, 2-4 = contested, 5+ = crowded. Non-company
  * entries in `exampleCompetitors` carry their type in parens.
  *
+ * Correction 2026-08-22: `datacenter-power-smoothing` was recorded at N=0 open,
+ * the most open quest on the board. An adversarial pressure-test of that thesis
+ * found five real, funded competitors and moved it to N=5 crowded. The original
+ * pass searched for battery-hardware companies and missed the orchestration-
+ * software layer entirely, the same class of methodology bug this file was
+ * created to fix, in a new disguise. Lesson worth keeping: when a quest scores
+ * as the most open thing on a large, obviously valuable market, that is a signal
+ * to re-search it, not to celebrate it.
+ *
  * This file is the override layer: lib/rankings.ts prefers a sourced count
  * over the hand-set `crowding` field in rfs.ts. Where a quest is absent here,
  * the editorial prior still applies, and the UI says which is which.
@@ -61,7 +70,7 @@ export const sourcedCrowding: SourcedCrowding[] = [
   { questSlug: 'broad-spectrum-antivenom', competitorCount: 4, crowding: 'contested', exampleCompetitors: ['Centivax / Columbia (academic)', 'DTU Denmark (academic)', 'Ophirex', 'Wellcome Trust snakebite programme (philanthropic fund)'], asOf: '2026-08-20' },
   { questSlug: 'neonatal-sepsis-risk-score', competitorCount: 4, crowding: 'contested', exampleCompetitors: ['Neotree (academic/nonprofit, UCL/Great Ormond Street)', 'Mbarara Regional Referral Hospital algorithm (academic, Uganda)', 'Delhi Neonatal Infection Study ML model (academic, India)', 'GARDP / NeoOBS (nonprofit, Gates-funded)'], asOf: '2026-08-20' },
   { questSlug: 'interconnection-queue-underwriting', competitorCount: 4, crowding: 'contested', exampleCompetitors: ['GridUnity', 'Smarter Grid Solutions', 'Enline', 'GridAstra'], asOf: '2026-08-20' },
-  { questSlug: 'datacenter-power-smoothing', competitorCount: 0, crowding: 'open', exampleCompetitors: [], asOf: '2026-08-20' },
+  { questSlug: 'datacenter-power-smoothing', competitorCount: 5, crowding: 'crowded', exampleCompetitors: ['Emerald AI ($68M raised in 16 months; NVIDIA NVentures, Eaton, GE Vernova, Siemens backed; deployed at the 96MW Aurora datacenter)', 'Niv-AI ($12M seed, rack-level power sensors)', 'PADO AI ($6M seed, LG NOVA-backed power/compute/cooling orchestration)', 'Intrinsic Power (Kyocera Ventures, Boost VC)', 'FlexGen HybridOS (incumbent BESS orchestration, markets directly at AI transient loads)'], asOf: '2026-08-22' },
 ]
 
 const bySlug = new Map(sourcedCrowding.map((c) => [c.questSlug, c]))

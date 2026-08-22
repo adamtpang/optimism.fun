@@ -17,6 +17,7 @@ import { sectors } from '@/data/sectors'
 import { coverageGapCandidates } from '@/data/coverage'
 import { SIGNAL_CATEGORIES } from '@/lib/signals/categories'
 import { ages } from '@/data/ages'
+import { joinPaths } from '@/data/join-paths'
 import NavbarClient, { type NavTab } from './NavbarClient'
 
 const dataTabs: NavTab[] = [
@@ -38,6 +39,7 @@ const dataTabs: NavTab[] = [
   { name: 'Media', href: '/media', count: seededMedia.length, tone: 'cyan' },
   { name: 'Artifacts', href: '/artifacts', count: infographicBriefs.length, tone: 'violet' },
   { name: 'Solutions', href: '/companies', count: publicCompanies.length, tone: 'cyan' },
+  { name: 'Start or Join', href: '/paths', count: joinPaths.length, tone: 'green' },
   { name: 'Wealth', href: '/wealth', count: publicCompanies.length + countries.length + founders.length, tone: 'violet' },
   { name: 'Movers', href: '/movers', count: publicCompanies.filter((c) => c.growth3yr).length, tone: 'amber' },
   { name: 'Signals', href: '/signals', count: SIGNAL_CATEGORIES.length, tone: 'cyan' },
