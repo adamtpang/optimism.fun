@@ -45,9 +45,9 @@ done it faster.
 
 | Quest | Problem | Why | Call |
 |---|---|---|---|
-| **Fission permitting unlock** | Energy abundance · open | No company owns this specifically — the reactor developers (Oklo, X-energy, Kairos) are all hardware plays; none is building the regulatory-productization layer this quest calls for. Software + regulatory expertise, not nuclear engineering. Matches a proven governance/coordination shipping pattern, not a hard-science pivot. | **START** |
-| **Fast grants as a product** | Scientific productivity · open | OpenAI's $852B is for horizontal foundation models, not this vertical. Nobody has operationalized the Fast Grants playbook as durable infrastructure. An institution-design problem — the same shape as optimism.fun itself. | **START** |
-| **The replication layer** | Scientific productivity · open | Metascience infrastructure, funded by journals/funders/firms — a legibility problem again, not a lab-science one. Genuinely open; low technical risk relative to fusion/fission plays. | **START** |
+| **Fission permitting unlock** | Energy abundance · contested (N=4) | No company owns this specifically — the reactor developers (Oklo, X-energy, Kairos) are all hardware plays; none is building the regulatory-productization layer this quest calls for. Software + regulatory expertise, not nuclear engineering. Matches a proven governance/coordination shipping pattern, not a hard-science pivot. | **START** |
+| **Fast grants as a product** | Scientific productivity · contested (N=3) | OpenAI's $852B is for horizontal foundation models, not this vertical. Nobody has operationalized the Fast Grants playbook as durable infrastructure. An institution-design problem — the same shape as optimism.fun itself. | **START** |
+| **The replication layer** | Scientific productivity · contested (N=4) | Metascience infrastructure, funded by journals/funders/firms — a legibility problem again, not a lab-science one. Every named competitor is academic or nonprofit (Institute for Replication, Center for Open Science, NIH, IFP), not a venture-backed company; low technical risk relative to fusion/fission plays. | **START** |
 | **Foundation-model AI generally** | Scientific productivity · the horizontal layer | OpenAI is 11 years old at $852B and about to cross $1T via IPO — the fastest pace on record among anything in this space. Effectively decided among 3-4 labs with tens of billions in committed capital. | **WATCH ONLY** |
 | **Hundred-hour storage, geothermal, hydrogen** | Energy abundance & climate · contested | Real, funded, technically credible companies (Fervo $10B, Form Energy ~$3B, Helion $15.5B) already exist, years into deep hardware R&D. Capital-intensive, multi-decade, lab-science-heavy — the opposite of a proven software/platform shipping pattern. | **WATCH, DON'T ENTER** |
 
@@ -57,8 +57,8 @@ Every real $1T company took at minimum 17 years (Meta, the fastest verified case
 get there, and most took 20–40+. Nobody currently working an S-tier problem is within
 an order of magnitude of $1T yet, except OpenAI, whose race is already effectively
 decided among a handful of labs with committed capital no solo founder can match. The
-honest read: **the field is still open, but only in the specific niches nobody with
-real capital has claimed** — and those niches are consistently the regulatory,
+honest read: **the field is open only in the niches where the existing competition is
+nonprofit/academic rather than venture-backed** — and those niches are consistently the regulatory,
 institution-design, and coordination layers sitting on top of the capital-intensive
 hardware race, not the hardware race itself.
 
@@ -66,12 +66,15 @@ Cross-referenced against the real profile already tracked in this project
 (`src/data/adam-profile.ts`): proven shipping domains are governance, social, science,
 and ai — not hardware engineering. The Missionary archetype (species-level stakes,
 decade-plus commitments) is the strongest weight, ahead of Scientist and Craftsman.
-The one real anti-signal on record is a quit B2B-sales motion, which rules out neither
-of the open quests since none require a cold-outreach sales team to start.
+The one real anti-signal on record is a quit B2B-sales motion, which rules out none of
+these quests since none require a cold-outreach sales team to start.
 
-- **Start, don't join:** fission-permitting-unlock, fast-grants-as-a-product, and the
-  replication-layer are all open, all software/coordination-shaped, and all sit on top
-  of an S-tier-sized problem without a claimed winner yet.
+- **Start, don't join:** fission-permitting-unlock (N=4), fast-grants-as-a-product (N=3),
+  and the replication-layer (N=4) are all *contested* on this site's own sourced crowding
+  data — but in every case the named competitors are nonprofits, academic consortia, and
+  government programs, not venture-backed companies racing for the same prize. All three
+  are software/coordination-shaped and sit on an S-tier-sized problem with no commercial
+  winner yet.
 - **Don't enter the hardware race:** fusion, fission reactors, geothermal drilling, and
   battery chemistry are real, funded, multi-year science bets already run by technical
   teams with $3B–$15B raised — not a fit for a solo software-shaped builder.
@@ -80,12 +83,17 @@ of the open quests since none require a cold-outreach sales team to start.
 
 **The forecast, in one line:** if a fission-permitting-unlock or fast-grants-as-a-product
 company started today and matched even the *slowest* historical pace on record
-(Microsoft's 44 years), it would still be racing toward a real, uncontested $1–2T prize
-with a proven-fit founder and no capital-intensive science risk in the way — a
+(Microsoft's 44 years), it would still be racing toward a real $1–2T prize with no
+venture-backed incumbent, a proven-fit founder, and no capital-intensive science risk
+in the way — a
 genuinely different bet than trying to out-fund Oklo or out-race OpenAI.
 
 ## Data-quality flags
 
+- **Crowding correction (2026-08-22):** an earlier draft of this file labelled the three
+  START quests "open". This site's own sourced crowding data (`src/data/quest-crowding.ts`)
+  says all three are **contested** — N=4, N=3, N=4. They remain the right calls, but for a
+  narrower reason: the competition is nonprofit/academic/government, not venture-backed.
 - Kairos Power's current valuation could not be verified from public sources despite
   active DOE/Google deals.
 - SpaceX IPO'd mid-research (June 12, 2026) and has been extremely volatile
