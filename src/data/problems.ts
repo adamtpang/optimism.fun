@@ -1713,6 +1713,93 @@ export const problems: Problem[] = [
     ],
     asOf: TODAY,
   },
+  {
+    slug: 'financial-infrastructure',
+    name: 'Financial infrastructure',
+    tier: 'progress',
+    domain: 'governance',
+    tagline:
+      'Move value for everyone at near-zero cost, on rails not owned by a sixty-year-old duopoly.',
+    description:
+      "Global payments generate roughly $2.5 trillion in annual revenue on about $2.0 quadrillion of value flows, and two companies founded in 1958 and 1966 hold roughly $1.2 trillion of the card rail between them. This is the rare category whose incumbent ceiling does not cap out: Visa sits at its all-time high after 68 years, and JPMorgan is close to becoming the first trillion-dollar bank. Added to this index in August 2026 as the fifth problem clearing the $1T bar, and the only new one to survive a nineteen-candidate screen (see TRILLION_DOLLAR_SCREEN.md). Two honest caveats travel with it. The humanitarian case is the weakest of the five: 1.3 billion adults remain unbanked, but account ownership already reached 79 percent of adults, and Nubank, the most successful bank-the-unbanked company ever built, is worth $70 billion, which settles where the trillion is not. And the category is heavily defended: US merchant processing fees hit a record $198.25 billion in 2025, the year after stablecoin legislation passed, so no disruption is yet visible in the fee data.",
+    humansAffected: {
+      value: 1_300_000_000,
+      unit: 'unbanked adults',
+      source: 'World Bank Global Findex 2025 (account ownership reached 79% of adults, up from 74% in 2021)',
+      sourceUrl: 'https://www.worldbank.org/en/publication/globalfindex',
+      confidence: 'high',
+      asOf: '2026-08-22',
+    },
+    severity: {
+      value: 3,
+      unit: '/10 per-capita severity',
+      source: 'editorial judgement: exclusion from financial rails is a real cost, not a mortality or morbidity burden',
+      confidence: 'low',
+      asOf: '2026-08-22',
+    },
+    marketSize: {
+      value: 2_500_000_000_000,
+      unit: 'USD / year (global payments revenue)',
+      source: 'McKinsey Global Payments Report 2025: $2.5T revenue on ~$2.0 quadrillion of value flows, forecast above $3T by 2029',
+      confidence: 'high',
+      asOf: '2026-08-22',
+    },
+    currentSolutionQuality: {
+      value: 7,
+      unit: '/10 (high = well served, low opportunity)',
+      source: 'card rails work well for the banked; the gap is cost, settlement latency, and the unbanked tail',
+      confidence: 'med',
+      asOf: '2026-08-22',
+    },
+    timeToImpact: {
+      value: 5,
+      unit: 'years',
+      source: 'GENIUS Act (S.1582) signed 2026-07-18 takes effect 2027-01-18; rail adoption follows regulatory certainty',
+      confidence: 'low',
+      asOf: '2026-08-22',
+    },
+    capitalRequired: {
+      value: 1_000_000_000,
+      unit: 'USD',
+      source: 'order-of-magnitude: licensing, reserves, and compliance dominate rather than R&D',
+      confidence: 'low',
+      asOf: '2026-08-22',
+    },
+    neglectedness: {
+      score: 2,
+      rationale:
+        'Heavily contested. Visa $692.74B at an all-time high, Mastercard $508.63B, JPMorgan $934.57B, Stripe $159B, Revolut $115B. PayPal is the cautionary tale: peaked at $274.41B in 2020, now $53.05B, down 81 percent.',
+      source: 'companiesmarketcap.com and stockanalysis.com, Aug 2026',
+      confidence: 'high',
+      asOf: '2026-08-22',
+    },
+    tractability: {
+      score: 6,
+      rationale:
+        'A genuinely new legal rail exists and is not yet operative. Tether earns over $10B a year in net profit on $186B of USDT and $141B of Treasuries, a float-and-carry model structurally unlike interchange, at a fraction of Visa headcount.',
+      source: 'Tether reserves attestation; GENIUS Act S.1582 effective 2027-01-18',
+      confidence: 'med',
+      asOf: '2026-08-22',
+    },
+    scores: {
+      welfareBCR: null,
+      xriskITN: null,
+      utilityDelta: {
+        value: 0.35,
+        unit: 'state-of-art vs possible',
+        source: 'rails work for the banked; the remaining delta is cost, settlement speed, and the unbanked tail',
+        confidence: 'low',
+        asOf: '2026-08-22',
+      },
+    },
+    sources: [
+      { title: 'McKinsey Global Payments Report 2025', url: 'https://payspacemagazine.com/news/mckinsey-report-raises-stakes-for-global-payments-revenues-forecast-to-surpass-3t-by-2029/' },
+      { title: 'World Bank Global Findex', url: 'https://www.worldbank.org/en/publication/globalfindex' },
+      { title: 'GENIUS Act, S.1582, 119th Congress', url: 'https://www.congress.gov/bill/119th-congress/senate-bill/1582/text' },
+      { title: 'Nilson Report, US merchant processing fees 2025', url: 'https://nilsonreport.com/articles/merchant-processing-fees-in-the-united-states-2025/' },
+    ],
+    asOf: '2026-08-22',
+  },
 ]
 
 export const getProblemBySlug = (slug: string): Problem | undefined =>

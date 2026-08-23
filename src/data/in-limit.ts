@@ -171,6 +171,19 @@ export const inLimitCaps: InLimitCap[] = [
     reasoning:
       'Today’s social platforms monetize attention and arguably worsen the problem. The company that genuinely reduces isolation — real connection as the product — captures consumer-social-scale value while being the rare version that is unambiguously good.',
   },
+  {
+    problemSlug: 'financial-infrastructure',
+    marketCap: {
+      value: 1_000_000_000_000,
+      unit: 'USD (in-limit market cap)',
+      source: 'ceiling estimate, anchored to the card-network duopoly and the largest bank',
+      confidence: 'low',
+      asOf: '2026-08-22',
+    },
+    comparable: 'Visa ($692.74B, all-time high) / JPMorgan ($934.57B)',
+    reasoning:
+      'The only category in the 19-candidate screen whose incumbent ceiling does not cap out. Visa is at its all-time high after 68 years and compounding around 11 percent a year, JPMorgan is days from being the first trillion-dollar bank, and two companies hold roughly $1.2T of one rail. The rail concentrates rather than fragments, which is exactly the test water, mining, agriculture, defense and insurance all failed. Held at $1T rather than higher because the incumbents are 60-plus years entrenched and PayPal, the most successful new entrant of the internet era, peaked at $274B and fell 81 percent.',
+  },
 ]
 
 export const getInLimitCap = (problemSlug: string): InLimitCap | undefined =>
