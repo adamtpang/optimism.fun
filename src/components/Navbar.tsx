@@ -18,6 +18,7 @@ import { coverageGapCandidates } from '@/data/coverage'
 import { SIGNAL_CATEGORIES } from '@/lib/signals/categories'
 import { ages } from '@/data/ages'
 import { joinPaths } from '@/data/join-paths'
+import { inLimitCaps } from '@/data/in-limit'
 import NavbarClient, { type NavTab } from './NavbarClient'
 
 const dataTabs: NavTab[] = [
@@ -31,6 +32,7 @@ const dataTabs: NavTab[] = [
   { name: 'Coverage', href: '/coverage', count: coverageGapCandidates.length, tone: 'cyan' },
   { name: 'Trends', href: '/trends', count: watchedTerms.length, tone: 'cyan' },
   { name: 'Rankings', href: '/rankings', count: requestsForStartups.length, tone: 'amber' },
+  { name: 'Market Caps', href: '/marketcap', count: inLimitCaps.length, tone: 'amber' },
   { name: 'Capital', href: '/capital', count: capitalPools.length, tone: 'cyan' },
   { name: 'Radar', href: '/radar', count: problems.length, tone: 'amber' },
   { name: 'Sectors', href: '/sector', count: sectors.length, tone: 'amber' },

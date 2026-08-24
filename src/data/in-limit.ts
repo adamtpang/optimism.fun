@@ -184,7 +184,32 @@ export const inLimitCaps: InLimitCap[] = [
     reasoning:
       'The only category in the 19-candidate screen whose incumbent ceiling does not cap out. Visa is at its all-time high after 68 years and compounding around 11 percent a year, JPMorgan is days from being the first trillion-dollar bank, and two companies hold roughly $1.2T of one rail. The rail concentrates rather than fragments, which is exactly the test water, mining, agriculture, defense and insurance all failed. Held at $1T rather than higher because the incumbents are 60-plus years entrenched and PayPal, the most successful new entrant of the internet era, peaked at $274B and fell 81 percent.',
   },
+  {
+    problemSlug: 'neglected-tropical-diseases',
+    marketCap: {
+      value: 20_000_000_000,
+      unit: 'USD (in-limit market cap)',
+      source: 'ceiling estimate, anchored to a tropical-disease pharma franchise',
+      confidence: 'low',
+      asOf: '2026-08-24',
+    },
+    comparable: 'a mid-cap specialty pharma unit, not a major',
+    reasoning:
+      'The lowest ceiling on this board, and the honest number rather than a flattering one. The disease burden is enormous and the science is largely solved: ivermectin, azithromycin and praziquantel work and cost cents. The binding constraint is that the patients cannot pay, so the winning organisation is a donation-funded distribution programme, not an equity story. This is the clearest case on the index where enormous human value and a small in-limit cap sit on the same row.',
+  },
+  {
+    problemSlug: 'newborn-survival',
+    marketCap: {
+      value: 30_000_000_000,
+      unit: 'USD (in-limit market cap)',
+      source: 'ceiling estimate, anchored to a maternal-and-neonatal device platform',
+      confidence: 'low',
+      asOf: '2026-08-24',
+    },
+    comparable: 'a neonatal-device business inside a Medtronic-scale major',
+    reasoning:
+      'Most newborn deaths happen where willingness-to-pay is lowest, and the interventions that close the gap are deliberately cheap: chlorhexidine cord care, kangaroo mother care, bag-and-mask resuscitation, antenatal steroids. Cheap interventions save lives at extraordinary rates and build small companies. The ceiling reflects the equity value capturable by a device-and-training platform, not the value of the lives saved, which is far larger and mostly uncapturable.',
+  },
 ]
-
 export const getInLimitCap = (problemSlug: string): InLimitCap | undefined =>
   inLimitCaps.find((c) => c.problemSlug === problemSlug)
