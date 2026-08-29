@@ -19,41 +19,47 @@ import { SIGNAL_CATEGORIES } from '@/lib/signals/categories'
 import { ages } from '@/data/ages'
 import { joinPaths } from '@/data/join-paths'
 import { inLimitCaps } from '@/data/in-limit'
-import NavbarClient, { type NavTab } from './NavbarClient'
+import { valueLedgers } from '@/data/value-atlas'
+import NavbarClient from './NavbarClient'
 
-const dataTabs: NavTab[] = [
-  { name: 'Globe', href: '/globe', count: publicCompanies.length, tone: 'cyan' },
-  { name: 'Your Fit', href: '/fit', count: ARCHETYPE_LIST.length, tone: 'amber' },
-  { name: 'The Quest', href: '/journey', count: questStages.length, tone: 'amber' },
-  { name: 'Good Quests', href: '/good-quests', count: requestsForStartups.length, tone: 'amber' },
-  { name: 'Problems', href: '/', count: problems.length, tone: 'amber' },
-  { name: 'Demand', href: '/demand', count: problems.length, tone: 'amber' },
-  { name: 'Under-supplied', href: '/underserved', count: problems.length, tone: 'amber' },
-  { name: 'Coverage', href: '/coverage', count: coverageGapCandidates.length, tone: 'cyan' },
-  { name: 'Trends', href: '/trends', count: watchedTerms.length, tone: 'cyan' },
-  { name: 'Rankings', href: '/rankings', count: requestsForStartups.length, tone: 'amber' },
-  { name: 'Market Caps', href: '/marketcap', count: inLimitCaps.length, tone: 'amber' },
-  { name: 'Capital', href: '/capital', count: capitalPools.length, tone: 'cyan' },
-  { name: 'Radar', href: '/radar', count: problems.length, tone: 'amber' },
-  { name: 'Sectors', href: '/sector', count: sectors.length, tone: 'amber' },
-  { name: 'Requests', href: '/rfs', count: requestsForStartups.length, tone: 'amber' },
-  { name: 'Explanations', href: '/voices', count: voices.length, tone: 'violet' },
-  { name: 'Media', href: '/media', count: seededMedia.length, tone: 'cyan' },
-  { name: 'Artifacts', href: '/artifacts', count: infographicBriefs.length, tone: 'violet' },
-  { name: 'Solutions', href: '/companies', count: publicCompanies.length, tone: 'cyan' },
-  { name: 'Start or Join', href: '/paths', count: joinPaths.length, tone: 'green' },
-  { name: 'Wealth', href: '/wealth', count: publicCompanies.length + countries.length + founders.length, tone: 'violet' },
-  { name: 'Movers', href: '/movers', count: publicCompanies.filter((c) => c.growth3yr).length, tone: 'amber' },
-  { name: 'Signals', href: '/signals', count: SIGNAL_CATEGORIES.length, tone: 'cyan' },
-  { name: 'People', href: '/founders', count: founders.length, tone: 'amber' },
-  { name: 'Frontier', href: '/frontier', count: founders.length, tone: 'amber' },
-  { name: 'Progress', href: '/progress', count: progress.length, tone: 'green' },
-  { name: 'Ages', href: '/ages', count: ages.length, tone: 'green' },
-  { name: 'Countries', href: '/countries', count: countries.length, tone: 'green' },
-  { name: 'Crypto', href: '/crypto', count: crypto.length, tone: 'violet' },
-  { name: 'Allocators', href: '/ecosystem', count: ecosystem.length, tone: 'cyan' },
+const valueExplainedCount = valueLedgers.reduce((sum, ledger) => sum + ledger.rows.length, 0)
+
+// NavbarClient owns stable labels, routes, and colors. Only these live counts
+// cross the server/client boundary, avoiding a duplicated metadata payload.
+const tabCounts = [
+  publicCompanies.length,
+  ARCHETYPE_LIST.length,
+  questStages.length,
+  requestsForStartups.length,
+  problems.length,
+  problems.length,
+  problems.length,
+  coverageGapCandidates.length,
+  watchedTerms.length,
+  requestsForStartups.length,
+  inLimitCaps.length,
+  valueExplainedCount,
+  capitalPools.length,
+  problems.length,
+  sectors.length,
+  requestsForStartups.length,
+  voices.length,
+  seededMedia.length,
+  infographicBriefs.length,
+  publicCompanies.length,
+  joinPaths.length,
+  publicCompanies.length + countries.length + founders.length,
+  publicCompanies.filter((c) => c.growth3yr).length,
+  SIGNAL_CATEGORIES.length,
+  founders.length,
+  founders.length,
+  progress.length,
+  ages.length,
+  countries.length,
+  crypto.length,
+  ecosystem.length,
 ]
 
 export default function Navbar() {
-  return <NavbarClient tabs={dataTabs} />
+  return <NavbarClient counts={tabCounts} />
 }

@@ -17,7 +17,7 @@ import {
   getAnthropic,
   isAnthropicConfigured,
   extractJson,
-  DEFAULT_MODEL,
+  getAnthropicModel,
 } from '@/lib/anthropic'
 import { problems, getProblemBySlug, DOMAIN_LABEL } from '@/data/problems'
 import { getInLimitCap } from '@/data/in-limit'
@@ -74,7 +74,7 @@ ${archetypeLines()}`
 }
 
 export async function POST(req: Request) {
-  if (!isAnthropicConfigured()) {
+  if (!isAnthropicConfigured(req)) {
     return NextResponse.json({ type: 'unconfigured' })
   }
 
@@ -111,9 +111,9 @@ export async function POST(req: Request) {
   ]
 
   try {
-    const anthropic = getAnthropic()
+    const anthropic = getAnthropic(req)
     const msg = await anthropic.messages.create({
-      model: DEFAULT_MODEL,
+      model: getAnthropicModel(req),
       max_tokens: 1500,
       system: systemPrompt(),
       messages: convo,
@@ -170,8 +170,16 @@ export async function POST(req: Request) {
       fits,
     })
   } catch (err) {
+    const message = err instanceof Error ? err.message : 'interview failed'
+    const isProviderAuthenticationFailure =
+      /\b401\b|\b403\b|authentication_error|api key is invalid|insufficient.*credit|quota/i.test(
+        message,
+      )
     return NextResponse.json(
-      { type: 'error', error: err instanceof Error ? err.message : 'interview failed' },
+      {
+        type: 'error',
+        error: isProviderAuthenticationFailure ? 'ai_unavailable' : 'interview_failed',
+      },
       { status: 502 },
     )
   }

@@ -11,15 +11,11 @@ provides:
     at: src/lib/rankings.ts
   - id: data-sources
     what: OWID, World Bank, WHO, OpenFDA fetch+cache adapters
-    at: src/lib/sources
+    at: src/lib/demand-live.ts
 
 stack: [next, neon, anthropic, posthog]
 
 kin:
-  - repo: pokedex.life
-    why: idea-level kin, not shared code — both rank entities by weighted axes plus hard-constraint filters (see ECOSYSTEM.md); pokedex.life ranks people, this repo ranks problems
-  - repo: portal.voyage
-    why: idea-level kin, not shared code — both rank entities by weighted axes plus hard-constraint filters (see ECOSYSTEM.md); portal.voyage ranks places, this repo ranks problems
   - repo: ness.city
     why: consumes the problem ranking as civic bounties
   - repo: moneymeta.fun
@@ -36,5 +32,21 @@ kin:
     why: adampang.com is the real source of who Adam is (named loves, archetype, proof-of-work history); this repo's founder-fit interview and archetype matching should read from it directly instead of re-deriving Adam's profile ad hoc per session. See HANDOFF_FIT_AND_CROWDING_2026-08-18.md.
   - repo: Aether
     why: hub-level handoff, 2026-08-18 — a fleet-wide tier list scored all 53 Aether businesses against this repo's own scorecard plus a new personal-fittedness dimension, then used this repo's quest-crowding.ts to find open problems. Found the crowding data undercounts real activity (company-only search misses philanthropic/academic infra). Full situation in HANDOFF_FIT_AND_CROWDING_2026-08-18.md.
+
+  - repo: belief.capital
+    why: Same ranking method, different domain. This repo ranks civilizational problems by weighted axes and how crowded each already is; belief.capital's IDEA_MAZE.md rates seven trading strategy branches by feasibility and how crowded each already is, then picks where to deploy capital. Problem-selection and capital-deployment running the same feasibility-versus-crowding filter.
+
+  - repo: vitals.run
+    why: This repo ranks mortality and other civilizational problems at population scale, including infectious disease and longevity; vitals.run turns evidence about the leading health burdens into Adam's personal prevention protocol and measured daily outcomes. Population-level problem selection paired with individual-level practice.
+
+exchanges:
+  - id: translate-health-burden
+    with: vitals.run
+    trigger: manual
+    asks: compare the ranked health burden evidence with the current personal protocol
+    returns: sourced alignment report with gaps and no medical or treatment action
+    permission: read-only
+    approval: human-required
+    at: src/lib/demand-live.ts
 
 canon: ECOSYSTEM.md

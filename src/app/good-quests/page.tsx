@@ -7,6 +7,7 @@ import PageHeader from '@/components/PageHeader'
 import HeroFigure from '@/components/HeroFigure'
 import QuestGrid from '@/components/QuestGrid'
 import { getProgressBySlug } from '@/data/progress'
+import { ARCHETYPES } from '@/data/archetypes'
 import { computeQuestRankings } from '@/lib/rankings'
 import { placeOnQuestGrid } from '@/lib/quest-grid'
 
@@ -21,6 +22,8 @@ export default function GoodQuestsPage() {
   const ranked = computeQuestRankings()
   const plotted = placeOnQuestGrid(ranked)
   const hardGoodCount = plotted.filter((q) => q.good >= 50 && q.hard >= 50).length
+  const missionary = ARCHETYPES.missionary
+  const evangelist = ARCHETYPES.evangelist
 
   return (
     <>
@@ -188,6 +191,51 @@ export default function GoodQuestsPage() {
               point.
             </p>
             <QuestGrid quests={plotted} />
+          </div>
+        </section>
+
+        {/* the people hard quests need */}
+        <section className="border-b border-hair">
+          <div className="max-w-4xl mx-auto px-6 py-14">
+            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+              A good quest needs believers
+            </p>
+            <h2 className="font-serif text-2xl md:text-4xl text-ink-100 leading-tight mb-5 max-w-3xl">
+              The hard part is not only technical. It is moral endurance.
+            </h2>
+            <p className="text-ink-300 leading-relaxed max-w-2xl mb-8">
+              The quests that change the world are often too early, too difficult, or too
+              unfashionable to justify themselves on a quarterly timeline. They need people who
+              would still do the work when the prestige, consensus, and easy money disappear.
+              That is not branding. It is the operating advantage of a genuine mission.
+            </p>
+            <div className="grid md:grid-cols-2 gap-px border border-hair bg-ink-700/50">
+              <article className="bg-ink-900 p-6">
+                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-2">
+                  {missionary.name}
+                </p>
+                <h3 className="font-serif text-xl text-ink-100 mb-2">Carry the cause.</h3>
+                <p className="text-sm text-ink-400 leading-relaxed mb-4">{missionary.essence}</p>
+                <p className="text-sm text-ink-300 leading-relaxed">
+                  {missionary.edge}
+                </p>
+              </article>
+              <article className="bg-ink-900 p-6">
+                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-terminal-cyan mb-2">
+                  {evangelist.name}
+                </p>
+                <h3 className="font-serif text-xl text-ink-100 mb-2">Build the coalition.</h3>
+                <p className="text-sm text-ink-400 leading-relaxed mb-4">{evangelist.essence}</p>
+                <p className="text-sm text-ink-300 leading-relaxed">
+                  {evangelist.edge}
+                </p>
+              </article>
+            </div>
+            <p className="mt-5 font-mono text-[10px] text-ink-500 leading-relaxed max-w-2xl">
+              A moral mission is necessary, not sufficient. The standard here is still a specific
+              problem, a real frontier, evidence that the future would be better if it works, and
+              the discipline to earn founder-problem fit in the real world.
+            </p>
           </div>
         </section>
 

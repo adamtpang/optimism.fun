@@ -118,7 +118,7 @@ export const coverageTaxonomies: CoverageTaxonomy[] = [
     method:
       'Epidemiology ranked by DALYs (disability-adjusted life years) — the antidote to picking health causes by which ones get news coverage. This is the most damning cross-check: it is ranked by actual harm, and the index barely touches it.',
     items: [
-      { name: 'Cardiovascular diseases', status: 'gap', matchedSlugs: [], note: 'The single largest cause of death worldwide. Zero presence on the index.' },
+      { name: 'Cardiovascular diseases', status: 'partial', matchedSlugs: ['hypertension'], note: 'Hypertension now covers the largest modifiable cardiovascular risk and its delivery gap; lipids, acute cardiac care, congenital disease, and other cardiovascular causes remain unmodeled.' },
       { name: 'Cancers', status: 'gap', matchedSlugs: [], note: 'The second-largest cause of death worldwide. Zero presence on the index.' },
       { name: 'Neonatal disorders / maternal mortality', status: 'gap', matchedSlugs: [], note: 'Not on the index.' },
       { name: 'Mental and substance use disorders', status: 'gap', matchedSlugs: [], note: 'Depression, anxiety, and addiction are a top-5 DALY cause on their own — distinct from loneliness on the index, which frames the social dimension only.' },
@@ -144,9 +144,9 @@ export type CoverageGapCandidate = {
  */
 export const coverageGapCandidates: CoverageGapCandidate[] = [
   {
-    name: 'Cardiovascular disease (heart disease & stroke)',
+    name: 'Cardiovascular disease beyond hypertension',
     flaggedBy: ['gbd'],
-    why: 'Largest cause of death worldwide by DALYs. Zero presence on an index that claims to rank humanity’s problems by scale.',
+    why: 'Hypertension control now covers the largest modifiable risk factor, but the index still lacks a complete cardiovascular model spanning lipids, smoking, acute care, and structural disease.',
   },
   {
     name: 'Cancer',

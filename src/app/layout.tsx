@@ -107,6 +107,9 @@ export default function RootLayout({
         <footer style={{padding: '1.5rem 1rem', textAlign: 'center', fontSize: '0.75rem', opacity: 0.6}}>
           Built by <a href="https://adampang.com" style={{textDecoration: 'underline'}}>Adam Pangelinan</a>
           {' · '}<a href="https://anchormarianas.com" style={{textDecoration: 'underline'}}>Anchor Marianas LLC</a>
+          {' · '}<a href="/about" style={{textDecoration: 'underline'}}>About</a>
+          {' · '}<a href="/contact" style={{textDecoration: 'underline'}}>Contact</a>
+          {' · '}<a href="/privacy" style={{textDecoration: 'underline'}}>Privacy</a>
           {' · '}<a href="https://sellsniper.com" style={{textDecoration: 'underline'}}>More projects</a>
         </footer>
       </body>

@@ -7,7 +7,6 @@ import RadarClient from '@/components/RadarClient'
 import DataFreshness from '@/components/DataFreshness'
 import GlobeView from '@/components/GlobeView'
 import EmailCapture from '@/components/EmailCapture'
-import { computeRadarRows } from '@/lib/radar'
 import { problems } from '@/data/problems'
 import { companies } from '@/data/companies'
 import { publicCompanies } from '@/data/public-companies'
@@ -27,7 +26,6 @@ export const metadata: Metadata = {
 
 export default function Home() {
   const solutionCount = companies.length + publicCompanies.length
-  const radarRows = computeRadarRows()
 
   return (
     <>
@@ -38,25 +36,25 @@ export default function Home() {
           <div className="max-w-7xl mx-auto px-6 pt-28 pb-6">
             <div className="flex items-center gap-2 mb-3">
               <span className="text-amber-300 text-[10px]">◆</span>
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-400">
+              <div className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-400">
                 humanity&rsquo;s requests for startups &middot; v0.1
-              </p>
+              </div>
             </div>
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.02] text-ink-100 mb-4 max-w-3xl">
               Infinite problems.{' '}
               <span className="text-amber-300">Infinite solutions.</span>
             </h1>
             <p className="text-ink-400 leading-relaxed max-w-2xl text-base">
-              A live map of capitalism — every company, founder, and economy — pointed at{' '}
-              {problems.length} ranked problems worth your life. Spin the globe, then start
-              your quest.
+              A live map for people with a moral mission — every company, founder, and economy
+              pointed at {problems.length} ranked problems worth your life. Find the good quest
+              you are unusually positioned to carry, then start building.
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-2">
               <Link
                 href="/journey"
                 className="font-mono text-[11px] uppercase tracking-wider text-paper bg-amber-300 hover:bg-amber-200 px-4 py-2.5 rounded transition-colors"
               >
-                Start the quest &rarr;
+                Find your good quest &rarr;
               </Link>
               <Link
                 href="#problems"
@@ -78,9 +76,9 @@ export default function Home() {
         <section className="border-b border-hair">
           <div className="max-w-7xl mx-auto px-6 py-12">
             <div className="mb-6">
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-1">
+              <div className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-1">
                 The radar
-              </p>
+              </div>
               <h2 className="font-serif text-2xl md:text-4xl text-ink-100 leading-tight">
                 Where demand is high, and supply is low.
               </h2>
@@ -89,7 +87,7 @@ export default function Home() {
                 divided by how well-served it already is. The biggest gaps are step zero.
               </p>
             </div>
-            <RadarClient rows={radarRows} />
+            <RadarClient />
           </div>
         </section>
 
@@ -98,14 +96,14 @@ export default function Home() {
           id="problems"
           className="px-6 pt-10 pb-14 max-w-7xl mx-auto scroll-mt-24"
         >
-          <ProblemTable problems={problems} />
+          <ProblemTable />
 
           {/* Sector chip strip — pick a cluster instead of scanning the table */}
           <div className="mt-8 border-t border-hair pt-6">
             <div className="flex items-baseline justify-between mb-4">
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
+              <div className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
                 or browse by sector
-              </p>
+              </div>
               <Link
                 href="/sector"
                 className="font-mono text-[11px] text-ink-500 hover:text-amber-300 transition-colors"
@@ -135,8 +133,9 @@ export default function Home() {
                 The pipeline.
               </h2>
               <p className="text-ink-400 leading-relaxed max-w-2xl text-sm">
-                Each problem above has thinkers explaining it, companies attacking it, and
-                a coordination layer of talent and capital pointed at it. Every node sourced.
+                On optimism.fun, each ranked problem has thinkers explaining it, companies
+                attacking it, and a coordination layer of talent and capital pointed at it.
+                Every node is sourced.
               </p>
             </div>
 
@@ -153,9 +152,9 @@ export default function Home() {
                     {voices.length}
                   </span>
                 </div>
-                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+                <div className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
                   the explanations
-                </p>
+                </div>
                 <h3 className="font-serif text-xl text-ink-100 group-hover:text-amber-300 transition-colors">
                   Why each one matters.
                 </h3>
@@ -173,9 +172,9 @@ export default function Home() {
                     {solutionCount}
                   </span>
                 </div>
-                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+                <div className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
                   the solutions
-                </p>
+                </div>
                 <h3 className="font-serif text-xl text-ink-100 group-hover:text-amber-300 transition-colors">
                   What gets built.
                 </h3>
@@ -184,9 +183,9 @@ export default function Home() {
 
             {/* Coordination row — talent + capital paired under one header */}
             <div className="mt-6">
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
+              <div className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
                 04 &middot; coordination
-              </p>
+              </div>
               <div className="grid md:grid-cols-2 gap-px bg-ink-700/50 border border-hair">
                 <Link
                   href="/founders"
@@ -229,9 +228,9 @@ export default function Home() {
         {/* The white mirror — every problem above, solved, for all that have it. */}
         <section className="border-b border-hair surface-paper">
           <div className="max-w-4xl mx-auto px-6 py-16 md:py-20">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-paper-copper mb-4">
+            <div className="font-mono text-[10px] uppercase tracking-ultra-wide text-paper-copper mb-4">
               05 &middot; the white mirror
-            </p>
+            </div>
             <h2 className="font-serif text-3xl md:text-5xl text-ink-100 leading-[1.05] mb-6">
               Every problem above,{' '}
               <span className="text-amber-300">solved for all that have it.</span>
@@ -253,9 +252,9 @@ export default function Home() {
         {/* 06 — Already happening. The market is already pricing problem-solving. */}
         <section className="border-b border-hair">
           <div className="max-w-4xl mx-auto px-6 py-16 md:py-20">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-4">
+            <div className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-4">
               06 &middot; already happening
-            </p>
+            </div>
             <h2 className="font-serif text-3xl md:text-5xl text-ink-100 leading-[1.05] mb-6">
               The market has already started{' '}
               <span className="text-amber-300">pricing the solutions.</span>

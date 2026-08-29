@@ -20,7 +20,41 @@ const TONE: Record<NavTab['tone'], string> = {
   violet: 'text-terminal-violet',
 }
 
-export default function NavbarClient({ tabs }: { tabs: NavTab[] }) {
+const NAV_TABS: Omit<NavTab, 'count'>[] = [
+  { name: 'Globe', href: '/globe', tone: 'cyan' },
+  { name: 'Your Fit', href: '/fit', tone: 'amber' },
+  { name: 'The Quest', href: '/journey', tone: 'amber' },
+  { name: 'Good Quests', href: '/good-quests', tone: 'amber' },
+  { name: 'Problems', href: '/', tone: 'amber' },
+  { name: 'Demand', href: '/demand', tone: 'amber' },
+  { name: 'Under-supplied', href: '/underserved', tone: 'amber' },
+  { name: 'Coverage', href: '/coverage', tone: 'cyan' },
+  { name: 'Trends', href: '/trends', tone: 'cyan' },
+  { name: 'Quest Browser', href: '/rankings', tone: 'amber' },
+  { name: 'Market Caps', href: '/marketcap', tone: 'amber' },
+  { name: 'Why Value', href: '/value', tone: 'green' },
+  { name: 'Capital', href: '/capital', tone: 'cyan' },
+  { name: 'Radar', href: '/radar', tone: 'amber' },
+  { name: 'Sectors', href: '/sector', tone: 'amber' },
+  { name: 'Requests', href: '/rfs', tone: 'amber' },
+  { name: 'Explanations', href: '/voices', tone: 'violet' },
+  { name: 'Media', href: '/media', tone: 'cyan' },
+  { name: 'Artifacts', href: '/artifacts', tone: 'violet' },
+  { name: 'Solutions', href: '/companies', tone: 'cyan' },
+  { name: 'Start or Join', href: '/paths', tone: 'green' },
+  { name: 'Wealth', href: '/wealth', tone: 'violet' },
+  { name: 'Movers', href: '/movers', tone: 'amber' },
+  { name: 'Signals', href: '/signals', tone: 'cyan' },
+  { name: 'People', href: '/founders', tone: 'amber' },
+  { name: 'Frontier', href: '/frontier', tone: 'amber' },
+  { name: 'Progress', href: '/progress', tone: 'green' },
+  { name: 'Ages', href: '/ages', tone: 'green' },
+  { name: 'Countries', href: '/countries', tone: 'green' },
+  { name: 'Crypto', href: '/crypto', tone: 'violet' },
+  { name: 'Allocators', href: '/ecosystem', tone: 'cyan' },
+]
+
+export default function NavbarClient({ counts }: { counts: number[] }) {
   const [scrolled, setScrolled] = useState(false)
   const ticking = useRef(false)
   const pathname = usePathname()
@@ -96,8 +130,9 @@ export default function NavbarClient({ tabs }: { tabs: NavTab[] }) {
       {/* Row 2: data tabs, scrollable on mobile, always visible */}
       <div className="overflow-x-auto scrollbar-hide">
         <div className="max-w-7xl mx-auto px-6 h-11 flex items-stretch gap-px whitespace-nowrap">
-          {tabs.map((tab) => {
+          {NAV_TABS.map((tab, index) => {
             const active = isActive(tab.href)
+            const count = counts[index] ?? 0
             return (
               <Link
                 key={tab.name}
@@ -114,7 +149,7 @@ export default function NavbarClient({ tabs }: { tabs: NavTab[] }) {
                     active ? TONE[tab.tone] : 'text-ink-600'
                   }`}
                 >
-                  {tab.count}
+                  {count}
                 </span>
               </Link>
             )

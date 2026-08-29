@@ -1,6 +1,7 @@
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import PageHeader from '@/components/PageHeader'
+import Link from 'next/link'
 import { publicCompanies } from '@/data/public-companies'
 import { formatUSD } from '@/lib/format'
 
@@ -86,6 +87,13 @@ export default function CompaniesPage() {
             </a>
             {' · '}
             <span className="text-ink-600">as of</span> {publicCompanies[0]?.asOf}
+            {' · '}
+            <Link
+              href="/value#companies"
+              className="text-terminal-green hover:underline underline-offset-2"
+            >
+              why these companies are valuable →
+            </Link>
           </p>
         </section>
       </main>

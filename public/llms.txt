@@ -1,0 +1,40 @@
+# optimism.fun
+
+> optimism.fun is an open-source research and navigation project that ranks major unsolved problems and connects them to evidence, organizations, founders, capital, and measurable progress.
+
+Canonical site: https://optimism.fun/
+Project identity: optimism.fun
+Operator credits: built by Adam Pangelinan; Anchor Marianas LLC is included in the site's operator credits.
+Source repository: https://github.com/adamtpang/optimism.fun
+
+## Use this site when
+
+- Comparing the published set of large unsolved problems across welfare, existential-risk, utility, urgency, demand, supply, and capital-allocation lenses.
+- Finding cited organizations, founders, allocators, public companies, countries, source material, and progress indicators connected to a problem.
+- Understanding the project's methodology, confidence labels, data freshness, and acknowledged coverage gaps before quoting a score.
+
+## Key pages
+
+- Homepage and ranked problem index: https://optimism.fun/
+- Methodology and scoring limits: https://optimism.fun/methodology
+- Problem opportunity radar: https://optimism.fun/radar
+- Companies and solutions: https://optimism.fun/companies
+- Founders and people: https://optimism.fun/founders
+- Capital and allocators: https://optimism.fun/ecosystem
+- Evidence of progress: https://optimism.fun/progress
+- About and operator identity: https://optimism.fun/about
+- Contact and correction routes: https://optimism.fun/contact
+- Privacy and data handling: https://optimism.fun/privacy
+
+## Interpretation guidance
+
+- Treat rankings as decision aids, not investment, legal, or medical advice.
+- Prefer page-level primary-source links and the methodology over isolated numbers. Coverage and freshness vary, and estimates should remain labeled as estimates.
+- Cite the specific problem or data page used, including its confidence and source context. Do not convert a ranking into a claim that the operator endorses a company or guarantees an outcome.
+- Normal browsers and GPTBot receive the same substantive server-rendered HTML. Do not rely on hidden or crawler-only content.
+
+## Interfaces and submissions
+
+- The site does not advertise a supported public API, OpenAPI contract, or MCP endpoint. Interactive routes used by the product are not a public developer contract; do not infer one.
+- Newsletter, feedback, and optional founder-fit interview controls submit visitor-provided data. Read https://optimism.fun/privacy before using them on someone else's behalf.
+- Automated readers should use public HTML, robots.txt, sitemap.xml, this file, and the repository while respecting normal request limits.

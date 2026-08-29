@@ -5,7 +5,7 @@ import Footer from '@/components/Footer'
 import EmailCapture from '@/components/EmailCapture'
 import QuestRankings from '@/components/QuestRankings'
 import DataFreshness from '@/components/DataFreshness'
-import { computeQuestRankings, groupByTier } from '@/lib/rankings'
+import { computeQuestRankings } from '@/lib/rankings'
 
 export const metadata: Metadata = {
   title: 'The Power Rankings | optimism.fun',
@@ -15,7 +15,6 @@ export const metadata: Metadata = {
 
 export default function RankingsPage() {
   const ranked = computeQuestRankings()
-  const bands = groupByTier(ranked)
   const top = ranked[0]
   const sTier = ranked.filter((q) => q.tier === 'S').length
 
@@ -43,7 +42,7 @@ export default function RankingsPage() {
             {top && (
               <p className="mt-4 font-mono text-[11px] text-ink-500">
                 <span className="text-amber-300">#1</span> {top.title} · {sTier} in S-tier ·{' '}
-                {ranked.length} quests ranked
+                {ranked.length} quests ranked · your shortlist saves on this device
               </p>
             )}
             <DataFreshness className="mt-5" />
@@ -51,7 +50,7 @@ export default function RankingsPage() {
         </section>
 
         <section className="px-6 py-10 max-w-6xl mx-auto">
-          <QuestRankings bands={bands} />
+          <QuestRankings quests={ranked} />
         </section>
 
         {/* methodology */}

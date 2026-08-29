@@ -106,10 +106,12 @@ export const questStages: QuestStage[] = [
     gate: 'You can state the problem, its size, and who is already working on it — with numbers, not adjectives.',
     why: 'Most wasted decades are not spent on unimportant problems. They are spent on important problems that forty well-funded teams already picked, discovered eighteen months in. Demand is easy to see, which is precisely why the head of the demand curve is the most crowded place on earth. The opportunity is the residual.',
     moves: [
-      'Open the supply-demand index and read the bottom of the ratio column.',
-      'For your candidate, name the companies already building it. If you cannot, you have not looked.',
-      'Check whether the field is empty because it is a frontier or because it is a graveyard.',
-      'Write the falsifiable version: what would have to be true for this to be worth a decade?',
+      'Open the Questbook and list three problems you would be proud to work on for a decade.',
+      'Score each for importance, founder fit, friends you can build with, and a first artifact you can ship.',
+      'Choose one 30-day problem exploration.',
+      'Write a one-page problem thesis with one concrete artifact due this week.',
+      'Save the thesis in Obsidian and name the first build or research block.',
+      'For the finalist, name the companies already building it and decide whether the field is a frontier or a graveyard.',
     ],
     methods: [
       { n: 8, text: 'A useful life is worth having lived.' },
@@ -117,7 +119,7 @@ export const questStages: QuestStage[] = [
       { n: 14, text: 'Build what no one else is building.' },
       { n: 9, text: 'Do not aspire to glory; aspire to work.' },
     ],
-    cta: { label: 'What is under-supplied →', href: '/underserved' },
+    cta: { label: 'Open the Questbook →', href: '/good-quests' },
     analogue: {
       founder: 'Elon Musk',
       company: 'SpaceX',

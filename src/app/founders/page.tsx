@@ -1,6 +1,7 @@
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import PageHeader from '@/components/PageHeader'
+import Link from 'next/link'
 import { founders } from '@/data/founders'
 import { formatUSD } from '@/lib/format'
 
@@ -86,6 +87,13 @@ export default function FoundersPage() {
             {' · '}
             <span className="text-ink-600">as of</span> {founders[0]?.asOf} ·
             <span className="text-ink-600"> top {founders.length} only for v0.1, more coming</span>
+            {' · '}
+            <Link
+              href="/value#fortunes"
+              className="text-terminal-green hover:underline underline-offset-2"
+            >
+              why these fortunes are so large →
+            </Link>
           </p>
         </section>
       </main>

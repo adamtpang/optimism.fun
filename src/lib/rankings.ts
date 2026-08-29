@@ -33,6 +33,8 @@ export type RankedQuest = {
   title: string
   pitch: string
   whyNow: string
+  shape: string
+  successLooksLike: string
   goodQuest: string
   confidence: Confidence
   /** How contested THIS specific quest is (quest-level supply). */
@@ -121,6 +123,8 @@ export function computeQuestRankings(): RankedQuest[] {
         title: rfs.title,
         pitch: rfs.pitch,
         whyNow: rfs.whyNow,
+        shape: rfs.shape,
+        successLooksLike: rfs.successLooksLike,
         goodQuest: rfs.goodQuest,
         confidence,
         crowding,

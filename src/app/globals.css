@@ -24,6 +24,12 @@ body {
   font-feature-settings: 'ss01', 'cv11';
 }
 
+:where(a, button, input, select, textarea, summary, [tabindex]):focus,
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent) !important;
+  outline-offset: 3px !important;
+}
+
 /* Terminal-grid background — 1px lattice at 32px pitch, barely visible */
 body::before {
   content: '';

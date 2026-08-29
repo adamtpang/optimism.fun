@@ -4,7 +4,12 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import EmailCapture from '@/components/EmailCapture'
 import DataFreshness from '@/components/DataFreshness'
-import { computeMarketCapIndex, indexTotals, leastCapturable } from '@/lib/marketcap'
+import {
+  computeMarketCapIndex,
+  indexTotals,
+  leastCapturable,
+  validateMarketCapInputs,
+} from '@/lib/marketcap'
 import { formatUSD, formatHumans, formatPercent } from '@/lib/format'
 
 export const metadata: Metadata = {
@@ -18,6 +23,10 @@ const perPerson = (n: number): string =>
   n >= 1000 ? `$${(n / 1000).toFixed(1)}K` : n >= 1 ? `$${n.toFixed(0)}` : `$${n.toFixed(2)}`
 
 export default function MarketCapPage() {
+  const validationIssues = validateMarketCapInputs()
+  if (validationIssues.length > 0) {
+    throw new Error(`Invalid Market Cap Index data: ${validationIssues.join('; ')}`)
+  }
   const rows = computeMarketCapIndex()
   const totals = indexTotals(rows)
   const uncapturable = leastCapturable(rows, 3)
@@ -57,7 +66,7 @@ export default function MarketCapPage() {
               </div>
               <div className="bg-ink-900/40 px-4 py-3">
                 <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
-                  Claimed so far
+                  Claimed, deduped
                 </p>
                 <p className="font-mono text-xl text-terminal-violet tabular-nums">
                   {formatUSD(totals.totalClaimed)}
@@ -65,15 +74,15 @@ export default function MarketCapPage() {
               </div>
               <div className="bg-ink-900/40 px-4 py-3">
                 <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
-                  Headroom
+                  Measured headroom
                 </p>
                 <p className="font-mono text-xl text-terminal-green tabular-nums">
-                  {formatUSD(totals.totalHeadroom)}
+                  {formatUSD(totals.measuredHeadroom)}
                 </p>
               </div>
               <div className="bg-ink-900/40 px-4 py-3">
                 <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
-                  No company coverage
+                  No valuation coverage
                 </p>
                 <p className="font-mono text-xl text-terminal-rose tabular-nums">
                   {totals.uncovered} of {rows.length}
@@ -85,7 +94,7 @@ export default function MarketCapPage() {
               <p className="mt-4 font-mono text-[11px] text-ink-500">
                 <span className="text-amber-300">#1</span> {top.problem.name} ·{' '}
                 {formatUSD(top.ceiling)} ceiling · {formatPercent(totals.coveredClaimedPct)} claimed
-                across the problems we have coverage on, by {totals.trackedCompanies} tracked
+                across the problems with valuation coverage, from {totals.valuedCompanies} valued
                 companies
               </p>
             )}
@@ -146,11 +155,14 @@ export default function MarketCapPage() {
                       </p>
                       {r.topHolder ? (
                         <p className="font-mono text-[10px] text-ink-600 mt-1.5">
-                          biggest holder: {r.topHolder.name} · {r.holders.length} tracked
+                          biggest valued holder: {r.topHolder.name} · {r.valuedHolders.length} valued
+                          {r.holders.length !== r.valuedHolders.length
+                            ? ` of ${r.holders.length} tracked`
+                            : ''}
                         </p>
                       ) : (
                         <p className="font-mono text-[10px] text-terminal-rose mt-1.5">
-                          no company tracked yet · claimed value unmeasured
+                          no valued company tracked · claimed value unmeasured
                         </p>
                       )}
                     </td>
@@ -286,24 +298,25 @@ export default function MarketCapPage() {
                 Claimed is a floor, not a census
               </p>
               <p className="text-ink-400 text-[13px] leading-relaxed">
-                Claimed sums only the {totals.trackedCompanies} companies this site tracks against
-                these problems, using public market cap where it exists and last private valuation
-                otherwise. Real claimed value is higher, and higher by more on the problems with the
-                best coverage. Treat every headroom figure as generous.
+                Claimed uses the {totals.valuedCompanies} tracked companies with a public market cap
+                or last private valuation. The headline counts each company once, even if it maps to
+                several problems. Rows show its full value against each relevant problem because the
+                dataset has no audited segment split. Real claimed value is higher, especially on
+                the problems with the best coverage. Treat every headroom figure as generous.
               </p>
             </div>
             <div>
               <p className="text-ink-100 text-sm font-medium mb-2">
-                {totals.uncovered} rows have no coverage at all
+                {totals.uncovered} rows have no valuation coverage
               </p>
               <p className="text-ink-400 text-[13px] leading-relaxed">
                 Those problems are marked{' '}
                 <span className="text-terminal-rose font-mono text-[11px]">no coverage</span> rather
-                than shown at zero percent claimed, because nobody has tagged a company to them here
-                yet. Climate change obviously has companies working on it. An index that scored
-                those rows as pristine opportunities would rank the problems it knows least about
-                the highest, which is exactly backwards, so their headroom is capped at the ceiling
-                and left unclaimed as a to-do.
+                than shown at zero percent claimed, because no tagged company has a usable market
+                cap or valuation here yet. Climate change obviously has companies working on it. An
+                index that scored those rows as pristine opportunities would rank the problems it
+                knows least about the highest, which is exactly backwards, so their headroom is
+                capped at the ceiling and left unclaimed as a to-do.
               </p>
             </div>
             <div>

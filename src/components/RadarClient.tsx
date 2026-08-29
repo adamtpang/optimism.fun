@@ -5,6 +5,7 @@ import Link from 'next/link'
 import posthog from 'posthog-js'
 import type { AllocationVerdict, CapitalMomentum, Domain, Trend } from '@/data/types'
 import { DOMAINS, DOMAIN_LABEL } from '@/data/problems'
+import { computeRadarRows } from '@/lib/radar'
 import { fmtUsdCompact } from '@/lib/allocation'
 import Sparkline from './Sparkline'
 import TrendBadge from './TrendBadge'
@@ -58,7 +59,7 @@ function opportunityTone(score: number): string {
   return 'text-ink-400'
 }
 
-export default function RadarClient({ rows }: { rows: RadarRow[] }) {
+export default function RadarClient({ rows = computeRadarRows() }: { rows?: RadarRow[] }) {
   const [domain, setDomain] = useState<Domain | 'all'>('all')
   const [query, setQuery] = useState('')
 
@@ -116,6 +117,8 @@ export default function RadarClient({ rows }: { rows: RadarRow[] }) {
           })}
         </div>
         <input
+          id="radar-search"
+          aria-label="Search ranked problems"
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -172,8 +175,8 @@ export default function RadarClient({ rows }: { rows: RadarRow[] }) {
                     </span>
                   )}
                 </div>
-                <p className="mt-0.5 text-[11px] text-ink-500 line-clamp-1 max-w-md">{r.tagline}</p>
-                <p className="mt-0.5 font-mono text-[10px] text-ink-600 tabular-nums">
+                <div className="mt-0.5 text-[11px] text-ink-500 line-clamp-1 max-w-md">{r.tagline}</div>
+                <div className="mt-0.5 font-mono text-[10px] text-ink-600 tabular-nums">
                   {r.companies} cos · {r.capital} funds on it
                   {r.capitalUsd != null && (
                     <>
@@ -188,7 +191,7 @@ export default function RadarClient({ rows }: { rows: RadarRow[] }) {
                       · <span className="text-amber-300/80">{fmtUsdCompact(r.inLimitUsd)} prize</span>
                     </>
                   )}
-                </p>
+                </div>
               </div>
 
               {/* demand vs supply bars */}

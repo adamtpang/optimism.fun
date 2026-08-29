@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import type { Problem, Tier, Confidence } from '@/data/types'
 import { TIER_LABEL } from '@/data/types'
+import { problems as defaultProblems } from '@/data/problems'
 import { companies } from '@/data/companies'
 import { voices } from '@/data/voices'
 import { formatHumans, formatScore, formatYears, formatUSD } from '@/lib/format'
@@ -71,7 +72,7 @@ function compositeScore(p: Problem, lens: Lens): number {
   }
 }
 
-export default function ProblemTable({ problems }: { problems: Problem[] }) {
+export default function ProblemTable({ problems = defaultProblems }: { problems?: Problem[] }) {
   const [lens, setLens] = useState<Lens>('balanced')
   const [sortKey, setSortKey] = useState<SortKey>('priority')
   const [sortDir, setSortDir] = useState<'desc' | 'asc'>('desc')
@@ -255,35 +256,35 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
       {/* ── Headline KPI strip ─────────────────────────────────────────── */}
       <div className="mb-4 grid grid-cols-2 md:grid-cols-4 gap-px bg-ink-700/50 border border-hair">
         <div className="bg-ink-900 px-4 py-3">
-          <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
+          <div className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
             matched
-          </p>
-          <p className="font-mono tabular-nums text-xl text-amber-300">
+          </div>
+          <div className="font-mono tabular-nums text-xl text-amber-300">
             {rows.length}
             <span className="text-ink-600 text-sm"> / {problems.length}</span>
-          </p>
+          </div>
         </div>
         <div className="bg-ink-900 px-4 py-3">
-          <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
+          <div className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
             humans affected
-          </p>
-          <p className="font-mono tabular-nums text-xl text-amber-300">
+          </div>
+          <div className="font-mono tabular-nums text-xl text-amber-300">
             {formatHumans(totalHumans)}
-          </p>
+          </div>
         </div>
         <div className="bg-ink-900 px-4 py-3">
-          <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
+          <div className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
             lens
-          </p>
-          <p className="font-mono text-xs text-ink-200">{LENS_META[lens].label}</p>
+          </div>
+          <div className="font-mono text-xs text-ink-200">{LENS_META[lens].label}</div>
         </div>
         <div className="bg-ink-900 px-4 py-3">
-          <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
+          <div className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
             sorted by
-          </p>
-          <p className="font-mono text-xs text-ink-200">
+          </div>
+          <div className="font-mono text-xs text-ink-200">
             {sortKey} {sortDir === 'desc' ? '▾' : '▴'}
-          </p>
+          </div>
         </div>
       </div>
 
@@ -304,10 +305,10 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
             </button>
           ))}
         </div>
-        <p className="font-mono text-[11px] text-ink-500">
+        <div className="font-mono text-[11px] text-ink-500">
           <span className="text-ink-600">weighting: </span>
           {LENS_META[lens].desc}
-        </p>
+        </div>
       </div>
 
       {/* ── Tier filter chips + column picker ─────────────────────────── */}
@@ -391,9 +392,9 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
                   <span>{COL_LABEL[c]}</span>
                 </label>
               ))}
-              <p className="px-2 pt-1 pb-0.5 font-mono text-[9px] text-ink-600 leading-relaxed">
+              <div className="px-2 pt-1 pb-0.5 font-mono text-[9px] text-ink-600 leading-relaxed">
                 persisted to this browser
-              </p>
+              </div>
             </div>
           )}
         </div>
@@ -511,9 +512,9 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
                       </Link>
                       {p.scale?.trend && <TrendBadge trend={p.scale.trend} showLabel={false} />}
                     </div>
-                    <p className="mt-0.5 text-[11px] text-ink-500 line-clamp-1 max-w-md">
+                    <div className="mt-0.5 text-[11px] text-ink-500 line-clamp-1 max-w-md">
                       {p.tagline}
-                    </p>
+                    </div>
                   </td>
                   <td className="px-3 py-3">
                     <TierPill tier={p.tier} />
@@ -593,7 +594,7 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
         </table>
       </div>
 
-      <p className="mt-3 font-mono text-[11px] text-ink-500 leading-relaxed">
+      <div className="mt-3 font-mono text-[11px] text-ink-500 leading-relaxed">
         <span className="text-ink-600">●</span> confidence dot on humans —{' '}
         <span className="text-terminal-green">high</span>,{' '}
         <span className="text-amber-300">med</span>,{' '}
@@ -605,7 +606,7 @@ export default function ProblemTable({ problems }: { problems: Problem[] }) {
           methodology
         </Link>
         .
-      </p>
+      </div>
     </div>
   )
 }

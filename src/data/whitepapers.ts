@@ -10,6 +10,41 @@ import type { WhitepaperDoc } from './types'
  */
 export const whitepapers: WhitepaperDoc[] = [
   {
+    slug: 'hypertension-whitepaper-v1',
+    problemSlug: 'hypertension',
+    week: 34,
+    publishedAt: '2026-08-27',
+    blackpaper: `Hypertension is persistently excessive pressure inside the arteries. It usually causes no symptoms while it damages blood vessels, the heart, brain, and kidneys. The first visible sign can be a stroke, heart attack, heart failure, or kidney failure.
+
+WHO estimates that 1.4 billion adults aged 30 to 79 had hypertension in 2024. Roughly 600 million did not know they had it. Only 320 million, about 23 percent, had it controlled. In 99 of 195 countries and territories, national control was below 20 percent.
+
+This is not a frontier-science problem. Validated blood-pressure cuffs exist. Generic medicines exist. Standard treatment protocols exist. The failure sits between those components: unreliable measurement, missed diagnosis, clinical inertia, fragmented follow-up, medicine stockouts, treatment costs, side effects, weak primary care, and patients who understandably stop taking a daily medicine for a condition they cannot feel.
+
+That also makes hypertension dangerous as a startup thesis. The pills are inexpensive while the care system is longitudinal and operationally expensive. The patient bears time and side effects now, while a payer may avoid a stroke years later. Successful prevention is invisible, which makes impact easy to exaggerate. The highest-burden markets often have the least purchasing power and the least reliable medicine supply.
+
+The easiest product, a consumer dashboard for people who already own a cuff, barely touches the burden. Readings logged and reminders sent are not health outcomes. An autonomous AI prescriber is worse: pregnancy, kidney function, drug interactions, adverse effects, and severe readings require clinical accountability. AI can prepare work queues, translate, summarize, and forecast stock, but it should not independently diagnose or change medication.
+
+The strongest competitor is WHO HEARTS, not another startup. A company is justified only if it removes a real implementation bottleneck better than existing public-health programs can on their own. The full adversarial case and kill criteria are maintained in research/hypertension/BLACKPAPER.md.`,
+    whitepaper: `The proposal is a hypertension-control operating system for accountable primary-care networks. It does not invent a new drug. It makes the existing control loop dependable: accurate measurement, confirmed diagnosis, appropriate clinician-supervised treatment, continuous medicine availability, follow-up, and sustained control.
+
+The system has six parts. First, support population prevention through sodium reformulation, labeling, tobacco control, and healthier food environments. Second, create a quality-assured measurement network using validated automated devices, correct cuff sizes, standard technique, repeat readings, and clinical escalation. Third, encode a locally approved WHO HEARTS-style treatment protocol with simple drug-and-dose-specific paths and single-pill combinations where appropriate. Fourth, forecast medication demand and expose stockouts. Fifth, route follow-up until control is sustained. Sixth, maintain a population registry that makes failures visible.
+
+The north-star metric is sustained blood-pressure control among all eligible people in the service population. Supporting measures are diagnostic confirmation, treatment initiation, median time to control, retention at 6 and 12 months, stockout days, adverse events, equity gaps, and cost per controlled patient-year. App engagement is not success.
+
+The first buyer should be a government, insurer, employer, pharmacy network, or provider group that bears downstream cardiovascular costs. The preferred contract pays for verified controlled patient-years, with retention, safety, and equity safeguards. A premium direct-to-consumer longevity product aimed at low-risk users is the wrong wedge.
+
+Run a bounded 90-day implementation across 3 to 10 clinics with an accountable clinical lead and medicine partner. Establish the baseline, deploy devices and workflow, review safety weekly, then compare control, retention, stockouts, and cost with the prior workflow and a matched comparison where possible. Advance only if the system improves sustained control without increasing serious adverse events.
+
+WHO estimates that controlling hypertension in half of affected people could prevent 76 million deaths by 2050 and save about $100 billion in health costs each year. No company can claim that whole result. The proof is one care network that reaches durable majority control, then repeats it. The full proposal, medical boundary, evidence, and falsification criteria are maintained in research/hypertension/WHITEPAPER.md.`,
+    cta: {
+      for: 'founder',
+      body: 'Build the complete hypertension control loop for one accountable care network. Start with validated measurement, medicine availability, clinician-owned protocols, and 12-month control, not another wellness dashboard.',
+      ctaLabel: 'read the problem',
+      url: '/p/hypertension',
+    },
+    authors: ['optimism.fun'],
+  },
+  {
     slug: 'longevity-whitepaper-v1',
     problemSlug: 'longevity',
     week: 1,

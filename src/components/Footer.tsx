@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 
 export default function Footer() {
@@ -14,14 +16,15 @@ export default function Footer() {
               <span className="font-semibold">optimism.fun</span>
             </Link>
             <p className="text-xs text-ink-400 mt-3 max-w-sm leading-relaxed">
-              Humanity&rsquo;s quest log. All problems are explainable, all solutions are
-              creatable.
+              optimism.fun is humanity&rsquo;s quest log: a sourced index of major unsolved
+              problems, the people and organizations addressing them, and measurable evidence
+              of progress over time.
             </p>
           </div>
           <div>
-            <p className="text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
+            <div className="text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
               The five
-            </p>
+            </div>
             <div className="flex flex-col gap-1.5 text-xs">
               <Link href="/" className="text-ink-300 hover:text-amber-300 transition-colors">
                 problems
@@ -41,9 +44,9 @@ export default function Footer() {
             </div>
           </div>
           <div>
-            <p className="text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
+            <div className="text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
               Context
-            </p>
+            </div>
             <div className="flex flex-col gap-1.5 text-xs">
               <Link href="/countries" className="text-ink-300 hover:text-amber-300 transition-colors">
                 countries
@@ -57,12 +60,21 @@ export default function Footer() {
             </div>
           </div>
           <div>
-            <p className="text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
+            <div className="text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
               Meta
-            </p>
+            </div>
             <div className="flex flex-col gap-1.5 text-xs">
               <Link href="/methodology" className="text-ink-300 hover:text-amber-300 transition-colors">
                 methodology
+              </Link>
+              <Link href="/about" className="text-ink-300 hover:text-amber-300 transition-colors">
+                about
+              </Link>
+              <Link href="/contact" className="text-ink-300 hover:text-amber-300 transition-colors">
+                contact
+              </Link>
+              <Link href="/privacy" className="text-ink-300 hover:text-amber-300 transition-colors">
+                privacy
               </Link>
               <a
                 href="https://github.com/adamtpang/optimism.fun"

@@ -44,6 +44,7 @@ export default function EmailCapture({ variant = 'prominent' }: { variant?: Vari
         className="flex flex-col sm:flex-row gap-2 max-w-md"
       >
         <input
+          aria-label="Email address"
           type="email"
           required
           value={email}
@@ -67,9 +68,9 @@ export default function EmailCapture({ variant = 'prominent' }: { variant?: Vari
       <div className="max-w-5xl mx-auto px-6 py-16 md:py-20">
         <div className="grid lg:grid-cols-[1.2fr_1fr] gap-10 items-center">
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-paper-copper mb-4">
+            <div className="font-mono text-[10px] uppercase tracking-ultra-wide text-paper-copper mb-4">
               Weekly whitepaper drop
-            </p>
+            </div>
             <h2 className="font-serif text-3xl md:text-5xl text-ink-100 leading-[1.05] mb-5">
               One problem.
               <span className="block text-amber-300">One whitepaper. Every week.</span>
@@ -95,6 +96,7 @@ export default function EmailCapture({ variant = 'prominent' }: { variant?: Vari
                 className="flex flex-col sm:flex-row gap-2 max-w-xl"
               >
                 <input
+                  aria-label="Email address"
                   type="email"
                   required
                   autoComplete="email"
@@ -120,35 +122,36 @@ export default function EmailCapture({ variant = 'prominent' }: { variant?: Vari
             )}
 
             <p className="mt-5 font-mono text-[11px] text-ink-500 max-w-xl leading-relaxed">
-              by subscribing you agree to receive low-volume updates from optimism.fun.
-              unsubscribe with one click, any time.
+              optimism.fun uses your email address only to send low-volume project updates
+              through Resend. You can unsubscribe with one click at any time; read the{' '}
+              <a href="/privacy" className="text-amber-300 hover:underline">privacy policy</a>.
             </p>
           </div>
 
           <div className="hidden lg:flex flex-col gap-3 font-mono text-[11px]">
-            <p className="text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
+            <div className="text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
               the three routings
-            </p>
+            </div>
             <div className="border border-hair p-4 bg-[rgb(var(--bg)/0.3)]">
-              <p className="text-amber-300 mb-1">1 &middot; weekly whitepaper</p>
-              <p className="text-ink-300 leading-relaxed">
+              <div className="text-amber-300 mb-1">1 &middot; weekly whitepaper</div>
+              <div className="text-ink-300 leading-relaxed">
                 one humanity-scale problem per week, deep-dived to whitepaper depth.
                 ships every monday.
-              </p>
+              </div>
             </div>
             <div className="border border-hair p-4 bg-[rgb(var(--bg)/0.3)]">
-              <p className="text-terminal-violet mb-1">2 &middot; founder → problem match</p>
-              <p className="text-ink-300 leading-relaxed">
+              <div className="text-terminal-violet mb-1">2 &middot; founder → problem match</div>
+              <div className="text-ink-300 leading-relaxed">
                 if you&rsquo;re building, we&rsquo;ll route you toward the problem and capital
                 stack you fit.
-              </p>
+              </div>
             </div>
             <div className="border border-hair p-4 bg-[rgb(var(--bg)/0.3)]">
-              <p className="text-terminal-green mb-1">3 &middot; allocator → deal flow</p>
-              <p className="text-ink-300 leading-relaxed">
+              <div className="text-terminal-green mb-1">3 &middot; allocator → deal flow</div>
+              <div className="text-ink-300 leading-relaxed">
                 if you&rsquo;re deploying capital, curated quest-mapped deal flow in the
                 domains you care about.
-              </p>
+              </div>
             </div>
           </div>
         </div>

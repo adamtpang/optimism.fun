@@ -1,6 +1,7 @@
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import PageHeader from '@/components/PageHeader'
+import Link from 'next/link'
 import { crypto } from '@/data/crypto'
 import { formatUSD } from '@/lib/format'
 
@@ -89,6 +90,13 @@ export default function CryptoPage() {
             {' · '}
             <span className="text-ink-600">as of</span> {crypto[0]?.asOf} ·
             <span className="text-ink-600"> prices move, snapshot is at ingest time</span>
+            {' · '}
+            <Link
+              href="/value#crypto"
+              className="text-terminal-green hover:underline underline-offset-2"
+            >
+              why these assets are valuable →
+            </Link>
           </p>
         </section>
       </main>

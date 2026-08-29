@@ -26,9 +26,10 @@ export default function FitPage() {
             <p className="text-ink-400 leading-relaxed max-w-2xl text-base">
               The best founders have a deep, almost unreasonable fit with one problem — Hassabis
               with intelligence, Jobs with the product. Founder-problem fit matters more than
-              market or skills. Let the AI interview you — it learns who you are in the economy and
-              points you at the problems that could be yours, each as an actionable quest. In a
-              hurry? Take the quick two-question version instead.
+              market or skills. This is for the people who feel a genuine moral pull toward a
+              better future: the missionaries who carry a cause and the evangelists who gather
+              people around it. Let the interview find the problem you can earn the right to own,
+              each as an actionable quest. In a hurry? Take the quick two-question version instead.
             </p>
           </div>
         </section>

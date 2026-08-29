@@ -39,8 +39,10 @@ export type MarketCapRow = {
   claimedPct: number
   /** Tracked companies on this problem, largest first. */
   holders: Company[]
+  /** Tracked companies with a usable public market cap or private valuation. */
+  valuedHolders: Company[]
   /**
-   * Whether ANY company is tracked against this problem. False means claimed and
+   * Whether any tagged company has a usable valuation. False means claimed and
    * headroom are unmeasured, not zero and total. Without this flag the index
    * rewards the problems it knows least about, which is exactly backwards.
    */
@@ -70,9 +72,10 @@ export function computeMarketCapIndex(): MarketCapRow[] {
       const holders = companies
         .filter((c) => c.problemSlugs.includes(cap.problemSlug))
         .sort((a, b) => companyValue(b) - companyValue(a))
+      const valuedHolders = holders.filter((c) => companyValue(c) > 0)
 
       const ceiling = cap.marketCap.value
-      const claimed = holders.reduce((sum, c) => sum + companyValue(c), 0)
+      const claimed = valuedHolders.reduce((sum, c) => sum + companyValue(c), 0)
       const humansAffected = problem.humansAffected.value
 
       return {
@@ -83,8 +86,9 @@ export function computeMarketCapIndex(): MarketCapRow[] {
         headroom: Math.max(0, ceiling - claimed),
         claimedPct: ceiling > 0 ? Math.min(1, claimed / ceiling) : 0,
         holders,
-        covered: holders.length > 0,
-        topHolder: holders[0] ?? null,
+        valuedHolders,
+        covered: valuedHolders.length > 0,
+        topHolder: valuedHolders[0] ?? null,
         humansAffected,
         ceilingPerPerson: humansAffected > 0 ? ceiling / humansAffected : 0,
       }
@@ -98,24 +102,57 @@ export function computeMarketCapIndex(): MarketCapRow[] {
 /** Index-wide totals for the header ticker. */
 export function indexTotals(rows: MarketCapRow[]) {
   const totalCeiling = rows.reduce((s, r) => s + r.ceiling, 0)
-  const totalClaimed = rows.reduce((s, r) => s + r.claimed, 0)
   const covered = rows.filter((r) => r.covered)
   const coveredCeiling = covered.reduce((s, r) => s + r.ceiling, 0)
+  const trackedCompanies = new Map<string, Company>()
+  const valuedCompanies = new Map<string, Company>()
+  for (const row of rows) {
+    for (const company of row.holders) trackedCompanies.set(company.slug, company)
+    for (const company of row.valuedHolders) valuedCompanies.set(company.slug, company)
+  }
+  // Count each company once in the headline even when it maps to several
+  // problems. Row-level values remain whole because segment allocations are not
+  // available in this editorial dataset.
+  const totalClaimed = [...valuedCompanies.values()].reduce(
+    (sum, company) => sum + companyValue(company),
+    0,
+  )
   return {
     totalCeiling,
     totalClaimed,
-    totalHeadroom: Math.max(0, totalCeiling - totalClaimed),
-    claimedPct: totalCeiling > 0 ? totalClaimed / totalCeiling : 0,
-    trackedCompanies: rows.reduce((s, r) => s + r.holders.length, 0),
-    /** Problems with no tracked company at all: unmeasured, not unclaimed. */
+    measuredHeadroom: Math.max(0, coveredCeiling - totalClaimed),
+    trackedCompanies: trackedCompanies.size,
+    valuedCompanies: valuedCompanies.size,
+    /** Problems with no usable company valuation: unmeasured, not unclaimed. */
     uncovered: rows.length - covered.length,
     /**
      * Claimed share across only the problems we actually have company coverage
      * on. The honest headline rate, since the index-wide one is diluted by
      * problems whose claimed value is unmeasured.
      */
-    coveredClaimedPct: coveredCeiling > 0 ? totalClaimed / coveredCeiling : 0,
+    coveredClaimedPct:
+      coveredCeiling > 0 ? Math.min(1, totalClaimed / coveredCeiling) : 0,
   }
+}
+
+/** Fail fast when editorial data cannot produce a coherent index. */
+export function validateMarketCapInputs(): string[] {
+  const issues: string[] = []
+  const seen = new Set<string>()
+  for (const cap of inLimitCaps) {
+    if (seen.has(cap.problemSlug)) issues.push(`duplicate cap: ${cap.problemSlug}`)
+    seen.add(cap.problemSlug)
+    if (!problems.some((problem) => problem.slug === cap.problemSlug)) {
+      issues.push(`cap references missing problem: ${cap.problemSlug}`)
+    }
+    if (!Number.isFinite(cap.marketCap.value) || cap.marketCap.value <= 0) {
+      issues.push(`invalid ceiling: ${cap.problemSlug}`)
+    }
+    if (!cap.comparable.trim() || !cap.reasoning.trim()) {
+      issues.push(`missing rationale: ${cap.problemSlug}`)
+    }
+  }
+  return issues
 }
 
 /**

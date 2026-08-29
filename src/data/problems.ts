@@ -1593,6 +1593,121 @@ export const problems: Problem[] = [
     asOf: TODAY,
   },
   {
+    slug: 'hypertension',
+    name: 'Hypertension control',
+    tier: 'welfare',
+    domain: 'health',
+    tagline:
+      'The largest controllable mortality risk is a primary-care delivery failure, not a missing drug.',
+    description:
+      'Hypertension is persistently high pressure in the arteries. It usually causes no symptoms while it damages blood vessels, the heart, brain, and kidneys, increasing the risk of heart attack, stroke, heart failure, chronic kidney disease, and dementia. WHO estimates that 1.4 billion adults aged 30 to 79 had hypertension in 2024, but only 320 million, 23 percent, had it controlled. The core interventions already exist: validated blood-pressure devices, standardized treatment protocols, inexpensive medicines, team-based primary care, reliable refills, and population registries. The unsolved problem is making that complete control loop dependable for every patient.',
+    humansAffected: {
+      value: 1_400_000_000,
+      unit: 'adults aged 30-79 living with hypertension',
+      source: 'WHO Global report on hypertension 2025',
+      sourceUrl: 'https://www.who.int/publications/i/item/9789240115569',
+      confidence: 'high',
+      asOf: '2026-08-27',
+    },
+    severity: {
+      value: 10_000_000,
+      unit: 'deaths attributed to high blood pressure per year, approximately',
+      source: 'WHO HEARTS technical package',
+      sourceUrl: 'https://www.who.int/publications/i/item/9789241511377',
+      confidence: 'med',
+      asOf: '2026-08-27',
+    },
+    currentSolutionQuality: {
+      value: 0.23,
+      unit: 'share of affected adults with blood pressure controlled',
+      source: 'WHO Hypertension fact sheet, 2025',
+      sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/hypertension',
+      confidence: 'high',
+      asOf: '2026-08-27',
+    },
+    timeToImpact: {
+      value: 5,
+      unit: 'years to meaningful health-system control-rate improvement',
+      source: 'OOM estimate based on national and subnational WHO HEARTS implementations',
+      sourceUrl: 'https://www.who.int/publications/i/item/9789240012714',
+      confidence: 'low',
+      asOf: '2026-08-27',
+    },
+    scale: {
+      value: 1_400_000_000,
+      unit: 'adults aged 30-79 with hypertension',
+      trend: 'worsening',
+      series: [
+        { year: 1990, value: 650_000_000 },
+        { year: 2024, value: 1_400_000_000 },
+      ],
+      source: 'WHO Hypertension fact sheet, 2025',
+      sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/hypertension',
+      confidence: 'high',
+      asOf: '2026-08-27',
+    },
+    transformation: {
+      before:
+        '1.4B adults live with hypertension; about 600M are unaware and only 23% have it controlled. Measurement, medicines, follow-up, and data routinely fail as one disconnected chain.',
+      after:
+        'Validated measurement, clinician-approved protocols, uninterrupted medicine supply, and active follow-up produce sustained majority control in every participating care network.',
+      horizon: '10 years',
+      confidence: 'med',
+      asOf: '2026-08-27',
+    },
+    neglectedness: {
+      score: 6,
+      rationale:
+        'The drug classes and clinical knowledge are well supplied, but the delivery system is not: 99 of 195 countries and territories have control rates below 20%, and only 28% of low-income countries report general availability of all WHO-recommended medicines.',
+      source: 'WHO Global report on hypertension 2025',
+      sourceUrl: 'https://www.who.int/news/item/23-09-2025-uncontrolled-high-blood-pressure-puts-over-a-billion-people-at-risk',
+      confidence: 'high',
+      asOf: '2026-08-27',
+    },
+    tractability: {
+      score: 9,
+      rationale:
+        'Validated devices, low-cost medicines, standardized protocols, team-based care, and monitoring systems already exist. WHO estimates that controlling half of affected people could prevent 76M deaths by 2050.',
+      source: 'WHO Global report on hypertension 2025',
+      sourceUrl: 'https://www.who.int/publications/i/item/9789240115569',
+      confidence: 'high',
+      asOf: '2026-08-27',
+    },
+    organizations: [
+      { name: 'WHO HEARTS', url: 'https://www.who.int/initiatives/hearts', kind: 'global implementation program' },
+      { name: 'Resolve to Save Lives', url: 'https://resolvetosavelives.org', kind: 'nonprofit' },
+      { name: 'Bloomberg Philanthropies', url: 'https://www.bloomberg.org', kind: 'funder' },
+    ],
+    people: [
+      { name: 'Tom Frieden', role: 'founder and CEO, Resolve to Save Lives', url: 'https://resolvetosavelives.org' },
+    ],
+    waysToHelp: [
+      { mode: 'build', text: 'Build measurement quality assurance, medicine-availability tooling, patient registries, and follow-up workflows for accountable primary-care networks.' },
+      { mode: 'policy', text: 'Implement mandatory sodium reformulation, front-of-pack labeling, tobacco control, and affordable access to validated devices and essential medicines.', url: 'https://www.who.int/publications/i/item/9789240120341' },
+      { mode: 'career', text: 'Work in primary care, public-health implementation, medicine procurement, or cardiovascular outcomes measurement.' },
+    ],
+    lastUpdated: '2026-08-27',
+    scores: {
+      welfareBCR: null,
+      xriskITN: null,
+      utilityDelta: {
+        value: 0.77,
+        unit: 'share of affected adults not yet controlled',
+        source: 'WHO Hypertension fact sheet, 2025',
+        sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/hypertension',
+        confidence: 'high',
+        asOf: '2026-08-27',
+      },
+    },
+    sources: [
+      { title: 'WHO Global report on hypertension 2025', url: 'https://www.who.int/publications/i/item/9789240115569' },
+      { title: 'WHO Hypertension fact sheet', url: 'https://www.who.int/news-room/fact-sheets/detail/hypertension' },
+      { title: 'WHO HEARTS technical package', url: 'https://www.who.int/publications/i/item/9789241511377' },
+      { title: 'WHO pharmacological treatment guideline', url: 'https://www.who.int/publications/i/item/9789240033986' },
+    ],
+    asOf: '2026-08-27',
+  },
+  {
     slug: 'ai-datacenter-power',
     domain: 'energy',
     name: 'AI datacenter power',

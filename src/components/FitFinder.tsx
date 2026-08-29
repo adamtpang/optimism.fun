@@ -94,6 +94,8 @@ export default function FitFinder() {
         }
       } else if (data.type === 'unconfigured') {
         setError('The AI interview is not switched on yet. Take the quick version instead.')
+      } else if (data.type === 'error' && data.error === 'ai_unavailable') {
+        setError('The AI interviewer is temporarily unavailable. Take the quick version while it is repaired.')
       } else {
         setError('Something glitched in the interview. Try again, or take the quick version.')
       }

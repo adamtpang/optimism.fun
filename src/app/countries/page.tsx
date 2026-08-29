@@ -1,6 +1,7 @@
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import PageHeader from '@/components/PageHeader'
+import Link from 'next/link'
 import { countries } from '@/data/countries'
 import { formatUSD } from '@/lib/format'
 
@@ -81,6 +82,13 @@ export default function CountriesPage() {
             </a>
             {' · '}
             <span className="text-ink-600">as of</span> {countries[0]?.gdp.asOf}
+            {' · '}
+            <Link
+              href="/value#countries"
+              className="text-terminal-green hover:underline underline-offset-2"
+            >
+              GDP vs national wealth →
+            </Link>
           </p>
         </section>
       </main>
