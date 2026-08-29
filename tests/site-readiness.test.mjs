@@ -30,7 +30,10 @@ test('security headers are enforced on every route with explicit source allowlis
 
 test('the PostHog proxy uses an absolute same-origin URL compatible with CSP', async () => {
   const providers = await read('src/app/providers.tsx')
-  assert.match(providers, /api_host:\s*process\.env\.NEXT_PUBLIC_POSTHOG_HOST\s*\|\|\s*`\$\{window\.location\.origin\}\/ingest`/)
+  assert.match(providers, /configuredHost\?\.startsWith\('\/'\)/)
+  assert.match(providers, /`\$\{window\.location\.origin\}\$\{configuredHost\}`/)
+  assert.match(providers, /configuredHost \|\| `\$\{window\.location\.origin\}\/ingest`/)
+  assert.match(providers, /api_host: apiHost/)
   assert.match(contentSecurityPolicy, /connect-src 'self'/)
 })
 
