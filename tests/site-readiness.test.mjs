@@ -28,6 +28,12 @@ test('security headers are enforced on every route with explicit source allowlis
   assert.doesNotMatch(contentSecurityPolicy, /unsafe-eval/)
 })
 
+test('the PostHog proxy uses an absolute same-origin URL compatible with CSP', async () => {
+  const providers = await read('src/app/providers.tsx')
+  assert.match(providers, /api_host:\s*process\.env\.NEXT_PUBLIC_POSTHOG_HOST\s*\|\|\s*`\$\{window\.location\.origin\}\/ingest`/)
+  assert.match(contentSecurityPolicy, /connect-src 'self'/)
+})
+
 test('the two formerly unnamed homepage controls have stable accessible names', async () => {
   const [radar, newsletter] = await Promise.all([
     read('src/components/RadarClient.tsx'),
