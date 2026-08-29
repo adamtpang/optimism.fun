@@ -12,7 +12,9 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
     const configuredHost = process.env.NEXT_PUBLIC_POSTHOG_HOST
     const apiHost = configuredHost?.startsWith('/')
       ? `${window.location.origin}${configuredHost}`
-      : configuredHost || `${window.location.origin}/ingest`
+      : /^https?:\/\//i.test(configuredHost || '')
+        ? configuredHost
+        : `${window.location.origin}/ingest`
 
     posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
       api_host: apiHost,
