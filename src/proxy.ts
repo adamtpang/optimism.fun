@@ -4,6 +4,13 @@
  * - In production: ADMIN_PASSWORD must be set; missing → 503.
  * - In dev: open if ADMIN_PASSWORD is unset, so localhost work isn't blocked.
  * - Username can be anything (we only check the password).
+ *
+ * Renamed from `middleware.ts` to `proxy.ts` on 2026-09-04. Next.js 16
+ * deprecated the middleware file convention; the file and the exported function
+ * are renamed and nothing else changes, `config.matcher` included. The logic
+ * below is byte-identical to the middleware version, and tests/proxy.test.ts
+ * now pins the gate's behaviour so this security boundary cannot regress
+ * silently on a later rename.
  */
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -11,7 +18,7 @@ export const config = {
   matcher: ['/admin/:path*'],
 }
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const expected = process.env.ADMIN_PASSWORD
   if (!expected) {
     if (process.env.NODE_ENV === 'production') {
