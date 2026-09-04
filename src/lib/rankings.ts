@@ -23,11 +23,11 @@ import { requestsForStartups } from '@/data/rfs'
 import { getSourcedCrowding } from '@/data/quest-crowding'
 import { computeRadarRows } from '@/lib/radar'
 
-export type QuestTier = 'S' | 'A' | 'B' | 'C'
+export type OpportunityBand = 'top' | 'strong' | 'consider' | 'watch'
 
 export type RankedQuest = {
   rank: number // 1-indexed overall
-  tier: QuestTier
+  band: OpportunityBand
   score: number // 0..100 composite ranking score
   slug: string
   title: string
@@ -84,16 +84,16 @@ function questSupplyFrac(problemSupply: number, crowding: Crowding): number {
 }
 
 /**
- * Position-based tiers so the board always reads as a clean power ranking
- * (a tier list has tiers). Thresholds are shares of the field, not absolute
- * cutoffs — S ≈ top 15%, A ≈ next 23%, B ≈ next 31%, C ≈ the tail.
+ * Position-based opportunity bands. These describe relative startup opportunity,
+ * never existential consequence. S-tier is reserved for the separate civilization-
+ * risk taxonomy in data/existential-risks.ts.
  */
-function tierFor(index: number, total: number): QuestTier {
+function bandFor(index: number, total: number): OpportunityBand {
   const p = (index + 1) / total
-  if (p <= 0.15) return 'S'
-  if (p <= 0.38) return 'A'
-  if (p <= 0.69) return 'B'
-  return 'C'
+  if (p <= 0.15) return 'top'
+  if (p <= 0.38) return 'strong'
+  if (p <= 0.69) return 'consider'
+  return 'watch'
 }
 
 export function computeQuestRankings(): RankedQuest[] {
@@ -153,14 +153,6 @@ export function computeQuestRankings(): RankedQuest[] {
   return scored.map((q, i) => ({
     ...q,
     rank: i + 1,
-    tier: tierFor(i, total),
+    band: bandFor(i, total),
   }))
-}
-
-/** Group ranked quests by tier, preserving order, for the tier-band UI. */
-export function groupByTier(quests: RankedQuest[]): { tier: QuestTier; quests: RankedQuest[] }[] {
-  const order: QuestTier[] = ['S', 'A', 'B', 'C']
-  return order
-    .map((tier) => ({ tier, quests: quests.filter((q) => q.tier === tier) }))
-    .filter((band) => band.quests.length > 0)
 }

@@ -23,7 +23,7 @@ export type PlottedQuest = {
   title: string
   problemName: string
   problemSlug: string
-  tier: RankedQuest['tier']
+  band: RankedQuest['band']
   score: number
   good: number // 0-100, x-axis
   hard: number // 0-100, y-axis
@@ -43,7 +43,7 @@ export function placeOnQuestGrid(quests: RankedQuest[]): PlottedQuest[] {
     title: q.title,
     problemName: q.problemName,
     problemSlug: q.problemSlug,
-    tier: q.tier,
+    band: q.band,
     score: q.score,
     good: q.opportunity,
     hard: Math.min(97, HARD_BASE[q.confidence] + slugSpread(q.slug, 20)),

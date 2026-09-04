@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import PageHeader from '@/components/PageHeader'
@@ -149,6 +150,14 @@ export default function PathsPage() {
                               Too crowded to found. See the join column.
                             </p>
                           )}
+                          {startable && (
+                            <Link
+                              href={`/p/${cap.problemSlug}#coordinate`}
+                              className="inline-block mt-2 font-mono text-[10px] uppercase tracking-wider text-terminal-green hover:underline"
+                            >
+                              Claim this start &rarr;
+                            </Link>
+                          )}
                         </div>
                       )
                     })}
@@ -198,6 +207,12 @@ export default function PathsPage() {
                                   </span>
                                   {t.softwareBridge}
                                 </p>
+                                <Link
+                                  href={`/p/${cap.problemSlug}#coordinate`}
+                                  className="inline-block mt-2 font-mono text-[10px] uppercase tracking-wider text-terminal-violet hover:underline"
+                                >
+                                  I want in &rarr;
+                                </Link>
                               </div>
                             )
                           })}

@@ -21,6 +21,7 @@ const TONE: Record<NavTab['tone'], string> = {
 }
 
 const NAV_TABS: Omit<NavTab, 'count'>[] = [
+  { name: 'The Board', href: '/coordinate', tone: 'green' },
   { name: 'Globe', href: '/globe', tone: 'cyan' },
   { name: 'Your Fit', href: '/fit', tone: 'amber' },
   { name: 'The Quest', href: '/journey', tone: 'amber' },

@@ -1,5 +1,5 @@
 /**
- * The S-tier scan — blends every quest's core ranking score (demand × gap ×
+ * The personal opportunity scan blends every quest's core ranking score (demand × gap ×
  * readiness, already reflecting sourced crowding) with Adam's real personal
  * fittedness, using the exact formula from HANDOFF_FIT_AND_CROWDING_
  * 2026-08-18.md's hub session: Final = Core*0.7 + Fittedness*10*0.3.
@@ -28,7 +28,7 @@ const blended = ranked.map((q) => {
     slug: q.slug,
     title: q.title,
     coreScore: q.score,
-    coreTier: q.tier,
+    coreBand: q.band,
     crowding: q.crowding,
     crowdingSource: q.crowdingSource,
     competitorCount: q.competitorCount,
@@ -41,11 +41,11 @@ const blended = ranked.map((q) => {
 
 blended.sort((a, b) => b.blendedScore - a.blendedScore)
 
-console.log('\n=== BLENDED S-TIER SCAN (Core*0.7 + Fittedness*10*0.3) ===\n')
+console.log('\n=== BLENDED PERSONAL OPPORTUNITY SCAN (Core*0.7 + Fittedness*10*0.3) ===\n')
 for (const b of blended) {
   const src = b.crowdingSource === 'sourced' ? '' : ' [editorial prior, not sourced]'
   console.log(
-    `${b.blendedScore.toString().padStart(3)}  (core ${b.coreScore}/${b.coreTier}, fit ${b.fitScore}/10, ${b.crowding} n=${b.competitorCount ?? '?'}${src})  ${b.title}`,
+    `${b.blendedScore.toString().padStart(3)}  (core ${b.coreScore}/${b.coreBand}, fit ${b.fitScore}/10, ${b.crowding} n=${b.competitorCount ?? '?'}${src})  ${b.title}`,
   )
 }
 
@@ -53,7 +53,7 @@ console.log('\n=== TOP 5 DETAIL ===\n')
 for (const b of blended.slice(0, 5)) {
   console.log(`\n${b.title} (${b.problemName})`)
   console.log(
-    `  blended: ${b.blendedScore}  core: ${b.coreScore} (${b.coreTier}-tier)  fit: ${b.fitScore}/10  crowding: ${b.crowding} (n=${b.competitorCount ?? 'editorial'})`,
+    `  blended: ${b.blendedScore}  core: ${b.coreScore} (${b.coreBand} opportunity)  fit: ${b.fitScore}/10  crowding: ${b.crowding} (n=${b.competitorCount ?? 'editorial'})`,
   )
   b.fitReasons.forEach((r) => console.log(`  - ${r}`))
 }

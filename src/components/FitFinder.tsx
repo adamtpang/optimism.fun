@@ -457,9 +457,23 @@ export default function FitFinder() {
               </div>
 
               <div className="flex flex-wrap gap-2">
+                {/* The one place this page stops being read-only. A fit result
+                    that ends in prose routes nobody; this hands it to the board. */}
+                <Link
+                  href={`/p/${r.slug}#coordinate`}
+                  className="font-mono text-[10px] uppercase tracking-wider text-paper bg-amber-300 hover:bg-amber-200 px-3 py-2 rounded transition-colors"
+                >
+                  Commit to this problem &rarr;
+                </Link>
+                <Link
+                  href="/last-company"
+                  className="font-mono text-[10px] uppercase tracking-wider text-ink-300 border border-hair hover:border-amber-300 px-3 py-2 rounded transition-colors"
+                >
+                  Pressure-test as your last company &rarr;
+                </Link>
                 <Link
                   href="/journey"
-                  className="font-mono text-[10px] uppercase tracking-wider text-paper bg-amber-300 hover:bg-amber-200 px-3 py-2 rounded transition-colors"
+                  className="font-mono text-[10px] uppercase tracking-wider text-ink-300 border border-hair hover:border-amber-300 px-3 py-2 rounded transition-colors"
                 >
                   Open the full quest &rarr;
                 </Link>

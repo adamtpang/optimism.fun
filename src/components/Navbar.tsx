@@ -27,6 +27,7 @@ const valueExplainedCount = valueLedgers.reduce((sum, ledger) => sum + ledger.ro
 // NavbarClient owns stable labels, routes, and colors. Only these live counts
 // cross the server/client boundary, avoiding a duplicated metadata payload.
 const tabCounts = [
+  problems.length, // The Board
   publicCompanies.length,
   ARCHETYPE_LIST.length,
   questStages.length,

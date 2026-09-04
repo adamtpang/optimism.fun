@@ -9,11 +9,11 @@ import { useState } from 'react'
 import Link from 'next/link'
 import type { PlottedQuest } from '@/lib/quest-grid'
 
-const TIER_DOT: Record<PlottedQuest['tier'], { r: number; className: string }> = {
-  S: { r: 2.6, className: 'fill-amber-300' },
-  A: { r: 2.2, className: 'fill-terminal-cyan' },
-  B: { r: 1.8, className: 'fill-ink-300' },
-  C: { r: 1.5, className: 'fill-ink-500' },
+const BAND_DOT: Record<PlottedQuest['band'], { r: number; className: string }> = {
+  top: { r: 2.6, className: 'fill-amber-300' },
+  strong: { r: 2.2, className: 'fill-terminal-cyan' },
+  consider: { r: 1.8, className: 'fill-ink-300' },
+  watch: { r: 1.5, className: 'fill-ink-500' },
 }
 
 export default function QuestGrid({ quests }: { quests: PlottedQuest[] }) {
@@ -53,7 +53,7 @@ export default function QuestGrid({ quests }: { quests: PlottedQuest[] }) {
 
           {/* points */}
           {quests.map((q) => {
-            const dot = TIER_DOT[q.tier]
+            const dot = BAND_DOT[q.band]
             const isActive = q.slug === activeSlug
             return (
               <g key={q.slug}>
@@ -96,7 +96,7 @@ export default function QuestGrid({ quests }: { quests: PlottedQuest[] }) {
         {active ? (
           <>
             <p className="font-mono text-[9px] uppercase tracking-ultra-wide text-amber-300 mb-1.5">
-              tier {active.tier} &middot; score {active.score}
+              {active.band} opportunity &middot; score {active.score}
             </p>
             <h3 className="font-serif text-lg text-ink-100 leading-snug mb-2">{active.title}</h3>
             <p className="text-ink-400 text-[12.5px] leading-relaxed mb-4">

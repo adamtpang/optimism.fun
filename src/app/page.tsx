@@ -14,6 +14,11 @@ import { ecosystem } from '@/data/ecosystem'
 import { voices } from '@/data/voices'
 import { founders } from '@/data/founders'
 import { sectors } from '@/data/sectors'
+import { existentialRisks } from '@/data/existential-risks'
+import HomeRouter from '@/components/HomeRouter'
+import { cachedUnderCoordinated } from '@/lib/coordination'
+import { cachedListRecentPublic } from '@/lib/commitments-cache'
+import { isDbConfigured } from '@/lib/db'
 
 // Canonical is scoped to the homepage here (not on the root layout), so it
 // doesn't cascade as an inherited default onto every other route: Next.js
@@ -24,8 +29,26 @@ export const metadata: Metadata = {
   },
 }
 
-export default function Home() {
+/**
+ * The homepage reads the live board, which would otherwise make the site's
+ * highest-traffic page server-render on every request. A five-item ticker does
+ * not need per-request freshness, so it revalidates on a 5 minute window: the
+ * page stays effectively static and the board is still visibly live.
+ * Approving a commitment calls revalidatePath('/') anyway, so a new row shows
+ * up immediately rather than waiting out the window.
+ */
+export const revalidate = 300
+
+export default async function Home() {
   const solutionCount = companies.length + publicCompanies.length
+
+  // The coordination layer. Both degrade to empty without a database, so the
+  // homepage still renders in full on a deployment that has no board.
+  const boardAvailable = isDbConfigured()
+  const [underCoordinated, recent] = await Promise.all([
+    cachedUnderCoordinated(3),
+    cachedListRecentPublic(5),
+  ])
 
   return (
     <>
@@ -41,8 +64,8 @@ export default function Home() {
               </div>
             </div>
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.02] text-ink-100 mb-4 max-w-3xl">
-              Infinite problems.{' '}
-              <span className="text-amber-300">Infinite solutions.</span>
+              Find the problems humanity{' '}
+              <span className="text-terminal-rose">cannot afford to lose.</span>
             </h1>
             <p className="text-ink-400 leading-relaxed max-w-2xl text-base">
               A live map for people with a moral mission — every company, founder, and economy
@@ -51,16 +74,16 @@ export default function Home() {
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-2">
               <Link
-                href="/journey"
+                href="/s-tier"
                 className="font-mono text-[11px] uppercase tracking-wider text-paper bg-amber-300 hover:bg-amber-200 px-4 py-2.5 rounded transition-colors"
               >
                 Find your good quest &rarr;
               </Link>
               <Link
-                href="#problems"
+                href="/rankings"
                 className="font-mono text-[11px] uppercase tracking-wider text-ink-300 border border-hair hover:border-amber-300 px-4 py-2.5 rounded transition-colors"
               >
-                See the ranking &rarr;
+                Browse every quest &rarr;
               </Link>
             </div>
             <DataFreshness className="mt-5" />
@@ -70,6 +93,39 @@ export default function Home() {
             className="relative w-full h-[62vh] min-h-[420px]"
             initialLayers={['companies', 'founders']}
           />
+        </section>
+
+        <section className="border-b border-hair">
+          <div className="max-w-7xl mx-auto px-6 py-10">
+            <div className="grid md:grid-cols-[14rem_1fr] gap-5 md:gap-10 mb-7">
+              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-terminal-rose">
+                S-tier first
+              </p>
+              <div>
+                <h2 className="font-serif text-2xl md:text-4xl text-ink-100 leading-tight">
+                  Four ways humanity could lose the future.
+                </h2>
+                <p className="mt-2 text-sm leading-relaxed text-ink-400 max-w-2xl">
+                  S-tier is a consequence class, not a percentile. No fake probabilities, no
+                  inflation of merely large problems, and no threat without a buildable defense.
+                </p>
+              </div>
+            </div>
+            <div className="border-t border-hair">
+              {existentialRisks.map((risk) => (
+                <Link
+                  key={risk.slug}
+                  href={`/s-tier#${risk.slug}`}
+                  className="group grid sm:grid-cols-[3rem_13rem_minmax(0,1fr)_auto] gap-3 sm:gap-5 items-start py-4 border-b border-hair hover:bg-ink-800/30 transition-colors"
+                >
+                  <span className="font-mono text-[11px] text-terminal-rose">S{risk.rank}</span>
+                  <span className="font-serif text-lg text-ink-100 group-hover:text-terminal-rose transition-colors">{risk.shortName}</span>
+                  <span className="text-sm leading-relaxed text-ink-500 line-clamp-2">{risk.mechanism}</span>
+                  <span className="font-mono text-[11px] text-ink-600 group-hover:text-ink-100">open &rarr;</span>
+                </Link>
+              ))}
+            </div>
+          </div>
         </section>
 
         {/* THE RADAR — opportunity-ranked: where demand is high and supply is low */}
@@ -90,6 +146,14 @@ export default function Home() {
             <RadarClient />
           </div>
         </section>
+
+        {/* The router — three doors and the live board, above the table. The
+            leaderboard is the map; this is where a visitor can actually act. */}
+        <HomeRouter
+          underCoordinated={underCoordinated}
+          recent={recent}
+          boardAvailable={boardAvailable}
+        />
 
         {/* The leaderboard — the detailed, multi-metric sortable index. */}
         <section

@@ -19,6 +19,13 @@ import { priorityScore, importanceScore, urgencyScore } from '@/lib/priority'
 import { getCapitalFlow } from '@/data/capital-flows'
 import { getInLimitCap } from '@/data/in-limit'
 import { computeAllocations, fmtRatio, fmtUsdCompact } from '@/lib/allocation'
+import ActionBar from '@/components/ActionBar'
+import CommitmentForm from '@/components/CommitmentForm'
+import CoordinationBoard from '@/components/CoordinationBoard'
+import { cachedCountsByProblem, cachedListByProblem } from '@/lib/commitments-cache'
+import { isDbConfigured } from '@/lib/db'
+import { requestsForStartups } from '@/data/rfs'
+import { getSourcedCrowding } from '@/data/quest-crowding'
 
 const WAY_LABEL: Record<string, string> = {
   build: 'Build',
@@ -41,6 +48,15 @@ function compactScale(n: number): string {
 export function generateStaticParams() {
   return problems.map((p) => ({ slug: p.slug }))
 }
+
+/**
+ * Problem pages now carry the board as well as the research, so they cannot be
+ * fully static any more. They stay prerendered and revalidate on a 5 minute
+ * window instead of rendering per request. Approving a commitment revalidates
+ * the affected problem path directly, so the board updates the moment a row is
+ * approved rather than at the end of the window.
+ */
+export const revalidate = 300
 
 export async function generateMetadata({
   params,
@@ -75,11 +91,32 @@ export default async function ProblemPage({
   const allocation = computeAllocations().get(slug)
   const prize = getInLimitCap(slug)
 
+  // The coordination layer. Both reads degrade to empty without a database, so
+  // the research page still renders in full on a deployment without one.
+  const boardAvailable = isDbConfigured()
+  const [commitments, allCounts] = await Promise.all([cachedListByProblem(slug), cachedCountsByProblem()])
+  const counts = allCounts.get(slug)
+
+  const boardQuests = requestsForStartups
+    .filter((q) => q.problemSlug === slug)
+    .map((q) => {
+      const cw = getSourcedCrowding(q.slug)
+      return { slug: q.slug, title: q.title, crowded: Boolean(cw && cw.competitorCount >= 5) }
+    })
+
+  const boardCompanies = problemCompanies.map((c) => ({
+    slug: c.slug,
+    name: c.name,
+    url: c.url,
+    stage: c.stage,
+  }))
+
   return (
     <>
       <Navbar />
+      <ActionBar />
       <main>
-        <section className="pt-28 pb-10 border-b border-hair">
+        <section className="pt-8 pb-10 border-b border-hair">
           <div className="max-w-5xl mx-auto px-6">
             <Link
               href="/"
@@ -914,6 +951,23 @@ export default async function ProblemPage({
               ))}
             </ul>
           </section>
+        </section>
+
+        <CoordinationBoard
+          problemName={problem.name}
+          counts={counts}
+          commitments={commitments}
+          quests={boardQuests}
+          companies={boardCompanies}
+          boardAvailable={boardAvailable}
+        />
+
+        <section className="px-6 pb-16 max-w-5xl mx-auto">
+          <CommitmentForm
+            problemSlug={problem.slug}
+            problemName={problem.name}
+            companies={boardCompanies.map((c) => ({ slug: c.slug, name: c.name }))}
+          />
         </section>
       </main>
       <Footer />

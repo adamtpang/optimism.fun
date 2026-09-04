@@ -7,9 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "node --test tests/*.test.mjs",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "export-seeds": "node scripts/export-seeds.mjs"
+    "export-seeds": "node scripts/export-seeds.mjs",
+    "test:node": "node --test tests/*.test.mjs",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.99.0",
@@ -34,6 +36,7 @@
     "autoprefixer": "^10.4.20",
     "postcss": "^8.5.26",
     "tailwindcss": "^3.4.16",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "vitest": "^3.2.7"
   }
 }
