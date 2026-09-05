@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default function RankingsPage() {
   const ranked = computeQuestRankings()
   const top = ranked[0]
-  const sTier = ranked.filter((q) => q.tier === 'S').length
+  const topBand = ranked.filter((q) => q.band === 'top').length
 
   return (
     <>
@@ -41,7 +41,7 @@ export default function RankingsPage() {
             </p>
             {top && (
               <p className="mt-4 font-mono text-[11px] text-ink-500">
-                <span className="text-amber-300">#1</span> {top.title} · {sTier} in S-tier ·{' '}
+                <span className="text-amber-300">#1</span> {top.title} · {topBand} top opportunities ·{' '}
                 {ranked.length} quests ranked · your shortlist saves on this device
               </p>
             )}
@@ -80,8 +80,9 @@ export default function RankingsPage() {
                 — burden, willingness-to-pay, capital, research, queues — never one signal.
               </div>
               <div>
-                <p className="text-ink-100 mb-1">4 · Tiers</p>
-                S = build this now, down to C = on the radar. The{' '}
+                <p className="text-ink-100 mb-1">4 · Opportunity bands</p>
+                Top, strong, consider, and watch are relative positions on this startup board.
+                Existential S-tier is a separate consequence class. The{' '}
                 <span className="text-amber-300">$ figure</span> is the prize at the limit if a
                 team executes perfectly.
               </div>

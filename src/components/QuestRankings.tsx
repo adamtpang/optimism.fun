@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import {
   Bookmark,
@@ -12,7 +12,7 @@ import {
   Search,
   X,
 } from 'lucide-react'
-import type { RankedQuest, QuestTier } from '@/lib/rankings'
+import type { OpportunityBand, RankedQuest } from '@/lib/rankings'
 import type { Crowding } from '@/data/types'
 import { fmtUsdCompact } from '@/lib/allocation'
 import StarterPackBlock from '@/components/StarterPackBlock'
@@ -41,21 +41,25 @@ const CROWDING_META: Record<Crowding, { label: string; tone: string }> = {
   crowded: { label: 'crowded', tone: 'text-terminal-rose' },
 }
 
-const TIER_META: Record<QuestTier, { label: string; chip: string }> = {
-  S: {
-    label: 'Build this now',
+const BAND_META: Record<OpportunityBand, { label: string; short: string; chip: string }> = {
+  top: {
+    label: 'Top opportunity',
+    short: 'Top',
     chip: 'bg-amber-300/10 text-amber-300 border-amber-300/30',
   },
-  A: {
-    label: 'Strong quest',
+  strong: {
+    label: 'Strong opportunity',
+    short: 'Strong',
     chip: 'bg-terminal-cyan/10 text-terminal-cyan border-terminal-cyan/30',
   },
-  B: {
-    label: 'Worth a look',
+  consider: {
+    label: 'Consider',
+    short: 'Consider',
     chip: 'bg-ink-800/60 text-ink-200 border-hair',
   },
-  C: {
-    label: 'On the radar',
+  watch: {
+    label: 'Watch',
+    short: 'Watch',
     chip: 'bg-ink-800/40 text-ink-500 border-hair',
   },
 }
@@ -114,7 +118,7 @@ function IconAction({
   active: boolean
   activeClass: string
   onClick: () => void
-  children: React.ReactNode
+  children: ReactNode
 }) {
   return (
     <button
@@ -154,7 +158,7 @@ function QuestRow({
   const [open, setOpen] = useState(false)
   const mo = q.momentum ? MOMENTUM[q.momentum] : null
   const pack = getStarterPack(q.slug)
-  const tier = TIER_META[q.tier]
+  const bandMeta = BAND_META[q.band]
 
   return (
     <article
@@ -173,10 +177,10 @@ function QuestRow({
           </span>
 
           <span
-            className={`h-7 w-7 shrink-0 inline-flex items-center justify-center rounded border font-mono text-[11px] ${tier.chip}`}
-            title={tier.label}
+            className={`h-7 min-w-7 px-1.5 shrink-0 inline-flex items-center justify-center rounded border font-mono text-[9px] uppercase ${bandMeta.chip}`}
+            title={bandMeta.label}
           >
-            {q.tier}
+            {bandMeta.short}
           </span>
 
           <span className="min-w-0 flex-1">
@@ -382,7 +386,7 @@ export default function QuestRankings({ quests }: { quests: RankedQuest[] }) {
   const [hydrated, setHydrated] = useState(false)
   const [scope, setScope] = useState<Scope>('all')
   const [query, setQuery] = useState('')
-  const [tier, setTier] = useState('all')
+  const [band, setBand] = useState('all')
   const [domain, setDomain] = useState('all')
   const [crowding, setCrowding] = useState('all')
   const [sort, setSort] = useState<SortKey>('rank')
@@ -425,7 +429,7 @@ export default function QuestRankings({ quests }: { quests: RankedQuest[] }) {
       ) {
         return false
       }
-      if (tier !== 'all' && quest.tier !== tier) return false
+      if (band !== 'all' && quest.band !== band) return false
       if (domain !== 'all' && quest.domainLabel !== domain) return false
       if (crowding !== 'all' && quest.crowding !== crowding) return false
       if (
@@ -446,7 +450,7 @@ export default function QuestRankings({ quests }: { quests: RankedQuest[] }) {
       if (sort === 'prize') return (b.prizeUsd ?? 0) - (a.prizeUsd ?? 0) || a.rank - b.rank
       return a.rank - b.rank
     })
-  }, [crowding, domain, query, questbook, quests, scope, sort, tier])
+  }, [band, crowding, domain, query, questbook, quests, scope, sort])
 
   const toggleSaved = (slug: string) => {
     setQuestbook((current) => {
@@ -493,7 +497,7 @@ export default function QuestRankings({ quests }: { quests: RankedQuest[] }) {
 
   const resetFilters = () => {
     setQuery('')
-    setTier('all')
+    setBand('all')
     setDomain('all')
     setCrowding('all')
     setSort('rank')
@@ -502,7 +506,7 @@ export default function QuestRankings({ quests }: { quests: RankedQuest[] }) {
 
   const activeFilters = Boolean(
     query ||
-      tier !== 'all' ||
+      band !== 'all' ||
       domain !== 'all' ||
       crowding !== 'all' ||
       sort !== 'rank' ||
@@ -586,12 +590,12 @@ export default function QuestRankings({ quests }: { quests: RankedQuest[] }) {
                 />
               </span>
             </label>
-            <FilterSelect label="Tier" value={tier} onChange={setTier}>
-              <option value="all">All tiers</option>
-              <option value="S">S tier</option>
-              <option value="A">A tier</option>
-              <option value="B">B tier</option>
-              <option value="C">C tier</option>
+            <FilterSelect label="Opportunity" value={band} onChange={setBand}>
+              <option value="all">All bands</option>
+              <option value="top">Top</option>
+              <option value="strong">Strong</option>
+              <option value="consider">Consider</option>
+              <option value="watch">Watch</option>
             </FilterSelect>
             <FilterSelect label="Domain" value={domain} onChange={setDomain}>
               <option value="all">All domains</option>
