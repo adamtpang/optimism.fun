@@ -110,5 +110,20 @@ Verified locally: TypeScript clean, production build passes, 30 tests pass, all
 new routes return 200, sticky action bar holds at 375px with no horizontal
 overflow, and the actor tabs correctly swap the form's fields and proof prompt.
 
-**Not yet done:** the migration has not been run against Neon, so the board is
-unproven end to end against a real database. Nothing was deployed.
+**Deployed 2026-09-04.** `0005_commitments.sql` was applied to the Neon
+project (`jolly-fog-41496808`) and every query the library issues was verified
+against the real schema, including that email confirmation alone leaves a row
+non-public. Commit `a3d47dd` is live on production: `/coordinate`, the board on
+every problem page, the homepage router and `/api/commitments` all serve, and
+the API reads the real table (`count: 0` at launch, by design).
+
+**Still blocking the loop in production:** `/admin/commitments` returns 503
+because `ADMIN_PASSWORD` is not set in Vercel. The gate is failing closed,
+which is correct, but until the password is set nobody can approve a
+commitment, so the board can receive but never publish. Set it in Vercel env
+and the review queue comes up. Also confirm `RESEND_API_KEY` is present in
+production, or confirmation links only land in the runtime log.
+
+A draft Emergent Ventures application lives at
+`grants/EMERGENT_VENTURES_2026.md`, deliberately left uncommitted: this repo
+is public, and whether a grant draft belongs in it is Adam's call.
