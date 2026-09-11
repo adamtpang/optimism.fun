@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { IBM_Plex_Sans, IBM_Plex_Mono, Fraunces } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Providers from '@/components/Providers'
 import { PostHogProvider } from './providers'
@@ -102,7 +101,6 @@ export default function RootLayout({
         <PostHogProvider>
           <Providers>{children}</Providers>
         </PostHogProvider>
-        <Analytics />
         <SpeedInsights />
         <footer style={{padding: '1.5rem 1rem', textAlign: 'center', fontSize: '0.75rem', opacity: 0.6}}>
           Built by <a href="https://adampang.com" style={{textDecoration: 'underline'}}>Adam Pangelinan</a>
