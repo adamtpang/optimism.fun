@@ -210,6 +210,19 @@ export const inLimitCaps: InLimitCap[] = [
     reasoning:
       'Most newborn deaths happen where willingness-to-pay is lowest, and the interventions that close the gap are deliberately cheap: chlorhexidine cord care, kangaroo mother care, bag-and-mask resuscitation, antenatal steroids. Cheap interventions save lives at extraordinary rates and build small companies. The ceiling reflects the equity value capturable by a device-and-training platform, not the value of the lives saved, which is far larger and mostly uncapturable.',
   },
+  {
+    problemSlug: 'cancer',
+    marketCap: {
+      value: 1_000_000_000_000,
+      unit: 'USD (in-limit market cap)',
+      source: 'ceiling estimate, anchored to the largest oncology franchise and the first trillion-dollar single-franchise pharma',
+      confidence: 'low',
+      asOf: '2026-09-11',
+    },
+    comparable: 'Merck, whose Keytruda at $29.5B in 2024 is the best-selling drug on Earth, scaled to a company that owns approved therapies across many cancers; Lilly at $1.12T shows one franchise can carry a pharma past $1T',
+    reasoning:
+      'The trillion-dollar screen already settled where cancer value lands: with whoever owns the approved molecule. Platforms that sell discovery into pharma cap at $1B to $3B after decades, and as of the August 2026 screen no AI-discovered drug had been approved anywhere. Cancer is hundreds of diseases, so the ceiling belongs to a multi-molecule owner rather than a single cure, and a single franchise is already worth $29.5B a year. Held at $1T rather than higher because oncology is the most contested therapeutic area in existence and every large pharma is already in it. This is a biology-led, capital-led prize; the screen scored a software founder\'s fit here as near zero.',
+  },
 ]
 export const getInLimitCap = (problemSlug: string): InLimitCap | undefined =>
   inLimitCaps.find((c) => c.problemSlug === problemSlug)

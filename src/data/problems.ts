@@ -1915,6 +1915,130 @@ export const problems: Problem[] = [
     ],
     asOf: '2026-08-22',
   },
+  {
+    slug: 'cancer',
+    name: 'Cancer',
+    tier: 'welfare',
+    domain: 'health',
+    sectors: ['physical-health-and-disease', 'aging-and-longevity'],
+    tagline:
+      'The second-largest cause of death on Earth had no row on this index until the burden layer counted it.',
+    description:
+      'Cancer is hundreds of distinct diseases with one shared mechanism: accumulated DNA damage lets a cell escape growth control. The causes differ, tobacco, infections, alcohol, obesity, radiation, and above all the years lived, since mutations accumulate with age. GLOBOCAN counted 20 million new cases and 9.7 million deaths in 2022, lung the largest share of both. Roughly one in five people develop cancer in their lifetime. Spending is not the gap: cancer medicines cost $252 billion in 2024 and the best-selling drug on Earth is an oncology drug. The unsolved problems are earlier detection, the cancers that still have no effective treatment, and the collapse of survival in low-income settings where the same diagnosis is often fatal.',
+    humansAffected: {
+      value: 20_000_000,
+      unit: 'new cancer diagnoses per year (2022)',
+      source: 'IARC GLOBOCAN 2022, via UICC',
+      sourceUrl: 'https://www.uicc.org/news-and-updates/news/globocan-2022-latest-global-cancer-data-shows-rising-incidence-and-stark',
+      confidence: 'high',
+      asOf: '2026-09-11',
+    },
+    severity: {
+      value: 9_700_000,
+      unit: 'deaths per year (2022)',
+      source: 'IARC GLOBOCAN 2022, via UICC',
+      sourceUrl: 'https://www.uicc.org/news-and-updates/news/globocan-2022-latest-global-cancer-data-shows-rising-incidence-and-stark',
+      confidence: 'high',
+      asOf: '2026-09-11',
+    },
+    marketSize: {
+      value: 252_000_000_000,
+      unit: 'USD / year, global spending on cancer medicines (2024); IQVIA projects $441B by 2029',
+      source: 'IQVIA Institute, Global Oncology Trends 2025',
+      sourceUrl: 'https://www.iqvia.com/insights/the-iqvia-institute/reports-and-publications/reports/global-oncology-trends-2025',
+      confidence: 'high',
+      asOf: '2026-09-11',
+    },
+    currentSolutionQuality: {
+      value: 0.5,
+      unit: '0–1 (low = high opportunity)',
+      source:
+        'estimated. GLOBOCAN 2022: about 1 in 5 people develop cancer and about 1 in 9 men and 1 in 12 women die of it. Survival ranges from above 90 percent for some cancers where care exists to under 10 percent for others, and falls sharply in low-income countries for the same diagnosis',
+      sourceUrl: 'https://www.uicc.org/news-and-updates/news/globocan-2022-latest-global-cancer-data-shows-rising-incidence-and-stark',
+      confidence: 'low',
+      asOf: '2026-09-11',
+    },
+    timeToImpact: {
+      value: 10,
+      unit: 'years, order of magnitude, from a new detection or treatment approach to measurable mortality change',
+      source: 'OOM estimate from the approval-to-adoption timelines of checkpoint inhibitors and HPV vaccination',
+      confidence: 'low',
+      asOf: '2026-09-11',
+    },
+    scale: {
+      value: 20_000_000,
+      unit: 'new cancer cases per year',
+      trend: 'worsening',
+      series: [
+        { year: 2020, value: 19_300_000 },
+        { year: 2022, value: 20_000_000 },
+      ],
+      source:
+        'IARC GLOBOCAN 2020 and 2022. WHO projects a 77 percent rise in cases by 2050. GLOBOCAN editions are not strictly comparable, so the series is an anchor, not a trend line',
+      sourceUrl: 'https://www.who.int/news/item/01-02-2024-global-cancer-burden-growing--amidst-mounting-need-for-services',
+      confidence: 'med',
+      asOf: '2026-09-11',
+    },
+    transformation: {
+      before:
+        '20M diagnoses and 9.7M deaths a year. Most cancers are found after they have spread, a large share of the deaths are in cancers with no effective therapy, and where a person lives decides whether a treatable diagnosis is survivable.',
+      after:
+        'Most cancers are detected before symptoms and before spread, the cancers that were death sentences have working therapies, and the same diagnosis has the same odds regardless of income.',
+      horizon: '20 years',
+      confidence: 'low',
+      asOf: '2026-09-11',
+    },
+    neglectedness: {
+      score: 2,
+      rationale:
+        'In aggregate, the least neglected problem on this index. The US National Cancer Institute alone had $7.2 billion in FY2025, global spending on cancer medicines was $252 billion in 2024, and Keytruda at $29.5 billion in 2024 is the best-selling drug in the world. Neglect lives at the edges: prevention, rare cancers, and access in low-income countries.',
+      source: 'NCI budget; IQVIA Global Oncology Trends 2025; Merck full-year 2024 results',
+      sourceUrl: 'https://www.cancer.gov/about-nci/budget',
+      confidence: 'high',
+      asOf: '2026-09-11',
+    },
+    tractability: {
+      score: 6,
+      rationale:
+        'Prevention levers are proven: tobacco control, HPV and hepatitis B vaccination, and WHO holds that 30 to 50 percent of cancers are preventable. Detection is improving. Treatment is where hundreds of diseases become hundreds of separate problems, and a single approach does not carry across them.',
+      source: 'WHO cancer fact sheet',
+      sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/cancer',
+      confidence: 'med',
+      asOf: '2026-09-11',
+    },
+    organizations: [
+      { name: 'IARC, International Agency for Research on Cancer', url: 'https://www.iarc.who.int', kind: 'WHO research agency, GLOBOCAN' },
+      { name: 'National Cancer Institute', url: 'https://www.cancer.gov', kind: 'US funder, $7.2B in FY2025' },
+      { name: 'Cancer Grand Challenges', url: 'https://cancergrandchallenges.org', kind: 'funder, NCI and Cancer Research UK' },
+      { name: 'Merck', url: 'https://www.merck.com', kind: 'company, Keytruda' },
+    ],
+    people: [
+      { name: 'Bert Vogelstein', role: 'cancer genomics, Johns Hopkins', url: 'https://www.hopkinsmedicine.org' },
+      { name: 'Ugur Sahin', role: 'co-founder and CEO, BioNTech, mRNA cancer vaccines', url: 'https://www.biontech.com' },
+    ],
+    waysToHelp: [
+      { mode: 'build', text: 'Build earlier detection (multi-cancer screening, AI pathology and radiology) and the trial infrastructure that gets a therapy from a lab to a patient faster.' },
+      { mode: 'policy', text: 'Tobacco control and HPV vaccination prevent more cancer deaths per dollar than any therapy. Push both where coverage is lowest.', url: 'https://www.who.int/news-room/fact-sheets/detail/cancer' },
+      { mode: 'career', text: 'Work in oncology research, cancer epidemiology, or the delivery of existing care in low-income settings, where the same diagnosis has the worst odds.' },
+      { mode: 'donate', text: 'Cancer Grand Challenges funds team science against the problems no single lab can take on.', url: 'https://cancergrandchallenges.org' },
+    ],
+    lastUpdated: '2026-09-11',
+    scores: {
+      welfareBCR: null,
+      xriskITN: null,
+      utilityDelta: null,
+    },
+    sources: [
+      { title: 'IARC GLOBOCAN 2022 (UICC summary)', url: 'https://www.uicc.org/news-and-updates/news/globocan-2022-latest-global-cancer-data-shows-rising-incidence-and-stark' },
+      { title: 'IARC GLOBOCAN 2020 (ASCO Post summary)', url: 'https://ascopost.com/news/december-2020/globocan-2020-database-provides-latest-global-data-on-cancer-burden-cancer-deaths' },
+      { title: 'WHO, global cancer burden growing, February 2024', url: 'https://www.who.int/news/item/01-02-2024-global-cancer-burden-growing--amidst-mounting-need-for-services' },
+      { title: 'IQVIA Institute, Global Oncology Trends 2025', url: 'https://www.iqvia.com/insights/the-iqvia-institute/reports-and-publications/reports/global-oncology-trends-2025' },
+      { title: 'Merck, fourth-quarter and full-year 2024 results', url: 'https://www.merck.com/news/merck-announces-fourth-quarter-and-full-year-2024-financial-results/' },
+      { title: 'NCI budget and appropriations', url: 'https://www.cancer.gov/about-nci/budget' },
+      { title: 'WHO cancer fact sheet', url: 'https://www.who.int/news-room/fact-sheets/detail/cancer' },
+    ],
+    asOf: '2026-09-11',
+  },
 ]
 
 export const getProblemBySlug = (slug: string): Problem | undefined =>

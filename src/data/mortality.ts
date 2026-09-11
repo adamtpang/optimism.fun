@@ -144,8 +144,8 @@ export const mortalityCauses: MortalityCause[] = [
     trend: 'Rising: up 0.7 million deaths a year since 2000 (WHO).',
     mechanism:
       'Carcinogens, overwhelmingly from tobacco, accumulate mutations in airway cells until growth control fails. Symptoms arrive late, so most cases are found after spread.',
-    problemSlugs: [],
-    mappingNote: 'No cancer problem exists on the index. See the all-cancers aggregate.',
+    problemSlugs: ['cancer'],
+    mappingNote: 'The largest single cancer killer. Counted under the cancer problem; the all-cancers aggregate below is shown for scale and not summed.',
   },
   {
     slug: 'alzheimers-dementias',
@@ -207,9 +207,9 @@ export const mortalityCauses: MortalityCause[] = [
       'Second cause of death worldwide as a group. Lung is the largest share at 1.8 million (18.7 percent), then colorectal, liver, breast and stomach.',
     mechanism:
       'Accumulated DNA damage lets a cell escape growth control. Hundreds of distinct diseases with different causes: tobacco, infections, alcohol, obesity, radiation, and above all the years lived, since mutations accumulate with age.',
-    problemSlugs: [],
+    problemSlugs: ['cancer'],
     mappingNote:
-      'No cancer problem exists on the index. This is the largest coverage gap by deaths. Aggregate, excluded from sums; lung cancers are listed separately above.',
+      'Mapped to the cancer problem, added 2026-09-11 after this row exposed it as the largest gap on the index by deaths. Aggregate, excluded from sums; lung cancers are listed separately above and are the only member with a WHO count.',
     aggregate: true,
     members: ['lung-cancers'],
   },

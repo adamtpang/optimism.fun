@@ -226,3 +226,36 @@ COPD (3.4M) and diabetes have none either. These are now visible in deaths on
 
 Verified: TypeScript clean, 57 tests, production build passes with the
 homepage and problem pages still prerendered.
+
+## Cancer added as the 17th problem (2026-09-11)
+
+The burden layer exposed cancer, 9.7M deaths a year, as the largest killer
+with no row on the index. Adam: "add cancer as a problem". Added as `cancer`
+in `src/data/problems.ts`, tier welfare, domain health, sectors
+physical-health-and-disease and aging-and-longevity.
+
+Every figure is sourced, none recalled: 20M new cases and 9.7M deaths
+(GLOBOCAN 2022), 19.3M cases in 2020 (GLOBOCAN 2020, the only earlier
+edition found; 2018 and the 5-year prevalence figure were not found and are
+omitted), $252B spent on cancer medicines in 2024 with $441B projected by
+2029 (IQVIA 2025), Keytruda $29.5B in 2024 (Merck), NCI $7.2B in FY2025, and
+WHO's 77 percent rise in cases by 2050. Neglectedness scores 2, the lowest on
+the index, with the rationale that neglect lives at the edges (prevention,
+rare cancers, low-income access), not in aggregate spend.
+
+Wired in the same places the burden layer touched: `data/mortality.ts` maps
+lung cancers and the all-cancers aggregate to it; `data/coverage.ts` flips
+the GBD Cancers row from gap to covered, dated; `data/in-limit.ts` gives it a
+$1T ceiling anchored to the trillion-dollar screen's own verdict that cancer
+value lands with whoever owns the approved molecule, held at $1T because
+oncology is the most contested therapeutic area there is.
+
+Effect on the demand ranking, printed by `tests/burden-delta.test.ts`: cancer
+enters at 86, tied for 6th with biosecurity and datacenter power, and the
+mortality blend does not move it (lung is its only WHO-counted cause). No
+other row moved. `/coverage` now names COPD (3.4M) as the largest counted
+killer with no problem on the index; diabetes follows, uncounted.
+
+Verified: TypeScript clean, 59 tests, production build passes at 114 pages
+with `/marketcap` still prerendered, which is the check that the new cap
+validates.

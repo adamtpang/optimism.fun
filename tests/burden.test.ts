@@ -99,11 +99,25 @@ describe('sums', () => {
 })
 
 describe('the coverage finding', () => {
-  it('names cancer as the largest killer with no problem on the index', () => {
+  it('no longer lists cancer as unmapped, since the index gained a cancer problem on 2026-09-11', () => {
+    const gaps = unmappedCauses().map((c) => c.slug)
+    expect(gaps).not.toContain('cancers-all-sites')
+    expect(gaps).not.toContain('lung-cancers')
+  })
+
+  it('names COPD as the largest counted killer with no problem on the index', () => {
     const gaps = unmappedCauses()
-    expect(gaps[0].slug).toBe('cancers-all-sites')
-    expect(gaps.map((c) => c.slug)).toContain('copd')
+    expect(gaps[0].slug).toBe('copd')
     expect(gaps.map((c) => c.slug)).toContain('diabetes')
+  })
+
+  it('carries lung cancer under the cancer problem and the all-cancers roll-up as an aggregate', () => {
+    const b = burdenForProblem('cancer')
+    expect(b).not.toBeNull()
+    expect(b!.counted.map((c) => c.slug)).toEqual(['lung-cancers'])
+    expect(b!.deaths).toBe(1_900_000)
+    expect(b!.aggregates.map((a) => a.slug)).toEqual(['cancers-all-sites'])
+    expect(mortalitySignal('cancer')).not.toBeNull()
   })
 
   it('orders unmapped causes by deaths with uncounted ones last', () => {
