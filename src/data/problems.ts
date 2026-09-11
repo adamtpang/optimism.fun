@@ -2039,6 +2039,245 @@ export const problems: Problem[] = [
     ],
     asOf: '2026-09-11',
   },
+  {
+    slug: 'copd',
+    name: 'COPD and chronic respiratory disease',
+    tier: 'welfare',
+    domain: 'health',
+    sectors: ['physical-health-and-disease'],
+    tagline:
+      'The fourth-largest killer on Earth has a drug market one-twelfth the size of cancer\'s and got its first biologic in 2024.',
+    description:
+      'Chronic obstructive pulmonary disease is the progressive destruction of the airways and air sacs by inhaled irritants, above all tobacco smoke in high-income countries and household smoke from cooking fuel in low- and middle-income ones. Over decades the lungs lose the ability to move enough air, and the damage does not reverse. WHO counts 3.5 million deaths in 2021, about 5 percent of all deaths, and nearly 90 percent of the deaths under age 70 are in low- and middle-income countries. GBD 2021 estimates 213 million people living with it. Treatment manages symptoms with inhalers; nothing yet regenerates lung tissue, and the first biologic was approved only in September 2024. The two proven levers are not drugs at all: tobacco control and clean cooking.',
+    humansAffected: {
+      value: 213_390_000,
+      unit: 'prevalent cases of COPD (2021)',
+      source: 'Global Burden of Disease Study 2021, COPD burden in 204 countries',
+      sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/39748260/',
+      confidence: 'high',
+      asOf: '2026-09-11',
+    },
+    severity: {
+      value: 3_500_000,
+      unit: 'deaths per year (2021), about 5 percent of all deaths',
+      source: 'WHO COPD fact sheet',
+      sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/chronic-obstructive-pulmonary-disease-(copd)',
+      confidence: 'high',
+      asOf: '2026-09-11',
+    },
+    marketSize: {
+      value: 19_800_000_000,
+      unit: 'USD / year, global COPD drug market (2024), market-research estimate',
+      source: 'Data Bridge Market Research, COPD drug market 2024',
+      sourceUrl: 'https://www.databridgemarketresearch.com/reports/global-chronic-obstructive-pulmonary-disease-copd-drug-market',
+      confidence: 'low',
+      asOf: '2026-09-11',
+    },
+    currentSolutionQuality: {
+      value: 0.4,
+      unit: '0–1 (low = high opportunity)',
+      source:
+        'estimated. Inhaled bronchodilators and steroids relieve symptoms and reduce flare-ups but do not reverse lung destruction; the first biologic, dupilumab, cut exacerbations by 30 to 34 percent in trials and was approved only in September 2024; nearly 90 percent of under-70 deaths are in low- and middle-income countries where even inhalers are scarce',
+      sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/chronic-obstructive-pulmonary-disease-(copd)',
+      confidence: 'low',
+      asOf: '2026-09-11',
+    },
+    timeToImpact: {
+      value: 10,
+      unit: 'years, order of magnitude, for a disease-modifying therapy or a clean-cooking rollout to move mortality',
+      source: 'OOM estimate from tobacco-control lag times and the dupilumab development timeline',
+      confidence: 'low',
+      asOf: '2026-09-11',
+    },
+    scale: {
+      value: 213_390_000,
+      unit: 'people living with COPD',
+      trend: 'worsening',
+      source:
+        'GBD 2021. Prevalent cases rise with population ageing even as the death rank slipped from third to fourth in the WHO list between 2019 and 2021',
+      sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/39748260/',
+      confidence: 'med',
+      asOf: '2026-09-11',
+    },
+    transformation: {
+      before:
+        '213M people live with irreversible lung damage, 3.5M die a year, and most of the early deaths are where household smoke is the cause and inhalers are unavailable.',
+      after:
+        'Clean cooking fuel and tobacco control stop most new cases before they start, and the people already living with COPD have a therapy that halts or reverses the damage rather than managing it.',
+      horizon: '20 years',
+      confidence: 'low',
+      asOf: '2026-09-11',
+    },
+    neglectedness: {
+      score: 7,
+      rationale:
+        'The fourth-largest killer on Earth has a drug market of about $20 billion, one-twelfth of the $252 billion spent on cancer medicines, and had to wait until September 2024 for its first biologic. The two interventions that prevent the most cases, tobacco control and clean cooking, sit outside pharma entirely, and the deaths concentrate in the countries with the least purchasing power.',
+      source: 'WHO COPD fact sheet; Data Bridge market estimate; Regeneron approval release',
+      sourceUrl: 'https://investor.regeneron.com/news-releases/news-release-details/dupixentr-dupilumab-approved-us-first-ever-biologic-medicine',
+      confidence: 'med',
+      asOf: '2026-09-11',
+    },
+    tractability: {
+      score: 7,
+      rationale:
+        'Prevention is proven and cheap: tobacco control and clean cooking fuel address the causes of most cases. Smoking cessation slows the decline at any stage. What is not tractable yet is reversing established damage, which no approved therapy does.',
+      source: 'WHO COPD fact sheet',
+      sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/chronic-obstructive-pulmonary-disease-(copd)',
+      confidence: 'med',
+      asOf: '2026-09-11',
+    },
+    organizations: [
+      { name: 'GOLD, Global Initiative for Chronic Obstructive Lung Disease', url: 'https://goldcopd.org', kind: 'clinical guidelines' },
+      { name: 'WHO, chronic respiratory diseases', url: 'https://www.who.int/health-topics/chronic-respiratory-diseases', kind: 'global agency' },
+      { name: 'Clean Cooking Alliance', url: 'https://cleancooking.org', kind: 'nonprofit, household air pollution' },
+      { name: 'Regeneron and Sanofi', url: 'https://www.regeneron.com', kind: 'companies, dupilumab, the first COPD biologic' },
+    ],
+    waysToHelp: [
+      { mode: 'build', text: 'Build low-cost spirometry and early detection, inhaler supply chains for low-income health systems, and clean-cooking distribution that actually displaces solid fuel.' },
+      { mode: 'policy', text: 'Tobacco control and household air pollution standards prevent more COPD than any therapy. Push both where solid-fuel cooking is still the norm.', url: 'https://www.who.int/news-room/fact-sheets/detail/chronic-obstructive-pulmonary-disease-(copd)' },
+      { mode: 'research', text: 'Work on lung tissue regeneration and on the phenotypes beyond the eosinophilic one that dupilumab treats.' },
+      { mode: 'career', text: 'Respiratory medicine, tobacco control, or clean-energy access in the countries where the early deaths are.' },
+    ],
+    lastUpdated: '2026-09-11',
+    scores: {
+      welfareBCR: null,
+      xriskITN: null,
+      utilityDelta: null,
+    },
+    sources: [
+      { title: 'WHO COPD fact sheet', url: 'https://www.who.int/news-room/fact-sheets/detail/chronic-obstructive-pulmonary-disease-(copd)' },
+      { title: 'GBD 2021, burden of COPD in 204 countries and territories', url: 'https://pubmed.ncbi.nlm.nih.gov/39748260/' },
+      { title: 'Regeneron, Dupixent approved as the first biologic for COPD', url: 'https://investor.regeneron.com/news-releases/news-release-details/dupixentr-dupilumab-approved-us-first-ever-biologic-medicine' },
+      { title: 'Data Bridge, COPD drug market 2024', url: 'https://www.databridgemarketresearch.com/reports/global-chronic-obstructive-pulmonary-disease-copd-drug-market' },
+    ],
+    asOf: '2026-09-11',
+  },
+  {
+    slug: 'diabetes',
+    name: 'Diabetes',
+    tier: 'welfare',
+    domain: 'health',
+    sectors: ['physical-health-and-disease'],
+    tagline:
+      'The one problem on this index whose trillion-dollar company already exists, and where 59 percent of patients still take no medicine.',
+    description:
+      'Diabetes is chronically high blood glucose, from the body resisting insulin or failing to make it. Over years it damages blood vessels, nerves, eyes and kidneys, and it sits upstream of a large share of cardiovascular and kidney deaths. The IDF counts 589 million adults living with it in 2024, one in nine, heading to 853 million by 2050; WHO counts 830 million people of all ages in 2022, up from 200 million in 1990. Its rise tracks obesity. The drugs are old, cheap and effective for most patients, and the newest class is the most valuable in pharma: semaglutide earned $29 billion in 2024 and tirzepatide carried Lilly past a trillion dollars. Yet 59 percent of adults with diabetes took no medication in 2022, and in low-income countries 59 percent are not even diagnosed. The frontier is not the molecule. It is delivery.',
+    humansAffected: {
+      value: 589_000_000,
+      unit: 'adults aged 20-79 living with diabetes (2024)',
+      source: 'IDF Diabetes Atlas, 11th edition, 2025',
+      sourceUrl: 'https://media.idf.org/media/uploads/sites/3/2025/04/IDF_Atlas_11th_Edition_2025_Global-Factsheet.pdf',
+      confidence: 'high',
+      asOf: '2026-09-11',
+    },
+    severity: {
+      value: 3_400_000,
+      unit: 'deaths attributable to diabetes per year (2024, IDF). WHO counts 1.6M deaths in 2021 with diabetes as the direct cause; the two definitions differ',
+      source: 'IDF Diabetes Atlas 2025; WHO diabetes fact sheet',
+      sourceUrl: 'https://media.idf.org/media/uploads/sites/3/2025/04/IDF_Atlas_11th_Edition_2025_Global-Factsheet.pdf',
+      confidence: 'med',
+      asOf: '2026-09-11',
+    },
+    marketSize: {
+      value: 53_460_000_000,
+      unit: 'USD / year, GLP-1 class alone (2024), a floor for total diabetes medicine spend, which also includes insulin and older oral drugs',
+      source: 'Precedence Research, GLP-1 drugs market 2024, via BioSpace',
+      sourceUrl: 'https://www.biospace.com/press-releases/glp-1-drugs-market-ozempic-wegovy-and-mounjaro-fda-and-industry-insights-from-precedence-research',
+      confidence: 'med',
+      asOf: '2026-09-11',
+    },
+    currentSolutionQuality: {
+      value: 0.41,
+      unit: 'share of adults aged 30 and over with diabetes taking medication (2022)',
+      source: 'WHO diabetes fact sheet: 59 percent were not taking medication in 2022',
+      sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/diabetes',
+      confidence: 'high',
+      asOf: '2026-09-11',
+    },
+    timeToImpact: {
+      value: 5,
+      unit: 'years to meaningful treatment-coverage improvement in a health system, as with hypertension',
+      source: 'OOM estimate from the WHO Global Diabetes Compact coverage targets',
+      sourceUrl: 'https://www.who.int/initiatives/the-who-global-diabetes-compact',
+      confidence: 'low',
+      asOf: '2026-09-11',
+    },
+    scale: {
+      value: 830_000_000,
+      unit: 'people living with diabetes, all ages (WHO)',
+      trend: 'worsening',
+      series: [
+        { year: 1990, value: 200_000_000 },
+        { year: 2022, value: 830_000_000 },
+      ],
+      source: 'WHO diabetes fact sheet. IDF projects 853 million adults by 2050, a 45 percent rise from 2024',
+      sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/diabetes',
+      confidence: 'high',
+      asOf: '2026-09-11',
+    },
+    transformation: {
+      before:
+        '589M adults with diabetes, 59 percent taking no medication, 59 percent undiagnosed in low-income countries, and 3.4M deaths a year, most of them from complications the existing drugs prevent.',
+      after:
+        'Diagnosis is routine, insulin and oral drugs are as available as they are cheap, and the GLP-1 class reaches the patients who need it rather than the ones who can pay list price.',
+      horizon: '10 years',
+      confidence: 'med',
+      asOf: '2026-09-11',
+    },
+    neglectedness: {
+      score: 3,
+      rationale:
+        'Not neglected by capital: Ozempic earned $17.5 billion and Mounjaro $11.5 billion in 2024, and tirzepatide made Lilly the first trillion-dollar single-franchise pharma. Neglected in delivery: 59 percent of adults with diabetes take no medication, 82 percent of the undiagnosed live in middle-income countries, and treatment coverage is lowest where the disease is growing fastest.',
+      source: 'Novo Nordisk annual report 2024; IDF Diabetes Atlas 2025; WHO diabetes fact sheet',
+      sourceUrl: 'https://annualreport.novonordisk.com/2024/strategic-aspirations/financials.html',
+      confidence: 'high',
+      asOf: '2026-09-11',
+    },
+    tractability: {
+      score: 8,
+      rationale:
+        'Metformin and insulin are decades old, off patent, and effective for most patients. Diagnosis needs a blood test. This is the hypertension problem again: the science is done and the control loop is what fails.',
+      source: 'WHO diabetes fact sheet; WHO Global Diabetes Compact',
+      sourceUrl: 'https://www.who.int/initiatives/the-who-global-diabetes-compact',
+      confidence: 'high',
+      asOf: '2026-09-11',
+    },
+    organizations: [
+      { name: 'International Diabetes Federation', url: 'https://idf.org', kind: 'federation, Diabetes Atlas' },
+      { name: 'WHO Global Diabetes Compact', url: 'https://www.who.int/initiatives/the-who-global-diabetes-compact', kind: 'global coverage initiative' },
+      { name: 'Novo Nordisk', url: 'https://www.novonordisk.com', kind: 'company, semaglutide and insulin' },
+      { name: 'Eli Lilly', url: 'https://www.lilly.com', kind: 'company, tirzepatide and insulin' },
+    ],
+    people: [
+      { name: 'Jens Juul Holst', role: 'co-discoverer of GLP-1, University of Copenhagen', url: 'https://www.ku.dk' },
+    ],
+    waysToHelp: [
+      { mode: 'build', text: 'Build diagnosis and registry tooling for primary care, insulin cold-chain and pricing transparency, and affordable glucose monitoring for the 59 percent who are untreated.' },
+      { mode: 'policy', text: 'Sugar-sweetened beverage taxes, insulin price regulation, and the WHO Global Diabetes Compact coverage targets.', url: 'https://www.who.int/initiatives/the-who-global-diabetes-compact' },
+      { mode: 'career', text: 'Primary care, endocrinology, or medicine access in the middle-income countries that hold four in five of the undiagnosed.' },
+    ],
+    lastUpdated: '2026-09-11',
+    scores: {
+      welfareBCR: null,
+      xriskITN: null,
+      utilityDelta: {
+        value: 0.59,
+        unit: 'share of adults with diabetes not taking medication',
+        source: 'WHO diabetes fact sheet',
+        sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/diabetes',
+        confidence: 'high',
+        asOf: '2026-09-11',
+      },
+    },
+    sources: [
+      { title: 'IDF Diabetes Atlas 11th edition 2025, global factsheet', url: 'https://media.idf.org/media/uploads/sites/3/2025/04/IDF_Atlas_11th_Edition_2025_Global-Factsheet.pdf' },
+      { title: 'IDF 2025, global estimates of undiagnosed diabetes (Diabetes Care)', url: 'https://diabetesjournals.org/care/article/49/3/490/164378/Global-Regional-and-National-Estimates-of' },
+      { title: 'WHO diabetes fact sheet', url: 'https://www.who.int/news-room/fact-sheets/detail/diabetes' },
+      { title: 'Novo Nordisk annual report 2024', url: 'https://annualreport.novonordisk.com/2024/strategic-aspirations/financials.html' },
+      { title: 'GLP-1 drugs market 2024 (Precedence Research via BioSpace)', url: 'https://www.biospace.com/press-releases/glp-1-drugs-market-ozempic-wegovy-and-mounjaro-fda-and-industry-insights-from-precedence-research' },
+    ],
+    asOf: '2026-09-11',
+  },
 ]
 
 export const getProblemBySlug = (slug: string): Problem | undefined =>

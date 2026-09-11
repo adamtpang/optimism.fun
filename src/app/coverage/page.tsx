@@ -148,28 +148,42 @@ export default function CoveragePage() {
               the source ranks but does not count stays uncounted here rather than estimated.
             </p>
             <div className="border border-hair rounded-lg overflow-hidden">
-              {unmappedCauses().map((c, i, arr) => (
-                <div
-                  key={c.slug}
-                  className={`px-3 py-3 flex items-baseline justify-between gap-4 ${
-                    i < arr.length - 1 ? 'border-b border-hair' : ''
-                  }`}
-                >
-                  <div className="min-w-0">
-                    <span className="font-sans text-[14px] text-ink-100">{c.name}</span>
-                    <p className="text-ink-400 text-[13px] leading-relaxed mt-0.5">{c.mechanism}</p>
-                    {c.mappingNote && (
-                      <p className="font-mono text-[10px] text-ink-600 mt-1">{c.mappingNote}</p>
-                    )}
-                  </div>
-                  <span className="shrink-0 font-mono text-sm text-terminal-rose tabular-nums text-right">
-                    {c.deaths.value != null ? formatHumans(c.deaths.value) : 'ranked, uncounted'}
-                    <span className="block font-mono text-[10px] text-ink-600">
-                      {c.deaths.value != null ? `deaths, ${c.deaths.year}` : `WHO #${c.whoRank2021 ?? '?'}`}
-                    </span>
-                  </span>
+              {unmappedCauses().length === 0 ? (
+                <div className="px-3 py-4">
+                  <p className="font-sans text-[14px] text-ink-100">
+                    Every cause in WHO&apos;s 2021 top ten now maps to a problem on the index.
+                  </p>
+                  <p className="text-ink-400 text-[13px] leading-relaxed mt-1 max-w-xl">
+                    As of 2026-09-11, after cancer, COPD and diabetes were added the day the
+                    burden layer counted them. Coverage is not adequacy: a mapped cause carries
+                    exactly the deaths it did before, and the problem pages say how well each is
+                    actually served.
+                  </p>
                 </div>
-              ))}
+              ) : (
+                unmappedCauses().map((c, i, arr) => (
+                  <div
+                    key={c.slug}
+                    className={`px-3 py-3 flex items-baseline justify-between gap-4 ${
+                      i < arr.length - 1 ? 'border-b border-hair' : ''
+                    }`}
+                  >
+                    <div className="min-w-0">
+                      <span className="font-sans text-[14px] text-ink-100">{c.name}</span>
+                      <p className="text-ink-400 text-[13px] leading-relaxed mt-0.5">{c.mechanism}</p>
+                      {c.mappingNote && (
+                        <p className="font-mono text-[10px] text-ink-600 mt-1">{c.mappingNote}</p>
+                      )}
+                    </div>
+                    <span className="shrink-0 font-mono text-sm text-terminal-rose tabular-nums text-right">
+                      {c.deaths.value != null ? formatHumans(c.deaths.value) : 'ranked, uncounted'}
+                      <span className="block font-mono text-[10px] text-ink-600">
+                        {c.deaths.value != null ? `deaths, ${c.deaths.year}` : `WHO #${c.whoRank2021 ?? '?'}`}
+                      </span>
+                    </span>
+                  </div>
+                ))
+              )}
             </div>
             <p className="font-mono text-[10px] text-ink-600 leading-relaxed mt-3 max-w-2xl">
               Aggregates appear here on purpose: all cancers at 9.7M with nothing on the index is

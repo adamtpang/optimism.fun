@@ -259,3 +259,43 @@ killer with no problem on the index; diabetes follows, uncounted.
 Verified: TypeScript clean, 59 tests, production build passes at 114 pages
 with `/marketcap` still prerendered, which is the check that the new cap
 validates.
+
+## COPD and diabetes added, 18th and 19th problems (2026-09-11)
+
+Adam: "add COPD and diabetes too", closing the last two counted killers with
+no row on the index. After this, `unmappedCauses()` is empty: every cause in
+WHO's 2021 top ten maps to a problem, and `/coverage` renders an empty state
+saying so, with the caveat that coverage is not adequacy.
+
+Both entries are sourced in-session, nothing recalled:
+
+- **COPD** (`copd`): 213.39M prevalent cases (GBD 2021), 3.5M deaths in 2021
+  at 5 percent of all deaths, nearly 90 percent of under-70 deaths in low- and
+  middle-income countries (WHO fact sheet), a $19.8B drug market (market-research
+  estimate, confidence low), first biologic approved September 2024
+  (dupilumab). Neglectedness 7: the fourth killer on Earth with a market
+  one-twelfth of oncology's, and its two real levers, tobacco control and clean
+  cooking, are policy, not pharma. Cap $300B.
+- **Diabetes** (`diabetes`): 589M adults 20 to 79 in 2024 heading to 853M by
+  2050 (IDF Atlas 2025), 830M all ages in 2022 up from 200M in 1990 (WHO),
+  3.4M attributable deaths (IDF) beside WHO's 1.6M direct-cause count, 59
+  percent of patients on no medication, Ozempic $17.5B and Mounjaro $11.5B in
+  2024, GLP-1 class $53.5B. Neglectedness 3, tractability 8: the hypertension
+  shape, science done, delivery failing. Cap $1.2T anchored to Lilly at $1.12T:
+  the only row on the index whose in-limit company already exists.
+
+Data corrections the pair forced in `data/mortality.ts`: the COPD count moved
+from the top-10 page's rounded 3.4M to the fact sheet's stated 3.5M; the
+diabetes count is no longer null, it is WHO's 1.6M direct-cause figure (the
+IDF's broader 3.4M is deliberately not used there, to avoid double counting
+through cardiovascular and kidney deaths); kidney disease now maps to both its
+upstream causes, hypertension and diabetes, still uncounted.
+
+Effect on the demand ranking, printed by `tests/burden-delta.test.ts`: COPD
+enters at 85, unmoved by the blend. Diabetes enters at 88 on the editorial
+estimate and the blend moves it DOWN to 86, the first row the burden layer has
+lowered, because a direct-cause count of 1.6M is small against 830M people
+affected. Cancer holds at 86. No other row moved.
+
+Verified: TypeScript clean, 62 tests, production build passes at 120 pages
+with `/marketcap` still prerendered, so both new caps validate.

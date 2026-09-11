@@ -114,14 +114,23 @@ export const mortalityCauses: MortalityCause[] = [
   {
     slug: 'copd',
     name: 'Chronic obstructive pulmonary disease',
-    deaths: { value: 3_400_000, year: 2021, shareOfDeaths: 0.05, confidence: 'high', ...WHO_GHE },
+    deaths: {
+      value: 3_500_000,
+      year: 2021,
+      shareOfDeaths: 0.05,
+      source: 'WHO COPD fact sheet (3.5 million deaths in 2021, about 5 percent of all deaths)',
+      sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/chronic-obstructive-pulmonary-disease-(copd)',
+      confidence: 'high',
+      asOf: '2026-09-11',
+    },
     whoRank2021: 4,
     gbdRank2023: 3,
     trend: 'Fell from third to fourth in the WHO ranking between 2019 and 2021; third in GBD 2023.',
     mechanism:
       'Inhaled irritants, above all tobacco smoke and household biomass smoke, inflame and destroy the airways and alveoli over decades until the lungs can no longer move enough air.',
-    problemSlugs: [],
-    mappingNote: 'No problem on the index addresses tobacco or household air pollution. This is a coverage gap.',
+    problemSlugs: ['copd'],
+    mappingNote:
+      'Mapped to the COPD problem, added 2026-09-11 after this row was the largest counted killer left with no problem on the index. The count moved from the top-10 page\'s rounded 3.4M to the fact sheet\'s stated 3.5M.',
   },
   {
     slug: 'lower-respiratory-infections',
@@ -160,13 +169,21 @@ export const mortalityCauses: MortalityCause[] = [
   {
     slug: 'diabetes',
     name: 'Diabetes',
-    deaths: { value: null, year: 2021, confidence: 'med', ...WHO_GHE },
+    deaths: {
+      value: 1_600_000,
+      year: 2021,
+      source: 'WHO diabetes fact sheet (diabetes the direct cause of 1.6 million deaths in 2021)',
+      sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/diabetes',
+      confidence: 'high',
+      asOf: '2026-09-11',
+    },
     whoRank2021: 8,
-    trend: 'Rising: deaths up 95 percent between 2000 and 2021 (WHO). Count not stated in the public summary.',
+    trend: 'Rising: deaths up 95 percent between 2000 and 2021 (WHO); 47 percent of them before age 70.',
     mechanism:
       'Insulin resistance or failing insulin production leaves glucose chronically high, which damages blood vessels, nerves and kidneys. The rise tracks obesity.',
-    problemSlugs: [],
-    mappingNote: 'No metabolic-disease problem exists on the index. This is a coverage gap.',
+    problemSlugs: ['diabetes'],
+    mappingNote:
+      'Mapped to the diabetes problem, added 2026-09-11. This is WHO\'s direct-cause count, comparable with the rest of the top ten. The IDF\'s broader attributable figure, 3.4 million in 2024, includes deaths through cardiovascular and kidney complications and is not used here to avoid counting those twice.',
   },
   {
     slug: 'kidney-diseases',
@@ -176,8 +193,9 @@ export const mortalityCauses: MortalityCause[] = [
     trend: 'Rising: from nineteenth cause in 2000 to ninth in 2021, deaths up 95 percent (WHO). Count not stated.',
     mechanism:
       'Mostly downstream of diabetes and hypertension, which destroy the kidney filters. Survival then depends on access to dialysis or transplant.',
-    problemSlugs: ['hypertension'],
-    mappingNote: 'Partial. Hypertension is one of the two main upstream causes; diabetes, the other, has no problem on the index.',
+    problemSlugs: ['hypertension', 'diabetes'],
+    mappingNote:
+      'Both main upstream causes are now on the index. Counted under each; ranked but uncounted in the WHO summary, so it contributes to neither total.',
   },
   {
     slug: 'tuberculosis',

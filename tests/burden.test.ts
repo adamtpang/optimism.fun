@@ -105,10 +105,32 @@ describe('the coverage finding', () => {
     expect(gaps).not.toContain('lung-cancers')
   })
 
-  it('names COPD as the largest counted killer with no problem on the index', () => {
-    const gaps = unmappedCauses()
-    expect(gaps[0].slug).toBe('copd')
-    expect(gaps.map((c) => c.slug)).toContain('diabetes')
+  it('maps every WHO top-ten cause to a problem, as of 2026-09-11', () => {
+    // Cancer, COPD and diabetes were added the day the burden layer counted them.
+    expect(unmappedCauses()).toEqual([])
+  })
+
+  it('carries COPD under its own problem at the fact sheet count', () => {
+    const b = burdenForProblem('copd')
+    expect(b).not.toBeNull()
+    expect(b!.counted.map((c) => c.slug)).toEqual(['copd'])
+    expect(b!.deaths).toBe(3_500_000)
+  })
+
+  it('counts diabetes at the WHO direct-cause figure and carries kidney disease as unmeasured', () => {
+    const b = burdenForProblem('diabetes')
+    expect(b).not.toBeNull()
+    expect(b!.counted.map((c) => c.slug)).toEqual(['diabetes'])
+    expect(b!.deaths).toBe(1_600_000)
+    expect(b!.unmeasured.map((c) => c.slug)).toEqual(['kidney-diseases'])
+    expect(mortalitySignal('diabetes')).not.toBeNull()
+  })
+
+  it('maps kidney disease to both of its upstream causes without changing their counted totals', () => {
+    const kidney = mortalityCauses.find((c) => c.slug === 'kidney-diseases')!
+    expect(kidney.problemSlugs).toEqual(['hypertension', 'diabetes'])
+    expect(kidney.deaths.value).toBeNull()
+    expect(burdenForProblem('hypertension')!.deaths).toBe(9_100_000 + 6_800_000)
   })
 
   it('carries lung cancer under the cancer problem and the all-cancers roll-up as an aggregate', () => {

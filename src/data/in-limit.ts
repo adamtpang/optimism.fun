@@ -223,6 +223,32 @@ export const inLimitCaps: InLimitCap[] = [
     reasoning:
       'The trillion-dollar screen already settled where cancer value lands: with whoever owns the approved molecule. Platforms that sell discovery into pharma cap at $1B to $3B after decades, and as of the August 2026 screen no AI-discovered drug had been approved anywhere. Cancer is hundreds of diseases, so the ceiling belongs to a multi-molecule owner rather than a single cure, and a single franchise is already worth $29.5B a year. Held at $1T rather than higher because oncology is the most contested therapeutic area in existence and every large pharma is already in it. This is a biology-led, capital-led prize; the screen scored a software founder\'s fit here as near zero.',
   },
+  {
+    problemSlug: 'copd',
+    marketCap: {
+      value: 300_000_000_000,
+      unit: 'USD (in-limit market cap)',
+      source: 'ceiling estimate, anchored to a respiratory-led pharma owning the first disease-modifying COPD therapy',
+      confidence: 'low',
+      asOf: '2026-09-11',
+    },
+    comparable: 'the respiratory franchises inside GSK and AstraZeneca, plus dupilumab, scaled to a company that owns the first therapy that halts lung damage across 213M patients',
+    reasoning:
+      'Held well below cancer. The whole COPD drug market is about $20B a year, one-twelfth of oncology, and the deaths concentrate in low- and middle-income countries where willingness-to-pay is lowest. What could change that is a therapy that stops or reverses the damage rather than managing symptoms; nothing approved does, and the first biologic arrived only in September 2024. The ceiling is that molecule owner. The two levers that prevent the most cases, tobacco control and clean cooking, build no company at all, which is the same shape as the neglected-tropical-diseases row: large human value, small equity value.',
+  },
+  {
+    problemSlug: 'diabetes',
+    marketCap: {
+      value: 1_200_000_000_000,
+      unit: 'USD (in-limit market cap)',
+      source: 'ceiling estimate, anchored to the trillion-dollar company this problem has already produced',
+      confidence: 'low',
+      asOf: '2026-09-11',
+    },
+    comparable: 'Eli Lilly at $1.12T (tirzepatide) and Novo Nordisk (semaglutide, $29.3B in 2024): the one row on this index whose in-limit company already exists',
+    reasoning:
+      'The only ceiling on the board that an incumbent has already reached. Tirzepatide carried Lilly past a trillion dollars and the GLP-1 class earned over $53B in 2024, so the prize is not hypothetical, it is largely captured, and the headroom is the smallest here relative to the ceiling. Held at $1.2T rather than higher because a second trillion-dollar entrant would have to displace two companies that already own the molecules. The uncaptured value is elsewhere: 59 percent of patients take no medicine at all, and that is a delivery problem with hypertension-shaped economics, not a molecule problem.',
+  },
 ]
 export const getInLimitCap = (problemSlug: string): InLimitCap | undefined =>
   inLimitCaps.find((c) => c.problemSlug === problemSlug)
