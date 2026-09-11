@@ -9,6 +9,8 @@ import {
   coverageStats,
   type CoverageStatus,
 } from '@/data/coverage'
+import { unmappedCauses } from '@/lib/burden'
+import { formatHumans } from '@/lib/format'
 
 export const metadata: Metadata = {
   title: 'Is this index comprehensive? | optimism.fun',
@@ -130,6 +132,51 @@ export default function CoveragePage() {
             </section>
           )
         })}
+
+        {/* the burden layer: the same audit, stated in deaths rather than list membership */}
+        <section className="border-b border-hair">
+          <div className="max-w-4xl mx-auto px-6 py-10">
+            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+              By deaths, not by list
+            </p>
+            <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight mb-2">
+              The killers with no problem on the index.
+            </h2>
+            <p className="text-ink-400 leading-relaxed max-w-2xl mb-6 text-sm">
+              WHO&apos;s 2021 top ten and GBD 2023, mapped onto the ranked problems. These are the
+              causes no problem addresses, largest first. Counts are the source&apos;s own; a cause
+              the source ranks but does not count stays uncounted here rather than estimated.
+            </p>
+            <div className="border border-hair rounded-lg overflow-hidden">
+              {unmappedCauses().map((c, i, arr) => (
+                <div
+                  key={c.slug}
+                  className={`px-3 py-3 flex items-baseline justify-between gap-4 ${
+                    i < arr.length - 1 ? 'border-b border-hair' : ''
+                  }`}
+                >
+                  <div className="min-w-0">
+                    <span className="font-sans text-[14px] text-ink-100">{c.name}</span>
+                    <p className="text-ink-400 text-[13px] leading-relaxed mt-0.5">{c.mechanism}</p>
+                    {c.mappingNote && (
+                      <p className="font-mono text-[10px] text-ink-600 mt-1">{c.mappingNote}</p>
+                    )}
+                  </div>
+                  <span className="shrink-0 font-mono text-sm text-terminal-rose tabular-nums text-right">
+                    {c.deaths.value != null ? formatHumans(c.deaths.value) : 'ranked, uncounted'}
+                    <span className="block font-mono text-[10px] text-ink-600">
+                      {c.deaths.value != null ? `deaths, ${c.deaths.year}` : `WHO #${c.whoRank2021 ?? '?'}`}
+                    </span>
+                  </span>
+                </div>
+              ))}
+            </div>
+            <p className="font-mono text-[10px] text-ink-600 leading-relaxed mt-3 max-w-2xl">
+              Aggregates appear here on purpose: all cancers at 9.7M with nothing on the index is
+              the finding. Nothing on this list is summed.
+            </p>
+          </div>
+        </section>
 
         {/* the candidate gaps */}
         <section className="border-b border-hair bg-ink-900/30">

@@ -26,6 +26,7 @@ import { cachedCountsByProblem, cachedListByProblem } from '@/lib/commitments-ca
 import { isDbConfigured } from '@/lib/db'
 import { requestsForStartups } from '@/data/rfs'
 import { getSourcedCrowding } from '@/data/quest-crowding'
+import BurdenBlock from '@/components/BurdenBlock'
 
 const WAY_LABEL: Record<string, string> = {
   build: 'Build',
@@ -210,6 +211,10 @@ export default async function ProblemPage({
             </div>
           </section>
         )}
+
+        {/* The burden layer: deaths by cause behind this problem, WHO 2021 and GBD 2023.
+            Renders nothing for problems with no mortality dimension. */}
+        <BurdenBlock problemSlug={slug} />
 
         {/* Capital on it — the allocation layer: what the world actually spends here */}
         {capitalFlow && (

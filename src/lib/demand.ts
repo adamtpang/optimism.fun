@@ -24,6 +24,7 @@
  */
 import type { Problem, CapitalMomentum, DemandClass } from '@/data/types'
 import { quantityScore, severityScore, abilityToPayScore } from '@/lib/priority'
+import { mortalitySignal } from '@/lib/burden'
 import { getCapitalFlow } from '@/data/capital-flows'
 import { expertPriorStrength } from '@/data/expert-priors'
 
@@ -94,7 +95,16 @@ export type DemandReadout = {
 export function buildComponents(p: Problem): DemandComponent[] {
   // Burden: magnitude of affected humans, weighted by per-capita severity.
   // Always present — every ranked problem has an affected population.
-  const burden = clamp01(0.6 * quantityScore(p) + 0.4 * severityScore(p))
+  const editorialBurden = clamp01(0.6 * quantityScore(p) + 0.4 * severityScore(p))
+
+  // The burden layer (data/mortality.ts): measured annual deaths in the causes
+  // this problem addresses, WHO 2021 and GBD 2023, on the same 0..1 log scale.
+  // Where it exists it is blended half and half with the editorial estimate
+  // rather than replacing it, because the two measure different things: one is
+  // "how many people this touches", the other is "how many it kills". A problem
+  // with no mortality dimension keeps the editorial figure untouched.
+  const mortality = mortalitySignal(p.slug)
+  const burden = mortality == null ? editorialBurden : clamp01(0.5 * editorialBurden + 0.5 * mortality)
 
   // Willingness to pay: the addressable market the world already spends.
   const wtp = p.marketSize?.value ? abilityToPayScore(p) : null
@@ -113,7 +123,10 @@ export function buildComponents(p: Problem): DemandComponent[] {
       label: CLASS_LABEL.burden,
       strength: burden,
       weight: WEIGHTS.burden,
-      source: p.humansAffected?.source ?? null,
+      source:
+        mortality == null
+          ? (p.humansAffected?.source ?? null)
+          : `${p.humansAffected?.source ?? 'editorial'} blended with WHO GHE 2021 / GBD 2023 deaths by cause`,
     },
     {
       class: 'wtp',
