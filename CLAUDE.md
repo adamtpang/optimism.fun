@@ -299,3 +299,19 @@ affected. Cancer holds at 86. No other row moved.
 
 Verified: TypeScript clean, 62 tests, production build passes at 120 pages
 with `/marketcap` still prerendered, so both new caps validate.
+
+## Board: email gate dropped, first stranger submission (2026-10-01)
+
+- Human review is now the single gate. The submitter confirmation email was
+  deleted in `45ae4fb` at Adam's instruction ("drop the email promise"), along
+  with every sentence promising one. The board no longer depends on
+  `RESEND_API_KEY`. The confirm endpoint, its columns, and the optional owner
+  notification are kept. Earlier sections describing "two gates" are superseded.
+- The admin queue treats every pending row as awaiting review.
+- First submission from a stranger landed 2026-09-25: newborn-survival, talent,
+  contribute, anonymous, a 17 character note (possibly a form test). It is
+  pending. Nobody can approve it yet.
+- Still blocking: `/admin/commitments` returns 503 because `ADMIN_PASSWORD` is
+  unset in Vercel. Adam sets it; an agent must not create or enter a password.
+- Local `next build` timed out on `/trends` on 2026-10-01 (external trend
+  fetch, unrelated to the board). Treat the Vercel build as the check.
