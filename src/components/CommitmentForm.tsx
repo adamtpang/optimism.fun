@@ -111,6 +111,7 @@ export default function CommitmentForm({
   const [stage, setStage] = useState('')
   const [anon, setAnon] = useState(false)
   const [wantsIntro, setWantsIntro] = useState(false)
+  const [website, setWebsite] = useState('')
 
   const [state, setState] = useState<'idle' | 'sending' | 'done' | 'error'>('idle')
   const [errors, setErrors] = useState<string[]>([])
@@ -165,6 +166,7 @@ export default function CommitmentForm({
           stage: stage || null,
           visibility: anon ? 'anon' : 'public',
           wantsIntro,
+          website,
         }),
       })
       const json = await res.json()
@@ -217,6 +219,25 @@ export default function CommitmentForm({
       )}
 
       <form onSubmit={submit} className="p-5 space-y-5">
+        {/* Honeypot. Off-screen rather than display:none, because some bots skip
+            fields that are hidden that way. Hidden from assistive technology and
+            out of the tab order, so no person ever reaches it. */}
+        <div
+          aria-hidden="true"
+          style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}
+        >
+          <label htmlFor="cf-website">Website</label>
+          <input
+            id="cf-website"
+            name="website"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
+          />
+        </div>
+
         {/* Actor */}
         <div className="grid grid-cols-3 gap-px bg-hair border border-hair">
           {ACTOR_TYPES.map((a) => (

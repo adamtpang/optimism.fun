@@ -308,9 +308,11 @@ with `/marketcap` still prerendered, so both new caps validate.
   `RESEND_API_KEY`. The confirm endpoint, its columns, and the optional owner
   notification are kept. Earlier sections describing "two gates" are superseded.
 - The admin queue treats every pending row as awaiting review.
-- First submission from a stranger landed 2026-09-25: newborn-survival, talent,
-  contribute, anonymous, a 17 character note (possibly a form test). It is
-  pending. Nobody can approve it yet.
+- CORRECTION: the 2026-09-25 submission first recorded here as "a stranger" was
+  a spam bot (random strings in every field, junk link). It was rejected on
+  2026-10-01. Real submissions to date: zero. A honeypot field (`website`,
+  `isHoneypotTripped` in `lib/commitments.ts`) now drops such bodies with a fake
+  success and no database write.
 - Still blocking: `/admin/commitments` returns 503 because `ADMIN_PASSWORD` is
   unset in Vercel. Adam sets it; an agent must not create or enter a password.
 - Local `next build` timed out on `/trends` on 2026-10-01 (external trend

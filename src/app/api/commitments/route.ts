@@ -13,6 +13,7 @@ import {
   createCommitment,
   listByProblem,
   validateCommitment,
+  isHoneypotTripped,
 } from '@/lib/commitments'
 import { problems } from '@/data/problems'
 import { resend, fromEmail, notifyEmail } from '@/lib/resend'
@@ -41,6 +42,17 @@ export async function POST(req: Request) {
     body = await req.json()
   } catch {
     return NextResponse.json({ ok: false, errors: ['invalid json'] }, { status: 400 })
+  }
+
+  // A filled honeypot means a bot. Answer exactly as a success would, so the
+  // bot learns nothing and does not retry, and write nothing at all.
+  if (isHoneypotTripped(body)) {
+    console.info(JSON.stringify({ event: 'commitment:honeypot', at: new Date().toISOString() }))
+    return NextResponse.json({
+      ok: true,
+      status: 'pending',
+      message: 'Received. A human reviews it before it goes on the board.',
+    })
   }
 
   // Validate before touching the database so a malformed body costs nothing.

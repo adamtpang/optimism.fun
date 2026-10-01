@@ -172,6 +172,23 @@ export function isSafeUrl(value: string): boolean {
   }
 }
 
+/**
+ * The honeypot. The form carries a field named `website` that is hidden from
+ * people and from assistive technology. A person never fills it; a bot that
+ * stuffs every input does. Email confirmation was dropped on 2026-10-01, so
+ * this and human review are the two things between a crawler and the queue.
+ *
+ * It is a cheap filter, not security: a bot written for this form walks past
+ * it. Review remains the gate that controls what is published.
+ */
+export const HONEYPOT_FIELD = 'website'
+
+export function isHoneypotTripped(raw: unknown): boolean {
+  if (typeof raw !== 'object' || raw === null) return false
+  const v = (raw as Record<string, unknown>)[HONEYPOT_FIELD]
+  return typeof v === 'string' && v.trim().length > 0
+}
+
 export type ValidationResult =
   | {
       ok: true
