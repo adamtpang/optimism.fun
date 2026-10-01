@@ -121,7 +121,7 @@ export default function HomeRouter({ underCoordinated, recent, boardAvailable }:
               Latest commitments
             </p>
             <p className="text-ink-500 text-[12px] leading-relaxed mb-4">
-              The one live dataset here. Each row was confirmed by email and approved by a human.
+              The one live dataset here. Each row was read and approved by a human.
             </p>
             <div className="border border-hair divide-y divide-hair">
               {recent.map((c) => (

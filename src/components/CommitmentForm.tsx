@@ -191,8 +191,8 @@ export default function CommitmentForm({
           Submitted · not yet public
         </p>
         <p className="text-ink-200 text-sm leading-relaxed">
-          Check your email and confirm the address. After that a human reads it before it appears on
-          the {problemName} board. Nothing is published automatically, and your email is never shown.
+          Received. A human reads it before it appears on the {problemName} board. Nothing is
+          published automatically, and your email is never shown.
         </p>
       </div>
     )
@@ -210,8 +210,8 @@ export default function CommitmentForm({
             Take an action on this problem
           </p>
           <p className="text-ink-400 text-[13px] leading-relaxed">
-            One structured record, attached to {problemName}. Confirmed by email, then read by a
-            human before it goes on the board. You cannot buy a place on it.
+            One structured record, attached to {problemName}. Read by a human before it goes on the
+            board. You cannot buy a place on it.
           </p>
         </div>
       )}
@@ -460,7 +460,7 @@ export default function CommitmentForm({
           {state === 'sending' ? 'Sending...' : 'Commit'}
         </button>
         <p className="font-mono text-[10px] text-ink-600 text-center">
-          Email confirm, then human review. Nothing publishes itself.
+          A human reviews every submission. Nothing publishes itself.
         </p>
       </form>
     </div>

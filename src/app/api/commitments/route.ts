@@ -1,17 +1,18 @@
 /**
- * POST /api/commitments  — create a commitment (pending, unconfirmed)
- * GET  /api/commitments?problemSlug=slug — list the public board for a problem
+ * POST /api/commitments  - create a commitment (pending)
+ * GET  /api/commitments?problemSlug=slug - list the public board for a problem
  *
- * Creating never publishes. The row is written as `pending`, a confirmation
- * email goes out, and a human still has to approve it in /admin/commitments
- * before it renders anywhere. Two gates, both required.
+ * Creating never publishes. The row is written as `pending` and a human has to
+ * approve it in /admin/commitments before it renders anywhere. That review is
+ * the single gate: the submitter confirmation email was dropped on 2026-10-01
+ * so the board does not depend on a mail provider. The owner still gets a
+ * notification when one is configured.
  */
 import { NextResponse } from 'next/server'
 import {
   createCommitment,
   listByProblem,
   validateCommitment,
-  INTENT_LABEL,
 } from '@/lib/commitments'
 import { problems } from '@/data/problems'
 import { resend, fromEmail, notifyEmail } from '@/lib/resend'
@@ -55,28 +56,11 @@ export async function POST(req: Request) {
 
   const v = parsed.value
   const problem = problems.find((p) => p.slug === v.problemSlug)
-  const confirmUrl = `${BASE_URL}/api/commitments/confirm?token=${result.confirmToken}`
 
-  // Confirmation to the submitter. If Resend is not configured the row still
-  // exists; it just sits unconfirmed, and the admin queue shows it as such.
+  // Tell the owner there is something to review. Optional: with no mailer the
+  // row still lands in the queue.
   if (resend) {
     try {
-      await resend.emails.send({
-        from: fromEmail,
-        to: v.email,
-        subject: `Confirm your commitment: ${problem?.name ?? v.problemSlug}`,
-        text: [
-          `You said: ${INTENT_LABEL[v.intent]} on ${problem?.name ?? v.problemSlug}.`,
-          '',
-          'Confirm that this address is yours:',
-          confirmUrl,
-          '',
-          'After you confirm, a human reads it before it appears on the public board.',
-          'Nothing is published automatically, and your email address is never shown.',
-          '',
-          'If you did not submit this, ignore this email and nothing happens.',
-        ].join('\n'),
-      })
       await resend.emails.send({
         from: fromEmail,
         to: notifyEmail,
@@ -103,8 +87,7 @@ export async function POST(req: Request) {
       JSON.stringify({
         event: 'commitment:created:no-mailer',
         id: result.id,
-        confirmUrl,
-        note: 'RESEND_API_KEY not set; confirm manually via this URL',
+        note: 'no mailer configured; review at /admin/commitments',
       }),
     )
   }
@@ -113,6 +96,6 @@ export async function POST(req: Request) {
     ok: true,
     id: result.id,
     status: 'pending',
-    message: 'Check your email to confirm. A human reviews it before it goes on the board.',
+    message: 'Received. A human reviews it before it goes on the board.',
   })
 }

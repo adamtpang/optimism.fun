@@ -95,8 +95,8 @@ export default function CoordinationBoard({
       </h2>
       <p className="text-ink-400 text-[13px] leading-relaxed max-w-2xl mb-8">
         Everything above this line is the research ledger: sourced, dated, and open to refutation.
-        Everything below it is the market: real people committing, each one confirmed by email and
-        read by a human. Nobody can buy a place here.
+        Everything below it is the market: real people committing, each one read by a human
+        before it appears. Nobody can buy a place here.
       </p>
 
       {!boardAvailable && (

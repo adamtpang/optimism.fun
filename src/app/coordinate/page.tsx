@@ -84,20 +84,14 @@ export default async function CoordinatePage({
           </div>
 
           <div>
-            <h2 className="font-serif text-2xl text-ink-100 mb-4">The two gates</h2>
+            <h2 className="font-serif text-2xl text-ink-100 mb-4">The one gate</h2>
             <ol className="space-y-4">
               <li className="border-l-2 border-hair pl-4">
-                <p className="text-ink-100 text-sm font-medium mb-1">1. Email confirmation</p>
+                <p className="text-ink-100 text-sm font-medium mb-1">Human review</p>
                 <p className="text-ink-400 text-[13px] leading-relaxed">
-                  Proves the address exists. Confirming publishes nothing. Your address is never
-                  shown on the board, and never given to anyone without you asking for an intro.
-                </p>
-              </li>
-              <li className="border-l-2 border-hair pl-4">
-                <p className="text-ink-100 text-sm font-medium mb-1">2. Human review</p>
-                <p className="text-ink-400 text-[13px] leading-relaxed">
-                  Proves someone read it. Both gates must pass. This is slower than an open board
-                  and it is the only reason the board is worth reading.
+                  A person reads every submission before it appears. This is slower than an open
+                  board and it is the only reason the board is worth reading. Your email address is
+                  never shown, and never given to anyone without you asking for an intro.
                 </p>
               </li>
             </ol>

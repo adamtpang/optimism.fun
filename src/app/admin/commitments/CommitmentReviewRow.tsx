@@ -39,15 +39,11 @@ export default function CommitmentReviewRow({ row }: { row: CommitmentAdminRow }
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <span
-            className={`font-mono text-[10px] uppercase tracking-wider px-1.5 py-0.5 border ${
-              confirmed
-                ? 'text-terminal-green border-terminal-green/40'
-                : 'text-terminal-rose border-terminal-rose/40'
-            }`}
-          >
-            {confirmed ? 'email confirmed' : 'unconfirmed'}
-          </span>
+          {confirmed && (
+            <span className="font-mono text-[10px] uppercase tracking-wider px-1.5 py-0.5 border text-terminal-green border-terminal-green/40">
+              email confirmed
+            </span>
+          )}
           <span
             className={`font-mono text-[10px] uppercase tracking-wider px-1.5 py-0.5 border ${statusTone}`}
           >
@@ -82,11 +78,9 @@ export default function CommitmentReviewRow({ row }: { row: CommitmentAdminRow }
           </a>
         )}
 
-        {!confirmed && (
-          <p className="font-mono text-[10px] text-ink-600">
-            Not email-confirmed yet. Approving anyway publishes an unverified address.
-          </p>
-        )}
+        <p className="font-mono text-[10px] text-ink-600">
+          The address is unverified. Check it yourself before brokering an intro.
+        </p>
 
         <input
           value={note}
