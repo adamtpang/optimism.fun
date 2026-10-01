@@ -54,41 +54,52 @@ export default async function Home() {
     <>
       <Navbar />
       <main>
-        {/* GLOBE HERO — capitalism on a globe, the landing's first impression. */}
+        {/* HERO: says what the site is for in one sentence. */}
         <section className="border-b border-hair">
           <div className="max-w-7xl mx-auto px-6 pt-28 pb-6">
             <div className="flex items-center gap-2 mb-3">
               <span className="text-amber-300 text-[10px]">◆</span>
               <div className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-400">
-                humanity&rsquo;s requests for startups &middot; v0.1
+                problems &middot; talent &middot; capital
               </div>
             </div>
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.02] text-ink-100 mb-4 max-w-3xl">
-              Find the problems humanity{' '}
-              <span className="text-terminal-rose">cannot afford to lose.</span>
+              Humanity&rsquo;s hardest problems,{' '}
+              <span className="text-terminal-rose">and the people and money to solve them.</span>
             </h1>
             <p className="text-ink-400 leading-relaxed max-w-2xl text-base">
-              A live map for people with a moral mission — every company, founder, and economy
-              pointed at {problems.length} ranked problems worth your life. Find the good quest
-              you are unusually positioned to carry, then start building.
+              {problems.length} problems, ranked on sourced numbers. Pick one and commit to it:
+              start a company, join one, fund the gap, or hire for it. A human reads every
+              commitment. Nothing here can be bought.
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-2">
               <Link
-                href="/s-tier"
+                href="#problems"
                 className="font-mono text-[11px] uppercase tracking-wider text-paper bg-amber-300 hover:bg-amber-200 px-4 py-2.5 rounded transition-colors"
               >
-                Find your good quest &rarr;
+                Pick a problem &rarr;
               </Link>
               <Link
-                href="/rankings"
+                href="/coordinate"
                 className="font-mono text-[11px] uppercase tracking-wider text-ink-300 border border-hair hover:border-amber-300 px-4 py-2.5 rounded transition-colors"
               >
-                Browse every quest &rarr;
+                How it works &rarr;
               </Link>
             </div>
             <DataFreshness className="mt-5" />
           </div>
-          {/* full-bleed globe — companies + founders by default; toggle layers below it */}
+        </section>
+
+        {/* The router sits directly under the hero: three doors and the live
+            board, so a visitor can act before reaching any of the maps below. */}
+        <HomeRouter
+          underCoordinated={underCoordinated}
+          recent={recent}
+          boardAvailable={boardAvailable}
+        />
+
+        {/* full-bleed globe: companies + founders by default; toggle layers below it */}
+        <section className="border-b border-hair">
           <GlobeView
             className="relative w-full h-[62vh] min-h-[420px]"
             initialLayers={['companies', 'founders']}
@@ -146,14 +157,6 @@ export default async function Home() {
             <RadarClient />
           </div>
         </section>
-
-        {/* The router — three doors and the live board, above the table. The
-            leaderboard is the map; this is where a visitor can actually act. */}
-        <HomeRouter
-          underCoordinated={underCoordinated}
-          recent={recent}
-          boardAvailable={boardAvailable}
-        />
 
         {/* The leaderboard — the detailed, multi-metric sortable index. */}
         <section
