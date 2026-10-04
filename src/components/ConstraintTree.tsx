@@ -1,57 +1,43 @@
 /**
- * Why this problem is not solved yet: the constraint tree on a problem page.
- * Each node shows the claim, the reason, the evidence that would refute it and
- * what we found, who is on it, and what one more person changes. Renders
- * nothing for problems without a tree yet.
+ * Why a problem is not solved yet, as short claims. Each claim shows one line
+ * of why, what you can do, and its sources. The reasoning (what would prove
+ * it wrong, what we found) sits behind a toggle.
  */
-import Link from 'next/link'
 import { getConstraintTree, type Constraint } from '@/data/constraints'
 
-const WHO_LABEL = { talent: 'Talent', capital: 'Capital', operator: 'Operator' } as const
+const WHO = { talent: 'Work', capital: 'Fund', operator: 'Run' } as const
 
-function Node({ c, binding, depth }: { c: Constraint; binding: string; depth: number }) {
+function Node({ c, binding, nested }: { c: Constraint; binding: string; nested?: boolean }) {
   const isBinding = c.id === binding
   return (
-    <div className={`border-l-2 pl-4 ${isBinding ? 'border-amber-300' : 'border-hair'} ${depth ? 'mt-4' : ''}`}>
-      <p className="font-mono text-xs uppercase tracking-wider text-ink-500 mb-1">
-        {isBinding ? 'Most binding · ' : ''}
-        {c.kind} · supply {c.supplyState} · one more team: {c.additionality.level}
-      </p>
-      <p className="text-ink-100 text-base font-medium leading-snug">{c.claim}</p>
-      <p className="text-ink-400 text-sm leading-relaxed mt-2">{c.whyUnsolved}</p>
-      <p className="text-ink-400 text-sm leading-relaxed mt-2">
-        <span className="text-ink-200">Would be wrong if:</span> {c.falsifier}
-      </p>
-      {c.tested && (
-        <p className="text-ink-400 text-sm leading-relaxed mt-2">
-          <span className="text-ink-200">What we found:</span> {c.tested}
-        </p>
-      )}
-      <p className="text-ink-400 text-sm leading-relaxed mt-2">
-        <span className="text-ink-200">One more team:</span> {c.additionality.why}
-      </p>
-      {c.suppliers.length > 0 && (
-        <p className="text-ink-500 text-sm mt-2">On it: {c.suppliers.join(', ')}</p>
-      )}
+    <div className={`border-l-2 pl-4 ${isBinding ? 'border-amber-300' : 'border-hair'} ${nested ? 'mt-4' : ''}`}>
+      {isBinding && <p className="font-mono text-xs uppercase tracking-wider text-amber-300 mb-1">Biggest blocker</p>}
+      <p className="text-ink-100 text-lg leading-snug">{c.claim}</p>
       {c.entryPoints.length > 0 && (
-        <ul className="mt-3 space-y-1">
+        <ul className="mt-2 space-y-1">
           {c.entryPoints.map((e) => (
             <li key={e.action} className="text-sm text-ink-300">
-              <span className="font-mono text-xs uppercase text-amber-300 mr-2">{WHO_LABEL[e.who]}</span>
+              <span className="font-mono text-xs uppercase text-amber-300 mr-2">{WHO[e.who]}</span>
               {e.action}
             </li>
           ))}
         </ul>
       )}
-      <p className="text-xs text-ink-500 mt-2">
-        {c.sources.map((s, i) => (
-          <a key={s.url} href={s.url} target="_blank" rel="noopener noreferrer" className="hover:text-amber-300 underline decoration-dotted">
-            {s.label}
-            {i < c.sources.length - 1 ? ' · ' : ''}
-          </a>
-        ))}
-      </p>
-      {c.children?.map((k) => <Node key={k.id} c={k} binding={binding} depth={depth + 1} />)}
+      <details className="mt-2 text-sm text-ink-400">
+        <summary className="cursor-pointer text-ink-500 hover:text-ink-200">Why, and how we know</summary>
+        <p className="mt-2">{c.whyUnsolved}</p>
+        <p className="mt-2"><span className="text-ink-200">Wrong if:</span> {c.falsifier}</p>
+        {c.tested && <p className="mt-2"><span className="text-ink-200">Found:</span> {c.tested}</p>}
+        {c.suppliers.length > 0 && <p className="mt-2"><span className="text-ink-200">On it:</span> {c.suppliers.join(', ')}</p>}
+        <p className="mt-2 text-xs">
+          {c.sources.map((s, i) => (
+            <a key={s.url} href={s.url} target="_blank" rel="noopener noreferrer" className="underline decoration-dotted hover:text-amber-300">
+              {s.label}{i < c.sources.length - 1 ? ' · ' : ''}
+            </a>
+          ))}
+        </p>
+      </details>
+      {c.children?.map((k) => <Node key={k.id} c={k} binding={binding} nested />)}
     </div>
   )
 }
@@ -61,22 +47,13 @@ export default function ConstraintTree({ problemSlug }: { problemSlug: string })
   if (!t) return null
   return (
     <section id="why-unsolved" className="border-b border-hair">
-      <div className="max-w-5xl mx-auto px-6 py-10">
-        <p className="font-mono text-xs uppercase tracking-ultra-wide text-amber-300 mb-2">Why it is not solved yet</p>
-        <p className="text-ink-100 text-lg leading-relaxed max-w-3xl">{t.whyUnsolved}</p>
-        <p className="text-ink-500 text-sm mt-2 max-w-3xl">
-          Goal: {t.outcome}
-        </p>
-        <div className="mt-8 space-y-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
+        <h2 className="font-serif text-2xl text-ink-100 mb-6">Why it is not solved yet</h2>
+        <div className="space-y-8">
           {t.root.map((c) => (
-            <Node key={c.id} c={c} binding={t.bindingId} depth={0} />
+            <Node key={c.id} c={c} binding={t.bindingId} />
           ))}
         </div>
-        <p className="text-sm text-ink-500 mt-8 max-w-3xl">
-          Every claim here is a conjecture with its own test. Know something that breaks one?{' '}
-          <Link href="#coordinate" className="text-amber-300 hover:underline">Say so on the board</Link>, or commit to a constraint.
-          Updated {t.updated}.
-        </p>
       </div>
     </section>
   )

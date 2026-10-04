@@ -27,9 +27,9 @@ const SITE_URL = 'https://optimism.fun'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "optimism.fun | Humanity's Quest Log",
+  title: "optimism.fun | Problems, capital, talent",
   description:
-    "optimism.fun ranks humanity's biggest unsolved problems and maps the companies, founders, and capital already working to solve each one.",
+    "Humanity's hardest problems, ranked with sourced numbers. Bring money or work.",
   keywords: [
     'optimism',
     'critical rationalism',
@@ -41,18 +41,18 @@ export const metadata: Metadata = {
     'techno-capitalism',
   ],
   openGraph: {
-    title: "optimism.fun | Humanity's Quest Log",
+    title: "optimism.fun | Problems, capital, talent",
     description:
-      "A ranked dashboard of humanity's most important problems, scored on welfare, x-risk, and utility delta. Infinite problems, infinite solutions.",
+      "Humanity's hardest problems, ranked with sourced numbers. Bring money or work.",
     url: SITE_URL,
     siteName: 'optimism.fun',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: "optimism.fun | Humanity's Quest Log",
+    title: "optimism.fun | Problems, capital, talent",
     description:
-      "All problems are explainable. All solutions are creatable. A ranked dashboard of humanity's most important problems.",
+      "Humanity's hardest problems, ranked with sourced numbers. Bring money or work.",
   },
 }
 
@@ -71,7 +71,7 @@ const websiteLd = {
   url: SITE_URL,
   name: 'optimism.fun',
   description:
-    "optimism.fun ranks humanity's biggest unsolved problems and maps the companies, founders, and capital already working to solve each one.",
+    "Humanity's hardest problems, ranked with sourced numbers. Bring money or work.",
   publisher: { '@id': `${SITE_URL}/#organization` },
   creator: { '@id': `${SITE_URL}/#organization` },
 }

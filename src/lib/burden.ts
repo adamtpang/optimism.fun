@@ -70,6 +70,19 @@ export function burdenForProblem(problemSlug: string): ProblemBurden | null {
   }
 }
 
+/**
+ * The one number to show for a problem's deaths: the counted single causes,
+ * or the largest aggregate that names it (all cancers 9.7M) when that is
+ * bigger. For display only; never feeds the score.
+ */
+export function displayDeaths(problemSlug: string): number | null {
+  const b = burdenForProblem(problemSlug)
+  if (!b) return null
+  const agg = Math.max(0, ...b.aggregates.map((a) => a.deaths.value ?? 0))
+  const n = Math.max(b.deaths, agg)
+  return n > 0 ? n : null
+}
+
 export function deathsByProblem(): Map<string, ProblemBurden> {
   const out = new Map<string, ProblemBurden>()
   const slugs = new Set(mortalityCauses.flatMap((c) => c.problemSlugs))

@@ -16,9 +16,7 @@ export default function Footer() {
               <span className="font-semibold">optimism.fun</span>
             </Link>
             <p className="text-xs text-ink-400 mt-3 max-w-sm leading-relaxed">
-              optimism.fun is humanity&rsquo;s quest log: a sourced index of major unsolved
-              problems, the people and organizations addressing them, and measurable evidence
-              of progress over time.
+              Humanity&rsquo;s hardest problems. Bring money or work.
             </p>
           </div>
           <div>

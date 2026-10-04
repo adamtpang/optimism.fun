@@ -49,7 +49,7 @@ export const problems: Problem[] = [
     name: 'Biosecurity & pandemic preparedness',
     tier: 'x-risk',
     tagline:
-      'Prevent engineered and naturally-emerging pandemics from wiping out humanity or crippling civilization.',
+      'Stop the next pandemic, natural or engineered, before it spreads.',
     description:
       'COVID-19 demonstrated the tail risk from a single pathogen. Dual-use gene synthesis, lab leaks, and deliberate misuse mean that worst-case pandemics could be civilization-ending. Tractable: far-UVC sterilization, early-warning surveillance, broad-spectrum countermeasures, pathogen-agnostic detection.',
     humansAffected: {
@@ -183,7 +183,7 @@ export const problems: Problem[] = [
     name: 'Energy abundance',
     tier: 'hard-tech',
     tagline:
-      'Produce clean, cheap, dispatchable energy at civilizational scale, fusion, advanced fission, geothermal.',
+      'Clean, cheap power on demand, everywhere.',
     description:
       "Energy underwrites every other quest. Current global primary energy use is ~600 EJ/year at ~$0.10/kWh average. Thermodynamic physics allows orders of magnitude more throughput at far lower cost. Fusion (net energy achieved at NIF 2022), advanced fission (SMRs, Gen IV), and enhanced geothermal are all within the adjacent possible. Energy is the denominator in Musk's utility-delta: cheap energy improves every human life.",
     humansAffected: {
@@ -313,7 +313,7 @@ export const problems: Problem[] = [
     name: 'Low-cost housing & construction',
     tier: 'hard-tech',
     tagline:
-      'Close the gap between what materials cost and what buildings cost, housing is 5× its bill of materials.',
+      'Too few homes get built, so homes cost too much.',
     description:
       '1.6 billion people live in inadequate housing globally (UN-Habitat). In developed economies, housing is the single largest household expense, with construction productivity flat for 50 years. The physics of concrete, steel, and timber allows much cheaper buildings. The gap is process: zoning, labor shortages, regulatory stacks, and the absence of industrial-scale construction automation. Robotics, 3D printing, prefab, and permitting reform all compound.',
     humansAffected: {
@@ -439,7 +439,7 @@ export const problems: Problem[] = [
     name: 'Pedagogy at scale',
     tier: 'progress',
     tagline:
-      "Close Bloom's 2-sigma gap, every child deserves a personal tutor, and AI may finally make it tractable.",
+      'One-on-one tutoring works far better than classrooms. AI may make it affordable for every child.',
     description:
       "Benjamin Bloom's 1984 research showed one-on-one tutoring raises student performance by 2 standard deviations versus classroom instruction. The problem was cost: one tutor per child is infeasible at population scale. AI tutoring changes the economics. 1.5B children are undereducated globally (UNESCO); billions more adults lack skills they could have acquired with better pedagogy. This is the problem Deutsch writes about most directly in The Beginning of Infinity, better explanations compound across generations.",
     humansAffected: {
@@ -572,7 +572,7 @@ export const problems: Problem[] = [
     name: 'Infectious disease (malaria, TB, HIV)',
     tier: 'welfare',
     tagline:
-      'The Copenhagen Consensus welfare floor, pennies save lives, and we still are not spending them.',
+      'Malaria, TB and HIV still kill millions, and the cures are cheap.',
     description:
       "Malaria killed ~600,000 people in 2023, mostly children under 5. Tuberculosis kills ~1.3M per year. HIV kills ~630,000 per year despite proven suppression protocols. The Copenhagen Consensus ranks these interventions among the highest benefit-cost ratios in global development, $1 of intervention returns $20-$100 in economic and welfare gains. This is the baseline anyone claiming to rank humanity's problems has to include.",
     humansAffected: {
@@ -695,7 +695,7 @@ export const problems: Problem[] = [
     name: 'Scientific productivity',
     tier: 'progress',
     tagline:
-      'Ideas are getting harder to find. Reverse the decline in research productivity per dollar.',
+      'Each research dollar buys less progress than it used to.',
     description:
       'Bloom, Jones, Van Reenen and Webb showed research productivity across semiconductors, agriculture, and biomedicine has been falling for decades, we spend far more scientist-hours for each new idea. The meta-problem: every other quest on this list depends on scientific throughput. Focused Research Organizations, AI-assisted research, metascience reform, and funding structure changes all compound across every domain.',
     humansAffected: {
@@ -834,7 +834,7 @@ export const problems: Problem[] = [
     name: 'Longevity & aging',
     tier: 'hard-tech',
     tagline:
-      'Extend healthspan. Aging is the single largest driver of disease burden, and it is treatable.',
+      'Aging drives most disease. Slow it and most diseases recede.',
     description:
       "Aging underlies cardiovascular disease, cancer, neurodegeneration, and frailty. Every human alive is affected. The hallmarks-of-aging framework (López-Otín et al.) gives discrete targets: senescent cell clearance, epigenetic reprogramming, stem cell exhaustion. Partial cellular reprogramming (Altos, Retro, NewLimit) and geroprotective drugs (rapamycin, metformin class) are in early trials. Utility delta is enormous: current median healthspan ~75 years, theoretical ceiling unknown and likely much higher.",
     humansAffected: {
@@ -965,7 +965,7 @@ export const problems: Problem[] = [
     name: 'Fertility decline & demographic stagnation',
     tier: 'emerging',
     tagline:
-      'Every developed country is below replacement. Under-counted by EA and e/acc. Civilizationally large.',
+      'Every developed country now has fewer births than it needs to keep its population steady.',
     description:
       "Global fertility has fallen to ~2.3 and is projected to drop below 2.1 (replacement) within a decade. South Korea, Italy, Japan, and China are already at 0.7-1.3. Shrinking working-age populations break pension systems, slow innovation, and collapse housing markets. Causes: housing cost, childcare cost, cultural shift, biological fertility decline. Solutions span policy (childcare subsidies, YIMBY), technology (in-vitro gametogenesis, artificial wombs), and culture. Severely neglected in EA/e/acc canon.",
     humansAffected: {
@@ -1598,7 +1598,7 @@ export const problems: Problem[] = [
     tier: 'welfare',
     domain: 'health',
     tagline:
-      'The largest controllable mortality risk is a primary-care delivery failure, not a missing drug.',
+      '1.4 billion people have high blood pressure. The pills are cheap; only 23 percent have it controlled.',
     description:
       'Hypertension is persistently high pressure in the arteries. It usually causes no symptoms while it damages blood vessels, the heart, brain, and kidneys, increasing the risk of heart attack, stroke, heart failure, chronic kidney disease, and dementia. WHO estimates that 1.4 billion adults aged 30 to 79 had hypertension in 2024, but only 320 million, 23 percent, had it controlled. The core interventions already exist: validated blood-pressure devices, standardized treatment protocols, inexpensive medicines, team-based primary care, reliable refills, and population registries. The unsolved problem is making that complete control loop dependable for every patient.',
     humansAffected: {
@@ -1713,7 +1713,7 @@ export const problems: Problem[] = [
     name: 'AI datacenter power',
     tier: 'hard-tech',
     tagline:
-      'The AI compute buildout is no longer chip-constrained. It is power-constrained, and the gap is $1.3 trillion.',
+      'AI data centers now need more electricity than grids can supply.',
     description:
       'Nvidia and the hyperscalers already captured the AI compute layer — Nvidia alone is worth $5.27T (live, companiesmarketcap.com), and hyperscaler AI capex will hit $775-800B in 2026 (CFA Institute / Alcapital Advisory). None of that is bottlenecked by chips anymore. It is bottlenecked by power: nearly 2,300GW of generation and storage sits stuck in US interconnection queues, transformer lead times have stretched from 24-30 months to 5 years, and the three grid-hardware majors (Hitachi Energy, Siemens Energy, GE Vernova) already carry a combined $180B+ backlog with 6+ years of revenue booked. McKinsey\'s own "$7 trillion race to scale data centers" report splits the AI-datacenter buildout through 2030 into ~$3.1T for chips/tech (captured) and ~$1.3T for power: generation, transmission, cooling, and electrical equipment. That $1.3T is not one company\'s market — it fragments into real sub-niches moving at different speeds, some already spoken for (SMR fleets: four vendors hold nearly every hyperscaler off-take deal), some genuinely still open (behind-the-meter battery storage for GPU-cluster load smoothing, still uncaptured as of 2026).',
     humansAffected: {
@@ -1834,7 +1834,7 @@ export const problems: Problem[] = [
     tier: 'progress',
     domain: 'governance',
     tagline:
-      'Move value for everyone at near-zero cost, on rails not owned by a sixty-year-old duopoly.',
+      'Moving money should be nearly free for everyone. It still is not.',
     description:
       "Global payments generate roughly $2.5 trillion in annual revenue on about $2.0 quadrillion of value flows, and two companies founded in 1958 and 1966 hold roughly $1.2 trillion of the card rail between them. This is the rare category whose incumbent ceiling does not cap out: Visa sits at its all-time high after 68 years, and JPMorgan is close to becoming the first trillion-dollar bank. Added to this index in August 2026 as the fifth problem clearing the $1T bar, and the only new one to survive a nineteen-candidate screen (see TRILLION_DOLLAR_SCREEN.md). Two honest caveats travel with it. The humanitarian case is the weakest of the five: 1.3 billion adults remain unbanked, but account ownership already reached 79 percent of adults, and Nubank, the most successful bank-the-unbanked company ever built, is worth $70 billion, which settles where the trillion is not. And the category is heavily defended: US merchant processing fees hit a record $198.25 billion in 2025, the year after stablecoin legislation passed, so no disruption is yet visible in the fee data.",
     humansAffected: {
@@ -1922,7 +1922,7 @@ export const problems: Problem[] = [
     domain: 'health',
     sectors: ['physical-health-and-disease', 'aging-and-longevity'],
     tagline:
-      'The second-largest cause of death on Earth had no row on this index until the burden layer counted it.',
+      'The second-largest cause of death on Earth: 9.7 million deaths a year.',
     description:
       'Cancer is hundreds of distinct diseases with one shared mechanism: accumulated DNA damage lets a cell escape growth control. The causes differ, tobacco, infections, alcohol, obesity, radiation, and above all the years lived, since mutations accumulate with age. GLOBOCAN counted 20 million new cases and 9.7 million deaths in 2022, lung the largest share of both. Roughly one in five people develop cancer in their lifetime. Spending is not the gap: cancer medicines cost $252 billion in 2024 and the best-selling drug on Earth is an oncology drug. The unsolved problems are earlier detection, the cancers that still have no effective treatment, and the collapse of survival in low-income settings where the same diagnosis is often fatal.',
     humansAffected: {
@@ -2046,7 +2046,7 @@ export const problems: Problem[] = [
     domain: 'health',
     sectors: ['physical-health-and-disease'],
     tagline:
-      'The fourth-largest killer on Earth has a drug market one-twelfth the size of cancer\'s and got its first biologic in 2024.',
+      'The fourth-largest killer on Earth, and one of the least funded.',
     description:
       'Chronic obstructive pulmonary disease is the progressive destruction of the airways and air sacs by inhaled irritants, above all tobacco smoke in high-income countries and household smoke from cooking fuel in low- and middle-income ones. Over decades the lungs lose the ability to move enough air, and the damage does not reverse. WHO counts 3.5 million deaths in 2021, about 5 percent of all deaths, and nearly 90 percent of the deaths under age 70 are in low- and middle-income countries. GBD 2021 estimates 213 million people living with it. Treatment manages symptoms with inhalers; nothing yet regenerates lung tissue, and the first biologic was approved only in September 2024. The two proven levers are not drugs at all: tobacco control and clean cooking.',
     humansAffected: {
@@ -2159,7 +2159,7 @@ export const problems: Problem[] = [
     domain: 'health',
     sectors: ['physical-health-and-disease'],
     tagline:
-      'The one problem on this index whose trillion-dollar company already exists, and where 59 percent of patients still take no medicine.',
+      '589 million adults have it. 59 percent take no medicine, though the drugs exist.',
     description:
       'Diabetes is chronically high blood glucose, from the body resisting insulin or failing to make it. Over years it damages blood vessels, nerves, eyes and kidneys, and it sits upstream of a large share of cardiovascular and kidney deaths. The IDF counts 589 million adults living with it in 2024, one in nine, heading to 853 million by 2050; WHO counts 830 million people of all ages in 2022, up from 200 million in 1990. Its rise tracks obesity. The drugs are old, cheap and effective for most patients, and the newest class is the most valuable in pharma: semaglutide earned $29 billion in 2024 and tirzepatide carried Lilly past a trillion dollars. Yet 59 percent of adults with diabetes took no medication in 2022, and in low-income countries 59 percent are not even diagnosed. The frontier is not the molecule. It is delivery.',
     humansAffected: {

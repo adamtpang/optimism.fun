@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { problems } from '@/data/problems'
 import { computeRadarRows } from '@/lib/radar'
-import { burdenForProblem } from '@/lib/burden'
+import { displayDeaths } from '@/lib/burden'
 import { formatHumans } from '@/lib/format'
 
 export const metadata: Metadata = {
@@ -67,7 +67,7 @@ export default function Home() {
                 {rows.map((r, i) => {
                   const p = bySlug.get(r.slug)
                   const people = p?.humansAffected?.value
-                  const deaths = burdenForProblem(r.slug)?.deaths
+                  const deaths = displayDeaths(r.slug)
                   return (
                     <tr key={r.slug} className="border-t border-hair">
                       <td className="py-3 pr-3 font-mono text-ink-500">{i + 1}</td>

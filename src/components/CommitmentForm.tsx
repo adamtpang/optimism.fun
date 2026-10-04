@@ -45,36 +45,12 @@ const INTENT_LABEL: Record<Intent, string> = {
 
 /** The proof prompt is the whole anti-spam design, so it changes per intent. */
 const PROOF_PROMPT: Record<Intent, { label: string; placeholder: string }> = {
-  start: {
-    label: 'Riskiest assumption, and the first artifact you will ship in 14 days',
-    placeholder:
-      'Riskiest assumption: clinics will not switch without a billing-code path. In 14 days I will ship a teardown of the three codes that apply and get one clinic to say yes or no.',
-  },
-  join: {
-    label: 'One sentence of proof of work',
-    placeholder:
-      'I built and shipped the ingest pipeline behind X, which handled 40M rows a day. Link below.',
-  },
-  contribute: {
-    label: 'The correction, the source, or the intro',
-    placeholder:
-      'The market-size figure on this page cites a 2019 report. The 2025 update puts it 40 percent lower. Link below.',
-  },
-  fund: {
-    label: 'Your thesis on this gap, in a sentence or two',
-    placeholder:
-      'We back pre-seed hard tech with a regulatory wedge. On this problem the bottleneck is permitting, not physics, so we would fund a team with a policy lead on the founding side.',
-  },
-  hire: {
-    label: 'The role, and what the first 90 days look like',
-    placeholder:
-      'Founding engineer. First 90 days: take the internal simulation from a notebook to a service our three pilot customers can call.',
-  },
-  raise: {
-    label: 'What the raise is for, and what it buys',
-    placeholder:
-      'Raising a seed to run the first in-human pilot. It buys 18 months and the safety data we need before a Series A.',
-  },
+  start: { label: 'What you will ship in 14 days', placeholder: 'A teardown of the three billing codes, and one clinic saying yes or no.' },
+  join: { label: 'One line of proof of work', placeholder: 'Built the pipeline behind X. Link below.' },
+  contribute: { label: 'The correction, source or intro', placeholder: 'This figure is from 2019; the 2025 update is lower. Link below.' },
+  fund: { label: 'Your thesis, one line', placeholder: 'The blocker is permitting, so we back teams with a policy lead.' },
+  hire: { label: 'The role, and its first 90 days', placeholder: 'Founding engineer. Ship the pilot service for three customers.' },
+  raise: { label: 'What the raise buys', placeholder: 'Seed for the first pilot: 18 months and the safety data.' },
 }
 
 type Props = {
@@ -208,13 +184,7 @@ export default function CommitmentForm({
     <div ref={rootRef} id="coordinate" className="border border-hair scroll-mt-24">
       {!compact && (
         <div className="border-b border-hair px-5 py-4 bg-ink-900/40">
-          <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-1">
-            Take an action on this problem
-          </p>
-          <p className="text-ink-400 text-[13px] leading-relaxed">
-            One structured record, attached to {problemName}. Read by a human before it goes on the
-            board. You cannot buy a place on it.
-          </p>
+          <p className="font-serif text-xl text-ink-100">Act on {problemName}</p>
         </div>
       )}
 

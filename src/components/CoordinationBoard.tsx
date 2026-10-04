@@ -87,17 +87,10 @@ export default function CoordinationBoard({
 
   return (
     <section className="px-6 py-12 max-w-5xl mx-auto border-t border-hair-strong">
-      <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
-        The board
-      </p>
-      <h2 className="font-serif text-2xl md:text-3xl text-ink-100 mb-3">
-        Who is actually moving on {problemName}.
+      <h2 className="font-serif text-2xl md:text-3xl text-ink-100 mb-2">
+        Who is moving on {problemName}
       </h2>
-      <p className="text-ink-400 text-[13px] leading-relaxed max-w-2xl mb-8">
-        Everything above this line is the research ledger: sourced, dated, and open to refutation.
-        Everything below it is the market: real people committing, each one read by a human
-        before it appears. Nobody can buy a place here.
-      </p>
+      <p className="text-ink-500 text-sm mb-8">A human checks every entry. Nothing here can be bought.</p>
 
       {!boardAvailable && (
         <p className="border border-amber-300/40 bg-amber-300/[0.04] px-4 py-3 text-[13px] text-ink-300 mb-6">
@@ -151,8 +144,7 @@ export default function CoordinationBoard({
           ))}
           {quests.length === 0 && starts.length === 0 && (
             <Empty>
-              0 people willing to start. Be first, and the next person who lands here sees that
-              somebody already moved.
+0 so far. Be first.
             </Empty>
           )}
         </Column>
@@ -183,8 +175,7 @@ export default function CoordinationBoard({
           })}
           {companies.length === 0 && (
             <Empty>
-              No company is tracked on this problem yet. That is a coverage gap in the ledger, not
-              proof the field is empty. Use the contribute path to name one.
+No companies tracked yet.
             </Empty>
           )}
         </Column>
@@ -223,8 +214,7 @@ export default function CoordinationBoard({
           ))}
           {capital.length === 0 && needs.length === 0 && (
             <Empty>
-              0 allocators watching. An anonymous band and a one-line thesis is enough to be the
-              first, and it stays anonymous.
+0 so far. You can stay anonymous.
             </Empty>
           )}
         </Column>
