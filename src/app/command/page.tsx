@@ -8,6 +8,15 @@ import { problems } from '@/data/problems'
 import { constraintTrees, type Constraint } from '@/data/constraints'
 import { capitalMoves, gotExpensive, gotCheap, type Move } from '@/data/market-moves'
 import { cachedListRecentPublic } from '@/lib/commitments-cache'
+import {
+  assets,
+  biggestMarkets,
+  fastestMarkets,
+  idiotIndex,
+  collapsed,
+  topCompanies,
+  type AtlasRow,
+} from '@/data/market-atlas'
 
 export const metadata: Metadata = {
   title: 'Command Center | optimism.fun',
@@ -54,6 +63,35 @@ function MoveRow({ m }: { m: Move }) {
         )}
       </p>
     </li>
+  )
+}
+
+function AtlasList({ rows }: { rows: AtlasRow[] }) {
+  return (
+    <ul>
+      {rows.map((r) => (
+        <li key={r.name} className="py-2 border-t border-hair first:border-t-0">
+          <div className="flex items-baseline justify-between gap-3">
+            <span className="text-sm text-ink-100">
+              {r.name}
+              {r.aiDriven && <span className="ml-2 font-mono text-xs text-amber-300">AI</span>}
+            </span>
+            <span className="font-mono text-sm tabular-nums text-ink-100 whitespace-nowrap">{r.value}</span>
+          </div>
+          <p className="text-xs text-ink-500 mt-0.5">
+            {r.unit}
+            {r.change ? ` · ${r.change}` : ''} · <span className={CONF[r.confidence]}>{r.confidence}</span> ·{' '}
+            <a href={r.source.url} target="_blank" rel="noopener noreferrer" className="underline decoration-dotted hover:text-amber-300">{r.source.label}</a>
+            {r.problemSlug && (
+              <>
+                {' · '}
+                <Link href={`/p/${r.problemSlug}`} className="text-amber-300 hover:underline">{nameOf(r.problemSlug)}</Link>
+              </>
+            )}
+          </p>
+        </li>
+      ))}
+    </ul>
   )
 }
 
@@ -204,6 +242,89 @@ export default async function CommandPage() {
             <ul>{gotCheap.map((m) => <MoveRow key={m.label} m={m} />)}</ul>
           </Panel>
         </div>
+
+        {/* The atlas: wealth, flows, growth */}
+        <div className="grid lg:grid-cols-3 gap-4 mt-4">
+          <Panel n="Wealth" title="Where the money sits" sub="Stocks of value. They overlap, so never add them up.">
+            <AtlasList rows={assets} />
+            <p className="font-mono text-xs uppercase tracking-wider text-ink-500 mt-6 mb-2">
+              Largest companies · {topCompanies.asOf}
+            </p>
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+              {topCompanies.rows.map(([n, v]) => (
+                <li key={n} className="flex justify-between gap-2">
+                  <span className="text-ink-300">{n}</span>
+                  <span className="font-mono text-ink-100">{v}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="text-xs text-ink-500 mt-2">
+              <a href={topCompanies.source.url} target="_blank" rel="noopener noreferrer" className="underline decoration-dotted">
+                {topCompanies.source.label}
+              </a>
+            </p>
+          </Panel>
+          <Panel n="Flows" title="The biggest markets" sub="What humanity spends each year. Big, and mostly slow.">
+            <AtlasList rows={biggestMarkets} />
+          </Panel>
+          <Panel n="Growth" title="The fastest growing" sub="Markets of real size growing fastest. Most of the list is AI.">
+            <AtlasList rows={fastestMarkets} />
+          </Panel>
+        </div>
+
+        {/* The Idiot Index */}
+        <section className="border border-hair bg-ink-900/30 p-5 mt-4">
+          <p className="font-mono text-xs uppercase tracking-ultra-wide text-amber-300">Idiot Index</p>
+          <h2 className="font-serif text-2xl text-ink-100 mt-1">Where price sits furthest above cost</h2>
+          <p className="text-sm text-ink-500 mt-1 mb-5 max-w-3xl">
+            Price divided by the cost of making the thing. A high ratio is not an opportunity by itself. Ask what
+            keeps the gap open: the widest ones are held by law and middlemen, not engineering.
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm min-w-[640px]">
+              <thead>
+                <tr className="text-left font-mono text-xs uppercase tracking-wider text-ink-500">
+                  <th className="py-2 pr-3">Product</th>
+                  <th className="py-2 pr-3">Price</th>
+                  <th className="py-2 pr-3">Cost</th>
+                  <th className="py-2 pr-3 text-right">Ratio</th>
+                  <th className="py-2 pr-3">Why it stays open</th>
+                  <th className="py-2">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {idiotIndex.map((r) => (
+                  <tr key={r.name} className="border-t border-hair align-top">
+                    <td className="py-2 pr-3 text-ink-100">
+                      <a href={r.source.url} target="_blank" rel="noopener noreferrer" className="hover:text-amber-300">{r.name}</a>
+                      {r.problemSlug && (
+                        <Link href={`/p/${r.problemSlug}`} className="block text-xs text-amber-300 hover:underline">{nameOf(r.problemSlug)}</Link>
+                      )}
+                    </td>
+                    <td className="py-2 pr-3 font-mono text-ink-300 whitespace-nowrap">{r.price}</td>
+                    <td className="py-2 pr-3 font-mono text-ink-300">{r.cost}</td>
+                    <td className="py-2 pr-3 font-mono text-right text-ink-100 tabular-nums">{r.ratio}×</td>
+                    <td className="py-2 pr-3 text-ink-400">{r.why}</td>
+                    <td className={`py-2 font-mono text-xs uppercase ${r.closing === 'open' ? 'text-terminal-rose' : r.closing === 'closing' ? 'text-amber-300' : 'text-terminal-green'}`}>{r.closing}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="font-mono text-xs uppercase tracking-wider text-ink-500 mt-6 mb-2">Already collapsed</p>
+          <ul className="grid md:grid-cols-3 gap-3">
+            {collapsed.map((c) => (
+              <li key={c.name} className="border border-hair p-3">
+                <p className="text-sm text-ink-100">{c.name}</p>
+                <p className="font-mono text-2xl text-terminal-green mt-1">{c.ratio}</p>
+                <p className="text-xs text-ink-500 mt-1">
+                  {c.then} → {c.now} ·{' '}
+                  <a href={c.source.url} target="_blank" rel="noopener noreferrer" className="underline decoration-dotted">{c.source.label}</a>
+                </p>
+              </li>
+            ))}
+          </ul>
+        </section>
 
         <p className="text-sm text-ink-500 mt-8 max-w-3xl">
           The read: AI made intelligence cheap, which made its physical inputs (power, memory, delivery) scarce. The

@@ -51,14 +51,6 @@ export const capitalMoves: Move[] = [
     problemSlug: 'ai-datacenter-power',
   },
   {
-    label: 'Health spending',
-    value: '$9.8T in 2022',
-    detail: 'About 10% of world GDP, the largest single category of spending humanity has.',
-    confidence: 'high',
-    asOf: '2022',
-    source: { label: 'WHO global health expenditure', url: 'https://www.who.int/news/item/11-12-2023-who-calls-on-governments-for-urgent-action-to-invest-in-universal-health-coverage' },
-  },
-  {
     label: 'GLP-1 drugs',
     value: '~$63B in 2025',
     detail: 'Forecasts range from 7% to 17% a year depending on the firm. Treat as a direction, not a number.',
