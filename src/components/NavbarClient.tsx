@@ -9,53 +9,18 @@ import { FeedbackButton } from './FeedbackWidget'
 export type NavTab = {
   name: string
   href: string
-  count: number
   tone: 'amber' | 'cyan' | 'green' | 'violet'
 }
 
-const TONE: Record<NavTab['tone'], string> = {
-  amber: 'text-amber-300',
-  cyan: 'text-terminal-cyan',
-  green: 'text-terminal-green',
-  violet: 'text-terminal-violet',
-}
 
 const NAV_TABS: Omit<NavTab, 'count'>[] = [
-  { name: 'The Board', href: '/coordinate', tone: 'green' },
-  { name: 'Globe', href: '/globe', tone: 'cyan' },
-  { name: 'Your Fit', href: '/fit', tone: 'amber' },
-  { name: 'The Quest', href: '/journey', tone: 'amber' },
-  { name: 'Good Quests', href: '/good-quests', tone: 'amber' },
   { name: 'Problems', href: '/', tone: 'amber' },
-  { name: 'Demand', href: '/demand', tone: 'amber' },
-  { name: 'Under-supplied', href: '/underserved', tone: 'amber' },
-  { name: 'Coverage', href: '/coverage', tone: 'cyan' },
-  { name: 'Trends', href: '/trends', tone: 'cyan' },
-  { name: 'Quest Browser', href: '/rankings', tone: 'amber' },
-  { name: 'Market Caps', href: '/marketcap', tone: 'amber' },
-  { name: 'Why Value', href: '/value', tone: 'green' },
-  { name: 'Capital', href: '/capital', tone: 'cyan' },
-  { name: 'Radar', href: '/radar', tone: 'amber' },
-  { name: 'Sectors', href: '/sector', tone: 'amber' },
-  { name: 'Requests', href: '/rfs', tone: 'amber' },
-  { name: 'Explanations', href: '/voices', tone: 'violet' },
-  { name: 'Media', href: '/media', tone: 'cyan' },
-  { name: 'Artifacts', href: '/artifacts', tone: 'violet' },
-  { name: 'Solutions', href: '/companies', tone: 'cyan' },
-  { name: 'Start or Join', href: '/paths', tone: 'green' },
-  { name: 'Wealth', href: '/wealth', tone: 'violet' },
-  { name: 'Movers', href: '/movers', tone: 'amber' },
-  { name: 'Signals', href: '/signals', tone: 'cyan' },
-  { name: 'People', href: '/founders', tone: 'amber' },
-  { name: 'Frontier', href: '/frontier', tone: 'amber' },
-  { name: 'Progress', href: '/progress', tone: 'green' },
-  { name: 'Ages', href: '/ages', tone: 'green' },
-  { name: 'Countries', href: '/countries', tone: 'green' },
-  { name: 'Crypto', href: '/crypto', tone: 'violet' },
-  { name: 'Allocators', href: '/ecosystem', tone: 'cyan' },
+  { name: 'Capital', href: '/command#capital', tone: 'green' },
+  { name: 'Talent', href: '/command#talent', tone: 'cyan' },
+  { name: 'Markets', href: '/command#markets', tone: 'violet' },
 ]
 
-export default function NavbarClient({ counts }: { counts: number[] }) {
+export default function NavbarClient() {
   const [scrolled, setScrolled] = useState(false)
   const ticking = useRef(false)
   const pathname = usePathname()
@@ -131,9 +96,8 @@ export default function NavbarClient({ counts }: { counts: number[] }) {
       {/* Row 2: data tabs, scrollable on mobile, always visible */}
       <div className="overflow-x-auto scrollbar-hide">
         <div className="max-w-7xl mx-auto px-6 h-11 flex items-stretch gap-px whitespace-nowrap">
-          {NAV_TABS.map((tab, index) => {
+          {NAV_TABS.map((tab) => {
             const active = isActive(tab.href)
-            const count = counts[index] ?? 0
             return (
               <Link
                 key={tab.name}
@@ -145,13 +109,6 @@ export default function NavbarClient({ counts }: { counts: number[] }) {
                 }`}
               >
                 <span className="font-sans text-[13px] font-medium">{tab.name}</span>
-                <span
-                  className={`font-mono text-[10px] tabular-nums ${
-                    active ? TONE[tab.tone] : 'text-ink-600'
-                  }`}
-                >
-                  {count}
-                </span>
               </Link>
             )
           })}
