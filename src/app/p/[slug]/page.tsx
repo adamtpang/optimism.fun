@@ -27,6 +27,7 @@ import { isDbConfigured } from '@/lib/db'
 import { requestsForStartups } from '@/data/rfs'
 import { getSourcedCrowding } from '@/data/quest-crowding'
 import BurdenBlock from '@/components/BurdenBlock'
+import ConstraintTree from '@/components/ConstraintTree'
 
 const WAY_LABEL: Record<string, string> = {
   build: 'Build',
@@ -161,6 +162,10 @@ export default async function ProblemPage({
           </div>
         </section>
 
+        {/* Why it is not solved yet: the constraint tree, where one exists.
+            First after the header, because it is what a visitor acts on. */}
+        <ConstraintTree problemSlug={slug} />
+
         {/* Scale + trend — the Our-World-in-Data style headline measure */}
         {problem.scale && (
           <section className="border-b border-hair">
@@ -215,6 +220,7 @@ export default async function ProblemPage({
         {/* The burden layer: deaths by cause behind this problem, WHO 2021 and GBD 2023.
             Renders nothing for problems with no mortality dimension. */}
         <BurdenBlock problemSlug={slug} />
+
 
         {/* Capital on it — the allocation layer: what the world actually spends here */}
         {capitalFlow && (
