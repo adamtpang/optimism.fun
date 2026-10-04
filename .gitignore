@@ -36,3 +36,6 @@ next-env.d.ts
 .claude/worktrees/
 .claude/settings.local.json
 .claude/settings.local.json*
+
+# Full copyrighted books kept locally for reference. This repo is public.
+research/references/books/
