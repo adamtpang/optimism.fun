@@ -317,3 +317,17 @@ with `/marketcap` still prerendered, so both new caps validate.
   unset in Vercel. Adam sets it; an agent must not create or enter a password.
 - Local `next build` timed out on `/trends` on 2026-10-01 (external trend
   fetch, unrelated to the board). Treat the Vercel build as the check.
+
+## Discoveries feed (2026-10-28)
+
+- `/discoveries` lists verified findings, newest first, tagged to problem slugs
+  and, where that is the subject, an S-tier risk. Filtering is a query param
+  (`?problem=` or `?risk=`). Preprints are labeled not peer reviewed.
+  Retracted and challenged rows stay visible with a notice link.
+- Data lives in `src/data/discoveries.ts`. How to append a row is
+  `research/DISCOVERIES.md`. The file throws on a bad slug or a status with
+  no notice. Ranks and scores are unchanged.
+- Seed is 30 findings from the 2026-10-28 bounty board. Publish dates were
+  read from Crossref, except the Greenblatt arXiv preprint. Park 2023 and
+  Hsieh and Moretti 2019 are flagged challenged. Fertility, NTDs, datacenter
+  power, and financial infrastructure have no seed row.

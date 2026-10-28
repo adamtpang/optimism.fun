@@ -15,6 +15,7 @@ export type NavTab = {
 
 const NAV_TABS: Omit<NavTab, 'count'>[] = [
   { name: 'Problems', href: '/', tone: 'amber' },
+  { name: 'Discoveries', href: '/discoveries', tone: 'amber' },
   { name: 'Capital', href: '/command#capital', tone: 'green' },
   { name: 'Talent', href: '/command#talent', tone: 'cyan' },
   { name: 'Markets', href: '/command#markets', tone: 'violet' },

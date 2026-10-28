@@ -39,6 +39,9 @@ export default function Footer() {
               <Link href="/progress" className="text-ink-300 hover:text-amber-300 transition-colors">
                 progress
               </Link>
+              <Link href="/discoveries" className="text-ink-300 hover:text-amber-300 transition-colors">
+                discoveries
+              </Link>
             </div>
           </div>
           <div>

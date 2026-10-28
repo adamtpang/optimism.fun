@@ -16,6 +16,9 @@ import { cachedCountsByProblem, cachedListByProblem } from '@/lib/commitments-ca
 import { isDbConfigured } from '@/lib/db'
 import { requestsForStartups } from '@/data/rfs'
 import { getSourcedCrowding } from '@/data/quest-crowding'
+import { listDiscoveries } from '@/data/discoveries'
+import DiscoveryList from '@/components/DiscoveryList'
+import Link from 'next/link'
 
 export function generateStaticParams() {
   return problems.map((p) => ({ slug: p.slug }))
@@ -67,6 +70,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
       return { slug: q.slug, title: q.title, crowded: Boolean(cw && cw.competitorCount >= 5) }
     })
   const boardCompanies = companies.map((c) => ({ slug: c.slug, name: c.name, url: c.url, stage: c.stage }))
+  const science = listDiscoveries({ problemSlug: slug })
 
   return (
     <>
@@ -100,6 +104,21 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
                 </li>
               ))}
             </ul>
+          </section>
+        )}
+
+        {science.length > 0 && (
+          <section className="max-w-5xl mx-auto px-4 sm:px-6 py-10 border-b border-hair">
+            <div className="flex items-baseline justify-between gap-4 mb-4">
+              <h2 className="font-serif text-2xl text-ink-100">New science</h2>
+              <Link
+                href={`/discoveries?problem=${slug}`}
+                className="font-mono text-[11px] uppercase tracking-wider text-amber-300 hover:underline"
+              >
+                All {science.length}
+              </Link>
+            </div>
+            <DiscoveryList items={science.slice(0, 3)} compact />
           </section>
         )}
 
