@@ -5,6 +5,8 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import DataFreshness from '@/components/DataFreshness'
 import { existentialRisks } from '@/data/existential-risks'
+import { listDiscoveries } from '@/data/discoveries'
+import DiscoveryList from '@/components/DiscoveryList'
 
 export const metadata: Metadata = {
   title: 'S-Tier Existential Quests | optimism.fun',
@@ -67,6 +69,7 @@ export default function STierPage() {
         <section>
           {existentialRisks.map((risk) => {
             const Icon = ICONS[risk.slug]
+            const science = listDiscoveries({ riskSlug: risk.slug })
             return (
               <article key={risk.slug} id={risk.slug} className="border-b border-hair scroll-mt-24">
                 <div className="max-w-6xl mx-auto px-6 py-10 md:py-14">
@@ -135,6 +138,22 @@ export default function STierPage() {
                         Primary evidence: {risk.source.label}
                         <ExternalLink size={13} aria-hidden />
                       </a>
+                      {science.length > 0 && (
+                        <div className="mt-8">
+                          <div className="flex items-baseline justify-between gap-4 mb-3">
+                            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
+                              Discoveries
+                            </p>
+                            <Link
+                              href={`/discoveries?risk=${risk.slug}`}
+                              className="font-mono text-[11px] text-terminal-rose hover:underline"
+                            >
+                              All {science.length}
+                            </Link>
+                          </div>
+                          <DiscoveryList items={science.slice(0, 2)} compact />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

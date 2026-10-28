@@ -3,7 +3,7 @@ import type { MetadataRoute } from "next";
 const SITE_URL = "https://optimism.fun";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ["", "/methodology", "/about", "/contact", "/privacy"];
+  const routes = ["", "/discoveries", "/methodology", "/about", "/contact", "/privacy"];
 
   return routes.map((route, index) => ({
     url: `${SITE_URL}${route}`,

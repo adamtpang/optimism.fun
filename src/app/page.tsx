@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { problems } from '@/data/problems'
+import { discoveryCountByProblem } from '@/data/discoveries'
 import { computeRadarRows } from '@/lib/radar'
 import { displayDeaths } from '@/lib/burden'
 import { formatHumans } from '@/lib/format'
@@ -22,6 +23,7 @@ const DOORS = [
 export default function Home() {
   const rows = computeRadarRows().sort((a, b) => b.opportunity - a.opportunity)
   const bySlug = new Map(problems.map((p) => [p.slug, p]))
+  const discoveryCounts = discoveryCountByProblem()
 
   return (
     <>
@@ -75,6 +77,16 @@ export default function Home() {
                         <Link href={`/p/${r.slug}`} className="text-ink-100 text-base hover:text-amber-300">
                           {r.name}
                         </Link>
+                        {(discoveryCounts.get(r.slug) ?? 0) > 0 && (
+                          <Link
+                            href={`/discoveries?problem=${r.slug}`}
+                            className="block font-mono text-[11px] text-ink-500 hover:text-amber-300 mt-0.5"
+                          >
+                            {discoveryCounts.get(r.slug) === 1
+                              ? '1 discovery'
+                              : `${discoveryCounts.get(r.slug)} discoveries`}
+                          </Link>
+                        )}
                       </td>
                       <td className="py-3 pr-3 text-right font-mono tabular-nums text-ink-300">
                         {people ? formatHumans(people) : '—'}
