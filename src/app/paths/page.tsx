@@ -28,7 +28,7 @@ const CEILING_LABEL: Record<Ceiling, { text: string; cls: string }> = {
     text: 'trillion-shaped',
     cls: 'text-terminal-green border-terminal-green/40 bg-terminal-green/[0.07]',
   },
-  large: { text: 'large, not $1T', cls: 'text-amber-300 border-amber-300/40 bg-amber-300/[0.07]' },
+  large: { text: 'large, not $1T', cls: 'text-primary border-primary/40 bg-primary/[0.07]' },
   component: { text: 'component economics', cls: 'text-ink-400 border-hair bg-ink-800/40' },
 }
 
@@ -53,30 +53,30 @@ export default function PathsPage() {
         {/* The routing rule */}
         <section className="px-6 pt-10 max-w-7xl mx-auto">
           <div className="border border-hair p-7 md:p-8">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-terminal-green mb-4">
+            <p className="font-mono text-small uppercase text-terminal-green mb-4">
               The routing rule
             </p>
             <div className="grid md:grid-cols-3 gap-5">
               <div>
-                <p className="font-mono text-[11px] text-terminal-green mb-1.5">N = 0–1 · open</p>
+                <p className="font-mono text-small text-terminal-green mb-1.5">N = 0–1 · open</p>
                 <p className="text-ink-100 text-sm font-medium mb-1.5">Start it</p>
-                <p className="text-ink-400 text-[13px] leading-relaxed">
+                <p className="text-ink-400 text-small leading-relaxed">
                   Nobody funded is racing you. The starter pack has the name ideas, the riskiest
                   assumption, and the first artifact.
                 </p>
               </div>
               <div>
-                <p className="font-mono text-[11px] text-amber-300 mb-1.5">N = 2–4 · contested</p>
+                <p className="font-mono text-small text-primary mb-1.5">N = 2–4 · contested</p>
                 <p className="text-ink-100 text-sm font-medium mb-1.5">Check who the competition is</p>
-                <p className="text-ink-400 text-[13px] leading-relaxed">
+                <p className="text-ink-400 text-small leading-relaxed">
                   Four nonprofits is not four companies. If every competitor is academic,
                   philanthropic, or governmental, the commercial lane is still empty.
                 </p>
               </div>
               <div>
-                <p className="font-mono text-[11px] text-terminal-violet mb-1.5">N = 5+ · crowded</p>
+                <p className="font-mono text-small text-terminal-violet mb-1.5">N = 5+ · crowded</p>
                 <p className="text-ink-100 text-sm font-medium mb-1.5">Join one of them</p>
-                <p className="text-ink-400 text-[13px] leading-relaxed">
+                <p className="text-ink-400 text-small leading-relaxed">
                   The thesis is proven and capitalised. Becoming the ninth entrant is worse than
                   owning equity in one of the eight.
                 </p>
@@ -99,7 +99,7 @@ export default function PathsPage() {
                 </h2>
                 <p className="font-mono text-xs text-ink-400">
                   in-limit ceiling{' '}
-                  <span className="text-amber-300 tabular-nums">{formatUSD(cap.marketCap.value)}</span>
+                  <span className="text-primary tabular-nums">{formatUSD(cap.marketCap.value)}</span>
                 </p>
               </div>
 
@@ -107,7 +107,7 @@ export default function PathsPage() {
                 {/* START column */}
                 <div className="border border-hair">
                   <div className="border-b border-hair px-5 py-3 bg-ink-800/30">
-                    <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-terminal-green">
+                    <p className="font-mono text-small uppercase text-terminal-green">
                       Start · found it yourself
                     </p>
                   </div>
@@ -121,13 +121,13 @@ export default function PathsPage() {
                           <div className="flex items-start justify-between gap-3 mb-1.5">
                             <p className="text-ink-100 text-sm font-medium leading-snug">{q.title}</p>
                             <span
-                              className={`font-mono text-[10px] whitespace-nowrap px-1.5 py-0.5 border ${
+                              className={`font-mono text-small whitespace-nowrap px-1.5 py-0.5 border ${
                                 !cw
                                   ? 'text-ink-500 border-hair'
                                   : cw.competitorCount <= 1
                                     ? 'text-terminal-green border-terminal-green/40'
                                     : cw.competitorCount <= 4
-                                      ? 'text-amber-300 border-amber-300/40'
+                                      ? 'text-primary border-primary/40'
                                       : 'text-terminal-violet border-terminal-violet/40'
                               }`}
                             >
@@ -136,24 +136,24 @@ export default function PathsPage() {
                           </div>
                           {startable ? (
                             pack ? (
-                              <p className="text-ink-400 text-[13px] leading-relaxed">
+                              <p className="text-ink-400 text-small leading-relaxed">
                                 <span className="text-terminal-green">Starter pack ready.</span>{' '}
                                 Riskiest assumption: {pack.riskiestAssumption}
                               </p>
                             ) : (
-                              <p className="text-ink-500 text-[13px]">
+                              <p className="text-ink-500 text-small">
                                 Startable, no starter pack written yet.
                               </p>
                             )
                           ) : (
-                            <p className="text-ink-500 text-[13px] leading-relaxed">
+                            <p className="text-ink-500 text-small leading-relaxed">
                               Too crowded to found. See the join column.
                             </p>
                           )}
                           {startable && (
                             <Link
                               href={`/p/${cap.problemSlug}#coordinate`}
-                              className="inline-block mt-2 font-mono text-[10px] uppercase tracking-wider text-terminal-green hover:underline"
+                              className="inline-block mt-2 font-mono text-small uppercase tracking-wider text-terminal-green hover:underline"
                             >
                               Claim this start &rarr;
                             </Link>
@@ -167,14 +167,14 @@ export default function PathsPage() {
                 {/* JOIN column */}
                 <div className="border border-hair">
                   <div className="border-b border-hair px-5 py-3 bg-ink-800/30">
-                    <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-terminal-violet">
+                    <p className="font-mono text-small uppercase text-terminal-violet">
                       Join · get in at one of them
                     </p>
                   </div>
                   <div className="p-5">
                     {join ? (
                       <>
-                        <p className="text-ink-400 text-[13px] leading-relaxed mb-4 pb-4 border-b border-hair">
+                        <p className="text-ink-400 text-small leading-relaxed mb-4 pb-4 border-b border-hair">
                           {join.whyJoinNotStart}
                         </p>
                         <div className="space-y-4">
@@ -192,24 +192,24 @@ export default function PathsPage() {
                                     {t.company}
                                   </a>
                                   <span
-                                    className={`font-mono text-[9.5px] whitespace-nowrap px-1.5 py-0.5 border ${badge.cls}`}
+                                    className={`font-mono text-small whitespace-nowrap px-1.5 py-0.5 border ${badge.cls}`}
                                   >
                                     {badge.text}
                                   </span>
                                 </div>
-                                <p className="font-mono text-[11px] text-ink-500 mb-2">{t.stage}</p>
-                                <p className="text-ink-400 text-[13px] leading-relaxed mb-2">
+                                <p className="font-mono text-small text-ink-500 mb-2">{t.stage}</p>
+                                <p className="text-ink-400 text-small leading-relaxed mb-2">
                                   {t.whyThisOne}
                                 </p>
-                                <p className="text-ink-300 text-[13px] leading-relaxed">
-                                  <span className="text-terminal-cyan font-mono text-[10px] uppercase tracking-wide">
+                                <p className="text-ink-300 text-small leading-relaxed">
+                                  <span className="text-terminal-cyan font-mono text-small uppercase tracking-wide">
                                     software way in ·{' '}
                                   </span>
                                   {t.softwareBridge}
                                 </p>
                                 <Link
                                   href={`/p/${cap.problemSlug}#coordinate`}
-                                  className="inline-block mt-2 font-mono text-[10px] uppercase tracking-wider text-terminal-violet hover:underline"
+                                  className="inline-block mt-2 font-mono text-small uppercase tracking-wider text-terminal-violet hover:underline"
                                 >
                                   I want in &rarr;
                                 </Link>
@@ -219,23 +219,23 @@ export default function PathsPage() {
                         </div>
                         <div className="mt-5 pt-4 border-t border-hair space-y-3">
                           <div>
-                            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
+                            <p className="font-mono text-small uppercase text-ink-500 mb-1">
                               Build this to get a reply
                             </p>
-                            <p className="text-ink-300 text-[13px] leading-relaxed">
+                            <p className="text-ink-300 text-small leading-relaxed">
                               {join.provingArtifact}
                             </p>
                           </div>
                           <div>
-                            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
+                            <p className="font-mono text-small uppercase text-ink-500 mb-1">
                               How to approach
                             </p>
-                            <p className="text-ink-300 text-[13px] leading-relaxed">{join.outreachAngle}</p>
+                            <p className="text-ink-300 text-small leading-relaxed">{join.outreachAngle}</p>
                           </div>
                         </div>
                       </>
                     ) : (
-                      <p className="text-ink-500 text-[13px]">No join path written for this problem yet.</p>
+                      <p className="text-ink-500 text-small">No join path written for this problem yet.</p>
                     )}
                   </div>
                 </div>
@@ -245,7 +245,7 @@ export default function PathsPage() {
         })}
 
         <section className="px-6 pt-12 pb-4 max-w-7xl mx-auto">
-          <p className="font-mono text-[11px] text-ink-500 leading-relaxed">
+          <p className="font-mono text-small text-ink-500 leading-relaxed">
             <span className="text-ink-600">note:</span> every valuation above is real, dated, and
             sourced. The &ldquo;software way in&rdquo; names a role category each company demonstrably
             needs given what it publicly builds, not a claim that a specific opening exists today.

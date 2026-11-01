@@ -23,13 +23,13 @@ export default function RankingsPage() {
       <Navbar />
       <main>
         <section className="pt-28 pb-8 border-b border-hair">
-          <div className="max-w-6xl mx-auto px-6">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               The power rankings · the meta
             </p>
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.04] text-ink-100 mb-4">
               The startups that should exist,
-              <span className="block text-amber-300">ranked.</span>
+              <span className="block text-primary">ranked.</span>
             </h1>
             <p className="text-ink-400 leading-relaxed max-w-2xl text-base">
               A power ranking of good quests — specific, buildable companies, scored by the
@@ -40,8 +40,8 @@ export default function RankingsPage() {
               is hiding.
             </p>
             {top && (
-              <p className="mt-4 font-mono text-[11px] text-ink-500">
-                <span className="text-amber-300">#1</span> {top.title} · {topBand} top opportunities ·{' '}
+              <p className="mt-4 font-mono text-small text-ink-500">
+                <span className="text-primary">#1</span> {top.title} · {topBand} top opportunities ·{' '}
                 {ranked.length} quests ranked · your shortlist saves on this device
               </p>
             )}
@@ -49,17 +49,17 @@ export default function RankingsPage() {
           </div>
         </section>
 
-        <section className="px-6 py-10 max-w-6xl mx-auto">
+        <section className="px-6 py-10 max-w-7xl mx-auto">
           <QuestRankings quests={ranked} />
         </section>
 
         {/* methodology */}
         <section className="border-y border-hair bg-ink-900/30">
-          <div className="max-w-6xl mx-auto px-6 py-8">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell py-8">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               How the ranking works
             </p>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 font-mono text-[11px] leading-relaxed text-ink-400">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 font-mono text-small leading-relaxed text-ink-400">
               <div>
                 <p className="text-ink-100 mb-1">1 · Opportunity, not demand</p>
                 Score = demand × quest-gap × readiness. Raw demand is anti-ranked on purpose —
@@ -74,7 +74,7 @@ export default function RankingsPage() {
               <div>
                 <p className="text-ink-100 mb-1">3 · Triangulated demand</p>
                 The demand term is the composite from the{' '}
-                <Link href="/demand" className="text-amber-300 hover:underline">
+                <Link href="/demand" className="text-primary hover:underline">
                   demand map
                 </Link>{' '}
                 — burden, willingness-to-pay, capital, research, queues — never one signal.
@@ -83,11 +83,11 @@ export default function RankingsPage() {
                 <p className="text-ink-100 mb-1">4 · Opportunity bands</p>
                 Top, strong, consider, and watch are relative positions on this startup board.
                 Existential S-tier is a separate consequence class. The{' '}
-                <span className="text-amber-300">$ figure</span> is the prize at the limit if a
+                <span className="text-primary">$ figure</span> is the prize at the limit if a
                 team executes perfectly.
               </div>
             </div>
-            <p className="mt-5 font-mono text-[10px] text-ink-600 max-w-3xl leading-relaxed">
+            <p className="mt-5 font-mono text-small text-ink-600 max-w-7xl leading-relaxed">
               Conjectures, open to refutation — each quest&apos;s good-quest line is the
               falsifiable claim. Crowding is an editorial prior today, refreshed into a live
               competitor count by Exa (&ldquo;N companies are already building this&rdquo;).
@@ -99,7 +99,7 @@ export default function RankingsPage() {
 
         {/* step one */}
         <section className="border-b border-hair">
-          <div className="max-w-6xl mx-auto px-6 py-10">
+          <div className="site-shell py-10">
             <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight mb-2">
               Found your quest? Now match yourself to it.
             </h2>
@@ -110,19 +110,19 @@ export default function RankingsPage() {
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/demand"
-                className="px-4 py-2 border border-hair text-ink-200 font-mono text-[12px] hover:bg-ink-800/40 transition-colors"
+                className="px-4 py-2 border border-hair text-ink-200 font-mono text-small hover:bg-ink-800/40 transition-colors"
               >
                 See the demand behind it → the Demand Map
               </Link>
               <Link
                 href="/fit"
-                className="px-4 py-2 border border-amber-300/40 text-amber-300 font-mono text-[12px] hover:bg-amber-300/[0.06] transition-colors"
+                className="px-4 py-2 border border-primary/40 text-primary font-mono text-small hover:bg-primary/90 transition-colors"
               >
                 Match yourself → Your Fit
               </Link>
               <Link
                 href="/rfs"
-                className="px-4 py-2 border border-hair text-ink-200 font-mono text-[12px] hover:bg-ink-800/40 transition-colors"
+                className="px-4 py-2 border border-hair text-ink-200 font-mono text-small hover:bg-ink-800/40 transition-colors"
               >
                 The full brief → Requests
               </Link>

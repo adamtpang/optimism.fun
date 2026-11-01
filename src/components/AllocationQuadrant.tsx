@@ -20,7 +20,7 @@ export type QuadrantPoint = {
 }
 
 const VERDICT_COLOR: Record<AllocationVerdict, string> = {
-  underallocated: '#0ea5e9', // the accent — underallocation IS the opportunity
+  underallocated: 'rgb(14, 165, 233)', // the accent — underallocation IS the opportunity
   balanced: 'rgb(var(--ink-400))',
   overallocated: 'rgb(var(--terminal-rose))',
 }
@@ -96,24 +96,24 @@ export default function AllocationQuadrant({ points }: { points: QuadrantPoint[]
         />
 
         {/* quadrant labels */}
-        <text x={PAD.l + 10} y={PAD.t + 18} fontSize="11" fill="#0ea5e9" fontFamily="ui-monospace,monospace" letterSpacing="0.12em">
+        <text x={PAD.l + 10} y={PAD.t + 18} fontSize="14" fill="rgb(14, 165, 233)" fontFamily="ui-monospace,monospace" letterSpacing="0.12em">
           THE GAPS · high demand, thin capital
         </text>
-        <text x={W - PAD.r - 10} y={PAD.t + 18} fontSize="10" fill="rgb(var(--ink-500))" fontFamily="ui-monospace,monospace" textAnchor="end" letterSpacing="0.1em">
+        <text x={W - PAD.r - 10} y={PAD.t + 18} fontSize="14" fill="rgb(var(--ink-500))" fontFamily="ui-monospace,monospace" textAnchor="end" letterSpacing="0.1em">
           BACKED PRIORITIES
         </text>
-        <text x={PAD.l + 10} y={H - PAD.b - 10} fontSize="10" fill="rgb(var(--ink-500))" fontFamily="ui-monospace,monospace" letterSpacing="0.1em">
+        <text x={PAD.l + 10} y={H - PAD.b - 10} fontSize="14" fill="rgb(var(--ink-500))" fontFamily="ui-monospace,monospace" letterSpacing="0.1em">
           WATCHLIST
         </text>
-        <text x={W - PAD.r - 10} y={H - PAD.b - 10} fontSize="10" fill="rgb(var(--terminal-rose))" fontFamily="ui-monospace,monospace" textAnchor="end" letterSpacing="0.1em">
+        <text x={W - PAD.r - 10} y={H - PAD.b - 10} fontSize="14" fill="rgb(var(--terminal-rose))" fontFamily="ui-monospace,monospace" textAnchor="end" letterSpacing="0.1em">
           CONSENSUS-CROWDED
         </text>
 
         {/* axes labels */}
-        <text x={(PAD.l + W - PAD.r) / 2} y={H - 12} fontSize="10" fill="rgb(var(--ink-500))" fontFamily="ui-monospace,monospace" textAnchor="middle" letterSpacing="0.1em">
+        <text x={(PAD.l + W - PAD.r) / 2} y={H - 12} fontSize="14" fill="rgb(var(--ink-500))" fontFamily="ui-monospace,monospace" textAnchor="middle" letterSpacing="0.1em">
           CAPITAL FLOWING AT IT ($/YR, LOG) →
         </text>
-        <text x={16} y={(PAD.t + H - PAD.b) / 2} fontSize="10" fill="rgb(var(--ink-500))" fontFamily="ui-monospace,monospace" textAnchor="middle" letterSpacing="0.1em" transform={`rotate(-90 16 ${(PAD.t + H - PAD.b) / 2})`}>
+        <text x={16} y={(PAD.t + H - PAD.b) / 2} fontSize="14" fill="rgb(var(--ink-500))" fontFamily="ui-monospace,monospace" textAnchor="middle" letterSpacing="0.1em" transform={`rotate(-90 16 ${(PAD.t + H - PAD.b) / 2})`}>
           DEMAND →
         </text>
 
@@ -125,7 +125,7 @@ export default function AllocationQuadrant({ points }: { points: QuadrantPoint[]
               key={d}
               x={PAD.l + ((d - xMin) / (xMax - xMin)) * (W - PAD.l - PAD.r)}
               y={H - PAD.b + 16}
-              fontSize="9"
+              fontSize="14"
               fill="rgb(var(--ink-600))"
               fontFamily="ui-monospace,monospace"
               textAnchor="middle"
@@ -153,7 +153,7 @@ export default function AllocationQuadrant({ points }: { points: QuadrantPoint[]
                 <text
                   x={cx + 10}
                   y={cy + 3.5}
-                  fontSize="10.5"
+                  fontSize="14"
                   fill={isHover ? 'rgb(var(--ink-100))' : 'rgb(var(--ink-300))'}
                   fontFamily="ui-monospace,monospace"
                 >
@@ -167,7 +167,7 @@ export default function AllocationQuadrant({ points }: { points: QuadrantPoint[]
       </svg>
 
       {/* hover detail + legend */}
-      <div className="mt-2 flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] text-ink-500">
+      <div className="mt-2 flex flex-wrap items-center justify-between gap-2 font-mono text-small text-ink-500">
         <span className="min-h-[1.2em]">
           {hovered ? (
             <>
@@ -192,7 +192,7 @@ export default function AllocationQuadrant({ points }: { points: QuadrantPoint[]
           )}
         </span>
         <span className="flex items-center gap-3">
-          <span><span style={{ color: '#0ea5e9' }}>●</span> underallocated</span>
+          <span><span style={{ color: 'rgb(14, 165, 233)' }}>●</span> underallocated</span>
           <span><span className="text-ink-400">●</span> balanced</span>
           <span><span style={{ color: 'rgb(var(--terminal-rose))' }}>●</span> overallocated</span>
         </span>

@@ -23,8 +23,8 @@ export default function PosterPage() {
   return (
     <>
       <Navbar />
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-24 pb-16">
-        <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">Poster</p>
+      <main className="site-shell pt-24 pb-16">
+        <p className="font-mono text-small uppercase text-primary mb-3">Poster</p>
         <h1 className="sr-only">The ranking, as a poster</h1>
         <RankingPoster />
         <p className="text-sm text-ink-500 mt-4">

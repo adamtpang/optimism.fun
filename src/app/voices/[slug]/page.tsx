@@ -39,7 +39,7 @@ export default async function VoicePage({
       <Navbar />
       <main>
         <section className="pt-32 pb-20 px-6">
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-7xl mx-auto">
             <Link
               href="/voices"
               className="inline-flex items-center gap-2 text-sm text-ink-500 hover:text-ink-300 transition-colors mb-8"
@@ -84,7 +84,7 @@ export default async function VoicePage({
                         href={w.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm text-amber-300 hover:text-amber-200 underline underline-offset-2"
+                        className="text-sm text-primary hover:text-primary underline underline-offset-2"
                       >
                         {w.title}
                       </a>
@@ -109,7 +109,7 @@ export default async function VoicePage({
                     >
                       <Link
                         href={`/p/${pos.problemSlug}`}
-                        className="font-serif font-semibold text-ink-100 hover:text-amber-200 transition-colors"
+                        className="font-serif font-semibold text-ink-100 hover:text-primary transition-colors"
                       >
                         {problem.name}
                       </Link>

@@ -23,8 +23,8 @@ export default function ActionBar() {
   }
 
   return (
-    <div className="sticky top-0 z-40 border-y border-hair bg-ink/95 backdrop-blur supports-[backdrop-filter]:bg-ink/80">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+    <div className="sticky top-14 md:top-16 z-40 glass">
+      <div className="site-shell">
         <div className="grid grid-cols-3 gap-2 py-2.5">
           {BUTTONS.map((b, i) => (
             <button
@@ -33,16 +33,16 @@ export default function ActionBar() {
               onClick={() => open(b.actor)}
               className={`group px-2 sm:px-4 py-2 text-center transition-colors border ${
                 i === 0
-                  ? 'bg-amber-300 text-ink-900 border-amber-300 hover:bg-amber-400'
-                  : 'border-hair text-ink-300 hover:border-amber-300 hover:text-amber-300'
+                  ? 'bg-primary text-ink-900 border-primary hover:bg-primary/90'
+                  : 'border-hair text-ink-300 hover:border-primary hover:text-primary'
               }`}
             >
-              <span className="block text-[12px] sm:text-sm font-medium leading-tight">
+              <span className="block text-small sm:text-sm font-medium leading-tight">
                 {b.label}
               </span>
               <span
-                className={`hidden sm:block font-mono text-[10px] mt-0.5 ${
-                  i === 0 ? 'text-ink-900/70' : 'text-ink-600 group-hover:text-amber-300/70'
+                className={`hidden sm:block font-mono text-small mt-0.5 ${
+                  i === 0 ? 'text-ink-900/70' : 'text-ink-600 group-hover:text-primary/70'
                 }`}
               >
                 {b.hint}

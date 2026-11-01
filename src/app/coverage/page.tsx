@@ -41,13 +41,13 @@ export default function CoveragePage() {
       <Navbar />
       <main>
         <section className="pt-28 pb-8 border-b border-hair">
-          <div className="max-w-4xl mx-auto px-6">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               The coverage audit
             </p>
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.04] text-ink-100 mb-4">
               Is this actually
-              <span className="block text-amber-300">a comprehensive index?</span>
+              <span className="block text-primary">a comprehensive index?</span>
             </h1>
             <p className="text-ink-400 leading-relaxed max-w-2xl text-base">
               The 11 problems on this index were hand-seeded across a build session — not
@@ -60,7 +60,7 @@ export default function CoveragePage() {
         </section>
 
         <section className="border-b border-hair bg-ink-900/30">
-          <div className="max-w-4xl mx-auto px-6 py-10">
+          <div className="site-shell py-10">
             <HeroFigure
               value={`${totalCovered} of ${totalScorable}`}
               label="Taxonomy items directly matched by a problem on the index"
@@ -73,7 +73,7 @@ export default function CoveragePage() {
           const stats = coverageStats(t)
           return (
             <section key={t.slug} className="border-b border-hair">
-              <div className="max-w-4xl mx-auto px-6 py-10">
+              <div className="site-shell py-10">
                 <div className="flex items-baseline justify-between gap-4 mb-1">
                   <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight">
                     {t.name}
@@ -82,15 +82,15 @@ export default function CoveragePage() {
                     href={t.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-mono text-[10px] text-ink-500 hover:text-amber-300 transition-colors shrink-0"
+                    className="font-mono text-small text-ink-500 hover:text-primary transition-colors shrink-0"
                   >
                     source →
                   </a>
                 </div>
-                <p className="font-mono text-[11px] text-ink-500 leading-relaxed max-w-2xl mb-2">
+                <p className="font-mono text-small text-ink-500 leading-relaxed max-w-2xl mb-2">
                   {t.method}
                 </p>
-                <p className="font-mono text-[11px] text-ink-400 mb-5">
+                <p className="font-mono text-small text-ink-400 mb-5">
                   <span className="text-terminal-green">{stats.covered} covered</span>
                   {' · '}
                   <span className="text-ink-400">{stats.partial} partial</span>
@@ -109,8 +109,8 @@ export default function CoveragePage() {
                       }`}
                     >
                       <div className="min-w-0">
-                        <span className="font-sans text-[13px] text-ink-100">{item.name}</span>
-                        <p className="font-mono text-[10px] text-ink-500 leading-relaxed mt-0.5 max-w-xl">
+                        <span className="font-sans text-small text-ink-100">{item.name}</span>
+                        <p className="font-mono text-small text-ink-500 leading-relaxed mt-0.5 max-w-xl">
                           {item.note}
                           {item.matchedSlugs.length > 0 && (
                             <span className="text-ink-600">
@@ -121,7 +121,7 @@ export default function CoveragePage() {
                         </p>
                       </div>
                       <span
-                        className={`shrink-0 font-mono text-[10px] uppercase tracking-wide ${STATUS_TONE[item.status]}`}
+                        className={`shrink-0 font-mono text-small uppercase tracking-wide ${STATUS_TONE[item.status]}`}
                       >
                         {STATUS_LABEL[item.status]}
                       </span>
@@ -135,8 +135,8 @@ export default function CoveragePage() {
 
         {/* the burden layer: the same audit, stated in deaths rather than list membership */}
         <section className="border-b border-hair">
-          <div className="max-w-4xl mx-auto px-6 py-10">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell py-10">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               By deaths, not by list
             </p>
             <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight mb-2">
@@ -150,10 +150,10 @@ export default function CoveragePage() {
             <div className="border border-hair rounded-lg overflow-hidden">
               {unmappedCauses().length === 0 ? (
                 <div className="px-3 py-4">
-                  <p className="font-sans text-[14px] text-ink-100">
+                  <p className="font-sans text-small text-ink-100">
                     Every cause in WHO&apos;s 2021 top ten now maps to a problem on the index.
                   </p>
-                  <p className="text-ink-400 text-[13px] leading-relaxed mt-1 max-w-xl">
+                  <p className="text-ink-400 text-small leading-relaxed mt-1 max-w-xl">
                     As of 2026-09-11, after cancer, COPD and diabetes were added the day the
                     burden layer counted them. Coverage is not adequacy: a mapped cause carries
                     exactly the deaths it did before, and the problem pages say how well each is
@@ -169,15 +169,15 @@ export default function CoveragePage() {
                     }`}
                   >
                     <div className="min-w-0">
-                      <span className="font-sans text-[14px] text-ink-100">{c.name}</span>
-                      <p className="text-ink-400 text-[13px] leading-relaxed mt-0.5">{c.mechanism}</p>
+                      <span className="font-sans text-small text-ink-100">{c.name}</span>
+                      <p className="text-ink-400 text-small leading-relaxed mt-0.5">{c.mechanism}</p>
                       {c.mappingNote && (
-                        <p className="font-mono text-[10px] text-ink-600 mt-1">{c.mappingNote}</p>
+                        <p className="font-mono text-small text-ink-600 mt-1">{c.mappingNote}</p>
                       )}
                     </div>
                     <span className="shrink-0 font-mono text-sm text-terminal-rose tabular-nums text-right">
                       {c.deaths.value != null ? formatHumans(c.deaths.value) : 'ranked, uncounted'}
-                      <span className="block font-mono text-[10px] text-ink-600">
+                      <span className="block font-mono text-small text-ink-600">
                         {c.deaths.value != null ? `deaths, ${c.deaths.year}` : `WHO #${c.whoRank2021 ?? '?'}`}
                       </span>
                     </span>
@@ -185,7 +185,7 @@ export default function CoveragePage() {
                 ))
               )}
             </div>
-            <p className="font-mono text-[10px] text-ink-600 leading-relaxed mt-3 max-w-2xl">
+            <p className="font-mono text-small text-ink-600 leading-relaxed mt-3 max-w-2xl">
               Aggregates appear here on purpose: all cancers at 9.7M with nothing on the index is
               the finding. Nothing on this list is summed.
             </p>
@@ -194,8 +194,8 @@ export default function CoveragePage() {
 
         {/* the candidate gaps */}
         <section className="border-b border-hair bg-ink-900/30">
-          <div className="max-w-4xl mx-auto px-6 py-10">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell py-10">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               What&apos;s actually missing
             </p>
             <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight mb-2">
@@ -215,12 +215,12 @@ export default function CoveragePage() {
                   }`}
                 >
                   <div className="flex items-baseline justify-between gap-3 mb-1">
-                    <span className="font-sans text-[14px] text-ink-100">{c.name}</span>
-                    <span className="font-mono text-[10px] text-ink-500 shrink-0">
+                    <span className="font-sans text-small text-ink-100">{c.name}</span>
+                    <span className="font-mono text-small text-ink-500 shrink-0">
                       flagged by {c.flaggedBy.length}/3
                     </span>
                   </div>
-                  <p className="text-ink-400 text-[13px] leading-relaxed">{c.why}</p>
+                  <p className="text-ink-400 text-small leading-relaxed">{c.why}</p>
                 </div>
               ))}
             </div>
@@ -229,11 +229,11 @@ export default function CoveragePage() {
 
         {/* method note */}
         <section className="border-b border-hair">
-          <div className="max-w-4xl mx-auto px-6 py-10">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell py-10">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               Why this isn&apos;t the whole answer
             </p>
-            <div className="space-y-4 font-mono text-[11px] leading-relaxed text-ink-400 max-w-3xl">
+            <div className="space-y-4 font-mono text-small leading-relaxed text-ink-400 max-w-7xl">
               <p>
                 <span className="text-ink-100">This is a snapshot, not a live check.</span> The
                 taxonomies here are hand-fetched and hand-mapped, same as the 11 problems

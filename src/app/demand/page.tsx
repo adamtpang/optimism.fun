@@ -30,13 +30,13 @@ export default async function DemandPage() {
       <Navbar />
       <main>
         <section className="pt-28 pb-8 border-b border-hair">
-          <div className="max-w-7xl mx-auto px-6">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               The demand map
             </p>
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.04] text-ink-100 mb-4">
               Humanity&apos;s demand,
-              <span className="block text-amber-300">measured.</span>
+              <span className="block text-primary">measured.</span>
             </h1>
             <p className="text-ink-400 leading-relaxed max-w-2xl text-base">
               Capitalism is a demand-and-supply matching system — so before making what
@@ -45,7 +45,7 @@ export default async function DemandPage() {
               offered, queues joined, suffering endured. We triangulate those signals per
               problem; no single number can move the ranking alone.
             </p>
-            <p className="mt-4 font-mono text-[11px] text-ink-500">
+            <p className="mt-4 font-mono text-small text-ink-500">
               <span className="text-terminal-green">●</span>{' '}
               {liveCells} signals live from open statistical APIs · refreshed daily · every
               cell cites its source
@@ -55,9 +55,9 @@ export default async function DemandPage() {
 
         {/* The power law */}
         <section className="border-b border-hair">
-          <div className="max-w-7xl mx-auto px-6 py-10">
+          <div className="site-shell py-10">
             <div className="mb-5">
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-1">
+              <p className="font-mono text-small uppercase text-primary mb-1">
                 The power law of demand
               </p>
               <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight">
@@ -83,9 +83,9 @@ export default async function DemandPage() {
 
         {/* The matrix */}
         <section className="border-b border-hair">
-          <div className="max-w-7xl mx-auto px-6 py-10">
+          <div className="site-shell py-10">
             <div className="mb-5">
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-1">
+              <p className="font-mono text-small uppercase text-primary mb-1">
                 The demand matrix
               </p>
               <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight">
@@ -104,8 +104,8 @@ export default async function DemandPage() {
 
         {/* Where the numbers come from */}
         <section className="border-b border-hair">
-          <div className="max-w-7xl mx-auto px-6 py-10">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell py-10">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               Where the numbers come from
             </p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-hair border border-hair">
@@ -117,15 +117,15 @@ export default async function DemandPage() {
                   rel="noopener noreferrer"
                   className="bg-ink p-4 hover:bg-ink-800/40 transition-colors"
                 >
-                  <p className="font-sans text-[13px] font-medium text-ink-100">{s.name} ↗</p>
-                  <p className="mt-1 font-mono text-[10px] text-ink-500">
+                  <p className="font-sans text-small font-medium text-ink-100">{s.name} ↗</p>
+                  <p className="mt-1 font-mono text-small text-ink-500">
                     feeds: <span className="text-ink-300">{s.feeds}</span> · {s.access} ·{' '}
                     {s.cadence}
                   </p>
                 </a>
               ))}
             </div>
-            <p className="mt-3 font-mono text-[10px] text-ink-500 max-w-3xl leading-relaxed">
+            <p className="mt-3 font-mono text-small text-ink-500 max-w-7xl leading-relaxed">
               Coming online next: IHME GBD burden (bulk load), SEC EDGAR Form D + NIH award
               dollars (capital &amp; research $), USAspending (policy), and Exa Agent extraction
               of queue signals with no API — grid interconnection backlogs, housing vacancy,
@@ -136,7 +136,7 @@ export default async function DemandPage() {
 
         {/* Step zero → step one */}
         <section className="border-b border-hair">
-          <div className="max-w-7xl mx-auto px-6 py-10">
+          <div className="site-shell py-10">
             <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight mb-2">
               Demand is step zero. Matching is the business.
             </h2>
@@ -147,19 +147,19 @@ export default async function DemandPage() {
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/radar"
-                className="px-4 py-2 border border-amber-300/40 text-amber-300 font-mono text-[12px] hover:bg-amber-300/[0.06] transition-colors"
+                className="px-4 py-2 border border-primary/40 text-primary font-mono text-small hover:bg-primary/90 transition-colors"
               >
                 Find the gap → the Radar
               </Link>
               <Link
                 href="/fit"
-                className="px-4 py-2 border border-hair text-ink-200 font-mono text-[12px] hover:bg-ink-800/40 transition-colors"
+                className="px-4 py-2 border border-hair text-ink-200 font-mono text-small hover:bg-ink-800/40 transition-colors"
               >
                 Match yourself to it → Your Fit
               </Link>
               <Link
                 href="/rfs"
-                className="px-4 py-2 border border-hair text-ink-200 font-mono text-[12px] hover:bg-ink-800/40 transition-colors"
+                className="px-4 py-2 border border-hair text-ink-200 font-mono text-small hover:bg-ink-800/40 transition-colors"
               >
                 Build or fund it → Requests
               </Link>

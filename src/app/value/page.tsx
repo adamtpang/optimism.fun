@@ -57,10 +57,10 @@ const tones: Record<
   { text: string; border: string; dot: string; wash: string }
 > = {
   companies: {
-    text: 'text-amber-300',
-    border: 'border-amber-300/40',
-    dot: 'bg-amber-300',
-    wash: 'bg-amber-300/[0.035]',
+    text: 'text-primary',
+    border: 'border-primary/40',
+    dot: 'bg-primary',
+    wash: 'bg-primary/[0.035]',
   },
   countries: {
     text: 'text-terminal-green',
@@ -88,14 +88,14 @@ function MetricPrimer({ ledger }: { ledger: ValueLedger }) {
     <article className={`border-t-2 ${tone.border} pt-4`}>
       <div className="flex items-center gap-2 mb-2">
         <span className={`size-1.5 ${tone.dot}`} />
-        <p className={`font-mono text-[10px] uppercase tracking-ultra-wide ${tone.text}`}>
+        <p className={`font-mono text-small uppercase ${tone.text}`}>
           {ledger.title}
         </p>
       </div>
       <p className="text-ink-100 text-sm font-medium mb-1">{ledger.metric}</p>
-      <p className="font-mono text-[11px] text-ink-300 mb-3">{ledger.formula}</p>
-      <p className="text-ink-400 text-[13px] leading-relaxed mb-2">{ledger.meaning}</p>
-      <p className="text-ink-500 text-[12px] leading-relaxed">Not: {ledger.warning.slice(4)}</p>
+      <p className="font-mono text-small text-ink-300 mb-3">{ledger.formula}</p>
+      <p className="text-ink-400 text-small leading-relaxed mb-2">{ledger.meaning}</p>
+      <p className="text-ink-500 text-small leading-relaxed">Not: {ledger.warning.slice(4)}</p>
     </article>
   )
 }
@@ -104,33 +104,33 @@ function LedgerSection({ ledger }: { ledger: ValueLedger }) {
   const tone = tones[ledger.slug]
   return (
     <section id={ledger.slug} className="border-b border-hair scroll-mt-24">
-      <div className="max-w-7xl mx-auto px-6 py-12 md:py-16">
+      <div className="site-shell py-12 md:py-16">
         <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.46fr)] gap-8 mb-7 items-end">
           <div>
-            <p className={`font-mono text-[10px] uppercase tracking-ultra-wide ${tone.text} mb-3`}>
+            <p className={`font-mono text-small uppercase ${tone.text} mb-3`}>
               {ledger.eyebrow} · snapshot {ledger.asOf}
             </p>
             <h2 className="font-serif text-3xl md:text-4xl text-ink-100 leading-tight mb-3">
               Why the largest {ledger.title.toLowerCase()} are so valuable.
             </h2>
-            <p className="text-ink-400 text-sm leading-relaxed max-w-3xl">
+            <p className="text-ink-400 text-sm leading-relaxed max-w-7xl">
               Ranked by {ledger.metric.toLowerCase()}. The explanation names the compounding engine;
               the final column names what the price must be wrong about for that value to unwind.
             </p>
           </div>
           <div className={`border-l-2 ${tone.border} pl-4`}>
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
+            <p className="font-mono text-small uppercase text-ink-500 mb-1">
               How this ledger works
             </p>
-            <p className="font-mono text-[12px] text-ink-200 mb-2">{ledger.formula}</p>
-            <p className="text-[12px] text-ink-500 leading-relaxed">{ledger.warning}</p>
+            <p className="font-mono text-small text-ink-200 mb-2">{ledger.formula}</p>
+            <p className="text-small text-ink-500 leading-relaxed">{ledger.warning}</p>
           </div>
         </div>
 
         <div className={`hidden md:block overflow-x-auto border border-hair ${tone.wash}`}>
           <table className="min-w-[72rem] w-full text-left">
             <thead>
-              <tr className="border-b border-hair-strong bg-ink-800/40 font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
+              <tr className="border-b border-hair-strong bg-ink-800/40 font-mono text-small uppercase text-ink-500">
                 <th className="px-3 py-3 font-medium w-10">#</th>
                 <th className="px-3 py-3 font-medium w-44">entity</th>
                 <th className="px-3 py-3 font-medium text-right w-36">{ledger.valueLabel}</th>
@@ -158,11 +158,11 @@ function LedgerSection({ ledger }: { ledger: ValueLedger }) {
                       href={row.sourceUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm text-ink-100 hover:text-amber-300 transition-colors"
+                      className="text-sm text-ink-100 hover:text-primary transition-colors"
                     >
                       {row.name}
                     </a>
-                    <p className="font-mono text-[10px] text-ink-500 mt-1">{row.code}</p>
+                    <p className="font-mono text-small text-ink-500 mt-1">{row.code}</p>
                   </td>
                   <td className={`px-3 py-4 font-mono text-xs text-right tabular-nums ${tone.text}`}>
                     {formatUSD(row.value)}
@@ -173,14 +173,14 @@ function LedgerSection({ ledger }: { ledger: ValueLedger }) {
                     </td>
                   )}
                   <td className="px-3 py-4">
-                    <span className={`font-mono text-[10px] uppercase tracking-wider ${tone.text}`}>
+                    <span className={`font-mono text-small uppercase tracking-wider ${tone.text}`}>
                       {row.engine}
                     </span>
                   </td>
-                  <td className="px-3 py-4 text-[13px] text-ink-300 leading-relaxed max-w-sm">
+                  <td className="px-3 py-4 text-small text-ink-300 leading-relaxed max-w-sm">
                     {row.why}
                   </td>
-                  <td className="px-3 py-4 text-[12px] text-ink-500 leading-relaxed max-w-sm">
+                  <td className="px-3 py-4 text-small text-ink-500 leading-relaxed max-w-sm">
                     {row.fragility}
                   </td>
                 </tr>
@@ -197,14 +197,14 @@ function LedgerSection({ ledger }: { ledger: ValueLedger }) {
             >
               <div className="flex items-start justify-between gap-4 mb-3">
                 <div className="min-w-0">
-                  <p className="font-mono text-[10px] text-ink-600 mb-1">
+                  <p className="font-mono text-small text-ink-600 mb-1">
                     {row.rank.toString().padStart(2, '0')} · {row.code}
                   </p>
                   <a
                     href={row.sourceUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm text-ink-100 hover:text-amber-300 transition-colors"
+                    className="text-sm text-ink-100 hover:text-primary transition-colors"
                   >
                     {row.name}
                   </a>
@@ -214,27 +214,27 @@ function LedgerSection({ ledger }: { ledger: ValueLedger }) {
                     {formatUSD(row.value)}
                   </p>
                   {ledger.secondaryLabel && row.secondaryValue && (
-                    <p className="font-mono text-[9px] text-ink-500 mt-1">
+                    <p className="font-mono text-small text-ink-500 mt-1">
                       {formatUSD(row.secondaryValue)} GDP
                     </p>
                   )}
                 </div>
               </div>
-              <p className={`font-mono text-[9px] uppercase tracking-wider ${tone.text} mb-2`}>
+              <p className={`font-mono text-small uppercase tracking-wider ${tone.text} mb-2`}>
                 {row.engine}
               </p>
-              <p className="text-[13px] text-ink-300 leading-relaxed mb-3">{row.why}</p>
+              <p className="text-small text-ink-300 leading-relaxed mb-3">{row.why}</p>
               <div className="border-l border-terminal-rose/35 pl-3">
-                <p className="font-mono text-[9px] uppercase tracking-wider text-terminal-rose mb-1">
+                <p className="font-mono text-small uppercase tracking-wider text-terminal-rose mb-1">
                   What breaks it
                 </p>
-                <p className="text-[12px] text-ink-500 leading-relaxed">{row.fragility}</p>
+                <p className="text-small text-ink-500 leading-relaxed">{row.fragility}</p>
               </div>
             </article>
           ))}
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-3 mt-4 font-mono text-[10px] text-ink-500">
+        <div className="flex flex-wrap items-center justify-between gap-3 mt-4 font-mono text-small text-ink-500">
           <p>
             source:{' '}
             <a
@@ -275,13 +275,13 @@ export default function ValuePage() {
         />
 
         <section className="border-b border-hair">
-          <div className="max-w-7xl mx-auto px-6 py-10 md:py-12">
-            <div className="flex flex-wrap gap-px bg-ink-700 border border-hair mb-10 max-w-3xl">
+          <div className="site-shell py-10 md:py-12">
+            <div className="flex flex-wrap gap-px bg-ink-700 border border-hair mb-10 max-w-7xl">
               {valueLedgers.map((ledger) => (
                 <a
                   key={ledger.slug}
                   href={`#${ledger.slug}`}
-                  className="flex-1 min-w-32 bg-[rgb(var(--bg))] px-4 py-3 font-mono text-[10px] uppercase tracking-ultra-wide text-center text-ink-400 hover:text-ink-100 hover:bg-ink-800 transition-colors"
+                  className="flex-1 min-w-32 bg-[rgb(var(--bg))] px-4 py-3 font-mono text-small uppercase text-center text-ink-400 hover:text-ink-100 hover:bg-ink-800 transition-colors"
                 >
                   {ledger.title}
                 </a>
@@ -289,10 +289,10 @@ export default function ValuePage() {
             </div>
 
             <div className="mb-5">
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-terminal-rose mb-2">
+              <p className="font-mono text-small uppercase text-terminal-rose mb-2">
                 First: do not add these numbers together
               </p>
-              <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight max-w-3xl">
+              <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight max-w-7xl">
                 Four leaderboards. Four different claims about value.
               </h2>
             </div>
@@ -305,23 +305,23 @@ export default function ValuePage() {
         </section>
 
         <section className="border-b border-hair bg-ink-900/20">
-          <div className="max-w-7xl mx-auto px-6 py-10 md:py-12">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell py-10 md:py-12">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               The value equation
             </p>
-            <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight max-w-3xl mb-8">
+            <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight max-w-7xl mb-8">
               Economic value compounds when six forces reinforce one another.
             </h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 border-t border-l border-hair">
               {valueFactors.map((factor) => (
                 <div key={factor.n} className="border-r border-b border-hair p-5 min-h-36">
-                  <p className="font-mono text-[10px] text-ink-600 mb-3">{factor.n}</p>
+                  <p className="font-mono text-small text-ink-600 mb-3">{factor.n}</p>
                   <h3 className="text-sm font-medium text-ink-100 mb-2">{factor.name}</h3>
-                  <p className="text-[13px] text-ink-400 leading-relaxed">{factor.text}</p>
+                  <p className="text-small text-ink-400 leading-relaxed">{factor.text}</p>
                 </div>
               ))}
             </div>
-            <p className="mt-6 text-sm text-ink-400 leading-relaxed max-w-4xl">
+            <p className="mt-6 text-sm text-ink-400 leading-relaxed max-w-7xl">
               Market value is descriptive, not moral. A monopoly, addictive product, scarce resource,
               or inherited stake can score highly on this equation without making humanity better.
               Optimism&rsquo;s separate question is where these same forces can be aimed at a good quest.
@@ -334,16 +334,16 @@ export default function ValuePage() {
         ))}
 
         <section className="border-b border-hair">
-          <div className="max-w-7xl mx-auto px-6 py-12 md:py-16 grid lg:grid-cols-[0.7fr_1.3fr] gap-10">
+          <div className="site-shell py-12 md:py-16 grid lg:grid-cols-[0.7fr_1.3fr] gap-10">
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-terminal-green mb-3">
+              <p className="font-mono text-small uppercase text-terminal-green mb-3">
                 The founder lesson
               </p>
               <h2 className="font-serif text-3xl text-ink-100 leading-tight">
                 Copy the engine, not the company.
               </h2>
             </div>
-            <div className="space-y-4 text-sm text-ink-300 leading-relaxed max-w-3xl">
+            <div className="space-y-4 text-sm text-ink-300 leading-relaxed max-w-7xl">
               <p>
                 The recurring pattern is not &ldquo;start an AI company&rdquo; or &ldquo;issue a token.&rdquo;
                 It is to find a large, repeated need; create an order-of-magnitude utility gain;
@@ -358,13 +358,13 @@ export default function ValuePage() {
               <div className="flex flex-wrap gap-3 pt-2">
                 <Link
                   href="/good-quests"
-                  className="font-mono text-[10px] uppercase tracking-ultra-wide text-paper bg-amber-300 hover:bg-amber-200 px-4 py-3 transition-colors"
+                  className="font-mono text-small uppercase text-paper bg-primary hover:bg-primary/90 px-4 py-3 transition-colors"
                 >
                   Find a good quest →
                 </Link>
                 <Link
                   href="/marketcap"
-                  className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-300 border border-hair-strong hover:text-ink-100 hover:border-amber-300/50 px-4 py-3 transition-colors"
+                  className="font-mono text-small uppercase text-ink-300 border border-hair-strong hover:text-ink-100 hover:border-primary/50 px-4 py-3 transition-colors"
                 >
                   See problem headroom →
                 </Link>
@@ -374,16 +374,16 @@ export default function ValuePage() {
         </section>
 
         <section>
-          <div className="max-w-7xl mx-auto px-6 py-10">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-4">
+          <div className="site-shell py-10">
+            <p className="font-mono text-small uppercase text-ink-500 mb-4">
               Methodology sources
             </p>
-            <div className="flex flex-wrap gap-x-6 gap-y-3 font-mono text-[11px]">
+            <div className="flex flex-wrap gap-x-6 gap-y-3 font-mono text-small">
               <a
                 href="https://www.investor.gov/introduction-investing/investing-basics/glossary/market-capitalization"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-ink-400 hover:text-amber-300 underline decoration-dotted underline-offset-2"
+                className="text-ink-400 hover:text-primary underline decoration-dotted underline-offset-2"
               >
                 Investor.gov · company market capitalization
               </a>

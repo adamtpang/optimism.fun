@@ -1,0 +1,11 @@
+# Media credits (candidates, optimism.fun redesign)
+- earthset-*: "A Breathtaking Earthset from Orion", Artemis II, 2026-04-06, NASA (art002e021278). Public domain. https://images.nasa.gov/details/art002e021278
+- bluemarble-*: AS17-148-22727, Apollo 17, 1972-12-07, NASA. Public domain. https://images.nasa.gov/details/as17-148-22727
+- blackmarble-*: Black Marble, City Lights 2012, NASA Earth Observatory/NASA GSFC. Public domain. https://commons.wikimedia.org/wiki/File:Black_Marble_-_City_Lights_2012_(8246892319).jpg
+- iss_sunrise-*: iss071e001425, orbital sunrise, 2024-04-07, NASA. Public domain. https://images.nasa.gov/details/iss071e001425
+- iss_night-*: ISS073 night time-lapse 2025-09-29, NASA JSC. Public domain. https://commons.wikimedia.org/wiki/File:ISS073-E-1220776-1221975-20250929-Night_-_2025-09-29_ISS073_1200_Night.webm
+- cdc_lab-*: CDC scientist transfers H7N9, James Gathany / CDC (PHIL 15704). Public domain. https://commons.wikimedia.org/wiki/File:CDC_scientist_transfers_H7N9.png
+- mead_solar-*: Mead, Nebraska solar farm aerial 2026, AllTheUsernamesAreInUse. CC0. https://commons.wikimedia.org/wiki/File:Mead,_Nebraska_solar_farm_aerial_2026.jpg
+- (not built) NIAID BSL-4 researchers. CC BY 2.0, attribution "NIAID" required. https://commons.wikimedia.org/wiki/File:BSL-4_research_scientists_at_the_NIAID_Integrated_Research_Facility_in_Ft_Detrick,_Maryland_preparing_noninfectious_laboratory_materials.jpg
+- (not built) GOES-16 true color, NOAA. Public domain. https://commons.wikimedia.org/wiki/File:True_Color_Earth_viewed_from_GOES_16.jpg
+- (not built) Black Marble 2016 rotating globe, NASA GSFC SVS 30878. Public domain. https://svs.gsfc.nasa.gov/30878

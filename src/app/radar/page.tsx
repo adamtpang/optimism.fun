@@ -32,13 +32,13 @@ export default function RadarPage() {
       <Navbar />
       <main>
         <section className="pt-28 pb-8 border-b border-hair">
-          <div className="max-w-7xl mx-auto px-6">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               The radar
             </p>
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.04] text-ink-100 mb-4">
               Where demand is high
-              <span className="block text-amber-300">and supply is low.</span>
+              <span className="block text-primary">and supply is low.</span>
             </h1>
             <p className="text-ink-400 leading-relaxed max-w-2xl text-base">
               Every problem, ranked by opportunity: how badly the world needs a solution,
@@ -51,9 +51,9 @@ export default function RadarPage() {
 
         {/* The Allocation Quadrant — demand vs the capital actually flowing */}
         <section className="border-b border-hair">
-          <div className="max-w-7xl mx-auto px-6 py-10">
+          <div className="site-shell py-10">
             <div className="mb-4">
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-1">
+              <p className="font-mono text-small uppercase text-primary mb-1">
                 The allocation quadrant
               </p>
               <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight">

@@ -45,7 +45,7 @@ export default function WhereMatcher({ catalog }: { catalog: WhereCatalog }) {
   return (
     <div>
       <fieldset className="border border-hair p-4">
-        <legend className="font-mono text-[11px] uppercase tracking-wider text-ink-500 px-1">Skills</legend>
+        <legend className="font-mono text-small uppercase tracking-wider text-ink-500 px-1">Skills</legend>
         <div className="flex flex-wrap gap-2 mt-2">
           {SKILLS.map((skill) => {
             const on = skills.includes(skill.id)
@@ -56,7 +56,7 @@ export default function WhereMatcher({ catalog }: { catalog: WhereCatalog }) {
                 aria-pressed={on}
                 onClick={() => setSkills((prev) => toggle(prev, skill.id))}
                 className={`px-3 py-2 text-sm border ${
-                  on ? 'border-amber-300 text-ink-100 bg-amber-300/10' : 'border-hair text-ink-300 hover:border-amber-300'
+                  on ? 'border-primary text-ink-100 bg-primary/10' : 'border-hair text-ink-300 hover:border-primary'
                 }`}
               >
                 {skill.label}
@@ -67,7 +67,7 @@ export default function WhereMatcher({ catalog }: { catalog: WhereCatalog }) {
       </fieldset>
 
       <fieldset className="border border-hair p-4 mt-3">
-        <legend className="font-mono text-[11px] uppercase tracking-wider text-ink-500 px-1">Interests</legend>
+        <legend className="font-mono text-small uppercase tracking-wider text-ink-500 px-1">Interests</legend>
         <div className="flex flex-wrap gap-2 mt-2">
           {catalog.interests.map((interest) => {
             const on = interests.includes(interest.id)
@@ -78,7 +78,7 @@ export default function WhereMatcher({ catalog }: { catalog: WhereCatalog }) {
                 aria-pressed={on}
                 onClick={() => setInterests((prev) => toggle(prev, interest.id))}
                 className={`px-3 py-2 text-sm border ${
-                  on ? 'border-amber-300 text-ink-100 bg-amber-300/10' : 'border-hair text-ink-300 hover:border-amber-300'
+                  on ? 'border-primary text-ink-100 bg-primary/10' : 'border-hair text-ink-300 hover:border-primary'
                 }`}
               >
                 {interest.label}
@@ -89,7 +89,7 @@ export default function WhereMatcher({ catalog }: { catalog: WhereCatalog }) {
       </fieldset>
 
       <fieldset className="border border-hair p-4 mt-3">
-        <legend className="font-mono text-[11px] uppercase tracking-wider text-ink-500 px-1">What you can offer</legend>
+        <legend className="font-mono text-small uppercase tracking-wider text-ink-500 px-1">What you can offer</legend>
         <div className="flex flex-wrap gap-2 mt-2">
           {OFFERS.map((offer) => {
             const on = offers.includes(offer.id)
@@ -100,7 +100,7 @@ export default function WhereMatcher({ catalog }: { catalog: WhereCatalog }) {
                 aria-pressed={on}
                 onClick={() => setOffers((prev) => toggle(prev, offer.id))}
                 className={`px-3 py-2 text-sm border text-left ${
-                  on ? 'border-amber-300 text-ink-100 bg-amber-300/10' : 'border-hair text-ink-300 hover:border-amber-300'
+                  on ? 'border-primary text-ink-100 bg-primary/10' : 'border-hair text-ink-300 hover:border-primary'
                 }`}
               >
                 <span className="block">{offer.label}</span>
@@ -111,7 +111,7 @@ export default function WhereMatcher({ catalog }: { catalog: WhereCatalog }) {
         </div>
       </fieldset>
 
-      <p className="font-mono text-[11px] text-ink-500 mt-3">
+      <p className="font-mono text-small text-ink-500 mt-3">
         Stays in this browser. Nothing is saved and nothing is sent.
       </p>
 
@@ -121,11 +121,11 @@ export default function WhereMatcher({ catalog }: { catalog: WhereCatalog }) {
         )}
         {matches.map((match, index) => (
           <li key={match.entry.id} className="border border-hair p-4 sm:p-5">
-            <p className="font-mono text-[11px] uppercase tracking-wider text-ink-500">
+            <p className="font-mono text-small uppercase tracking-wider text-ink-500">
               {index + 1} · {match.entry.kind === 'risk' ? 'S-tier risk' : `Rank ${match.entry.rank}`}
             </p>
             <h2 className="font-serif text-2xl text-ink-100 mt-1">
-              <Link href={match.entry.href} className="hover:text-amber-300">
+              <Link href={match.entry.href} className="hover:text-primary">
                 {match.entry.name}
               </Link>
             </h2>
@@ -137,10 +137,10 @@ export default function WhereMatcher({ catalog }: { catalog: WhereCatalog }) {
               <ul className="mt-4 border-t border-hair">
                 {match.ctas.slice(0, 4).map((cta) => (
                   <li key={cta.id} className="py-3 border-b border-hair last:border-b-0">
-                    <p className="font-mono text-[10px] uppercase tracking-wider text-amber-300">
+                    <p className="font-mono text-small uppercase tracking-wider text-primary">
                       {KIND_LABEL[cta.kind] ?? cta.kind}
                     </p>
-                    <a href={cta.url} target="_blank" rel="noopener noreferrer" className="text-ink-100 hover:text-amber-300">
+                    <a href={cta.url} target="_blank" rel="noopener noreferrer" className="text-ink-100 hover:text-primary">
                       {cta.name}
                     </a>
                     <p className="text-sm text-ink-400 mt-1">{cta.oneLiner}</p>
@@ -151,7 +151,7 @@ export default function WhereMatcher({ catalog }: { catalog: WhereCatalog }) {
             {match.ctas.length > 4 && (
               <p className="text-sm text-ink-500 mt-2">{match.ctas.length - 4} more on the page.</p>
             )}
-            <Link href={match.entry.href} className="inline-block mt-3 font-mono text-[11px] uppercase tracking-wider text-amber-300 hover:underline">
+            <Link href={match.entry.href} className="inline-block mt-3 font-mono text-small uppercase tracking-wider text-primary hover:underline">
               Open it
             </Link>
           </li>

@@ -16,8 +16,8 @@ export default function FitPage() {
       <Navbar />
       <main>
         <section className="pt-28 pb-8 border-b border-hair">
-          <div className="max-w-3xl mx-auto px-6">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               Founder-problem fit
             </p>
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.04] text-ink-100 mb-4">
@@ -34,9 +34,9 @@ export default function FitPage() {
           </div>
         </section>
 
-        <section className="max-w-3xl mx-auto px-6 py-10">
+        <section className="site-shell py-10">
           <FitFinder />
-          <p className="mt-4 font-mono text-[10px] text-ink-500 leading-relaxed">
+          <p className="mt-4 font-mono text-small text-ink-500 leading-relaxed">
             This is a mirror, not an oracle. It reflects what you tell it back through the ranked
             problems and the founder canon. The point is to start the conversation with yourself —
             then go earn the fit in the real world.

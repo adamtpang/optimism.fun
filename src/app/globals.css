@@ -1,11 +1,3 @@
-/* ──────────────────────────────────────────────────────────────────────────
-   optimism.fun design system — canonical tokens (src/styles/ds/*).
-   Imported from the official "optimism fun assets" design system. Same token
-   VALUES the app already used (dark + light), plus the richer named layer:
-   --accent-*, --surface-*, --text-*, --space-*, --radius-*, --shadow-*, motion,
-   and the typography scale. Fonts load via next/font in layout.tsx (faster than
-   the DS fonts.css Google-Fonts import), so fonts.css is intentionally not imported.
-   ────────────────────────────────────────────────────────────────────────── */
 @import '../styles/ds/colors.css';
 @import '../styles/ds/typography.css';
 @import '../styles/ds/spacing.css';
@@ -21,46 +13,34 @@ html {
 body {
   background: rgb(var(--bg));
   color: rgb(var(--fg));
-  font-feature-settings: 'ss01', 'cv11';
+  font-family: var(--font-inter), Inter, system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-feature-settings: 'tnum', 'cv11';
 }
 
-:where(a, button, input, select, textarea, summary, [tabindex]):focus,
 :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-  outline: 2px solid var(--accent) !important;
-  outline-offset: 3px !important;
-}
-
-/* Terminal-grid background — 1px lattice at 32px pitch, barely visible */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -20;
-  background-image:
-    linear-gradient(to right, rgb(var(--fg) / var(--grid-opacity)) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(var(--fg) / var(--grid-opacity)) 1px, transparent 1px),
-    radial-gradient(ellipse 1200px 800px at 50% -10%, rgba(14, 165, 233, var(--glow-opacity)), transparent 70%);
-  background-size: 32px 32px, 32px 32px, 100% 100%;
-  pointer-events: none;
+  outline: 2px solid #12998c;
+  outline-offset: 2px;
 }
 
 ::selection {
-  background: rgba(14, 165, 233, 0.35);
+  background: rgba(12, 98, 91, 0.18);
   color: rgb(var(--fg));
 }
 
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(14, 165, 233, 0.25);
+  background: #c9d1d8;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(14, 165, 233, 0.5);
+  background: #97a3ae;
 }
 
 .font-mono,
@@ -68,7 +48,6 @@ body::before {
   font-variant-numeric: tabular-nums;
 }
 
-/* Hairline utilities that follow theme */
 .border-hair {
   border-color: rgb(var(--line) / var(--line-opacity));
 }
@@ -77,16 +56,163 @@ body::before {
 }
 
 .surface-paper {
-  background:
-    linear-gradient(180deg, rgba(14, 165, 233, 0.025) 0%, transparent 50%),
-    rgb(var(--paper));
+  background: rgb(var(--paper));
 }
 
-/* Hide scrollbar utility for horizontal nav */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* One width, site-wide. */
+.site-shell {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+@media (min-width: 768px) {
+  .site-shell {
+    padding-inline: 24px;
+  }
+}
+@media (min-width: 1024px) {
+  .site-shell {
+    padding-inline: 32px;
+  }
+}
+.site-prose {
+  width: 100%;
+  max-width: 680px;
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+
+/* Glass: nav, sticky headers, and hero overlays only. */
+.glass {
+  background: rgba(255, 255, 255, 0.86);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  backdrop-filter: blur(20px) saturate(1.8);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+.glass-panel {
+  background: rgba(255, 255, 255, 0.86);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  backdrop-filter: blur(20px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 16px 40px -8px rgba(16, 24, 40, 0.12),
+    inset 0 0 0 1px rgba(15, 23, 42, 0.04);
+  border-radius: 20px;
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .glass,
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.96);
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass,
+  .glass-panel {
+    background: #fff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+.doors-panel {
+  background: #fff;
+  border: 1px solid #e1e6ea;
+  border-radius: 12px;
+  color: #121920;
+}
+@media (min-width: 768px) {
+  .doors-panel {
+    background: rgba(255, 255, 255, 0.86);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+    backdrop-filter: blur(20px) saturate(1.8);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow:
+      0 16px 40px -8px rgba(16, 24, 40, 0.12),
+      inset 0 0 0 1px rgba(15, 23, 42, 0.04);
+    border-radius: 20px;
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .doors-panel {
+    background: #fff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+.hero-scrim {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.35) 45%, transparent 70%);
+}
+
+.decade-track {
+  background-color: #eff2f4;
+  background-image: linear-gradient(
+    90deg,
+    transparent calc(25% - 1px),
+    #e1e6ea 25%,
+    transparent calc(25% + 1px),
+    transparent calc(50% - 1px),
+    #e1e6ea 50%,
+    transparent calc(50% + 1px),
+    transparent calc(75% - 1px),
+    #e1e6ea 75%,
+    transparent calc(75% + 1px)
+  );
+}
+
+button,
+summary,
+input:not([type='checkbox']):not([type='radio']):not([type='hidden']):not([type='file']),
+select,
+textarea {
+  min-height: 44px;
+}
+
+@media (max-width: 767px) {
+  .text-display-1 {
+    font-size: 40px;
+    line-height: 44px;
+  }
+  .text-display-2 {
+    font-size: 32px;
+    line-height: 36px;
+  }
+  .text-h1 {
+    font-size: 28px;
+    line-height: 32px;
+  }
+  .text-h2 {
+    font-size: 24px;
+    line-height: 30px;
+  }
+  .text-h3 {
+    font-size: 18px;
+    line-height: 26px;
+  }
+  .text-data-xl {
+    font-size: 36px;
+    line-height: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -53,18 +53,18 @@ export default function DemandMatrix({ rows }: { rows: DemandRow[] }) {
         <table className="w-full border-collapse min-w-[640px]">
           <thead>
             <tr>
-              <th className="text-left font-sans text-[11px] font-medium text-ink-500 pb-2 pr-3">
+              <th className="text-left font-sans text-small font-medium text-ink-500 pb-2 pr-3">
                 Problem
               </th>
               {CLASS_ORDER.map((c) => (
                 <th
                   key={c}
-                  className="font-mono text-[10px] uppercase tracking-wider text-ink-500 pb-2 px-1 text-center font-normal"
+                  className="font-mono text-small uppercase tracking-wider text-ink-500 pb-2 px-1 text-center font-normal"
                 >
                   {CLASS_SHORT[c]}
                 </th>
               ))}
-              <th className="font-mono text-[10px] uppercase tracking-wider text-ink-500 pb-2 pl-2 text-right font-normal">
+              <th className="font-mono text-small uppercase tracking-wider text-ink-500 pb-2 pl-2 text-right font-normal">
                 Score
               </th>
             </tr>
@@ -75,7 +75,7 @@ export default function DemandMatrix({ rows }: { rows: DemandRow[] }) {
                 <td className="pr-3 py-[3px]">
                   <Link
                     href={`/p/${r.slug}`}
-                    className="font-sans text-[12.5px] text-ink-300 group-hover:text-ink-100 transition-colors whitespace-nowrap"
+                    className="font-sans text-small text-ink-300 group-hover:text-ink-100 transition-colors whitespace-nowrap"
                   >
                     {r.name}
                   </Link>
@@ -94,7 +94,7 @@ export default function DemandMatrix({ rows }: { rows: DemandRow[] }) {
                         onMouseEnter={() => setCell({ slug: r.slug, cls: clsName })}
                         onFocus={() => setCell({ slug: r.slug, cls: clsName })}
                         className={`relative block w-full h-7 rounded-[3px] transition-shadow ${
-                          isSel ? 'ring-1 ring-amber-300' : ''
+                          isSel ? 'ring-1 ring-primary' : ''
                         }`}
                         style={
                           strength != null
@@ -117,7 +117,7 @@ export default function DemandMatrix({ rows }: { rows: DemandRow[] }) {
                     </td>
                   )
                 })}
-                <td className="pl-2 py-[3px] text-right font-mono text-[12px] tabular-nums text-ink-100">
+                <td className="pl-2 py-[3px] text-right font-mono text-small tabular-nums text-ink-100">
                   {r.score}
                 </td>
               </tr>
@@ -128,7 +128,7 @@ export default function DemandMatrix({ rows }: { rows: DemandRow[] }) {
 
       {/* legend + inspector */}
       <div className="mt-3 space-y-2">
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-[10px] text-ink-500">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-small text-ink-500">
           <span className="flex items-center gap-1.5">
             {[0.15, 0.35, 0.6, 0.86].map((o) => (
               <span
@@ -155,7 +155,7 @@ export default function DemandMatrix({ rows }: { rows: DemandRow[] }) {
           </span>
         </div>
 
-        <p className="font-mono text-[11px] text-ink-400 min-h-[2.5rem] leading-relaxed">
+        <p className="font-mono text-small text-ink-400 min-h-[2.5rem] leading-relaxed">
           {selected?.row && selected.comp ? (
             <>
               <span className="text-ink-100">{selected.row.name}</span>
@@ -164,7 +164,7 @@ export default function DemandMatrix({ rows }: { rows: DemandRow[] }) {
               {selected.comp.strength != null ? (
                 <>
                   {' — strength '}
-                  <span className="text-amber-300 tabular-nums">
+                  <span className="text-primary tabular-nums">
                     {Math.round(selected.comp.strength * 100)}
                   </span>
                   /100
@@ -186,7 +186,7 @@ export default function DemandMatrix({ rows }: { rows: DemandRow[] }) {
                         href={selected.comp.live.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-amber-300 hover:underline"
+                        className="text-primary hover:underline"
                       >
                         {selected.comp.live.source} ↗
                       </a>

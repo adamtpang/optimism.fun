@@ -95,11 +95,11 @@ export default function RfsBoard({ groups }: { groups: RfsGroupData[] }) {
   const [audience, setAudience] = useState<Audience>('founders')
 
   return (
-    <section className="max-w-5xl mx-auto px-6 py-14">
+    <section className="site-shell py-14">
       {/* Audience toggle — pick the side of the coin you're standing on */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-12 border-b border-hair pb-6">
         <div>
-          <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1.5">
+          <p className="font-mono text-small uppercase text-ink-500 mb-1.5">
             I&rsquo;m here to
           </p>
           <p className="text-sm text-ink-300 max-w-md leading-relaxed">
@@ -121,9 +121,9 @@ export default function RfsBoard({ groups }: { groups: RfsGroupData[] }) {
                 role="tab"
                 aria-selected={active}
                 onClick={() => setAudience(a)}
-                className={`font-mono text-[11px] uppercase tracking-wider px-4 py-2 transition-colors ${
+                className={`font-mono text-small uppercase tracking-wider px-4 py-2 transition-colors ${
                   active
-                    ? 'bg-amber-300 text-paper'
+                    ? 'bg-primary text-paper'
                     : 'text-ink-400 hover:text-ink-100'
                 }`}
               >
@@ -149,7 +149,7 @@ export default function RfsBoard({ groups }: { groups: RfsGroupData[] }) {
                   </h2>
                   {g.prizeUsd != null && (
                     <span
-                      className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 border border-amber-300/40 px-2 py-1"
+                      className="font-mono text-small uppercase text-primary border border-primary/40 px-2 py-1"
                       title="In-the-limit market cap: what the winning company is worth at perfect execution"
                     >
                       {fmtUsdCompact(g.prizeUsd)} prize at the limit
@@ -158,7 +158,7 @@ export default function RfsBoard({ groups }: { groups: RfsGroupData[] }) {
                 </div>
                 <Link
                   href={`/p/${g.problemSlug}`}
-                  className="font-mono text-[11px] uppercase tracking-ultra-wide text-amber-300 hover:text-amber-200 transition-colors"
+                  className="font-mono text-small uppercase text-primary hover:text-primary transition-colors"
                 >
                   the trade: demand · capital · prize →
                 </Link>
@@ -169,7 +169,7 @@ export default function RfsBoard({ groups }: { groups: RfsGroupData[] }) {
                 (g.capitalUsd != null || g.prizeUsd != null) && (
                   <div className="grid sm:grid-cols-3 gap-px bg-ink-700/40 border border-hair mb-5">
                     <div className="bg-[rgb(var(--bg))] p-4">
-                      <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1.5">
+                      <p className="font-mono text-small uppercase text-ink-500 mb-1.5">
                         Capital flowing
                       </p>
                       <p className="font-mono text-xl tabular-nums text-ink-100">
@@ -182,21 +182,21 @@ export default function RfsBoard({ groups }: { groups: RfsGroupData[] }) {
                           <span className="text-sm text-ink-500">unmapped</span>
                         )}
                         {g.momentum && (
-                          <span className="ml-2 font-mono text-[11px] text-ink-400">
+                          <span className="ml-2 font-mono text-small text-ink-400">
                             {MOMENTUM_LABEL[g.momentum]}
                           </span>
                         )}
                       </p>
                     </div>
                     <div className="bg-[rgb(var(--bg))] p-4">
-                      <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1.5">
+                      <p className="font-mono text-small uppercase text-ink-500 mb-1.5">
                         Allocation
                       </p>
                       {g.verdict ? (
                         <p
                           className={`font-mono text-xl ${
                             g.verdict === 'underallocated'
-                              ? 'text-amber-300'
+                              ? 'text-primary'
                               : g.verdict === 'overallocated'
                                 ? 'text-terminal-rose'
                                 : 'text-ink-200'
@@ -204,7 +204,7 @@ export default function RfsBoard({ groups }: { groups: RfsGroupData[] }) {
                         >
                           {g.verdict}
                           {g.ratio != null && (
-                            <span className="block font-mono text-[11px] text-ink-500 mt-0.5">
+                            <span className="block font-mono text-small text-ink-500 mt-0.5">
                               {fmtRatio(g.ratio)} fair share
                             </span>
                           )}
@@ -214,10 +214,10 @@ export default function RfsBoard({ groups }: { groups: RfsGroupData[] }) {
                       )}
                     </div>
                     <div className="bg-[rgb(var(--bg))] p-4">
-                      <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1.5">
+                      <p className="font-mono text-small uppercase text-ink-500 mb-1.5">
                         Prize at the limit
                       </p>
-                      <p className="font-mono text-xl tabular-nums text-amber-300">
+                      <p className="font-mono text-xl tabular-nums text-primary">
                         {g.prizeUsd != null ? (
                           fmtUsdCompact(g.prizeUsd)
                         ) : (
@@ -244,7 +244,7 @@ export default function RfsBoard({ groups }: { groups: RfsGroupData[] }) {
 
                     <div className="grid md:grid-cols-3 gap-px bg-ink-700/40 border border-hair mb-4">
                       <div className="bg-[rgb(var(--bg))] p-4">
-                        <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1.5">
+                        <p className="font-mono text-small uppercase text-ink-500 mb-1.5">
                           Why now
                         </p>
                         <p className="text-sm text-ink-300 leading-relaxed">
@@ -252,7 +252,7 @@ export default function RfsBoard({ groups }: { groups: RfsGroupData[] }) {
                         </p>
                       </div>
                       <div className="bg-[rgb(var(--bg))] p-4">
-                        <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1.5">
+                        <p className="font-mono text-small uppercase text-ink-500 mb-1.5">
                           The shape of it
                         </p>
                         <p className="text-sm text-ink-300 leading-relaxed">
@@ -260,7 +260,7 @@ export default function RfsBoard({ groups }: { groups: RfsGroupData[] }) {
                         </p>
                       </div>
                       <div className="bg-[rgb(var(--bg))] p-4">
-                        <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1.5">
+                        <p className="font-mono text-small uppercase text-ink-500 mb-1.5">
                           Success looks like
                         </p>
                         <p className="text-sm text-ink-300 leading-relaxed">
@@ -269,8 +269,8 @@ export default function RfsBoard({ groups }: { groups: RfsGroupData[] }) {
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-3 border-l-2 border-amber-300/50 pl-4">
-                      <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 whitespace-nowrap mt-0.5">
+                    <div className="flex items-start gap-3 border-l-2 border-primary/50 pl-4">
+                      <span className="font-mono text-small uppercase text-primary whitespace-nowrap mt-0.5">
                         good quest
                       </span>
                       <p className="text-sm text-ink-300 leading-relaxed italic">
@@ -282,16 +282,16 @@ export default function RfsBoard({ groups }: { groups: RfsGroupData[] }) {
               </div>
 
               {/* The action panel — the actual next step, by audience */}
-              <div className="mt-4 border border-amber-300/30 bg-amber-300/[0.03] p-6">
+              <div className="mt-4 border border-primary/30 bg-primary/[0.03] p-6">
                 {audience === 'founders' ? (
                   <>
                     <div className="flex items-baseline justify-between gap-3 mb-4">
-                      <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300">
+                      <p className="font-mono text-small uppercase text-primary">
                         Where to apply
                       </p>
                       <Link
                         href="/journey"
-                        className="font-mono text-[11px] uppercase tracking-wider text-ink-300 hover:text-amber-300 transition-colors"
+                        className="font-mono text-small uppercase tracking-wider text-ink-300 hover:text-primary transition-colors"
                       >
                         start the quest →
                       </Link>
@@ -307,17 +307,17 @@ export default function RfsBoard({ groups }: { groups: RfsGroupData[] }) {
                             className="group block bg-[rgb(var(--bg))] p-4 hover:bg-ink-800/40 transition-colors"
                           >
                             <div className="flex items-center gap-2 mb-1.5">
-                              <span className="font-sans text-sm font-medium text-ink-100 group-hover:text-amber-300 transition-colors">
+                              <span className="font-sans text-sm font-medium text-ink-100 group-hover:text-primary transition-colors">
                                 {f.name}
                               </span>
-                              <span className="font-mono text-[9px] uppercase tracking-ultra-wide text-amber-300 border border-amber-300/30 px-1.5 py-px">
+                              <span className="font-mono text-small uppercase text-primary border border-primary/30 px-1.5 py-px">
                                 {ECOSYSTEM_TYPE_LABEL[f.type]}
                               </span>
-                              <span className="ml-auto font-mono text-[11px] text-ink-500 group-hover:text-amber-300 transition-colors">
+                              <span className="ml-auto font-mono text-small text-ink-500 group-hover:text-primary transition-colors">
                                 apply →
                               </span>
                             </div>
-                            <p className="font-mono text-[11px] text-ink-400 leading-relaxed">
+                            <p className="font-mono text-small text-ink-400 leading-relaxed">
                               <span className="text-ink-600">best for:</span>{' '}
                               {f.bestFor}
                             </p>
@@ -325,12 +325,12 @@ export default function RfsBoard({ groups }: { groups: RfsGroupData[] }) {
                         ))}
                       </div>
                     ) : (
-                      <p className="font-mono text-[11px] text-ink-500">
+                      <p className="font-mono text-small text-ink-500">
                         No funder mapped to this quest yet — that&rsquo;s the white
                         space.{' '}
                         <Link
                           href="/ecosystem"
-                          className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                          className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
                         >
                           browse the full capital stack →
                         </Link>
@@ -340,12 +340,12 @@ export default function RfsBoard({ groups }: { groups: RfsGroupData[] }) {
                 ) : (
                   <>
                     <div className="flex items-baseline justify-between gap-3 mb-4">
-                      <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300">
+                      <p className="font-mono text-small uppercase text-primary">
                         Co-allocators in this space
                       </p>
                       <Link
                         href={`/p/${g.problemSlug}`}
-                        className="font-mono text-[11px] uppercase tracking-wider text-ink-300 hover:text-amber-300 transition-colors"
+                        className="font-mono text-small uppercase tracking-wider text-ink-300 hover:text-primary transition-colors"
                       >
                         see the full deal →
                       </Link>
@@ -361,25 +361,25 @@ export default function RfsBoard({ groups }: { groups: RfsGroupData[] }) {
                             className="group block bg-[rgb(var(--bg))] p-4 hover:bg-ink-800/40 transition-colors"
                           >
                             <div className="flex items-center gap-2 mb-1.5">
-                              <span className="font-sans text-sm font-medium text-ink-100 group-hover:text-amber-300 transition-colors">
+                              <span className="font-sans text-sm font-medium text-ink-100 group-hover:text-primary transition-colors">
                                 {f.name}
                               </span>
-                              <span className="font-mono text-[9px] uppercase tracking-ultra-wide text-terminal-cyan border border-terminal-cyan/30 px-1.5 py-px">
+                              <span className="font-mono text-small uppercase text-terminal-cyan border border-terminal-cyan/30 px-1.5 py-px">
                                 {ECOSYSTEM_TYPE_LABEL[f.type]}
                               </span>
                             </div>
-                            <p className="font-mono text-[11px] text-ink-400 leading-relaxed">
+                            <p className="font-mono text-small text-ink-400 leading-relaxed">
                               {f.thesis}
                             </p>
                           </a>
                         ))}
                       </div>
                     ) : (
-                      <p className="font-mono text-[11px] text-ink-500">
+                      <p className="font-mono text-small text-ink-500">
                         No fund mapped here yet — an open lane.{' '}
                         <Link
                           href={`/p/${g.problemSlug}`}
-                          className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                          className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
                         >
                           see the demand · capital · prize →
                         </Link>

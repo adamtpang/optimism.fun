@@ -65,7 +65,7 @@ export default function DemandPowerLaw({ rows }: { rows: PowerLawRow[] }) {
                 y={H - PAD.b + 16}
                 textAnchor="middle"
                 className="fill-current text-ink-600"
-                fontSize="9"
+                fontSize="14"
                 fontFamily="var(--font-mono, monospace)"
               >
                 {t}
@@ -100,7 +100,7 @@ export default function DemandPowerLaw({ rows }: { rows: PowerLawRow[] }) {
                 x={PAD.l - 10}
                 y={yTop + BAR_H / 2 + 3.5}
                 textAnchor="end"
-                fontSize="11"
+                fontSize="14"
                 className={active ? 'fill-current text-ink-100' : 'fill-current text-ink-300'}
               >
                 {r.name.length > 26 ? `${r.name.slice(0, 25)}…` : r.name}
@@ -111,13 +111,13 @@ export default function DemandPowerLaw({ rows }: { rows: PowerLawRow[] }) {
                 width={Math.max(2, x(r.score) - PAD.l)}
                 height={BAR_H}
                 rx={3}
-                fill="#0ea5e9"
+                fill="rgb(14, 165, 233)"
                 fillOpacity={active ? 1 : 0.82}
               />
               <text
                 x={x(r.score) + 8}
                 y={yTop + BAR_H / 2 + 3.5}
-                fontSize="10.5"
+                fontSize="14"
                 fontFamily="var(--font-mono, monospace)"
                 className="fill-current text-ink-200 tabular-nums"
               >
@@ -129,11 +129,11 @@ export default function DemandPowerLaw({ rows }: { rows: PowerLawRow[] }) {
       </svg>
 
       {/* hover inspector + the power-law annotation */}
-      <div className="mt-2 flex items-baseline justify-between gap-4 font-mono text-[11px]">
+      <div className="mt-2 flex items-baseline justify-between gap-4 font-mono text-small">
         <span className="text-ink-400 min-h-[1.25rem]">
           {hovered ? (
             <>
-              <Link href={`/p/${hovered.slug}`} className="text-amber-300 hover:underline">
+              <Link href={`/p/${hovered.slug}`} className="text-primary hover:underline">
                 {hovered.name}
               </Link>
               {' — demand '}
@@ -147,7 +147,7 @@ export default function DemandPowerLaw({ rows }: { rows: PowerLawRow[] }) {
           )}
         </span>
         <span className="text-ink-500 whitespace-nowrap">
-          top 3 = <span className="text-amber-300 tabular-nums">{top3Share}%</span> of measured demand
+          top 3 = <span className="text-primary tabular-nums">{top3Share}%</span> of measured demand
         </span>
       </div>
     </div>

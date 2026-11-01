@@ -22,12 +22,12 @@ const TYPE_ORDER: EcosystemType[] = [
 ]
 
 const TYPE_COLOR: Record<EcosystemType, string> = {
-  grant: 'text-amber-300 border-amber-500/25 bg-amber-500/5',
-  fellowship: 'text-amber-300 border-amber-500/25 bg-amber-500/5',
+  grant: 'text-primary border-primary/25 bg-primary/5',
+  fellowship: 'text-primary border-primary/25 bg-primary/5',
   accelerator: 'text-terminal-green border-emerald-500/25 bg-emerald-500/5',
   catalytic: 'text-terminal-green border-emerald-500/25 bg-emerald-500/5',
   fro: 'text-terminal-violet border-terminal-violet/25 bg-purple-500/5',
-  studio: 'text-amber-200 border-amber-300/25 bg-indigo-500/5',
+  studio: 'text-primary border-primary/25 bg-indigo-500/5',
   vc: 'text-terminal-rose border-rose-500/25 bg-rose-500/5',
 }
 
@@ -44,20 +44,20 @@ export default function EcosystemPage() {
       <Navbar />
       <main>
         <section className="pt-32 pb-20 px-6">
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-7xl mx-auto">
             <Link
               href="/"
               className="inline-flex items-center gap-2 text-sm text-ink-500 hover:text-ink-300 transition-colors mb-8"
             >
               <span>←</span> back
             </Link>
-            <p className="text-amber-300 font-medium tracking-[0.2em] uppercase text-xs mb-3">
+            <p className="text-primary font-medium tracking-[0.2em] uppercase text-xs mb-3">
               The Capital Stack
             </p>
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.1] mb-6">
               Who funds the quests.
             </h1>
-            <p className="text-lg text-ink-400 leading-relaxed max-w-3xl mb-16">
+            <p className="text-lg text-ink-400 leading-relaxed max-w-7xl mb-16">
               A map of {ecosystem.length} institutions across the good-quest capital stack.
               Ranges from small fast grants for weird ideas to growth-stage deep-tech VC
               with rigorous impact scoring. If a quest you care about isn&rsquo;t funded
@@ -87,12 +87,12 @@ export default function EcosystemPage() {
                             href={e.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="font-serif text-lg font-semibold text-ink-100 hover:text-amber-200 transition-colors"
+                            className="font-serif text-lg font-semibold text-ink-100 hover:text-primary transition-colors"
                           >
                             {e.name}
                           </a>
                           <span
-                            className={`inline-flex items-center rounded-none border px-2.5 py-0.5 text-[10px] uppercase tracking-wider font-medium ${TYPE_COLOR[e.type]}`}
+                            className={`inline-flex items-center rounded-none border px-2.5 py-0.5 text-small uppercase tracking-wider font-medium ${TYPE_COLOR[e.type]}`}
                           >
                             {ECOSYSTEM_TYPE_LABEL[e.type]}
                           </span>
@@ -114,7 +114,7 @@ export default function EcosystemPage() {
                               <Link
                                 key={slug}
                                 href={`/p/${slug}`}
-                                className="inline-flex items-center rounded-none border border-hair bg-ink-900 px-2 py-0.5 text-[11px] text-ink-400 hover:border-amber-300/30 hover:text-amber-200 transition-colors"
+                                className="inline-flex items-center rounded-none border border-hair bg-ink-900 px-2 py-0.5 text-small text-ink-400 hover:border-primary/30 hover:text-primary transition-colors"
                               >
                                 {p.name}
                               </Link>

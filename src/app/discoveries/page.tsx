@@ -37,7 +37,7 @@ const FILTER_LABEL: Record<string, string> = {
 
 function chip(active: boolean) {
   return active
-    ? 'bg-amber-300/10 border-amber-300/60 text-amber-300'
+    ? 'bg-primary/10 border-primary/60 text-primary'
     : 'border-hair text-ink-400 hover:text-ink-100 hover:border-ink-400'
 }
 
@@ -68,8 +68,8 @@ export default async function DiscoveriesPage({
       <Navbar />
       <main>
         <section className="pt-28 pb-8 border-b border-hair">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               Discoveries
             </p>
             <h1 className="font-serif text-4xl md:text-6xl text-ink-100 leading-[1.05]">
@@ -79,22 +79,22 @@ export default async function DiscoveriesPage({
               Verified findings, newest first. Preprints are marked. Challenged results stay visible.
             </p>
             <p className="font-mono text-sm mt-3">
-              <a href="/api/discoveries" className="text-amber-300 hover:underline">JSON</a>
+              <a href="/api/discoveries" className="text-primary hover:underline">JSON</a>
               {' · '}
-              <a href="/api/discoveries/csv" className="text-amber-300 hover:underline">CSV</a>
+              <a href="/api/discoveries/csv" className="text-primary hover:underline">CSV</a>
             </p>
           </div>
         </section>
 
-        <section className="px-4 sm:px-6 py-8 max-w-5xl mx-auto">
+        <section className="px-4 sm:px-6 py-8 max-w-7xl mx-auto">
           <div className="mb-3">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+            <p className="font-mono text-small uppercase text-ink-500 mb-2">
               Filter by problem
             </p>
             <div className="flex flex-wrap gap-1.5">
               <Link
                 href="/discoveries"
-                className={`px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider border transition-colors ${chip(!activeProblem && !activeRisk)}`}
+                className={`px-3 min-h-11 inline-flex items-center font-mono text-small uppercase tracking-wider border transition-colors ${chip(!activeProblem && !activeRisk)}`}
               >
                 all
               </Link>
@@ -103,7 +103,7 @@ export default async function DiscoveriesPage({
                   key={p.slug}
                   href={`/discoveries?problem=${p.slug}`}
                   title={p.name}
-                  className={`px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider border transition-colors ${chip(activeProblem === p.slug)}`}
+                  className={`px-3 min-h-11 inline-flex items-center font-mono text-small uppercase tracking-wider border transition-colors ${chip(activeProblem === p.slug)}`}
                 >
                   {FILTER_LABEL[p.slug] ?? p.slug}
                 </Link>
@@ -112,7 +112,7 @@ export default async function DiscoveriesPage({
           </div>
 
           <div className="mb-6">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+            <p className="font-mono text-small uppercase text-ink-500 mb-2">
               S-tier
             </p>
             <div className="flex flex-wrap gap-1.5">
@@ -121,7 +121,7 @@ export default async function DiscoveriesPage({
                   key={r.slug}
                   href={`/discoveries?risk=${r.slug}`}
                   title={r.name}
-                  className={`px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider border transition-colors ${
+                  className={`px-3 min-h-11 inline-flex items-center font-mono text-small uppercase tracking-wider border transition-colors ${
                     activeRisk === r.slug
                       ? 'bg-terminal-rose/10 border-terminal-rose/60 text-terminal-rose'
                       : 'border-hair text-ink-400 hover:text-ink-100 hover:border-ink-400'
@@ -133,12 +133,12 @@ export default async function DiscoveriesPage({
             </div>
           </div>
 
-          <p className="font-mono text-[11px] text-ink-500 mb-3">
+          <p className="font-mono text-small text-ink-500 mb-3">
             {items.length} {items.length === 1 ? 'finding' : 'findings'}
           </p>
 
           {items.length === 0 ? (
-            <p className="font-mono text-[12px] text-ink-500">{empty}</p>
+            <p className="font-mono text-small text-ink-500">{empty}</p>
           ) : (
             <DiscoveryList items={items} />
           )}

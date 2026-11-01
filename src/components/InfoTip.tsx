@@ -49,7 +49,7 @@ export default function InfoTip({ label, children, align = 'right' }: Props) {
           e.stopPropagation()
           setOpen((v) => !v)
         }}
-        className="inline-flex items-center justify-center w-4 h-4 rounded-full border border-hair-strong text-ink-500 hover:text-amber-300 hover:border-amber-300/60 focus:text-amber-300 focus:border-amber-300/60 focus:outline-none text-[9px] font-mono leading-none transition-colors"
+        className="inline-flex items-center justify-center w-4 h-4 rounded-full border border-hair-strong text-ink-500 hover:text-primary hover:border-primary/60 focus:text-primary focus:border-primary/60 focus:outline-none text-small font-mono leading-none transition-colors"
       >
         i
       </button>
@@ -60,7 +60,7 @@ export default function InfoTip({ label, children, align = 'right' }: Props) {
             align === 'right' ? 'right-0' : 'left-0'
           }`}
         >
-          <span className="block font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-1.5">
+          <span className="block font-mono text-small uppercase text-primary mb-1.5">
             {label}
           </span>
           <span className="block font-sans text-xs text-ink-200 leading-relaxed">
@@ -68,7 +68,7 @@ export default function InfoTip({ label, children, align = 'right' }: Props) {
           </span>
           <Link
             href="/methodology"
-            className="mt-2 inline-block font-mono text-[10px] uppercase tracking-wider text-amber-300/80 hover:text-amber-300"
+            className="mt-2 inline-block font-mono text-small uppercase tracking-wider text-primary/80 hover:text-primary"
           >
             methodology &rarr;
           </Link>
