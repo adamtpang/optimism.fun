@@ -340,6 +340,24 @@ with `/marketcap` still prerendered, so both new caps validate.
 - `/poster` is the ranking poster (people affected, log scale, color by neglectedness). `/where` matches skills, interests, and offers in the browser and does not store them.
 - The open-tool commit did not itself change ranks or stored figures. The ranking formula below is the later change.
 
+## Daily research (2026-11-01)
+
+- Five rows appended: Delta toxin and NEC (`newborn-survival`), PHERGain
+  5-year outcomes and METTL1 inhibitor STM9005 (`cancer`), caloric restriction
+  and somatic mutation (`longevity`), and the 2026 Lancet Countdown
+  (`climate-change`). Ranks and scores were not changed.
+- The Cell paper's published date is the online date 2026-09-09 from the Cell
+  page and Europe PMC. Crossref only has the issue month, 2026-10.
+- The 30% and 19-month figures are from the Nature Genetics highlight
+  (10.1038/s41588-026-02803-8), which describes 19-month-old male mice
+  subjected to 30% calorie restriction. The row does not claim a start age.
+- Heat figures: 710,000 deaths and 71.5% from the Lancet Countdown data
+  explorer (indicator 1.1.5); nearly 36% from the WHO release of the same
+  report. No earlier row covered this report.
+- A Crossref updates scan of every DOI already in the feed found no
+  retractions. Four rows have errata or author corrections only, and those
+  rows were left unchanged.
+
 ## Ranking formula (2026-11-01)
 
 The homepage order is `opportunityScore` in `src/lib/priority.ts`. Severity is
@@ -355,4 +373,4 @@ and not averaged. X-risk supply uses neglectedness, not the company count.
 The formula is on `/methodology`. AI control, nuclear war, and air pollution
 were not added: the opened pages did not fill scale, humans affected,
 neglectedness, and tractability together. `/poster` and the public downloads
-use this same order.
+use this same order. The discoveries feed is main's 35 rows.
