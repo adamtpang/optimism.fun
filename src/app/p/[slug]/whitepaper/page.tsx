@@ -30,7 +30,7 @@ import { getPositionsForProblem } from '@/data/voices'
 import { getRequestsForProblem } from '@/data/rfs'
 import { getLatestWhitepaperForProblem } from '@/data/whitepapers'
 import { ECOSYSTEM_TYPE_LABEL } from '@/data/types'
-import { formatHumans, formatUSD, formatPercent } from '@/lib/format'
+import { formatHumans, formatUSD } from '@/lib/format'
 
 export function generateStaticParams() {
   return problems.map((p) => ({ slug: p.slug }))
@@ -258,7 +258,7 @@ export default async function WhitepaperPage({
             <SectionHeading number="1" kicker="abstract" title="The four-axis ranking" />
             <p className="font-serif text-lg text-ink-200 leading-relaxed mb-6">
               We rank humanity&rsquo;s most important problems on four quantifiable
-              dimensions — quantity of humans affected, severity per capita, current
+              dimensions — quantity of humans affected, severity per person, current
               solution quality, and addressable market size — and package each as a
               proposal in the spirit of Musk&rsquo;s <em>Hyperloop Alpha</em>. This
               document is the proposal for{' '}
@@ -283,16 +283,22 @@ export default async function WhitepaperPage({
               </div>
               <div className="bg-[rgb(var(--bg))] p-5">
                 <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
-                  Severity · WTP / wealth
+                  Severity · 0–1
                 </p>
-                <p className="font-mono text-2xl tabular-nums text-terminal-rose mb-1">
-                  {formatPercent(problem.severity.value)}
-                </p>
-                <SourceBadge
-                  confidence={problem.severity.confidence}
-                  source={problem.severity.source}
-                  asOf={problem.severity.asOf}
-                />
+                {problem.severity ? (
+                  <>
+                    <p className="font-mono text-2xl tabular-nums text-terminal-rose mb-1">
+                      {problem.severity.value.toFixed(2)}
+                    </p>
+                    <SourceBadge
+                      confidence={problem.severity.confidence}
+                      source={problem.severity.source}
+                      asOf={problem.severity.asOf}
+                    />
+                  </>
+                ) : (
+                  <p className="font-mono text-2xl text-ink-500 mb-1">unknown</p>
+                )}
               </div>
               {problem.currentSolutionQuality ? (
                 <div className="bg-[rgb(var(--bg))] p-5">

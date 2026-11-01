@@ -61,11 +61,25 @@ export const problems: Problem[] = [
       asOf: TODAY,
     },
     severity: {
-      value: 0.85,
-      unit: 'share of wealth',
-      source: 'estimated, engineered pandemic could approach extinction',
+      value: 1,
+      unit: 'share of humanity lost if the extinction-level outcome occurs',
+      source:
+        '80,000 Hours: some researchers estimate a greater than 1 in 10,000 chance, and potentially as high as 1 in 100, of a biological catastrophe leading to human extinction within 100 years. Extinction is the loss of everyone. That range has no stated midpoint, so the rank uses the stake (this 1) and does not multiply by an averaged probability. The same page says a non-extinction catastrophe could still kill billions; that is not added on top.',
+      sourceUrl: 'https://80000hours.org/problem-profiles/preventing-catastrophic-pandemics/',
       confidence: 'low',
-      asOf: TODAY,
+      asOf: '2026-11-01',
+    },
+    catastropheProbability: {
+      low: 1 / 10_000,
+      high: 1 / 100,
+      lowIsExclusive: true,
+      horizonYears: 100,
+      outcome: 'biological catastrophe leading to human extinction',
+      source:
+        '80,000 Hours problem profile, citing researchers: greater than 1 in 10,000, and potentially as high as 1 in 100, per 100 years',
+      sourceUrl: 'https://80000hours.org/problem-profiles/preventing-catastrophic-pandemics/',
+      confidence: 'low',
+      asOf: '2026-11-01',
     },
     marketSize: {
       value: 100_000_000_000,
@@ -194,14 +208,6 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: TODAY,
     },
-    severity: {
-      value: 0.15,
-      unit: 'share of income',
-      source: 'energy ~10-20% of household spending globally (World Bank)',
-      sourceUrl: 'https://data.worldbank.org/',
-      confidence: 'med',
-      asOf: TODAY,
-    },
     marketSize: {
       value: 10_000_000_000_000,
       unit: 'USD / year',
@@ -324,14 +330,6 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: TODAY,
     },
-    severity: {
-      value: 0.35,
-      unit: 'share of income',
-      source: 'global median housing burden (UN-Habitat, Demographia)',
-      sourceUrl: 'https://unhabitat.org/',
-      confidence: 'med',
-      asOf: TODAY,
-    },
     marketSize: {
       value: 13_000_000_000_000,
       unit: 'USD / year',
@@ -448,14 +446,6 @@ export const problems: Problem[] = [
       source: 'UNESCO Global Education Monitoring Report',
       sourceUrl: 'https://www.unesco.org/gem-report/en',
       confidence: 'high',
-      asOf: TODAY,
-    },
-    severity: {
-      value: 0.2,
-      unit: 'share of lifetime earnings',
-      source: 'World Bank, returns to schooling meta-analyses',
-      sourceUrl: 'https://openknowledge.worldbank.org/entities/publication/1f1b2b42-c50a-5116-9bd7-2f2a08a9e8f8',
-      confidence: 'med',
       asOf: TODAY,
     },
     marketSize: {
@@ -583,13 +573,6 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: TODAY,
     },
-    severity: {
-      value: 0.6,
-      unit: 'share of wealth (for affected)',
-      source: 'DALY-adjusted health economics (WHO)',
-      confidence: 'med',
-      asOf: TODAY,
-    },
     marketSize: {
       value: 200_000_000_000,
       unit: 'USD / year',
@@ -703,13 +686,6 @@ export const problems: Problem[] = [
       unit: 'humans (compound effect)',
       source: 'estimated, scientific productivity compounds across every domain',
       confidence: 'med',
-      asOf: TODAY,
-    },
-    severity: {
-      value: 0.1,
-      unit: 'share of income (indirect)',
-      source: 'estimated, affects long-run growth rate, not direct spending',
-      confidence: 'low',
       asOf: TODAY,
     },
     marketSize: {
@@ -845,13 +821,6 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: TODAY,
     },
-    severity: {
-      value: 0.25,
-      unit: 'share of lifetime wealth',
-      source: 'healthcare spend concentrates in final decade of life (OECD Health Statistics)',
-      confidence: 'med',
-      asOf: TODAY,
-    },
     marketSize: {
       value: 4_000_000_000_000,
       unit: 'USD / year',
@@ -976,13 +945,6 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: TODAY,
     },
-    severity: {
-      value: 0.15,
-      unit: 'share of long-run GDP',
-      source: 'estimated, demographic drag on growth, fiscal sustainability',
-      confidence: 'low',
-      asOf: TODAY,
-    },
     marketSize: {
       value: 50_000_000_000,
       unit: 'USD / year',
@@ -1098,13 +1060,6 @@ export const problems: Problem[] = [
       confidence: 'med',
       asOf: TODAY,
     },
-    severity: {
-      value: 0.3,
-      unit: 'share of subjective wellbeing',
-      source: 'meta-analyses of loneliness and life satisfaction',
-      confidence: 'med',
-      asOf: TODAY,
-    },
     marketSize: {
       value: 100_000_000_000,
       unit: 'USD / year',
@@ -1187,13 +1142,6 @@ export const problems: Problem[] = [
       source: 'World Bank — Poverty and Inequality Platform',
       sourceUrl: 'https://pip.worldbank.org',
       confidence: 'high',
-      asOf: '2026-06-09',
-    },
-    severity: {
-      value: 0.9,
-      unit: 'share of wellbeing (for those affected)',
-      source: 'estimated — extreme poverty dominates almost every other welfare measure for those experiencing it',
-      confidence: 'med',
       asOf: '2026-06-09',
     },
     marketSize: {
@@ -1291,13 +1239,6 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: '2026-06-09',
     },
-    severity: {
-      value: 0.2,
-      unit: 'share of global GDP at risk (long-run estimates)',
-      source: 'range of integrated-assessment and macro estimates; wide uncertainty',
-      confidence: 'low',
-      asOf: '2026-06-09',
-    },
     marketSize: {
       value: 4_500_000_000_000,
       unit: 'USD / year',
@@ -1391,13 +1332,6 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: TODAY,
     },
-    severity: {
-      value: 0.8,
-      unit: 'share of wealth (chronic disability + stigma + impoverishment)',
-      source: 'estimated — WHO NTD framing: chronic disability and impoverishment rather than acute mortality',
-      confidence: 'low',
-      asOf: TODAY,
-    },
     marketSize: {
       value: 4_000_000_000,
       unit: 'USD — addressable diagnostics + therapeutics market at full coverage',
@@ -1488,13 +1422,6 @@ export const problems: Problem[] = [
       source: 'UN Inter-agency Group for Child Mortality Estimation (UNICEF/WHO)',
       sourceUrl: 'https://data.unicef.org/topic/child-survival/neonatal-mortality/',
       confidence: 'high',
-      asOf: TODAY,
-    },
-    severity: {
-      value: 0.9,
-      unit: 'DALY-weighted severity (death within the first month of life)',
-      source: 'estimated — near-total loss of expected lifespan per case',
-      confidence: 'low',
       asOf: TODAY,
     },
     marketSize: {
@@ -1610,12 +1537,13 @@ export const problems: Problem[] = [
       asOf: '2026-08-27',
     },
     severity: {
-      value: 10_000_000,
-      unit: 'deaths attributed to high blood pressure per year, approximately',
-      source: 'WHO HEARTS technical package',
+      value: 0.463,
+      unit: '0–1 log of annual deaths per affected adult',
+      source:
+        'WHO HEARTS technical package: high blood pressure kills approximately 10 million people a year. WHO fact sheet: 1.4 billion adults aged 30–79 had hypertension in 2024. Rate = 10,000,000 / 1,400,000,000 = 0.00714 deaths per affected person per year. Log-normalized from 1 in 10,000 (0) to certain death this year (1): 0.463. The 23 September 2025 WHO news says "more than 10 million", so 10 million is the approximate figure, not a floor.',
       sourceUrl: 'https://www.who.int/publications/i/item/9789241511377',
       confidence: 'med',
-      asOf: '2026-08-27',
+      asOf: '2026-11-01',
     },
     currentSolutionQuality: {
       value: 0.23,
@@ -1720,13 +1648,6 @@ export const problems: Problem[] = [
       value: 8_200_000_000,
       unit: 'humans (indirect)',
       source: 'Indirect and low-confidence by design: global AI-driven productivity and service gains are gated on this specific power bottleneck, not a direct affliction count like a disease or poverty line.',
-      confidence: 'low',
-      asOf: TODAY,
-    },
-    severity: {
-      value: 0.5,
-      unit: 'share of committed AI infrastructure capex at real risk of multi-year delay',
-      source: 'estimated from interconnection-queue (2,300GW stuck) and transformer-backlog (5yr lead time) data — Lawrence Berkeley National Lab "Queued Up"; Siemens Energy backlog report, Aug 2026',
       confidence: 'low',
       asOf: TODAY,
     },
@@ -1845,13 +1766,6 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: '2026-08-22',
     },
-    severity: {
-      value: 3,
-      unit: '/10 per-capita severity',
-      source: 'editorial judgement: exclusion from financial rails is a real cost, not a mortality or morbidity burden',
-      confidence: 'low',
-      asOf: '2026-08-22',
-    },
     marketSize: {
       value: 2_500_000_000_000,
       unit: 'USD / year (global payments revenue)',
@@ -1860,9 +1774,10 @@ export const problems: Problem[] = [
       asOf: '2026-08-22',
     },
     currentSolutionQuality: {
-      value: 7,
-      unit: '/10 (high = well served, low opportunity)',
-      source: 'card rails work well for the banked; the gap is cost, settlement latency, and the unbanked tail',
+      value: 0.7,
+      unit: '0–1 (high = well served, low opportunity)',
+      source:
+        'The same 7/10 editorial judgment, rescaled onto 0–1. Card rails work well for the banked; the gap is cost, settlement latency, and the unbanked tail.',
       confidence: 'med',
       asOf: '2026-08-22',
     },
@@ -1934,12 +1849,13 @@ export const problems: Problem[] = [
       asOf: '2026-09-11',
     },
     severity: {
-      value: 9_700_000,
-      unit: 'deaths per year (2022)',
-      source: 'IARC GLOBOCAN 2022, via UICC',
+      value: 0.921,
+      unit: '0–1 log of deaths per new diagnosis in 2022',
+      source:
+        'UICC on GLOBOCAN 2022: 9.7 million deaths and 20 million new cases. This problem counts affected people as new diagnoses, so the rate is 9,700,000 / 20,000,000 = 0.485 deaths per new case that year, not per person living with cancer. Log-normalized from 1 in 10,000 (0) to certain death this year (1): 0.921.',
       sourceUrl: 'https://www.uicc.org/news-and-updates/news/globocan-2022-latest-global-cancer-data-shows-rising-incidence-and-stark',
-      confidence: 'high',
-      asOf: '2026-09-11',
+      confidence: 'med',
+      asOf: '2026-11-01',
     },
     marketSize: {
       value: 252_000_000_000,
@@ -2058,12 +1974,13 @@ export const problems: Problem[] = [
       asOf: '2026-09-11',
     },
     severity: {
-      value: 3_500_000,
-      unit: 'deaths per year (2021), about 5 percent of all deaths',
-      source: 'WHO COPD fact sheet',
+      value: 0.551,
+      unit: '0–1 log of annual deaths per prevalent case',
+      source:
+        'WHO COPD fact sheet (opened 2026-11-01): 3.4 million deaths in 2023, citing GBD 2023. GBD 2021 (PubMed 39748260): 213.39 million prevalent cases. Years differ, so the rate is approximate: 3,400,000 / 213,390,000 = 0.0159 deaths per prevalent case per year. Log-normalized from 1 in 10,000 (0) to certain death this year (1): 0.551. The mortality row still records WHO\'s earlier 3.5 million deaths for 2021.',
       sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/chronic-obstructive-pulmonary-disease-(copd)',
-      confidence: 'high',
-      asOf: '2026-09-11',
+      confidence: 'med',
+      asOf: '2026-11-01',
     },
     marketSize: {
       value: 19_800_000_000,
@@ -2171,12 +2088,13 @@ export const problems: Problem[] = [
       asOf: '2026-09-11',
     },
     severity: {
-      value: 3_400_000,
-      unit: 'deaths attributable to diabetes per year (2024, IDF). WHO counts 1.6M deaths in 2021 with diabetes as the direct cause; the two definitions differ',
-      source: 'IDF Diabetes Atlas 2025; WHO diabetes fact sheet',
-      sourceUrl: 'https://media.idf.org/media/uploads/sites/3/2025/04/IDF_Atlas_11th_Edition_2025_Global-Factsheet.pdf',
+      value: 0.321,
+      unit: '0–1 log of annual direct deaths per person living with diabetes',
+      source:
+        'WHO diabetes fact sheet: diabetes was the direct cause of 1.6 million deaths in 2021, and 830 million people were living with diabetes in 2022. Rate = 1,600,000 / 830,000,000 = 0.00193 deaths per person per year. The years differ by one. Log-normalized from 1 in 10,000 (0) to certain death this year (1): 0.321. The IDF\'s broader 3.4 million attributable deaths is a different definition and is not used here.',
+      sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/diabetes',
       confidence: 'med',
-      asOf: '2026-09-11',
+      asOf: '2026-11-01',
     },
     marketSize: {
       value: 53_460_000_000,

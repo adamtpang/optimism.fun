@@ -331,3 +331,19 @@ with `/marketcap` still prerendered, so both new caps validate.
   read from Crossref, except the Greenblatt arXiv preprint. Park 2023 and
   Hsieh and Moretti 2019 are flagged challenged. Fertility, NTDs, datacenter
   power, and financial infrastructure have no seed row.
+
+## Ranking formula (2026-11-01)
+
+The homepage order is `opportunityScore` in `src/lib/priority.ts`. Severity is
+a 0..1 log death rate (1 in 10,000 affected people per year scores 0; certain
+death this year scores 1), or empty when that rate is not sourced. Empty scores
+0.5. Death counts are not stored in `severity`, and values outside 0..1 throw.
+`currentSolutionQuality` is 0..1 only; financial infrastructure's 7/10 judgment
+is stored as 0.7. Neglectedness and tractability (1–10, divided by 10) multiply
+scale. Zero tagged companies and funders is unknown supply and falls back to
+neglectedness. X-risk severity is the share lost if the catastrophe occurs
+(biosecurity: 1, extinction). A probability range with no midpoint is recorded
+and not averaged. X-risk supply uses neglectedness, not the company count.
+The formula is on `/methodology`. AI control, nuclear war, and air pollution
+were not added: the opened pages did not fill scale, humans affected,
+neglectedness, and tractability together.
