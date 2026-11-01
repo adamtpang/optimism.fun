@@ -47,9 +47,77 @@ export default function MetricChart({
     </>
   )
 
+  // Phone width is about 320px of plot. A 640-wide viewBox scaled into that
+  // box draws 14px type at about 7px, so the narrow layout uses its own box.
+  const mobileWidth = 280
+  const mobileHeight = 200
+  const mobile = lineLayout(series, mobileWidth, mobileHeight, { l: 58, r: 46, t: 14, b: 28 })
+  const mobileLine = mobile.points.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')
+  const mobileLast = mobile.points[mobile.points.length - 1]
+  const mobileYears = Array.from({ length: 4 }, (_, i) => {
+    const year = Math.round(mobile.minX + ((mobile.maxX - mobile.minX) * i) / 3)
+    return year
+  }).filter((year, index, all) => all.indexOf(year) === index)
+
   return (
     <Figure title={title} subtitle={unit} source={caption}>
-      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label} className="w-full h-[240px] md:h-[320px]">
+      <svg viewBox={`0 0 ${mobileWidth} ${mobileHeight}`} role="img" aria-label={label} className="md:hidden w-full h-auto">
+        {mobile.ticks.map((tick) => {
+          const y = mobile.py(tick)
+          return (
+            <g key={tick}>
+              <line
+                x1={mobile.pad.l}
+                x2={mobileWidth - mobile.pad.r}
+                y1={y}
+                y2={y}
+                stroke="var(--chart-grid)"
+                strokeWidth="1"
+                vectorEffect="non-scaling-stroke"
+              />
+              <text x={mobile.pad.l - 6} y={y} textAnchor="end" dominantBaseline="middle" className="fill-neutral-600" style={{ fontSize: '16px' }}>
+                {formatMeasure(tick)}
+              </text>
+            </g>
+          )
+        })}
+        <polyline
+          points={mobileLine}
+          fill="none"
+          stroke="var(--chart-1)"
+          strokeWidth="2.5"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          vectorEffect="non-scaling-stroke"
+        />
+        {(series.length > 40 ? [mobile.points[0], mobile.points[mobile.points.length - 1]] : mobile.points).map(
+          (p) => (
+            <circle key={p.year} cx={p.x} cy={p.y} r={p.year === last.year ? 4 : 2.5} fill="var(--chart-1)" />
+          ),
+        )}
+        <text
+          x={mobileLast.x + 6}
+          y={mobileLast.y}
+          dominantBaseline="middle"
+          fill="var(--chart-1)"
+          style={{ fontSize: '16px', fontWeight: 600 }}
+        >
+          {formatMeasure(last.value)}
+        </text>
+        {mobileYears.map((year) => (
+          <text
+            key={year}
+            x={mobile.px(year)}
+            y={mobileHeight - 8}
+            textAnchor="middle"
+            className="fill-neutral-600"
+            style={{ fontSize: '16px' }}
+          >
+            {year}
+          </text>
+        ))}
+      </svg>
+      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label} className="hidden md:block w-full h-[320px]">
         {layout.ticks.map((tick) => {
           const y = layout.py(tick)
           return (
