@@ -24,8 +24,21 @@ if (small.trim()) failures.push('text below 14px:\n' + small)
 const arbitrary = rg(['-n', 'text-\\[', 'src', '--glob', '*.tsx', '--glob', '*.ts', ...skipMethodology])
 if (arbitrary.trim()) failures.push('arbitrary text-[ utilities:\n' + arbitrary)
 
-const amber = rg(['-n', 'amber-', 'src', ...skipMethodology])
-if (amber.trim()) failures.push('amber- alias still present:\n' + amber)
+const aliased = new Set(['50', '100', '200', '300', '400', '500', '600'])
+const amberUses = rg(['-o', 'amber-[0-9]+', 'src'])
+const unaliased = [
+  ...new Set(
+    [...amberUses.matchAll(/amber-(\d+)/g)].map((match) => match[1]).filter((step) => !aliased.has(step)),
+  ),
+]
+if (unaliased.length) {
+  failures.push('amber step is not in the remapped scale: ' + unaliased.join(', '))
+}
+const configText = spawnSync('rg', ['-N', 'amber:', '-A', '12', 'tailwind.config.ts'], { encoding: 'utf8' })
+const config = configText.stdout || ''
+if (!config.includes("300: '#0C625B'") || !config.includes("200: '#0C625B'")) {
+  failures.push('tailwind amber-200 and amber-300 must both alias to #0C625B')
+}
 
 const hex = rg(['-n', '#[0-9a-fA-F]{6}', 'src', '--glob', '*.tsx', ...skipMethodology])
 if (hex.trim()) failures.push('hex literals in tsx:\n' + hex)

@@ -69,9 +69,6 @@ export default function MetricChart({
             </g>
           )
         })}
-        <text x={16} y={18} className="fill-neutral-600" style={{ fontSize: '14px' }}>
-          {unit}
-        </text>
         <polyline
           points={line}
           fill="none"

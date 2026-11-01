@@ -94,14 +94,14 @@ body {
 /* Glass: nav, sticky headers, and hero overlays only. */
 .glass {
   background: rgba(255, 255, 255, 0.86);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  backdrop-filter: blur(20px) saturate(1.8);
   border-bottom: 1px solid rgba(15, 23, 42, 0.06);
 }
 .glass-panel {
   background: rgba(255, 255, 255, 0.86);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  backdrop-filter: blur(20px) saturate(1.8);
   border: 1px solid rgba(255, 255, 255, 0.6);
   box-shadow:
     0 16px 40px -8px rgba(16, 24, 40, 0.12),
@@ -132,8 +132,8 @@ body {
 @media (min-width: 768px) {
   .doors-panel {
     background: rgba(255, 255, 255, 0.86);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(1.8);
+    backdrop-filter: blur(20px) saturate(1.8);
     border: 1px solid rgba(255, 255, 255, 0.6);
     box-shadow:
       0 16px 40px -8px rgba(16, 24, 40, 0.12),

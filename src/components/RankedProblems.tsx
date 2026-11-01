@@ -85,7 +85,7 @@ export default function RankedProblems({ rows }: { rows: RankedRow[] }) {
             >
               <span className="text-small text-neutral-600 font-medium self-start md:self-center">{i + 1}</span>
               <div className="min-w-0">
-                <Link href={`/p/${r.slug}`} className="text-body font-semibold text-ink-100 hover:text-primary">
+                <Link href={`/p/${r.slug}`} className="inline-flex min-h-11 items-center text-body font-semibold text-ink-100 hover:text-primary">
                   {r.name}
                 </Link>
                 <p className="text-small text-neutral-600">
@@ -93,7 +93,7 @@ export default function RankedProblems({ rows }: { rows: RankedRow[] }) {
                   {r.discoveries > 0 && (
                     <>
                       {' · '}
-                      <Link href={`/discoveries?problem=${r.slug}`} className="text-primary hover:underline">
+                      <Link href={`/discoveries?problem=${r.slug}`} className="inline-flex min-h-11 items-center text-primary hover:underline">
                         {r.discoveries === 1 ? '1 discovery' : `${r.discoveries} discoveries`}
                       </Link>
                     </>

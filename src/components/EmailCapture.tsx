@@ -108,7 +108,7 @@ export default function EmailCapture({ variant = 'prominent' }: { variant?: Vari
                 <button
                   type="submit"
                   disabled={status === 'sending' || !email.trim()}
-                  className="font-mono text-small uppercase tracking-wider text-small bg-primary hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-colors px-6 py-3 whitespace-nowrap border border-primary font-semibold"
+                  className="font-mono text-small uppercase tracking-wider text-primary-foreground bg-primary hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-colors px-6 py-3 whitespace-nowrap border border-primary font-semibold"
                 >
                   {status === 'sending' ? 'subscribing…' : 'subscribe →'}
                 </button>

@@ -406,7 +406,7 @@ export default function CommitmentForm({
         </div>
 
         <div className="space-y-2 border-t border-hair pt-4">
-          <label className="flex items-start gap-2.5 cursor-pointer">
+          <label className="flex min-h-11 items-center gap-2.5 cursor-pointer">
             <input
               type="checkbox"
               checked={anon}
@@ -420,7 +420,7 @@ export default function CommitmentForm({
                 : 'Your commitment still counts on the board.'}
             </span>
           </label>
-          <label className="flex items-start gap-2.5 cursor-pointer">
+          <label className="flex min-h-11 items-center gap-2.5 cursor-pointer">
             <input
               type="checkbox"
               checked={wantsIntro}

@@ -70,7 +70,7 @@ export default function VoicesPage() {
                         <Link
                           key={pos.problemSlug}
                           href={`/p/${pos.problemSlug}`}
-                          className="inline-flex items-center rounded-none border border-hair bg-ink-900 px-2.5 py-0.5 text-small text-ink-400 hover:border-terminal-violet/30 hover:text-terminal-violet transition-colors"
+                          className="inline-flex items-center rounded-none border border-hair bg-ink-900 px-2.5 min-h-11 py-2 text-small text-ink-400 hover:border-terminal-violet/30 hover:text-terminal-violet transition-colors"
                         >
                           {problem.name}
                         </Link>

@@ -127,7 +127,7 @@ function IconAction({
       aria-label={label}
       aria-pressed={active}
       title={label}
-      className={`h-9 w-9 shrink-0 inline-flex items-center justify-center rounded border transition-colors ${
+      className={`h-11 w-11 shrink-0 inline-flex items-center justify-center rounded border transition-colors ${
         active
           ? activeClass
           : 'border-hair text-ink-500 hover:text-ink-100 hover:border-ink-400 hover:bg-ink-800/40'
@@ -534,7 +534,7 @@ export default function QuestRankings({ quests }: { quests: RankedQuest[] }) {
             <button
               type="button"
               onClick={() => setExploration(exploration.slug)}
-              className="h-9 w-9 inline-flex items-center justify-center rounded border border-hair text-ink-500 hover:text-ink-100"
+              className="h-11 w-11 inline-flex items-center justify-center rounded border border-hair text-ink-500 hover:text-ink-100"
               title="Clear 30-day exploration"
               aria-label="Clear 30-day exploration"
             >
@@ -626,7 +626,7 @@ export default function QuestRankings({ quests }: { quests: RankedQuest[] }) {
               type="button"
               onClick={resetFilters}
               disabled={!activeFilters}
-              className="h-9 w-9 inline-flex items-center justify-center rounded border border-hair text-ink-500 hover:text-ink-100 disabled:opacity-30 disabled:cursor-not-allowed"
+              className="h-11 w-11 inline-flex items-center justify-center rounded border border-hair text-ink-500 hover:text-ink-100 disabled:opacity-30 disabled:cursor-not-allowed"
               title="Reset filters"
               aria-label="Reset filters"
             >

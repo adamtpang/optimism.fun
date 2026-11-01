@@ -45,25 +45,26 @@ export default function Home() {
       <Navbar />
       <main>
         <section className="relative md:h-[720px]">
-          <div className="relative h-[300px] mt-14 md:mt-0 md:absolute md:inset-0 md:h-full">
+          <div className="relative h-[300px] mt-14 md:mt-0 md:absolute md:inset-0 md:h-full overflow-hidden">
             <HeroMedia
               alt={mediaCredit('earthset').text}
               sources={EARTHSET}
               width={1920}
               height={1080}
               priority
+              className="md:scale-[1.458] md:origin-[87px_402px]"
             />
             <div className="hero-scrim absolute inset-0 hidden md:block" />
             <Credit
               credit={mediaCredit('earthset')}
               onDark
-              className="absolute right-4 bottom-3 md:bottom-32 z-10 max-w-[36ch] text-right"
+              className="absolute right-4 bottom-3 md:bottom-32 z-10 max-w-[36ch] text-right [text-shadow:0_1px_2px_rgb(0_0_0/.8)]"
             />
           </div>
           <Container className="relative z-10 py-8 md:h-full md:flex md:flex-col md:justify-center">
             <h1 className="text-display-1 text-neutral-900 md:text-white max-w-[15ch]">
               Humanity&rsquo;s hardest problems.
-              <span className="block text-primary md:text-teal-200">Bring money or work.</span>
+              <span className="block text-primary md:text-white">Bring money or work.</span>
             </h1>
             <p className="text-body-lg text-neutral-700 md:text-neutral-200 mt-4 md:mt-6 max-w-[46ch]">
               {problems.length} problems. Every number sourced. Nothing for sale.

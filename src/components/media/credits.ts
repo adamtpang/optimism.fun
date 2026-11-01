@@ -44,21 +44,6 @@ export const MEDIA_CREDITS: MediaCredit[] = [
     text: 'Mead, Nebraska solar farm aerial 2026, AllTheUsernamesAreInUse. CC0.',
     href: 'https://commons.wikimedia.org/wiki/File:Mead,_Nebraska_solar_farm_aerial_2026.jpg',
   },
-  {
-    id: 'niaid',
-    text: '(not built) NIAID BSL-4 researchers. CC BY 2.0, attribution "NIAID" required.',
-    href: 'https://commons.wikimedia.org/wiki/File:BSL-4_research_scientists_at_the_NIAID_Integrated_Research_Facility_in_Ft_Detrick,_Maryland_preparing_noninfectious_laboratory_materials.jpg',
-  },
-  {
-    id: 'goes16',
-    text: '(not built) GOES-16 true color, NOAA. Public domain.',
-    href: 'https://commons.wikimedia.org/wiki/File:True_Color_Earth_viewed_from_GOES_16.jpg',
-  },
-  {
-    id: 'blackmarble_globe',
-    text: '(not built) Black Marble 2016 rotating globe, NASA GSFC SVS 30878. Public domain.',
-    href: 'https://svs.gsfc.nasa.gov/30878',
-  },
 ]
 
 export function mediaCredit(id: string): MediaCredit {

@@ -19,7 +19,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
-        mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+        mono: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
         serif: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
         display: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
       },
@@ -77,6 +77,15 @@ const config: Config = {
           rose: rgb('--terminal-rose'),
           violet: rgb('--terminal-violet'),
           cyan: rgb('--terminal-cyan'),
+        },
+        amber: {
+          50: '#EFFCF9',
+          100: '#CDF5EC',
+          200: '#0C625B',
+          300: '#0C625B',
+          400: '#0B7A71',
+          500: '#0B7A71',
+          600: '#0E4F4A',
         },
         paper: {
           DEFAULT: rgb('--paper'),
