@@ -105,6 +105,34 @@ body {
   backdrop-filter: blur(20px) saturate(1.8);
   border-bottom: 1px solid rgba(15, 23, 42, 0.06);
 }
+/* Same glass as the other pages until the desktop hero, which is black underneath. */
+.nav-on-hero {
+  background: rgba(255, 255, 255, 0.86);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  backdrop-filter: blur(20px) saturate(1.8);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+@media (min-width: 768px) {
+  .nav-on-hero {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.2) 75%, transparent);
+    background-repeat: no-repeat;
+    border-bottom-width: 0;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+.nav-fade {
+  transition: opacity 150ms linear;
+}
+.nav-fade-text a {
+  transition: color 150ms linear, background-color 150ms linear;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-fade,
+  .nav-fade-text a {
+    transition: none;
+  }
+}
 .glass-panel {
   background: rgba(255, 255, 255, 0.86);
   -webkit-backdrop-filter: blur(20px) saturate(1.8);
@@ -123,10 +151,18 @@ body {
 }
 @media (prefers-reduced-transparency: reduce) {
   .glass,
-  .glass-panel {
+  .glass-panel,
+  .nav-on-hero {
     background: #fff;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
+  }
+}
+@media (prefers-reduced-transparency: reduce) and (min-width: 768px) {
+  .nav-on-hero {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.4) 75%, transparent);
+    background-repeat: no-repeat;
+    border-bottom-width: 0;
   }
 }
 
@@ -153,6 +189,22 @@ body {
     background: #fff;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
+  }
+}
+
+/* Desktop chart height is real CSS pixels. The viewBox is set to the same size, so type does not scale. */
+.metric-desktop-frame {
+  display: none;
+  width: 100%;
+  container-type: inline-size;
+}
+@media (min-width: 768px) {
+  .metric-desktop-frame {
+    display: block;
+  }
+  .metric-desktop-slot {
+    width: 100%;
+    height: min(400px, calc(100cqw / 2.4));
   }
 }
 
