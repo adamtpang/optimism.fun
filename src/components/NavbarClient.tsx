@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { FeedbackButton } from './FeedbackWidget'
@@ -18,6 +18,16 @@ const NAV_TABS = [
 export default function NavbarClient() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const [pastHero, setPastHero] = useState(false)
+  const onHero = pathname === '/' && !pastHero
+
+  useEffect(() => {
+    if (pathname !== '/') return
+    const update = () => setPastHero(window.scrollY >= 560)
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    return () => window.removeEventListener('scroll', update)
+  }, [pathname])
 
   const isActive = (href: string) => {
     const path = href.split('#')[0]
@@ -26,13 +36,19 @@ export default function NavbarClient() {
 
   const itemClass = (active: boolean) =>
     `inline-flex items-center h-11 px-3 rounded-lg text-small font-medium ${
-      active ? 'text-primary bg-accent' : 'text-ink-300 hover:bg-ink-800'
+      onHero
+        ? active
+          ? 'text-primary bg-accent md:text-white md:bg-white/15'
+          : 'text-ink-300 hover:bg-ink-800 md:text-white/90 md:hover:bg-white/10'
+        : active
+          ? 'text-primary bg-accent'
+          : 'text-ink-300 hover:bg-ink-800'
     }`
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50 glass">
+    <header className={`fixed top-0 inset-x-0 z-50 ${onHero ? 'nav-on-hero' : 'glass'}`}>
       <div className="site-shell h-14 md:h-16 flex items-center gap-2 md:gap-6">
-        <Link href="/" className="inline-flex items-center gap-2 h-11 font-semibold text-body text-ink-100 shrink-0">
+        <Link href="/" className={`inline-flex items-center gap-2 h-11 font-semibold text-body shrink-0 ${onHero ? 'text-ink-100 md:text-white' : 'text-ink-100'}`}>
           <img src="/brand/optimism-mark.svg" alt="" width={28} height={28} />
           optimism.fun
         </Link>
@@ -63,7 +79,9 @@ export default function NavbarClient() {
           <SheetTrigger asChild>
             <button
               type="button"
-              className="lg:hidden ml-auto inline-flex items-center justify-center h-11 w-11 rounded-lg border border-border bg-background text-foreground"
+              className={`lg:hidden ml-auto inline-flex items-center justify-center h-11 w-11 rounded-lg border border-border bg-background text-foreground ${
+                onHero ? 'md:border-white/40 md:bg-transparent md:text-white' : ''
+              }`}
               aria-label="Menu"
             >
               <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden>

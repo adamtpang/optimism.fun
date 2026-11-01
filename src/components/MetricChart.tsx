@@ -13,34 +13,6 @@ function formatMobileTick(n: number): string {
   return sign + formatMeasure(rounded)
 }
 
-/** How far a polyline runs through a label box, ignoring the stub into the last dot. */
-function lineRunThrough(
-  points: { x: number; y: number }[],
-  left: number,
-  right: number,
-  top: number,
-  bottom: number,
-) {
-  let minX = Infinity
-  let maxX = -Infinity
-  const stop = right - 4
-  for (let i = 1; i < points.length; i++) {
-    const a = points[i - 1]
-    const b = points[i]
-    const steps = Math.max(1, Math.ceil(Math.max(Math.abs(b.x - a.x), Math.abs(b.y - a.y))))
-    for (let s = 0; s <= steps; s++) {
-      const u = steps === 0 ? 0 : s / steps
-      const x = a.x + (b.x - a.x) * u
-      const y = a.y + (b.y - a.y) * u
-      if (x >= left && x <= stop && y >= top && y <= bottom) {
-        if (x < minX) minX = x
-        if (x > maxX) maxX = x
-      }
-    }
-  }
-  return maxX > minX ? maxX - minX : 0
-}
-
 /**
  * One sourced series. The line is the stored points only. The source
  * sentence sits in the single caption, including any caveat the file already states.
@@ -91,7 +63,7 @@ export default function MetricChart({
   // box draws 14px type at about 7px, so the narrow layout uses its own box.
   const mobileWidth = 320
   const mobileHeight = 220
-  const mobile = lineLayout(series, mobileWidth, mobileHeight, { l: 72, r: 60, t: 16, b: 44 })
+  const mobile = lineLayout(series, mobileWidth, mobileHeight, { l: 72, r: 72, t: 16, b: 44 })
   const mobileLine = mobile.points.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')
   const mobileLast = mobile.points[mobile.points.length - 1]
   const mobileYearCandidates = Array.from({ length: 4 }, (_, i) => {
@@ -112,26 +84,14 @@ export default function MetricChart({
       ? [mobile.dataMin]
       : [0, 1, 2].map((i) => mobile.dataMin + ((mobile.dataMax - mobile.dataMin) * i) / 2)
   const endLabel = formatMobileTick(last.value)
-  const endWidth = endLabel.length * 9.2
-  const endX = Math.max(endWidth + 2, mobileLast.x - 8)
-  const yearTop = mobileHeight - 30
-  const labelHalf = 10
-  const labelLeft = endX - endWidth
-  const clearOfLine = (y: number) =>
-    y >= labelHalf + 2 &&
-    y + labelHalf <= yearTop - 2 &&
-    lineRunThrough(mobile.points, labelLeft, endX, y - labelHalf, y + labelHalf) < 3
-  let endY = mobileLast.y
-  if (!clearOfLine(endY)) {
-    for (const shift of [-12, -18, -24, -30, -36, 12, 18, 24]) {
-      const y = mobileLast.y + shift
-      if (clearOfLine(y)) {
-        endY = y
-        break
-      }
-    }
-  }
-  if (endY + 9 > yearTop) endY = yearTop - 10
+  // Bold 16px digits are about 10 user units wide. The right margin is the room beside the final dot.
+  const endWidth = endLabel.length * 10
+  const endGap = 12
+  const fitsRight = mobileLast.x + endGap + endWidth <= mobileWidth - 4
+  const endX = fitsRight ? mobileLast.x + endGap : Math.max(endWidth + 2, mobileLast.x - endGap)
+  const endAnchor = fitsRight ? 'start' : 'end'
+  // Same row as the final dot, so the value is not read as an earlier year.
+  const endY = mobileLast.y
 
   return (
     <Figure title={title} subtitle={unit} source={caption}>
@@ -169,10 +129,21 @@ export default function MetricChart({
             <circle key={p.year} cx={p.x} cy={p.y} r={p.year === last.year ? 4 : 2.5} fill="var(--chart-1)" />
           ),
         )}
+        {!fitsRight && (
+          <line
+            x1={mobileLast.x + 5}
+            y1={mobileLast.y}
+            x2={endAnchor === 'end' ? endX + 2 : endX - 2}
+            y2={endY}
+            stroke="var(--chart-1)"
+            strokeWidth="1"
+            vectorEffect="non-scaling-stroke"
+          />
+        )}
         <text
           x={endX}
           y={endY}
-          textAnchor="end"
+          textAnchor={endAnchor}
           dominantBaseline="middle"
           fill="var(--chart-1)"
           style={{ fontSize: '16px', fontWeight: 600 }}
@@ -192,7 +163,7 @@ export default function MetricChart({
           </text>
         ))}
       </svg>
-      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label} className="hidden md:block w-full h-[320px]">
+      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label} className="hidden md:block w-full h-auto">
         {layout.ticks.map((tick) => {
           const y = layout.py(tick)
           return (

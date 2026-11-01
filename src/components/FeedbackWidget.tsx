@@ -7,6 +7,7 @@
  */
 
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
+import { cn } from '@/lib/utils'
 
 type Ctx = { open: () => void }
 const FeedbackCtx = createContext<Ctx>({ open: () => {} })
@@ -224,7 +225,10 @@ export function FeedbackButton({ className = '' }: { className?: string }) {
   return (
     <button
       onClick={open}
-      className={`font-mono text-small text-ink-300 hover:text-primary transition-colors ${className}`}
+      className={cn(
+        'inline-flex items-center font-mono text-small text-ink-300 hover:text-primary transition-colors',
+        className,
+      )}
     >
       feedback
     </button>

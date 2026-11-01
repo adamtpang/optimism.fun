@@ -41,7 +41,7 @@ export default function Footer() {
             </div>
           </div>
           <div>
-            <div className="text-small font-medium text-neutral-600 mb-3">Context</div>
+            <div className="text-small font-medium text-neutral-600 mb-3">CONTEXT</div>
             <div className="flex flex-col text-small">
               <Link href="/countries" className="inline-flex items-center h-11 text-neutral-800 hover:text-primary">
                 countries
@@ -55,7 +55,7 @@ export default function Footer() {
             </div>
           </div>
           <div>
-            <div className="text-small font-medium text-neutral-600 mb-3">Meta</div>
+            <div className="text-small font-medium text-neutral-600 mb-3">META</div>
             <div className="flex flex-col text-small">
               <Link href="/methodology" className="inline-flex items-center h-11 text-neutral-800 hover:text-primary">
                 methodology
@@ -80,7 +80,7 @@ export default function Footer() {
               >
                 github
               </a>
-              <FeedbackButton className="h-11 justify-start px-0" />
+              <FeedbackButton className="h-11 justify-start px-0 py-0 font-sans text-neutral-800" />
             </div>
           </div>
         </div>
