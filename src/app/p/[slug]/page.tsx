@@ -20,6 +20,10 @@ import { getSourcedCrowding } from '@/data/quest-crowding'
 import { listDiscoveries } from '@/data/discoveries'
 import DiscoveryList from '@/components/DiscoveryList'
 import Link from 'next/link'
+import ProblemNumbers from '@/components/ProblemNumbers'
+import CtaBoard from '@/components/CtaBoard'
+import BurdenBlock from '@/components/BurdenBlock'
+import { problemMetrics } from '@/lib/open-data'
 
 export function generateStaticParams() {
   return problems.map((p) => ({ slug: p.slug }))
@@ -35,23 +39,33 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return { title: `${problem.name} | optimism.fun`, description: problem.tagline }
 }
 
-function Stat({ label, value, href }: { label: string; value: string; href?: string }) {
-  const body = (
-    <>
+function Stat({
+  label,
+  value,
+  source,
+  href,
+}: {
+  label: string
+  value: string
+  source?: string
+  href?: string
+}) {
+  const external = href?.startsWith('http')
+  return (
+    <div className="border border-hair p-4 min-w-0">
       <p className="font-mono text-3xl md:text-4xl tabular-nums text-ink-100">{value}</p>
       <p className="text-sm text-ink-500 mt-1">{label}</p>
-    </>
-  )
-  if (!href) return <div className="border border-hair p-4">{body}</div>
-  const external = href.startsWith('http')
-  return (
-    <a
-      href={href}
-      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-      className="border border-hair p-4 hover:border-amber-300"
-    >
-      {body}
-    </a>
+      {source && href && (
+        <a
+          href={href}
+          {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+          className="block text-xs text-amber-300 underline decoration-dotted underline-offset-2 mt-2 leading-snug hover:text-amber-200 line-clamp-3"
+        >
+          {source}
+        </a>
+      )}
+      {source && !href && <p className="text-xs text-ink-500 mt-2 leading-snug">{source}</p>}
+    </div>
   )
 }
 
@@ -78,6 +92,8 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
     })
   const boardCompanies = companies.map((c) => ({ slug: c.slug, name: c.name, url: c.url, stage: c.stage }))
   const science = listDiscoveries({ problemSlug: slug })
+  const deathsMetric = problemMetrics(slug).find((metric) => metric.id === 'related_deaths')
+  const updated = problem.lastUpdated ?? problem.asOf
 
   return (
     <>
@@ -86,22 +102,36 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 pb-8">
           <h1 className="font-serif text-4xl md:text-6xl text-ink-100 leading-tight">{problem.name}</h1>
           <p className="text-lg text-ink-400 mt-3 max-w-3xl">{problem.tagline}</p>
+          <p className="font-mono text-[11px] text-ink-500 mt-3">
+            Updated {updated}
+            {' · '}
+            <a className="text-amber-300 hover:underline" href={`/api/problems/${slug}/csv`}>
+              Download this data
+            </a>
+          </p>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-8">
             {people && (
-              <Stat label="people affected" value={formatHumans(people.value)} href={people.sourceUrl ?? cite} />
+              <Stat
+                label="people affected"
+                value={formatHumans(people.value)}
+                source={people.source}
+                href={people.sourceUrl ?? cite}
+              />
             )}
             {deaths && (
               <Stat
                 label="related deaths / yr"
                 value={formatHumans(deaths)}
-                href={deathSource?.sourceUrl ?? cite}
+                source={deathsMetric?.source ?? deathSource?.source}
+                href={deathsMetric?.sourceUrl ?? deathSource?.sourceUrl ?? cite}
               />
             )}
             {flow && (
               <Stat
                 label="spent on it / yr"
                 value={fmtUsdCompact(flow.usdPerYear.value)}
+                source={flow.usdPerYear.source}
                 href={flow.usdPerYear.sourceUrl ?? cite}
               />
             )}
@@ -109,6 +139,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
               <Stat
                 label="prize if solved"
                 value={fmtUsdCompact(prize.marketCap.value)}
+                source={prize.marketCap.source}
                 href={prize.marketCap.sourceUrl ?? cite}
               />
             )}
@@ -118,6 +149,10 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
         <CiteThis problem={problem} />
 
         <ActionBar />
+
+        <ProblemNumbers problem={problem} />
+        <CtaBoard problemSlug={slug} />
+        <BurdenBlock problemSlug={slug} />
 
         <ConstraintTree problemSlug={slug} />
 
