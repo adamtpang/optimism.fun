@@ -201,6 +201,24 @@ export type ScaleMeasure = {
   asOf: string
 }
 
+/**
+ * A sourced chance that a catastrophic outcome occurs.
+ * `low === high` and `lowIsExclusive === false` is a single probability the
+ * rank may multiply. Anything else is a range and is shown, not averaged.
+ */
+export type CatastropheProbability = {
+  low: number
+  high: number
+  /** The source said "greater than" the low number, so it is not a closed bound. */
+  lowIsExclusive: boolean
+  horizonYears: number
+  outcome: string
+  source: string
+  sourceUrl: string
+  confidence: Confidence
+  asOf: string
+}
+
 /** A 0-10 judgment (neglectedness, tractability) with a reasoned, cited rationale. */
 export type ScoredJudgment = {
   score: number // 0-10
@@ -231,15 +249,24 @@ export type Problem = {
   description: string
   /** How many humans this problem affects today. */
   humansAffected: SourcedNumber
-  /** Per-capita severity of the problem (DALYs, $-cost, or other proxy). */
-  severity: SourcedNumber
+  /**
+   * Per-person severity, 0..1, from one method: the log of annual deaths per
+   * person affected, or, for an x-risk, the share of humanity lost if the
+   * catastrophe occurs. Omitted when that fraction is not sourced.
+   */
+  severity?: SourcedNumber
+  /**
+   * Stated probability of the catastrophic outcome. Recorded for x-risk.
+   * The rank multiplies by it only when it is a single number.
+   */
+  catastropheProbability?: CatastropheProbability
   /**
    * USD value of the addressable market for solutions — TAM proxy.
    * Drives axis 4 of the ranking: "how much money can pay for the solution."
    */
   marketSize?: SourcedNumber
   /**
-   * Current solution quality (0–10, or 0–1 normalized) — low = high opportunity.
+   * Current solution quality, 0..1 — low = high opportunity.
    * Drives axis 3 of the ranking: "how good are existing solutions."
    */
   currentSolutionQuality?: SourcedNumber

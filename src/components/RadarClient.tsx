@@ -178,6 +178,7 @@ export default function RadarClient({ rows = computeRadarRows() }: { rows?: Rada
                 <div className="mt-0.5 text-small text-ink-500 line-clamp-1 max-w-md">{r.tagline}</div>
                 <div className="mt-0.5 font-mono text-small text-ink-600 tabular-nums">
                   {r.companies} cos · {r.capital} funds on it
+                  {r.companies + r.capital === 0 && ' · no tags, supply from neglectedness'}
                   {r.capitalUsd != null && (
                     <>
                       {' '}
@@ -246,9 +247,11 @@ export default function RadarClient({ rows = computeRadarRows() }: { rows?: Rada
       </div>
 
       <p className="mt-4 font-mono text-small text-ink-500 leading-relaxed">
-        <span className="text-primary">opportunity</span> = demand (humans affected × severity ×
-        market) divided by supply (companies, capital, and solution quality already on it), nudged
-        by urgency. Higher = a bigger, more urgent, less-served gap. The{' '}
+        <span className="text-primary">opportunity</span> = scale (people × severity) ×
+        neglectedness × tractability, times how thin the supply is, nudged by urgency. Severity is
+        a 0–1 death rate, or the stake if a catastrophe hits. Zero tagged companies and funders
+        counts as unknown supply, read from neglectedness. Higher = a bigger, more neglected, less-served
+        gap. The{' '}
         {/* keep this list in sync with CLASS_LABEL in lib/demand.ts */}
         <span className="text-primary">●</span> dots show how many independent demand signals
         (burden, willingness-to-pay, capital, research, policy, expert priors, queues &amp;
