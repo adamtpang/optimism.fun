@@ -11,8 +11,8 @@ const SOURCE_KIND_LABEL: Record<MediaSourceKind, string> = {
 }
 
 const SOURCE_KIND_COLOR: Record<MediaSourceKind, string> = {
-  substack: 'text-amber-300 border-amber-300/40',
-  blog: 'text-amber-300 border-amber-300/40',
+  substack: 'text-primary border-primary/40',
+  blog: 'text-primary border-primary/40',
   youtube: 'text-terminal-rose border-rose-500/40',
   x: 'text-terminal-cyan border-cyan-400/40',
   podcast: 'text-terminal-violet border-violet-400/40',
@@ -44,7 +44,7 @@ export default async function MediaFeed({
 
   if (items.length === 0) {
     return (
-      <p className="font-mono text-[11px] text-ink-500">{emptyLabel}</p>
+      <p className="font-mono text-small text-ink-500">{emptyLabel}</p>
     )
   }
 
@@ -66,25 +66,25 @@ export default async function MediaFeed({
             >
               <div className="flex items-baseline gap-2 mb-1.5">
                 <span
-                  className={`font-mono text-[9px] uppercase tracking-ultra-wide border px-1.5 py-px ${kindColor}`}
+                  className={`font-mono text-small uppercase border px-1.5 py-px ${kindColor}`}
                 >
                   {kindLabel}
                 </span>
                 {source && (
-                  <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
+                  <span className="font-mono text-small uppercase text-ink-500">
                     {source.name}
                     {source.author ? ` · ${source.author}` : ''}
                   </span>
                 )}
-                <span className="ml-auto font-mono text-[10px] text-ink-600 tabular-nums">
+                <span className="ml-auto font-mono text-small text-ink-600 tabular-nums">
                   {formatDate(item.publishedAt)}
                 </span>
               </div>
-              <p className="font-sans text-sm text-ink-100 group-hover:text-amber-300 transition-colors leading-snug">
+              <p className="font-sans text-sm text-ink-100 group-hover:text-primary transition-colors leading-snug">
                 {item.title}
               </p>
               {item.excerpt && (
-                <p className="mt-1 text-[12px] text-ink-400 leading-relaxed line-clamp-2">
+                <p className="mt-1 text-small text-ink-400 leading-relaxed line-clamp-2">
                   {item.excerpt}
                 </p>
               )}

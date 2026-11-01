@@ -15,14 +15,14 @@ export default function MethodologyPage() {
       <Navbar />
       <main>
         <section className="pt-32 pb-20 px-6">
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-7xl mx-auto">
             <Link
               href="/"
               className="inline-flex items-center gap-2 text-sm text-ink-500 hover:text-ink-300 transition-colors mb-8"
             >
               <span>←</span> back
             </Link>
-            <p className="text-amber-300 font-medium tracking-[0.2em] uppercase text-xs mb-3">
+            <p className="text-primary font-medium tracking-[0.2em] uppercase text-xs mb-3">
               Methodology
             </p>
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.1] mb-6">
@@ -44,8 +44,8 @@ export default function MethodologyPage() {
                   supports it. Users pick which lens matters and sort by it.
                 </p>
                 <div className="space-y-4">
-                  <div className="rounded border border-amber-500/20 bg-amber-500/[0.03] p-5">
-                    <p className="text-amber-300 text-xs uppercase tracking-wider mb-2">
+                  <div className="rounded border border-primary/20 bg-primary/[0.03] p-5">
+                    <p className="text-primary text-xs uppercase tracking-wider mb-2">
                       welfare lens
                     </p>
                     <h3 className="font-serif font-semibold mb-2 text-ink-100">
@@ -72,8 +72,8 @@ export default function MethodologyPage() {
                       civilizational loss.
                     </p>
                   </div>
-                  <div className="rounded border border-amber-300/20 bg-indigo-500/[0.03] p-5">
-                    <p className="text-amber-200 text-xs uppercase tracking-wider mb-2">
+                  <div className="rounded border border-primary/20 bg-indigo-500/[0.03] p-5">
+                    <p className="text-primary text-xs uppercase tracking-wider mb-2">
                       utility delta lens
                     </p>
                     <h3 className="font-serif font-semibold mb-2 text-ink-100">
@@ -104,7 +104,7 @@ export default function MethodologyPage() {
                 </p>
                 <div className="space-y-3 mb-4">
                   <div className="rounded border border-hair p-4">
-                    <p className="text-amber-300 text-xs uppercase tracking-wider mb-1">
+                    <p className="text-primary text-xs uppercase tracking-wider mb-1">
                       burden &middot; who, how badly
                     </p>
                     <p className="text-sm text-ink-400">
@@ -116,7 +116,7 @@ export default function MethodologyPage() {
                     </p>
                   </div>
                   <div className="rounded border border-hair p-4">
-                    <p className="text-amber-300 text-xs uppercase tracking-wider mb-1">
+                    <p className="text-primary text-xs uppercase tracking-wider mb-1">
                       willingness to pay &middot; revealed spend
                     </p>
                     <p className="text-sm text-ink-400">
@@ -125,7 +125,7 @@ export default function MethodologyPage() {
                     </p>
                   </div>
                   <div className="rounded border border-hair p-4">
-                    <p className="text-amber-300 text-xs uppercase tracking-wider mb-1">
+                    <p className="text-primary text-xs uppercase tracking-wider mb-1">
                       capital flux &middot; smart money + momentum
                     </p>
                     <p className="text-sm text-ink-400">
@@ -146,7 +146,7 @@ export default function MethodologyPage() {
                     </p>
                   </div>
                   <div className="rounded border border-hair p-4">
-                    <p className="text-amber-300 text-xs uppercase tracking-wider mb-1">
+                    <p className="text-primary text-xs uppercase tracking-wider mb-1">
                       expert priors &middot; credible prioritizers
                     </p>
                     <p className="text-sm text-ink-400">
@@ -164,10 +164,10 @@ export default function MethodologyPage() {
                   demand isn&rsquo;t trusted until at least two independent signal classes agree
                   &mdash; a lone signal is discounted. A class with no credible source yet is{' '}
                   dropped from the blend, never counted as a silent zero. The{' '}
-                  <span className="text-amber-300">●</span> dots on the{' '}
+                  <span className="text-primary">●</span> dots on the{' '}
                   <Link
                     href="/radar"
-                    className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                    className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
                   >
                     radar
                   </Link>{' '}
@@ -223,7 +223,7 @@ export default function MethodologyPage() {
                 <p className="mb-4">
                   If we don&rsquo;t know, we say so. Every numeric cell is tagged{' '}
                   <span className="text-terminal-green">high</span>,{' '}
-                  <span className="text-amber-300">med</span>, or{' '}
+                  <span className="text-primary">med</span>, or{' '}
                   <span className="text-terminal-rose">low</span> with a source and an as-of date.
                   Unknown values are written as &ldquo;unknown&rdquo; and tagged low. No silent
                   guessing.
@@ -255,7 +255,7 @@ export default function MethodologyPage() {
                 </h2>
                 <ul className="space-y-2 text-sm text-ink-400">
                   <li>
-                    <span className="text-amber-300">welfare floor</span>: Copenhagen
+                    <span className="text-primary">welfare floor</span>: Copenhagen
                     Consensus baseline. High-certainty, high-BCR interventions.
                   </li>
                   <li>
@@ -263,7 +263,7 @@ export default function MethodologyPage() {
                     top-priority areas. AI, bio, nuclear, catastrophic risk.
                   </li>
                   <li>
-                    <span className="text-amber-200">hard tech</span>: Stephens&rsquo;
+                    <span className="text-primary">hard tech</span>: Stephens&rsquo;
                     &ldquo;good quests&rdquo; from Founders Fund. Energy, construction, space,
                     bio-manufacturing.
                   </li>
@@ -317,14 +317,14 @@ export default function MethodologyPage() {
                       href="https://traestephens.substack.com/p/choose-good-quests"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                      className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
                     >
                       Trae Stephens &amp; Markie Wagner &middot; &ldquo;Choose Good Quests&rdquo;
                     </a>{' '}
                     &mdash; the good&times;hard quest grid: a good quest makes the future
                     better, a bad one doesn&rsquo;t. Our best people owe the world a hard one.
                     Gamified on{' '}
-                    <Link href="/good-quests" className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2">
+                    <Link href="/good-quests" className="text-primary hover:text-primary underline decoration-dotted underline-offset-2">
                       /good-quests
                     </Link>
                     .
@@ -334,7 +334,7 @@ export default function MethodologyPage() {
                       href="https://patrickcollison.com/progress"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                      className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
                     >
                       Patrick Collison &middot; Progress Studies
                     </a>{' '}
@@ -347,7 +347,7 @@ export default function MethodologyPage() {
                       href="https://www.ycombinator.com/rfs"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                      className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
                     >
                       Y Combinator &middot; Requests for Startups
                     </a>{' '}
@@ -360,7 +360,7 @@ export default function MethodologyPage() {
                       href="https://80000hours.org/problem-profiles/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                      className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
                     >
                       80,000 Hours &middot; problem profiles
                     </a>{' '}
@@ -372,7 +372,7 @@ export default function MethodologyPage() {
                       href="https://copenhagenconsensus.com"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                      className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
                     >
                       Copenhagen Consensus
                     </a>{' '}
@@ -384,7 +384,7 @@ export default function MethodologyPage() {
                       href="https://ourworldindata.org"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                      className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
                     >
                       Our World in Data
                     </a>{' '}
@@ -396,7 +396,7 @@ export default function MethodologyPage() {
                       href="https://rootsofprogress.org"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                      className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
                     >
                       Roots of Progress
                     </a>{' '}
@@ -408,7 +408,7 @@ export default function MethodologyPage() {
                       href="https://worksinprogress.co"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                      className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
                     >
                       Works in Progress
                     </a>{' '}

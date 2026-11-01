@@ -16,12 +16,12 @@ export default function PrivacyPage() {
       <Navbar />
       <main className="min-h-screen">
         <section className="border-b border-hair pt-28 pb-12">
-          <div className="mx-auto max-w-4xl px-6">
-            <div className="mb-3 font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300">
+          <div className="mx-auto max-w-7xl px-6">
+            <div className="mb-3 font-mono text-small uppercase text-primary">
               Privacy and data handling
             </div>
             <h1 className="font-serif text-4xl text-ink-100 md:text-6xl">What the site actually processes.</h1>
-            <p className="mt-6 max-w-3xl text-base leading-8 text-ink-300">
+            <p className="mt-6 max-w-7xl text-base leading-8 text-ink-300">
               This policy describes the collection and sharing paths present in the optimism.fun
               application code and deployed homepage. The site identifies Adam Pangelinan as its
               builder and includes Anchor Marianas LLC in its operator credits; contact routes are
@@ -30,7 +30,7 @@ export default function PrivacyPage() {
           </div>
         </section>
 
-        <article className="mx-auto max-w-4xl space-y-10 px-6 py-12 text-ink-300">
+        <article className="mx-auto max-w-7xl space-y-10 px-6 py-12 text-ink-300">
           <section>
             <h2 className="font-serif text-2xl text-ink-100">Hosting and ordinary requests</h2>
             <p className="mt-4 leading-8">
@@ -124,8 +124,8 @@ export default function PrivacyPage() {
             </p>
           </section>
 
-          <div className="border-t border-hair pt-6 font-mono text-[11px] uppercase tracking-wider">
-            <Link className="text-amber-300 hover:underline" href="/contact">Contact and correction routes &rarr;</Link>
+          <div className="border-t border-hair pt-6 font-mono text-small uppercase tracking-wider">
+            <Link className="text-primary hover:underline" href="/contact">Contact and correction routes &rarr;</Link>
           </div>
         </article>
       </main>

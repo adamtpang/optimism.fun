@@ -25,7 +25,7 @@ export default function HeroFigure({
 }) {
   return (
     <figure className={className}>
-      <figcaption className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+      <figcaption className="font-mono text-small uppercase text-ink-500 mb-2">
         {label}
       </figcaption>
       {/* font-sans + proportional figures, both deliberate */}

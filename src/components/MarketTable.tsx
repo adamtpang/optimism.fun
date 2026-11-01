@@ -31,7 +31,7 @@ export default function MarketTable<T extends Record<string, unknown>>({
               {columns.map((col) => (
                 <th
                   key={col.key}
-                  className={`px-3 py-2.5 font-medium text-[10px] uppercase tracking-ultra-wide text-ink-400 ${
+                  className={`px-3 py-2.5 font-medium text-small uppercase text-ink-400 ${
                     col.align === 'right' ? 'text-right' : 'text-left'
                   } ${col.className ?? ''}`}
                 >
@@ -62,7 +62,7 @@ export default function MarketTable<T extends Record<string, unknown>>({
         </table>
       </div>
       {(footerNote || footerSource) && (
-        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-ink-500">
+        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-small text-ink-500">
           {footerSource && (
             <span className="flex items-center gap-1.5">
               <span className="text-ink-600">source:</span>
@@ -71,7 +71,7 @@ export default function MarketTable<T extends Record<string, unknown>>({
                   href={footerSource.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                  className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
                 >
                   {footerSource.label}
                 </a>

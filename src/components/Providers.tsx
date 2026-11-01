@@ -2,7 +2,6 @@
 
 import { ThemeProvider } from 'next-themes'
 import { FeedbackProvider } from './FeedbackWidget'
-import FeedbackFAB from './FeedbackFAB'
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -12,10 +11,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       enableSystem={false}
       disableTransitionOnChange
     >
-      <FeedbackProvider>
-        {children}
-        <FeedbackFAB />
-      </FeedbackProvider>
+      <FeedbackProvider>{children}</FeedbackProvider>
     </ThemeProvider>
   )
 }

@@ -37,7 +37,7 @@ const EMPTY_QUESTBOOK: QuestbookState = {
 
 const CROWDING_META: Record<Crowding, { label: string; tone: string }> = {
   open: { label: 'open field', tone: 'text-terminal-green' },
-  contested: { label: 'contested', tone: 'text-amber-300' },
+  contested: { label: 'contested', tone: 'text-primary' },
   crowded: { label: 'crowded', tone: 'text-terminal-rose' },
 }
 
@@ -45,7 +45,7 @@ const BAND_META: Record<OpportunityBand, { label: string; short: string; chip: s
   top: {
     label: 'Top opportunity',
     short: 'Top',
-    chip: 'bg-amber-300/10 text-amber-300 border-amber-300/30',
+    chip: 'bg-primary/10 text-primary border-primary/30',
   },
   strong: {
     label: 'Strong opportunity',
@@ -99,7 +99,7 @@ function readQuestbook(): QuestbookState {
 function MiniBar({ label, value, tone }: { label: string; value: number; tone: string }) {
   return (
     <div className="flex items-center gap-1.5" title={`${label} ${value}/100`}>
-      <span className="font-mono text-[9px] uppercase text-ink-500 w-7">{label}</span>
+      <span className="font-mono text-small uppercase text-ink-500 w-7">{label}</span>
       <div className="h-1 w-12 bg-ink-800 rounded-full overflow-hidden">
         <div className={`h-1 ${tone}`} style={{ width: `${value}%` }} />
       </div>
@@ -177,7 +177,7 @@ function QuestRow({
           </span>
 
           <span
-            className={`h-7 min-w-7 px-1.5 shrink-0 inline-flex items-center justify-center rounded border font-mono text-[9px] uppercase ${bandMeta.chip}`}
+            className={`h-7 min-w-7 px-1.5 shrink-0 inline-flex items-center justify-center rounded border font-mono text-small uppercase ${bandMeta.chip}`}
             title={bandMeta.label}
           >
             {bandMeta.short}
@@ -185,19 +185,19 @@ function QuestRow({
 
           <span className="min-w-0 flex-1">
             <span className="flex items-center gap-2 flex-wrap">
-              <span className="font-sans text-[15px] font-medium text-ink-100">{q.title}</span>
+              <span className="font-sans text-body font-medium text-ink-100">{q.title}</span>
               {q.domainLabel && (
-                <span className="font-mono text-[9px] uppercase tracking-wide text-ink-500 border border-hair px-1.5 py-0.5 rounded">
+                <span className="font-mono text-small uppercase tracking-wide text-ink-500 border border-hair px-1.5 py-0.5 rounded">
                   {q.domainLabel}
                 </span>
               )}
               {q.allocationVerdict === 'underallocated' && (
-                <span className="font-mono text-[9px] uppercase tracking-wide text-amber-300 bg-amber-300/10 px-1.5 py-0.5 rounded">
+                <span className="font-mono text-small uppercase tracking-wide text-primary bg-primary/10 px-1.5 py-0.5 rounded">
                   underfunded
                 </span>
               )}
               <span
-                className={`font-mono text-[9px] uppercase tracking-wide ${CROWDING_META[q.crowding].tone} border border-hair px-1.5 py-0.5 rounded`}
+                className={`font-mono text-small uppercase tracking-wide ${CROWDING_META[q.crowding].tone} border border-hair px-1.5 py-0.5 rounded`}
                 title={
                   q.crowdingSource === 'sourced'
                     ? `${q.competitorCount} companies found building this`
@@ -210,13 +210,13 @@ function QuestRow({
                 )}
               </span>
             </span>
-            <span className="mt-1 block text-ink-400 text-[12.5px] leading-snug line-clamp-2">
+            <span className="mt-1 block text-ink-400 text-small leading-snug line-clamp-2">
               {q.pitch}
             </span>
           </span>
 
           <span className="hidden md:flex flex-col items-end gap-1 shrink-0">
-            <MiniBar label="dem" value={q.demand} tone="bg-amber-300" />
+            <MiniBar label="dem" value={q.demand} tone="bg-primary" />
             <MiniBar label="gap" value={q.gap} tone="bg-terminal-cyan" />
           </span>
 
@@ -226,14 +226,14 @@ function QuestRow({
             </span>
             {q.prizeUsd != null && (
               <span
-                className="font-mono text-[10px] tabular-nums text-ink-400"
+                className="font-mono text-small tabular-nums text-ink-400"
                 title="Prize at the limit"
               >
                 {fmtUsdCompact(q.prizeUsd)}
               </span>
             )}
             {mo && (
-              <span className={`font-mono text-[10px] ${mo.tone}`} title={mo.label}>
+              <span className={`font-mono text-small ${mo.tone}`} title={mo.label}>
                 {mo.arrow} {q.confidence}
               </span>
             )}
@@ -251,7 +251,7 @@ function QuestRow({
           <IconAction
             label={saved ? 'Remove from Questbook' : 'Save to Questbook'}
             active={saved}
-            activeClass="border-amber-300/50 bg-amber-300/10 text-amber-300"
+            activeClass="border-primary/50 bg-primary/10 text-primary"
             onClick={onToggleSaved}
           >
             <Bookmark size={16} fill={saved ? 'currentColor' : 'none'} />
@@ -287,38 +287,38 @@ function QuestRow({
         <div className="border-t border-hair bg-ink-900/40 px-4 sm:px-12 py-5 space-y-5">
           <div className="grid md:grid-cols-3 gap-5">
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-wide text-terminal-cyan mb-1.5">
+              <p className="font-mono text-small uppercase tracking-wide text-terminal-cyan mb-1.5">
                 Why now
               </p>
-              <p className="text-ink-300 text-[13px] leading-relaxed">{q.whyNow}</p>
+              <p className="text-ink-300 text-small leading-relaxed">{q.whyNow}</p>
             </div>
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-wide text-amber-300 mb-1.5">
+              <p className="font-mono text-small uppercase tracking-wide text-primary mb-1.5">
                 Supply to create
               </p>
-              <p className="text-ink-300 text-[13px] leading-relaxed">{q.shape}</p>
+              <p className="text-ink-300 text-small leading-relaxed">{q.shape}</p>
             </div>
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-wide text-terminal-green mb-1.5">
+              <p className="font-mono text-small uppercase tracking-wide text-terminal-green mb-1.5">
                 The measurable delta
               </p>
-              <p className="text-ink-300 text-[13px] leading-relaxed">{q.successLooksLike}</p>
+              <p className="text-ink-300 text-small leading-relaxed">{q.successLooksLike}</p>
             </div>
           </div>
 
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-wide text-ink-400 mb-1.5">
+            <p className="font-mono text-small uppercase tracking-wide text-ink-400 mb-1.5">
               Why it is a good quest
             </p>
-            <p className="text-ink-300 text-[13px] leading-relaxed max-w-3xl">{q.goodQuest}</p>
+            <p className="text-ink-300 text-small leading-relaxed max-w-7xl">{q.goodQuest}</p>
           </div>
 
           {q.crowdingSource === 'sourced' && (
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-wide text-ink-400 mb-1.5">
+              <p className="font-mono text-small uppercase tracking-wide text-ink-400 mb-1.5">
                 Existing supply ({q.competitorCount} found)
               </p>
-              <p className="text-ink-300 text-[13px] leading-relaxed">
+              <p className="text-ink-300 text-small leading-relaxed">
                 {q.exampleCompetitors.length > 0
                   ? q.exampleCompetitors.join(' · ')
                   : 'No named competitors found. Open field.'}
@@ -326,8 +326,8 @@ function QuestRow({
             </div>
           )}
 
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-hair pt-4 font-mono text-[10px] text-ink-500">
-            <Link href={`/p/${q.problemSlug}`} className="text-amber-300 hover:underline">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-hair pt-4 font-mono text-small text-ink-500">
+            <Link href={`/p/${q.problemSlug}`} className="text-primary hover:underline">
               Evidence for {q.problemName} →
             </Link>
             <span>demand {q.demand}</span>
@@ -369,11 +369,11 @@ function FilterSelect({
 }) {
   return (
     <label className="flex flex-col gap-1 min-w-28">
-      <span className="font-mono text-[9px] uppercase tracking-wide text-ink-600">{label}</span>
+      <span className="font-mono text-small uppercase tracking-wide text-ink-600">{label}</span>
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="h-9 rounded border border-hair bg-ink-900 px-2.5 font-mono text-[11px] text-ink-200 outline-none focus:border-amber-300"
+        className="h-9 rounded border border-hair bg-ink-900 px-2.5 font-mono text-small text-ink-200 outline-none focus:border-primary"
       >
         {children}
       </select>
@@ -518,7 +518,7 @@ export default function QuestRankings({ quests }: { quests: RankedQuest[] }) {
       {exploration && (
         <section className="border-y border-terminal-violet/30 bg-terminal-violet/[0.05] px-4 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-wide text-terminal-violet mb-1">
+            <p className="font-mono text-small uppercase tracking-wide text-terminal-violet mb-1">
               Your 30-day problem exploration
             </p>
             <p className="font-serif text-xl text-ink-100">{exploration.title}</p>
@@ -527,7 +527,7 @@ export default function QuestRankings({ quests }: { quests: RankedQuest[] }) {
           <div className="flex items-center gap-2 shrink-0">
             <Link
               href={`/p/${exploration.problemSlug}`}
-              className="h-9 inline-flex items-center px-3 rounded border border-terminal-violet/40 text-terminal-violet font-mono text-[11px] hover:bg-terminal-violet/10 transition-colors"
+              className="h-9 inline-flex items-center px-3 rounded border border-terminal-violet/40 text-terminal-violet font-mono text-small hover:bg-terminal-violet/10 transition-colors"
             >
               Open evidence →
             </Link>
@@ -560,9 +560,9 @@ export default function QuestRankings({ quests }: { quests: RankedQuest[] }) {
                 type="button"
                 onClick={() => setScope(value)}
                 aria-pressed={scope === value}
-                className={`h-8 px-3 rounded border font-mono text-[10px] uppercase tracking-wide transition-colors ${
+                className={`h-8 px-3 rounded border font-mono text-small uppercase tracking-wide transition-colors ${
                   scope === value
-                    ? 'border-amber-300/50 bg-amber-300/10 text-amber-300'
+                    ? 'border-primary/50 bg-primary/10 text-primary'
                     : 'border-hair text-ink-500 hover:text-ink-100'
                 }`}
               >
@@ -573,7 +573,7 @@ export default function QuestRankings({ quests }: { quests: RankedQuest[] }) {
 
           <div className="grid md:grid-cols-[minmax(14rem,1fr)_repeat(4,minmax(7rem,auto))_2.25rem] gap-2 items-end">
             <label className="flex flex-col gap-1">
-              <span className="font-mono text-[9px] uppercase tracking-wide text-ink-600">
+              <span className="font-mono text-small uppercase tracking-wide text-ink-600">
                 Search quests
               </span>
               <span className="relative block">
@@ -586,7 +586,7 @@ export default function QuestRankings({ quests }: { quests: RankedQuest[] }) {
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
                   placeholder="energy, pathogens, housing..."
-                  className="h-9 w-full rounded border border-hair bg-ink-900 pl-8 pr-3 text-sm text-ink-100 placeholder:text-ink-600 outline-none focus:border-amber-300"
+                  className="h-9 w-full rounded border border-hair bg-ink-900 pl-8 pr-3 text-sm text-ink-100 placeholder:text-ink-600 outline-none focus:border-primary"
                 />
               </span>
             </label>
@@ -634,7 +634,7 @@ export default function QuestRankings({ quests }: { quests: RankedQuest[] }) {
             </button>
           </div>
 
-          <div className="flex items-center justify-between gap-4 font-mono text-[10px] text-ink-600">
+          <div className="flex items-center justify-between gap-4 font-mono text-small text-ink-600">
             <span>{visible.length} quests visible</span>
             <span className="hidden sm:inline">
               bookmark · react · flag one for a 30-day exploration
@@ -649,7 +649,7 @@ export default function QuestRankings({ quests }: { quests: RankedQuest[] }) {
               <button
                 type="button"
                 onClick={resetFilters}
-                className="mt-3 font-mono text-[11px] text-amber-300 hover:underline"
+                className="mt-3 font-mono text-small text-primary hover:underline"
               >
                 Reset the browser
               </button>
@@ -671,7 +671,7 @@ export default function QuestRankings({ quests }: { quests: RankedQuest[] }) {
         </div>
       </section>
 
-      <p className="font-mono text-[10px] text-ink-600 leading-relaxed max-w-3xl">
+      <p className="font-mono text-small text-ink-600 leading-relaxed max-w-7xl">
         Your Questbook is stored locally on this device. No account or cloud sync yet. Scores are
         evidence-backed conjectures, not guarantees. Passing hides nothing from the public ranking;
         it only records your own decision.

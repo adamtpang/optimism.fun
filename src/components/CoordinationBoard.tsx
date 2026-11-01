@@ -30,14 +30,14 @@ type Props = {
 }
 
 const SUBMITTED = (
-  <span className="font-mono text-[9px] uppercase tracking-wider text-ink-600 border border-hair px-1 py-0.5">
+  <span className="font-mono text-small uppercase tracking-wider text-ink-600 border border-hair px-1 py-0.5">
     user-submitted
   </span>
 )
 
 function Empty({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-[13px] text-ink-500 leading-relaxed border border-dashed border-hair px-4 py-4">
+    <p className="text-small text-ink-500 leading-relaxed border border-dashed border-hair px-4 py-4">
       {children}
     </p>
   )
@@ -57,10 +57,10 @@ function Column({
   return (
     <div className="border border-hair">
       <div className="border-b border-hair px-4 py-3 bg-ink-900/40">
-        <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300">
+        <p className="font-mono text-small uppercase text-primary">
           {kicker}
         </p>
-        <p className="font-mono text-[11px] text-ink-500 mt-1 tabular-nums">
+        <p className="font-mono text-small text-ink-500 mt-1 tabular-nums">
           <span className={count > 0 ? 'text-ink-200' : 'text-ink-600'}>{count}</span> {countLabel}
         </p>
       </div>
@@ -86,17 +86,17 @@ export default function CoordinationBoard({
     companies.find((c) => c.slug === slug)?.name ?? slug ?? 'a company'
 
   return (
-    <section className="px-6 py-12 max-w-5xl mx-auto border-t border-hair-strong">
+    <section className="px-6 py-12 max-w-7xl mx-auto border-t border-hair-strong">
       <h2 className="font-serif text-2xl md:text-3xl text-ink-100 mb-2">
         Who is moving on {problemName}
       </h2>
       <p className="text-ink-500 text-sm mb-8">A human checks every entry. Nothing here can be bought.</p>
 
       {!boardAvailable && (
-        <p className="border border-amber-300/40 bg-amber-300/[0.04] px-4 py-3 text-[13px] text-ink-300 mb-6">
+        <p className="border border-primary/40 bg-primary/[0.04] px-4 py-3 text-small text-ink-300 mb-6">
           The board is not connected on this deployment, so only the curated rows show. Set{' '}
-          <code className="text-amber-300">DATABASE_URL</code> and run{' '}
-          <code className="text-amber-300">scripts/db/0005_commitments.sql</code>.
+          <code className="text-primary">DATABASE_URL</code> and run{' '}
+          <code className="text-primary">scripts/db/0005_commitments.sql</code>.
         </p>
       )}
 
@@ -109,13 +109,13 @@ export default function CoordinationBoard({
         >
           {quests.map((q) => (
             <div key={q.slug} className="border-b border-hair pb-3 last:border-b-0 last:pb-0">
-              <p className="text-ink-100 text-[13px] font-medium leading-snug">{q.title}</p>
-              <p className="font-mono text-[10px] text-ink-600 mt-1">
+              <p className="text-ink-100 text-small font-medium leading-snug">{q.title}</p>
+              <p className="font-mono text-small text-ink-600 mt-1">
                 {q.crowded ? 'contested · check who is already here' : 'open · nobody funded yet'}
               </p>
               <Link
                 href="#coordinate"
-                className="inline-block mt-2 font-mono text-[10px] uppercase tracking-wider text-amber-300 hover:underline"
+                className="inline-block mt-2 font-mono text-small uppercase tracking-wider text-primary hover:underline"
               >
                 Claim this start
               </Link>
@@ -124,18 +124,18 @@ export default function CoordinationBoard({
           {starts.map((c) => (
             <div key={c.id} className="border-b border-hair pb-3 last:border-b-0 last:pb-0">
               <div className="flex items-center gap-2 mb-1">
-                <p className="text-ink-200 text-[13px] font-medium">
+                <p className="text-ink-200 text-small font-medium">
                   {c.name ?? 'Anonymous builder'}
                 </p>
                 {SUBMITTED}
               </div>
-              <p className="text-ink-400 text-[13px] leading-relaxed">{c.proof}</p>
+              <p className="text-ink-400 text-small leading-relaxed">{c.proof}</p>
               {c.url && (
                 <a
                   href={c.url}
                   target="_blank"
                   rel="noreferrer nofollow"
-                  className="font-mono text-[10px] text-amber-300 hover:underline"
+                  className="font-mono text-small text-primary hover:underline"
                 >
                   proof
                 </a>
@@ -156,17 +156,17 @@ export default function CoordinationBoard({
             return (
               <div key={co.slug} className="border-b border-hair pb-3 last:border-b-0 last:pb-0">
                 <div className="flex items-baseline justify-between gap-2">
-                  <p className="text-ink-100 text-[13px] font-medium leading-snug">{co.name}</p>
-                  <span className="font-mono text-[10px] text-ink-600 whitespace-nowrap">
+                  <p className="text-ink-100 text-small font-medium leading-snug">{co.name}</p>
+                  <span className="font-mono text-small text-ink-600 whitespace-nowrap">
                     {co.stage}
                   </span>
                 </div>
-                <p className="font-mono text-[10px] text-ink-600 mt-1 tabular-nums">
+                <p className="font-mono text-small text-ink-600 mt-1 tabular-nums">
                   {n} {n === 1 ? 'person wants' : 'people want'} in
                 </p>
                 <Link
                   href="#coordinate"
-                  className="inline-block mt-2 font-mono text-[10px] uppercase tracking-wider text-amber-300 hover:underline"
+                  className="inline-block mt-2 font-mono text-small uppercase tracking-wider text-primary hover:underline"
                 >
                   I want in
                 </Link>
@@ -189,27 +189,27 @@ No companies tracked yet.
           {capital.map((c) => (
             <div key={c.id} className="border-b border-hair pb-3 last:border-b-0 last:pb-0">
               <div className="flex items-center gap-2 mb-1">
-                <p className="text-ink-200 text-[13px] font-medium">
+                <p className="text-ink-200 text-small font-medium">
                   {c.name ?? 'Anonymous allocator'}
                 </p>
                 {SUBMITTED}
               </div>
-              <p className="font-mono text-[10px] text-amber-300 mb-1">
+              <p className="font-mono text-small text-primary mb-1">
                 {c.checkSizeBand ? BAND_LABEL[c.checkSizeBand] : 'band not given'}
                 {c.stage ? ` · ${c.stage}` : ''}
               </p>
-              <p className="text-ink-400 text-[13px] leading-relaxed">{c.proof}</p>
+              <p className="text-ink-400 text-small leading-relaxed">{c.proof}</p>
             </div>
           ))}
           {needs.map((c) => (
             <div key={c.id} className="border-b border-hair pb-3 last:border-b-0 last:pb-0">
               <div className="flex items-center gap-2 mb-1">
-                <p className="text-ink-200 text-[13px] font-medium">
+                <p className="text-ink-200 text-small font-medium">
                   {nameOf(c.companySlug)} · {c.intent === 'hire' ? 'hiring' : 'raising'}
                 </p>
                 {SUBMITTED}
               </div>
-              <p className="text-ink-400 text-[13px] leading-relaxed">{c.proof}</p>
+              <p className="text-ink-400 text-small leading-relaxed">{c.proof}</p>
             </div>
           ))}
           {capital.length === 0 && needs.length === 0 && (

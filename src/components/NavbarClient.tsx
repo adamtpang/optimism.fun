@@ -1,121 +1,113 @@
 'use client'
 
-import { useRef, useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import ThemeToggle from './ThemeToggle'
 import { FeedbackButton } from './FeedbackWidget'
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
 
-export type NavTab = {
-  name: string
-  href: string
-  tone: 'amber' | 'cyan' | 'green' | 'violet'
-}
-
-
-const NAV_TABS: Omit<NavTab, 'count'>[] = [
-  { name: 'Problems', href: '/', tone: 'amber' },
-  { name: 'Where', href: '/where', tone: 'cyan' },
-  { name: 'Discoveries', href: '/discoveries', tone: 'amber' },
-  { name: 'Capital', href: '/command#capital', tone: 'green' },
-  { name: 'Talent', href: '/command#talent', tone: 'cyan' },
-  { name: 'Markets', href: '/command#markets', tone: 'violet' },
+const NAV_TABS = [
+  { name: 'Problems', href: '/' },
+  { name: 'Where', href: '/where' },
+  { name: 'Discoveries', href: '/discoveries' },
+  { name: 'Capital', href: '/command#capital' },
+  { name: 'Talent', href: '/command#talent' },
+  { name: 'Markets', href: '/command#markets' },
 ]
 
 export default function NavbarClient() {
-  const [scrolled, setScrolled] = useState(false)
-  const ticking = useRef(false)
   const pathname = usePathname()
+  const [open, setOpen] = useState(false)
 
-  useEffect(() => {
-    const handler = () => {
-      if (ticking.current) return
-      ticking.current = true
-      requestAnimationFrame(() => {
-        setScrolled(window.scrollY > 20)
-        ticking.current = false
-      })
-    }
-    window.addEventListener('scroll', handler, { passive: true })
-    return () => window.removeEventListener('scroll', handler)
-  }, [])
+  const isActive = (href: string) => {
+    const path = href.split('#')[0]
+    return path === '/' ? pathname === '/' : pathname?.startsWith(path)
+  }
 
-  const isActive = (href: string) =>
-    href === '/' ? pathname === '/' : pathname?.startsWith(href)
+  const itemClass = (active: boolean) =>
+    `inline-flex items-center h-11 px-3 rounded-lg text-small font-medium ${
+      active ? 'text-primary bg-accent' : 'text-ink-300 hover:bg-ink-800'
+    }`
 
   return (
-    <nav
-      className={`fixed top-0 w-full z-50 transition-colors duration-200 ${
-        scrolled
-          ? 'bg-ink/90 backdrop-blur-md border-b border-hair'
-          : 'bg-ink border-b border-hair'
-      }`}
-    >
-      {/* Row 1: brand + meta */}
-      <div className="border-b border-hair">
-        <div className="max-w-7xl mx-auto px-6 h-11 flex items-center justify-between">
-          <Link
-            href="/"
-            className="font-mono text-[13px] text-ink-100 hover:text-amber-300 transition-colors"
-          >
-            <span className="text-amber-300">◆</span>{' '}
-            <span className="font-semibold">optimism.fun</span>
-          </Link>
-          <div className="flex items-center gap-3 sm:gap-4 font-mono text-[11px]">
-            <span className="hidden md:inline text-ink-500">
-              v0.1
-            </span>
-            <Link
-              href="/manifesto"
-              className={`transition-colors ${
-                isActive('/manifesto') ? 'text-amber-300' : 'text-ink-300 hover:text-ink-100'
-              }`}
-            >
-              manifesto
-            </Link>
-            <Link
-              href="/methodology"
-              className={`hidden sm:inline transition-colors ${
-                isActive('/methodology') ? 'text-amber-300' : 'text-ink-300 hover:text-ink-100'
-              }`}
-            >
-              methodology
-            </Link>
-            <FeedbackButton />
-            <a
-              href="https://github.com/adamtpang/optimism.fun"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden sm:inline text-ink-300 hover:text-ink-100 transition-colors"
-            >
-              github
-            </a>
-            <ThemeToggle />
-          </div>
-        </div>
-      </div>
+    <header className="fixed top-0 inset-x-0 z-50 glass">
+      <div className="site-shell h-14 md:h-16 flex items-center gap-2 md:gap-6">
+        <Link href="/" className="inline-flex items-center gap-2 h-11 font-semibold text-body text-ink-100 shrink-0">
+          <img src="/brand/optimism-mark.svg" alt="" width={28} height={28} />
+          optimism.fun
+        </Link>
 
-      {/* Row 2: data tabs, scrollable on mobile, always visible */}
-      <div className="overflow-x-auto scrollbar-hide">
-        <div className="max-w-7xl mx-auto px-6 h-11 flex items-stretch gap-px whitespace-nowrap">
-          {NAV_TABS.map((tab) => {
-            const active = isActive(tab.href)
-            return (
-              <Link
-                key={tab.name}
-                href={tab.href}
-                className={`flex items-center gap-2 px-3 transition-colors border-b-2 ${
-                  active
-                    ? 'border-amber-300 text-ink-100 bg-amber-300/[0.04]'
-                    : 'border-transparent text-ink-400 hover:text-ink-100 hover:bg-ink-800/40'
-                }`}
-              >
-                <span className="font-sans text-[13px] font-medium">{tab.name}</span>
-              </Link>
-            )
-          })}
+        <nav className="hidden lg:flex items-center gap-1" aria-label="Primary">
+          {NAV_TABS.map((tab) => (
+            <Link key={tab.name} href={tab.href} className={itemClass(isActive(tab.href))}>
+              {tab.name}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="ml-auto hidden lg:flex items-center gap-1">
+          <Link href="/methodology" className={itemClass(isActive('/methodology'))}>
+            Methodology
+          </Link>
+          <a
+            href="https://github.com/adamtpang/optimism.fun"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={itemClass(false)}
+          >
+            GitHub
+          </a>
+          <ThemeToggle />
         </div>
+
+        <Sheet open={open} onOpenChange={setOpen}>
+          <SheetTrigger asChild>
+            <button
+              type="button"
+              className="lg:hidden ml-auto inline-flex items-center justify-center h-11 w-11 rounded-lg border border-border bg-background text-foreground"
+              aria-label="Menu"
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden>
+                <path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+              </svg>
+            </button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-[min(100%,320px)]">
+            <SheetTitle className="text-body">optimism.fun</SheetTitle>
+            <nav className="mt-6 flex flex-col" aria-label="Mobile">
+              {NAV_TABS.map((tab) => (
+                <Link
+                  key={tab.name}
+                  href={tab.href}
+                  onClick={() => setOpen(false)}
+                  className="flex items-center h-12 text-body text-neutral-900 border-b border-neutral-100"
+                >
+                  {tab.name}
+                </Link>
+              ))}
+              <Link href="/methodology" onClick={() => setOpen(false)} className="flex items-center h-12 text-body border-b border-neutral-100">
+                Methodology
+              </Link>
+              <Link href="/manifesto" onClick={() => setOpen(false)} className="flex items-center h-12 text-body border-b border-neutral-100">
+                manifesto
+              </Link>
+              <a
+                href="https://github.com/adamtpang/optimism.fun"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center h-12 text-body border-b border-neutral-100"
+              >
+                GitHub
+              </a>
+              <div className="flex items-center h-12 gap-4">
+                <FeedbackButton />
+                <ThemeToggle />
+              </div>
+            </nav>
+          </SheetContent>
+        </Sheet>
       </div>
-    </nav>
+    </header>
   )
 }

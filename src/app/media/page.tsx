@@ -21,8 +21,8 @@ const SOURCE_KIND_LABEL: Record<MediaSourceKind, string> = {
 }
 
 const SOURCE_KIND_COLOR: Record<MediaSourceKind, string> = {
-  substack: 'text-amber-300 border-amber-300/40',
-  blog: 'text-amber-300 border-amber-300/40',
+  substack: 'text-primary border-primary/40',
+  blog: 'text-primary border-primary/40',
   youtube: 'text-terminal-rose border-rose-500/40',
   x: 'text-terminal-cyan border-cyan-400/40',
   podcast: 'text-terminal-violet border-violet-400/40',
@@ -56,20 +56,20 @@ export default async function MediaIndex({
       <Navbar />
       <main>
         <section className="pt-28 pb-10 border-b border-hair">
-          <div className="max-w-5xl mx-auto px-6">
+          <div className="site-shell">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-ultra-wide text-ink-500 hover:text-amber-300 transition-colors mb-8"
+              className="inline-flex items-center gap-2 font-mono text-small uppercase text-ink-500 hover:text-primary transition-colors mb-8"
             >
               <span>&larr;</span> back
             </Link>
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               media &middot; firehose
             </p>
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.05] text-ink-100 mb-5">
-              Writing about this <span className="text-amber-300">right now</span>.
+              Writing about this <span className="text-primary">right now</span>.
             </h1>
-            <p className="text-lg text-ink-300 leading-relaxed max-w-3xl">
+            <p className="text-lg text-ink-300 leading-relaxed max-w-7xl">
               Essays, podcasts, videos, and threads from the {mediaSources.length}{' '}
               sources we follow most closely &mdash; tagged to the problems on the
               leaderboard.
@@ -77,18 +77,18 @@ export default async function MediaIndex({
           </div>
         </section>
 
-        <section className="px-6 py-10 max-w-5xl mx-auto">
+        <section className="px-6 py-10 max-w-7xl mx-auto">
           <div className="mb-6 space-y-3">
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+              <p className="font-mono text-small uppercase text-ink-500 mb-2">
                 filter by problem
               </p>
               <div className="flex flex-wrap gap-1.5">
                 <Link
                   href="/media"
-                  className={`px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider border transition-colors ${
+                  className={`px-3 min-h-11 inline-flex items-center font-mono text-small uppercase tracking-wider border transition-colors ${
                     !problemFilter
-                      ? 'bg-amber-300/10 border-amber-300/60 text-amber-300'
+                      ? 'bg-primary/10 border-primary/60 text-primary'
                       : 'border-hair text-ink-400 hover:text-ink-100 hover:border-ink-400'
                   }`}
                 >
@@ -98,9 +98,9 @@ export default async function MediaIndex({
                   <Link
                     key={p.slug}
                     href={`/media?problem=${p.slug}${sourceFilter ? `&source=${sourceFilter}` : ''}`}
-                    className={`px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider border transition-colors ${
+                    className={`px-3 min-h-11 inline-flex items-center font-mono text-small uppercase tracking-wider border transition-colors ${
                       problemFilter === p.slug
-                        ? 'bg-amber-300/10 border-amber-300/60 text-amber-300'
+                        ? 'bg-primary/10 border-primary/60 text-primary'
                         : 'border-hair text-ink-400 hover:text-ink-100 hover:border-ink-400'
                     }`}
                   >
@@ -110,15 +110,15 @@ export default async function MediaIndex({
               </div>
             </div>
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+              <p className="font-mono text-small uppercase text-ink-500 mb-2">
                 filter by source
               </p>
               <div className="flex flex-wrap gap-1.5">
                 <Link
                   href={problemFilter ? `/media?problem=${problemFilter}` : '/media'}
-                  className={`px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider border transition-colors ${
+                  className={`px-3 min-h-11 inline-flex items-center font-mono text-small uppercase tracking-wider border transition-colors ${
                     !sourceFilter
-                      ? 'bg-amber-300/10 border-amber-300/60 text-amber-300'
+                      ? 'bg-primary/10 border-primary/60 text-primary'
                       : 'border-hair text-ink-400 hover:text-ink-100 hover:border-ink-400'
                   }`}
                 >
@@ -128,9 +128,9 @@ export default async function MediaIndex({
                   <Link
                     key={s.id}
                     href={`/media?${problemFilter ? `problem=${problemFilter}&` : ''}source=${s.id}`}
-                    className={`px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider border transition-colors ${
+                    className={`px-3 min-h-11 inline-flex items-center font-mono text-small uppercase tracking-wider border transition-colors ${
                       sourceFilter === s.id
-                        ? 'bg-amber-300/10 border-amber-300/60 text-amber-300'
+                        ? 'bg-primary/10 border-primary/60 text-primary'
                         : 'border-hair text-ink-400 hover:text-ink-100 hover:border-ink-400'
                     }`}
                   >
@@ -142,7 +142,7 @@ export default async function MediaIndex({
           </div>
 
           {items.length === 0 ? (
-            <p className="font-mono text-[11px] text-ink-500">
+            <p className="font-mono text-small text-ink-500">
               no items match this filter.
             </p>
           ) : (
@@ -164,25 +164,25 @@ export default async function MediaIndex({
                       >
                         <div className="flex items-baseline gap-2 mb-1.5">
                           <span
-                            className={`font-mono text-[9px] uppercase tracking-ultra-wide border px-1.5 py-px ${kindColor}`}
+                            className={`font-mono text-small uppercase border px-1.5 py-px ${kindColor}`}
                           >
                             {kindLabel}
                           </span>
                           {source && (
-                            <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
+                            <span className="font-mono text-small uppercase text-ink-500">
                               {source.name}
                               {source.author ? ` · ${source.author}` : ''}
                             </span>
                           )}
-                          <span className="ml-auto font-mono text-[10px] text-ink-600 tabular-nums">
+                          <span className="ml-auto font-mono text-small text-ink-600 tabular-nums">
                             {formatDate(item.publishedAt)}
                           </span>
                         </div>
-                        <p className="font-sans text-sm text-ink-100 group-hover:text-amber-300 transition-colors leading-snug">
+                        <p className="font-sans text-sm text-ink-100 group-hover:text-primary transition-colors leading-snug">
                           {item.title}
                         </p>
                         {item.excerpt && (
-                          <p className="mt-1 text-[12px] text-ink-400 leading-relaxed line-clamp-2">
+                          <p className="mt-1 text-small text-ink-400 leading-relaxed line-clamp-2">
                             {item.excerpt}
                           </p>
                         )}
@@ -195,7 +195,7 @@ export default async function MediaIndex({
                             <Link
                               key={slug}
                               href={`/p/${slug}`}
-                              className="font-mono text-[9px] uppercase tracking-ultra-wide text-ink-400 hover:text-amber-300 border border-hair hover:border-amber-300/60 px-1.5 py-px"
+                              className="font-mono text-small uppercase text-ink-400 hover:text-primary border border-hair hover:border-primary/60 px-1.5 py-px"
                             >
                               {p.name.toLowerCase().split(/[ &]/)[0]}
                             </Link>

@@ -79,7 +79,7 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
       {children}
       {visible && (
         <div
-          className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-[rgb(var(--bg)/0.75)] backdrop-blur-sm p-4"
+          className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-[rgb(var(--bg)/0.75)] p-4"
           onClick={close}
         >
           <div
@@ -91,7 +91,7 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
           >
             <div className="flex items-baseline justify-between mb-5 border-b border-hair pb-3">
               <div>
-                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
+                <p className="font-mono text-small uppercase text-ink-500 mb-1">
                   feedback &middot; criticism welcome
                 </p>
                 <h2 id="feedback-title" className="font-serif text-xl text-ink-100">
@@ -109,15 +109,15 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
 
             {status === 'sent' ? (
               <div className="py-8 text-center">
-                <p className="font-serif text-lg text-amber-300 mb-2">Logged.</p>
-                <p className="font-mono text-[11px] text-ink-500">
+                <p className="font-serif text-lg text-primary mb-2">Logged.</p>
+                <p className="font-mono text-small text-ink-500">
                   thanks. adam will read it.
                 </p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+                  <label className="block font-mono text-small uppercase text-ink-500 mb-2">
                     your rating
                   </label>
                   <div
@@ -135,14 +135,14 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
                           aria-label={`${n} star${n > 1 ? 's' : ''}`}
                           aria-pressed={rating === n}
                           className={`text-3xl leading-none w-10 h-10 flex items-center justify-center transition-colors ${
-                            filled ? 'text-amber-300' : 'text-ink-600 hover:text-ink-400'
+                            filled ? 'text-primary' : 'text-ink-600 hover:text-ink-400'
                           }`}
                         >
                           {filled ? '★' : '☆'}
                         </button>
                       )
                     })}
-                    <span className="ml-3 font-mono text-[11px] text-ink-500 tabular-nums">
+                    <span className="ml-3 font-mono text-small text-ink-500 tabular-nums">
                       {rating ? `${rating} / 5` : 'pick a rating'}
                     </span>
                   </div>
@@ -152,7 +152,7 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
                   <div>
                     <label
                       htmlFor="feedback-message"
-                      className="block font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1.5"
+                      className="block font-mono text-small uppercase text-ink-500 mb-1.5"
                     >
                       {rating < 5 ? 'what would make this a 5?' : 'anything you’d love to see? (optional)'}
                     </label>
@@ -167,7 +167,7 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
                           ? 'be specific — data, design, or thesis. all criticism welcome.'
                           : 'extra signal welcome but not required.'
                       }
-                      className="w-full bg-[rgb(var(--bg))] border border-hair-strong text-ink-100 font-sans text-sm p-3 focus:outline-none focus:border-amber-300/60 placeholder:text-ink-500"
+                      className="w-full bg-[rgb(var(--bg))] border border-hair-strong text-ink-100 font-sans text-sm p-3 focus:outline-none focus:border-primary/60 placeholder:text-ink-500"
                     />
                   </div>
                 )}
@@ -175,7 +175,7 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
                 <div>
                   <label
                     htmlFor="feedback-email"
-                    className="block font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1.5"
+                    className="block font-mono text-small uppercase text-ink-500 mb-1.5"
                   >
                     email (optional, if you want a reply)
                   </label>
@@ -185,24 +185,24 @@ export function FeedbackProvider({ children }: { children: React.ReactNode }) {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@example.com"
-                    className="w-full bg-[rgb(var(--bg))] border border-hair-strong text-ink-100 font-sans text-sm p-3 focus:outline-none focus:border-amber-300/60 placeholder:text-ink-500"
+                    className="w-full bg-[rgb(var(--bg))] border border-hair-strong text-ink-100 font-sans text-sm p-3 focus:outline-none focus:border-primary/60 placeholder:text-ink-500"
                   />
                 </div>
 
                 {status === 'error' && (
-                  <p className="font-mono text-[11px] text-terminal-rose">
+                  <p className="font-mono text-small text-terminal-rose">
                     failed to send. try again in a moment.
                   </p>
                 )}
 
                 <div className="flex items-center justify-between pt-2 gap-3">
-                  <p className="font-mono text-[10px] text-ink-500">
+                  <p className="font-mono text-small text-ink-500">
                     sent to adam via email
                   </p>
                   <button
                     type="submit"
                     disabled={status === 'sending' || !canSubmit}
-                    className="font-mono text-[11px] uppercase tracking-wider text-amber-300 border border-amber-300/40 px-4 py-2 hover:bg-amber-300/[0.08] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                    className="font-mono text-small uppercase tracking-wider text-primary border border-primary/40 px-4 py-2 hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                   >
                     {status === 'sending' ? 'sending…' : 'send →'}
                   </button>
@@ -224,7 +224,7 @@ export function FeedbackButton({ className = '' }: { className?: string }) {
   return (
     <button
       onClick={open}
-      className={`font-mono text-[11px] text-ink-300 hover:text-amber-300 transition-colors ${className}`}
+      className={`font-mono text-small text-ink-300 hover:text-primary transition-colors ${className}`}
     >
       feedback
     </button>

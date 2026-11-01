@@ -4,6 +4,7 @@ import PageHeader from '@/components/PageHeader'
 import Link from 'next/link'
 import { countries } from '@/data/countries'
 import { formatUSD } from '@/lib/format'
+import PageBand from '@/components/media/PageBand'
 
 export const metadata = {
   title: 'Countries by GDP | optimism.fun',
@@ -18,6 +19,7 @@ export default function CountriesPage() {
   return (
     <>
       <Navbar />
+      <PageBand kind="blackmarble" />
       <main>
         <PageHeader
           kicker="The atlas · countries"
@@ -38,7 +40,7 @@ export default function CountriesPage() {
           <div className="overflow-x-auto border border-hair">
             <table className="min-w-full font-mono text-xs">
               <thead>
-                <tr className="border-b border-hair-strong bg-ink-800/40 text-left text-[10px] uppercase tracking-ultra-wide text-ink-400">
+                <tr className="border-b border-hair-strong bg-ink-800/40 text-left text-small uppercase text-ink-400">
                   <th className="px-3 py-2.5 font-medium w-10">#</th>
                   <th className="px-3 py-2.5 font-medium">country</th>
                   <th className="px-3 py-2.5 font-medium">iso</th>
@@ -59,7 +61,7 @@ export default function CountriesPage() {
                       {c.name}
                     </td>
                     <td className="px-3 py-2.5 text-ink-500">{c.iso3}</td>
-                    <td className="px-3 py-2.5 text-right tabular-nums text-amber-300">
+                    <td className="px-3 py-2.5 text-right tabular-nums text-primary">
                       {formatUSD(c.gdp.value)}
                     </td>
                     <td className="px-3 py-2.5 text-right tabular-nums text-ink-400">
@@ -70,13 +72,13 @@ export default function CountriesPage() {
               </tbody>
             </table>
           </div>
-          <p className="mt-3 font-mono text-[11px] text-ink-500">
+          <p className="mt-3 font-mono text-small text-ink-500">
             <span className="text-ink-600">source:</span>{' '}
             <a
               href="https://data.worldbank.org/indicator/NY.GDP.MKTP.CD"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+              className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
             >
               World Bank · GDP, current US$ (NY.GDP.MKTP.CD)
             </a>

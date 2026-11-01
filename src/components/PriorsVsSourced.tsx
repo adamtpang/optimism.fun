@@ -5,9 +5,9 @@
  *
  * Colour job is ONE HUE IN TWO SHADES, not a diverging red/green: the reader's
  * question is "did it move, and which way", and position already answers the
- * direction. Both steps were validated against the light (#ffffff) and dark
- * (#08080a) surfaces with the palette validator — an earlier, prettier pick
- * (#bae6fd) failed the light-mode contrast floor at 1.33:1 and was replaced.
+ * direction. Both steps were validated against the light (rgb(255, 255, 255)) and dark
+ * (rgb(8, 8, 10)) surfaces with the palette validator — an earlier, prettier pick
+ * (rgb(186, 230, 253)) failed the light-mode contrast floor at 1.33:1 and was replaced.
  *
  * Rows are sorted by size of error, so the systematic direction of the bias is
  * the first thing the eye gets. Correct rows collapse to a single ringed dot,
@@ -17,8 +17,8 @@ import { useState } from 'react'
 import { CROWDING_ORDER, type PriorComparison } from '@/lib/prior-accuracy'
 
 /** Validated ordinal pair: light end clears white, dark end clears near-black. */
-const PRIOR_HUE = '#38bdf8'
-const SOURCED_HUE = '#075985'
+const PRIOR_HUE = 'rgb(56, 189, 248)'
+const SOURCED_HUE = 'rgb(7, 89, 133)'
 
 const W = 720
 const ROW_H = 24 // also the hover hit-target height
@@ -44,7 +44,7 @@ export default function PriorsVsSourced({ rows }: { rows: PriorComparison[] }) {
   return (
     <div className="w-full">
       {/* legend — mandatory for two series */}
-      <div className="flex flex-wrap items-center gap-x-5 gap-y-1 mb-2 font-mono text-[10px] text-ink-400">
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-1 mb-2 font-mono text-small text-ink-400">
         <span className="flex items-center gap-1.5">
           <svg width="10" height="10" aria-hidden="true">
             <circle cx="5" cy="5" r="4.5" fill={PRIOR_HUE} />
@@ -82,7 +82,7 @@ export default function PriorsVsSourced({ rows }: { rows: PriorComparison[] }) {
               x={x(band)}
               y={H - PAD.b + 16}
               textAnchor="middle"
-              fontSize="10"
+              fontSize="14"
               fontFamily="var(--font-mono, monospace)"
               className="fill-current text-ink-500"
             >
@@ -109,7 +109,7 @@ export default function PriorsVsSourced({ rows }: { rows: PriorComparison[] }) {
                 x={PAD.l - 14}
                 y={y + 3.5}
                 textAnchor="end"
-                fontSize="11"
+                fontSize="14"
                 className={active ? 'fill-current text-ink-100' : 'fill-current text-ink-400'}
               >
                 {r.title.length > 30 ? `${r.title.slice(0, 29)}…` : r.title}
@@ -139,7 +139,7 @@ export default function PriorsVsSourced({ rows }: { rows: PriorComparison[] }) {
                 <text
                   x={xs + 12}
                   y={y + 3.5}
-                  fontSize="10"
+                  fontSize="14"
                   fontFamily="var(--font-mono, monospace)"
                   className="fill-current text-ink-300"
                 >
@@ -152,7 +152,7 @@ export default function PriorsVsSourced({ rows }: { rows: PriorComparison[] }) {
       </svg>
 
       {/* hover readout — never the only way to a value; the table has them all */}
-      <p className="mt-2 font-mono text-[11px] text-ink-400 min-h-[1.25rem]">
+      <p className="mt-2 font-mono text-small text-ink-400 min-h-[1.25rem]">
         {hovered ? (
           <>
             <span className="text-ink-100">{hovered.title}</span>
@@ -174,7 +174,7 @@ export default function PriorsVsSourced({ rows }: { rows: PriorComparison[] }) {
 /** The WCAG-clean twin. Every value here, nothing gated behind hover. */
 export function PriorsVsSourcedTable({ rows }: { rows: PriorComparison[] }) {
   return (
-    <table className="w-full border-collapse font-mono text-[11px]">
+    <table className="w-full border-collapse font-mono text-small">
       <thead>
         <tr className="text-ink-500 text-left">
           <th className="py-1 pr-3 font-normal">Quest</th>

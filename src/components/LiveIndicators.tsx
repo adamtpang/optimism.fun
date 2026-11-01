@@ -65,7 +65,7 @@ export default function LiveIndicators() {
         <div className="rounded border border-hair overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="font-mono text-[10px] uppercase tracking-wider text-ink-500">
+              <tr className="font-mono text-small uppercase tracking-wider text-ink-500">
                 <th className="text-left p-3 font-normal">World Bank indicator</th>
                 <th className="text-right p-3 font-normal">Latest</th>
                 <th className="text-right p-3 font-normal">Year</th>
@@ -83,8 +83,8 @@ export default function LiveIndicators() {
           </table>
         </div>
       )}
-      <p className="mt-3 font-mono text-[10px] text-ink-500">
-        <span className="text-amber-300">●</span> source: World Bank WDI · published{' '}
+      <p className="mt-3 font-mono text-small text-ink-500">
+        <span className="text-primary">●</span> source: World Bank WDI · published{' '}
         {day(data.sourceLastUpdated)} · our copy refreshed {day(data.dbFetchedAt)}
       </p>
     </div>

@@ -34,7 +34,7 @@ export type RadarRow = {
 }
 
 const VERDICT_STYLE: Record<AllocationVerdict, string> = {
-  underallocated: 'text-amber-300 border-amber-300/50',
+  underallocated: 'text-primary border-primary/50',
   balanced: 'text-ink-400 border-hair',
   overallocated: 'text-terminal-rose border-rose-500/40',
 }
@@ -54,7 +54,7 @@ function track(event: string, props?: Record<string, unknown>) {
 }
 
 function opportunityTone(score: number): string {
-  if (score >= 40) return 'text-amber-300'
+  if (score >= 40) return 'text-primary'
   if (score >= 25) return 'text-ink-100'
   return 'text-ink-400'
 }
@@ -88,9 +88,9 @@ export default function RadarClient({ rows = computeRadarRows() }: { rows?: Rada
               setDomain('all')
               track('radar_filter', { domain: 'all' })
             }}
-            className={`px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider border transition-colors ${
+            className={`px-3 min-h-11 inline-flex items-center font-mono text-small uppercase tracking-wider border transition-colors ${
               domain === 'all'
-                ? 'bg-amber-300/10 border-amber-300/60 text-amber-300'
+                ? 'bg-primary/10 border-primary/60 text-primary'
                 : 'border-hair text-ink-400 hover:text-ink-100 hover:border-ink-400'
             }`}
           >
@@ -105,9 +105,9 @@ export default function RadarClient({ rows = computeRadarRows() }: { rows?: Rada
                   setDomain(d)
                   track('radar_filter', { domain: d })
                 }}
-                className={`px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider border transition-colors ${
+                className={`px-3 min-h-11 inline-flex items-center font-mono text-small uppercase tracking-wider border transition-colors ${
                   domain === d
-                    ? 'bg-amber-300/10 border-amber-300/60 text-amber-300'
+                    ? 'bg-primary/10 border-primary/60 text-primary'
                     : 'border-hair text-ink-400 hover:text-ink-100 hover:border-ink-400'
                 }`}
               >
@@ -124,12 +124,12 @@ export default function RadarClient({ rows = computeRadarRows() }: { rows?: Rada
           onChange={(e) => setQuery(e.target.value)}
           onBlur={() => query && track('radar_search', { query })}
           placeholder="search problems"
-          className="w-full lg:w-64 bg-[rgb(var(--bg))] border border-hair-strong text-ink-100 font-mono text-[12px] px-3 py-1.5 focus:outline-none focus:border-amber-300/60 placeholder:text-ink-500"
+          className="w-full lg:w-64 bg-[rgb(var(--bg))] border border-hair-strong text-ink-100 font-mono text-small px-3 min-h-11 inline-flex items-center focus:outline-none focus:border-primary/60 placeholder:text-ink-500"
         />
       </div>
 
       {/* Column legend */}
-      <div className="hidden md:grid grid-cols-[2.5rem_1fr_8rem_5rem_6rem] gap-4 px-3 pb-2 mb-1 border-b border-hair font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
+      <div className="hidden md:grid grid-cols-[2.5rem_1fr_8rem_5rem_6rem] gap-4 px-3 pb-2 mb-1 border-b border-hair font-mono text-small uppercase text-ink-500">
         <span>#</span>
         <span>problem</span>
         <span>demand vs supply</span>
@@ -140,7 +140,7 @@ export default function RadarClient({ rows = computeRadarRows() }: { rows?: Rada
       {/* Rows */}
       <div className="divide-y divide-hair border-b border-hair">
         {filtered.length === 0 ? (
-          <p className="py-10 text-center font-mono text-[12px] text-ink-500">
+          <p className="py-10 text-center font-mono text-small text-ink-500">
             no problems match this filter
           </p>
         ) : (
@@ -159,24 +159,24 @@ export default function RadarClient({ rows = computeRadarRows() }: { rows?: Rada
               {/* name + meta */}
               <div className="min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="font-sans text-sm font-medium text-ink-100 group-hover:text-amber-300 transition-colors">
+                  <span className="font-sans text-sm font-medium text-ink-100 group-hover:text-primary transition-colors">
                     {r.name}
                   </span>
                   {r.domainLabel && (
-                    <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 border border-hair px-1.5 py-0.5">
+                    <span className="font-mono text-small uppercase text-ink-500 border border-hair px-1.5 py-0.5">
                       {r.domainLabel}
                     </span>
                   )}
                   {r.allocationVerdict && (
                     <span
-                      className={`font-mono text-[10px] uppercase tracking-ultra-wide border px-1.5 py-0.5 ${VERDICT_STYLE[r.allocationVerdict]}`}
+                      className={`font-mono text-small uppercase border px-1.5 py-0.5 ${VERDICT_STYLE[r.allocationVerdict]}`}
                     >
                       {r.allocationVerdict}
                     </span>
                   )}
                 </div>
-                <div className="mt-0.5 text-[11px] text-ink-500 line-clamp-1 max-w-md">{r.tagline}</div>
-                <div className="mt-0.5 font-mono text-[10px] text-ink-600 tabular-nums">
+                <div className="mt-0.5 text-small text-ink-500 line-clamp-1 max-w-md">{r.tagline}</div>
+                <div className="mt-0.5 font-mono text-small text-ink-600 tabular-nums">
                   {r.companies} cos · {r.capital} funds on it
                   {r.capitalUsd != null && (
                     <>
@@ -188,7 +188,7 @@ export default function RadarClient({ rows = computeRadarRows() }: { rows?: Rada
                   {r.inLimitUsd != null && (
                     <>
                       {' '}
-                      · <span className="text-amber-300/80">{fmtUsdCompact(r.inLimitUsd)} prize</span>
+                      · <span className="text-primary/80">{fmtUsdCompact(r.inLimitUsd)} prize</span>
                     </>
                   )}
                 </div>
@@ -197,7 +197,7 @@ export default function RadarClient({ rows = computeRadarRows() }: { rows?: Rada
               {/* demand vs supply bars */}
               <div className="flex flex-col gap-1.5">
                 <div
-                  className="flex items-center justify-between font-mono text-[9px] tabular-nums text-ink-600"
+                  className="flex items-center justify-between font-mono text-small tabular-nums text-ink-600"
                   title={`Triangulated demand: ${r.demandComposite}/100 from ${r.demandCorroboration} of ${r.demandConsidered} signal classes (burden, willingness-to-pay, capital, research, policy, expert priors, queues & shortages)`}
                 >
                   <span className="uppercase">demand {r.demandComposite}</span>
@@ -205,7 +205,7 @@ export default function RadarClient({ rows = computeRadarRows() }: { rows?: Rada
                     {Array.from({ length: r.demandConsidered }).map((_, j) => (
                       <span
                         key={j}
-                        className={j < r.demandCorroboration ? 'text-amber-300' : 'text-ink-700'}
+                        className={j < r.demandCorroboration ? 'text-primary' : 'text-ink-700'}
                       >
                         ●
                       </span>
@@ -213,13 +213,13 @@ export default function RadarClient({ rows = computeRadarRows() }: { rows?: Rada
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="font-mono text-[9px] uppercase text-ink-500 w-10">dem</span>
+                  <span className="font-mono text-small uppercase text-ink-500 w-10">dem</span>
                   <div className="h-1 flex-1 bg-ink-800">
-                    <div className="h-1 bg-amber-300" style={{ width: `${r.demand}%` }} />
+                    <div className="h-1 bg-primary" style={{ width: `${r.demand}%` }} />
                   </div>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="font-mono text-[9px] uppercase text-ink-500 w-10">sup</span>
+                  <span className="font-mono text-small uppercase text-ink-500 w-10">sup</span>
                   <div className="h-1 flex-1 bg-ink-800">
                     <div className="h-1 bg-terminal-cyan" style={{ width: `${r.supply}%` }} />
                   </div>
@@ -245,21 +245,21 @@ export default function RadarClient({ rows = computeRadarRows() }: { rows?: Rada
         )}
       </div>
 
-      <p className="mt-4 font-mono text-[11px] text-ink-500 leading-relaxed">
-        <span className="text-amber-300">opportunity</span> = demand (humans affected × severity ×
+      <p className="mt-4 font-mono text-small text-ink-500 leading-relaxed">
+        <span className="text-primary">opportunity</span> = demand (humans affected × severity ×
         market) divided by supply (companies, capital, and solution quality already on it), nudged
         by urgency. Higher = a bigger, more urgent, less-served gap. The{' '}
         {/* keep this list in sync with CLASS_LABEL in lib/demand.ts */}
-        <span className="text-amber-300">●</span> dots show how many independent demand signals
+        <span className="text-primary">●</span> dots show how many independent demand signals
         (burden, willingness-to-pay, capital, research, policy, expert priors, queues &amp;
         shortages) corroborate the number — more dots = more credible.{' '}
-        <span className="text-amber-300">allocation</span> compares each problem&rsquo;s share of
+        <span className="text-primary">allocation</span> compares each problem&rsquo;s share of
         real capital ($/yr, sourced estimates) to its share of demand: under half its fair share =
         underallocated, over double = overallocated. Arrows = 3-year capital momentum. Full method
         on the{' '}
         <Link
           href="/methodology"
-          className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+          className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
         >
           methodology
         </Link>{' '}

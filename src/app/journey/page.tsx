@@ -23,8 +23,8 @@ export default function JourneyPage() {
       <main>
         {/* Mission */}
         <section className="pt-28 pb-10 border-b border-hair">
-          <div className="max-w-4xl mx-auto px-6">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               The mission
             </p>
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.04] text-ink-100 mb-5">
@@ -38,15 +38,15 @@ export default function JourneyPage() {
 
         {/* The reframe */}
         <section className="border-b border-hair bg-ink-900/30">
-          <div className="max-w-4xl mx-auto px-6 py-12">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell py-12">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               {QUEST_INTRO.kicker}
             </p>
             <h2 className="font-serif text-2xl md:text-4xl text-ink-100 leading-tight mb-4">
               {QUEST_INTRO.title}
             </h2>
             <p className="text-ink-300 leading-relaxed max-w-2xl">{QUEST_INTRO.blurb}</p>
-            <p className="mt-4 font-mono text-[11px] text-ink-500 max-w-2xl leading-relaxed">
+            <p className="mt-4 font-mono text-small text-ink-500 max-w-2xl leading-relaxed">
               Eric Jorgenson published 69 of Musk&apos;s methods, free, in every bookshop. The
               Algorithm is on page 130. And there are not a million Musks — so information was
               never the constraint. Permission and survival are.
@@ -55,7 +55,7 @@ export default function JourneyPage() {
         </section>
 
         {/* The stages */}
-        <section className="max-w-4xl mx-auto px-6 py-12">
+        <section className="site-shell py-12">
           <ol className="relative">
             {questStages.map((st, i) => (
               <li key={st.key} className="relative pl-16 sm:pl-24 pb-14 last:pb-0">
@@ -65,7 +65,7 @@ export default function JourneyPage() {
                     className="absolute left-[1.375rem] sm:left-7 top-12 sm:top-14 bottom-0 w-px bg-ink-700"
                   />
                 )}
-                <span className="absolute left-0 top-0 flex h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-full border border-hair bg-paper font-mono text-sm sm:text-base text-amber-300">
+                <span className="absolute left-0 top-0 flex h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-full border border-hair bg-paper font-mono text-sm sm:text-base text-primary">
                   {st.stage}
                 </span>
 
@@ -73,16 +73,16 @@ export default function JourneyPage() {
                   <h2 className="font-serif text-2xl sm:text-3xl text-ink-100 leading-snug">
                     {st.title}
                   </h2>
-                  <p className="font-mono text-xs sm:text-sm text-amber-300 mt-1.5 mb-4">
+                  <p className="font-mono text-xs sm:text-sm text-primary mt-1.5 mb-4">
                     {st.tagline}
                   </p>
 
                   {/* the gate — the load-bearing element */}
-                  <div className="border border-amber-300/40 rounded px-4 py-3 mb-5 max-w-2xl">
-                    <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-1.5">
+                  <div className="border border-primary/40 rounded px-4 py-3 mb-5 max-w-2xl">
+                    <p className="font-mono text-small uppercase text-primary mb-1.5">
                       The gate — you pass when
                     </p>
-                    <p className="text-ink-100 text-[15px] leading-relaxed">{st.gate}</p>
+                    <p className="text-ink-100 text-body leading-relaxed">{st.gate}</p>
                   </div>
 
                   <p className="text-ink-300 leading-relaxed mb-5 max-w-2xl">{st.why}</p>
@@ -100,13 +100,13 @@ export default function JourneyPage() {
 
                   {/* the methods that apply here */}
                   <div className="mb-5 max-w-2xl">
-                    <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+                    <p className="font-mono text-small uppercase text-ink-500 mb-2">
                       The methods that apply here
                     </p>
                     <ul className="space-y-1.5">
                       {st.methods.map((m) => (
-                        <li key={m.n} className="flex gap-2.5 text-[13px] leading-relaxed">
-                          <span className="font-mono text-[10px] text-ink-600 tabular-nums mt-0.5 shrink-0">
+                        <li key={m.n} className="flex gap-2.5 text-small leading-relaxed">
+                          <span className="font-mono text-small text-ink-600 tabular-nums mt-0.5 shrink-0">
                             #{m.n}
                           </span>
                           <span className="text-ink-300">{m.text}</span>
@@ -117,7 +117,7 @@ export default function JourneyPage() {
 
                   {/* historical analogue */}
                   <div className="border-l-2 border-hair rounded-r bg-paper/50 px-4 py-3 mb-5 max-w-2xl">
-                    <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1.5">
+                    <p className="font-mono text-small uppercase text-ink-500 mb-1.5">
                       Someone already did this · {st.analogue.year}
                     </p>
                     <p className="text-ink-200 text-sm leading-relaxed">
@@ -133,7 +133,7 @@ export default function JourneyPage() {
 
                   <Link
                     href={st.cta.href}
-                    className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-wide text-amber-300 hover:text-amber-200 border border-hair hover:border-amber-300 rounded px-3 py-2 transition-colors"
+                    className="inline-flex items-center gap-2 font-mono text-small uppercase tracking-wide text-primary hover:text-primary border border-hair hover:border-primary rounded px-3 py-2 transition-colors"
                   >
                     {st.cta.label}
                   </Link>
@@ -145,7 +145,7 @@ export default function JourneyPage() {
 
         {/* what a first company actually earns — the survival evidence */}
         <section className="border-y border-hair bg-ink-900/30">
-          <div className="max-w-4xl mx-auto px-6 py-12">
+          <div className="site-shell py-12">
             <div className="grid md:grid-cols-[minmax(0,14rem)_minmax(0,1fr)] gap-8 items-start">
               <HeroFigure
                 value={`$${(median / 1000).toFixed(0)}k`}
@@ -164,7 +164,7 @@ export default function JourneyPage() {
                   it is a list of businesses that worked. It is an argument that the first gate is
                   closer than the fear suggests.
                 </p>
-                <p className="font-mono text-[10px] text-ink-600 leading-relaxed max-w-2xl">
+                <p className="font-mono text-small text-ink-600 leading-relaxed max-w-2xl">
                   Self-reported figures compiled from public founder interviews. Not audited, and
                   not a base rate.
                 </p>
@@ -175,7 +175,7 @@ export default function JourneyPage() {
 
         {/* Closer */}
         <section className="border-b border-hair">
-          <div className="max-w-4xl mx-auto px-6 py-14 text-center">
+          <div className="site-shell py-14 text-center">
             <h2 className="font-serif text-3xl md:text-4xl text-ink-100 mb-4">
               {QUEST_CLOSER.title}
             </h2>
@@ -184,7 +184,7 @@ export default function JourneyPage() {
             </p>
             <Link
               href={QUEST_CLOSER.cta.href}
-              className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-ultra-wide text-paper bg-amber-300 hover:bg-amber-200 rounded px-5 py-3 transition-colors"
+              className="inline-flex items-center gap-2 font-mono text-xs uppercase text-paper bg-primary hover:bg-primary/90 rounded px-5 py-3 transition-colors"
             >
               {QUEST_CLOSER.cta.label}
             </Link>

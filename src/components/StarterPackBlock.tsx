@@ -39,17 +39,17 @@ export default function StarterPackBlock({
         aria-expanded={open}
         className="w-full text-left px-4 py-3 flex items-center justify-between gap-3 hover:bg-ink-800/30 transition-colors"
       >
-        <span className="font-mono text-[10px] uppercase tracking-wide text-amber-300">
+        <span className="font-mono text-small uppercase tracking-wide text-primary">
           Starter pack — names, the risk, and a prompt to begin
         </span>
-        <span className="font-mono text-[11px] text-ink-500">{open ? '−' : '+'}</span>
+        <span className="font-mono text-small text-ink-500">{open ? '−' : '+'}</span>
       </button>
 
       {open && (
         <div className="px-4 pb-4 space-y-4 border-t border-hair pt-4">
           {/* names */}
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-wide text-ink-500 mb-2">
+            <p className="font-mono text-small uppercase tracking-wide text-ink-500 mb-2">
               Three names
             </p>
             <div className="flex flex-wrap gap-2">
@@ -59,8 +59,8 @@ export default function StarterPackBlock({
                   className="inline-flex items-baseline gap-1.5 border border-hair rounded px-2 py-1"
                   title={n.note}
                 >
-                  <span className="font-sans text-[13px] text-ink-100">{n.name}</span>
-                  <span className="font-mono text-[9.5px] text-ink-500">{n.note}</span>
+                  <span className="font-sans text-small text-ink-100">{n.name}</span>
+                  <span className="font-mono text-small text-ink-500">{n.note}</span>
                 </span>
               ))}
             </div>
@@ -69,41 +69,41 @@ export default function StarterPackBlock({
           {/* the risk */}
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-wide text-terminal-rose mb-1">
+              <p className="font-mono text-small uppercase tracking-wide text-terminal-rose mb-1">
                 Riskiest assumption
               </p>
-              <p className="text-ink-300 text-[13px] leading-relaxed">{pack.riskiestAssumption}</p>
+              <p className="text-ink-300 text-small leading-relaxed">{pack.riskiestAssumption}</p>
             </div>
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-wide text-terminal-green mb-1">
+              <p className="font-mono text-small uppercase tracking-wide text-terminal-green mb-1">
                 First artifact — days, not months
               </p>
-              <p className="text-ink-300 text-[13px] leading-relaxed">{pack.firstArtifact}</p>
+              <p className="text-ink-300 text-small leading-relaxed">{pack.firstArtifact}</p>
             </div>
           </div>
 
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-wide text-ink-500 mb-1">
+            <p className="font-mono text-small uppercase tracking-wide text-ink-500 mb-1">
               Who has to say yes
             </p>
-            <p className="text-ink-300 text-[13px] leading-relaxed">{pack.gatekeeper}</p>
+            <p className="text-ink-300 text-small leading-relaxed">{pack.gatekeeper}</p>
           </div>
 
           {/* domain ideas */}
           {pack.domainIdeas && pack.domainIdeas.length > 0 && (
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-wide text-ink-500 mb-2">
+              <p className="font-mono text-small uppercase tracking-wide text-ink-500 mb-2">
                 Domains — deploy on Vercel this weekend
               </p>
               <div className="space-y-1.5">
                 {pack.domainIdeas.map((d) => (
                   <div key={d.domain} className="flex items-baseline gap-2 flex-wrap">
-                    <span className="font-mono text-[12.5px] text-amber-300">{d.domain}</span>
-                    <span className="text-ink-500 text-[11.5px]">{d.note}</span>
+                    <span className="font-mono text-small text-primary">{d.domain}</span>
+                    <span className="text-ink-500 text-small">{d.note}</span>
                   </div>
                 ))}
               </div>
-              <p className="mt-1.5 font-mono text-[9.5px] text-ink-600">
+              <p className="mt-1.5 font-mono text-small text-ink-600">
                 Not verified live — check availability at registration.
               </p>
             </div>
@@ -112,20 +112,20 @@ export default function StarterPackBlock({
           {/* capital firms */}
           {pack.capitalFirms && pack.capitalFirms.length > 0 && (
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-wide text-ink-500 mb-2">
+              <p className="font-mono text-small uppercase tracking-wide text-ink-500 mb-2">
                 Who to pitch — real, opinionated, sourced
               </p>
               <div className="space-y-2.5">
                 {pack.capitalFirms.map((f) => (
                   <div key={f.name}>
-                    <p className="text-ink-100 text-[13px] font-medium">{f.name}</p>
-                    <p className="text-ink-400 text-[12px] leading-relaxed">
+                    <p className="text-ink-100 text-small font-medium">{f.name}</p>
+                    <p className="text-ink-400 text-small leading-relaxed">
                       {f.fit}{' '}
                       <a
                         href={f.sourceUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                        className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
                       >
                         {f.source}
                       </a>
@@ -139,18 +139,18 @@ export default function StarterPackBlock({
           {/* the prompt */}
           <div>
             <div className="flex items-center justify-between gap-3 mb-2">
-              <p className="font-mono text-[10px] uppercase tracking-wide text-ink-500">
+              <p className="font-mono text-small uppercase tracking-wide text-ink-500">
                 Paste into Claude Code
               </p>
               <button
                 type="button"
                 onClick={copy}
-                className="font-mono text-[10px] px-2 py-1 border border-hair rounded text-ink-300 hover:text-amber-300 hover:border-amber-300/40 transition-colors"
+                className="font-mono text-small px-2 py-1 border border-hair rounded text-ink-300 hover:text-primary hover:border-primary/40 transition-colors"
               >
                 {copied ? 'copied' : 'copy prompt'}
               </button>
             </div>
-            <pre className="text-[11px] leading-relaxed text-ink-400 bg-ink-900/60 rounded p-3 overflow-x-auto whitespace-pre-wrap font-mono">
+            <pre className="text-small leading-relaxed text-ink-400 bg-ink-900/60 rounded p-3 overflow-x-auto whitespace-pre-wrap font-mono">
               {prompt}
             </pre>
           </div>

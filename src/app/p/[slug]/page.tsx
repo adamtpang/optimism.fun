@@ -23,6 +23,7 @@ import ProblemNumbers from '@/components/ProblemNumbers'
 import CtaBoard from '@/components/CtaBoard'
 import BurdenBlock from '@/components/BurdenBlock'
 import { problemMetrics } from '@/lib/open-data'
+import PageBand, { problemBandKind } from '@/components/media/PageBand'
 
 export function generateStaticParams() {
   return problems.map((p) => ({ slug: p.slug }))
@@ -58,7 +59,7 @@ function Stat({
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="block text-xs text-amber-300 underline decoration-dotted underline-offset-2 mt-2 leading-snug hover:text-amber-200 line-clamp-3"
+          className="block text-xs text-primary underline decoration-dotted underline-offset-2 mt-2 leading-snug hover:text-primary line-clamp-3"
         >
           {source}
         </a>
@@ -95,14 +96,15 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
   return (
     <>
       <Navbar />
-      <main className="pt-24">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 pb-8">
+      <main className="pt-4">
+        {problemBandKind(slug) ? <PageBand kind={problemBandKind(slug)!} /> : <div className="pt-20" />}
+        <div className="site-shell pb-8">
           <h1 className="font-serif text-4xl md:text-6xl text-ink-100 leading-tight">{problem.name}</h1>
-          <p className="text-lg text-ink-400 mt-3 max-w-3xl">{problem.tagline}</p>
-          <p className="font-mono text-[11px] text-ink-500 mt-3">
+          <p className="text-lg text-ink-400 mt-3 max-w-7xl">{problem.tagline}</p>
+          <p className="font-mono text-small text-ink-500 mt-3">
             Updated {updated}
             {' · '}
-            <a className="text-amber-300 hover:underline" href={`/api/problems/${slug}/csv`}>
+            <a className="text-primary hover:underline" href={`/api/problems/${slug}/csv`}>
               Download this data
             </a>
           </p>
@@ -152,12 +154,12 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
         <ConstraintTree problemSlug={slug} />
 
         {companies.length > 0 && (
-          <section className="max-w-5xl mx-auto px-4 sm:px-6 py-10 border-b border-hair">
+          <section className="site-shell py-10 border-b border-hair">
             <h2 className="font-serif text-2xl text-ink-100 mb-4">Who is on it</h2>
             <ul className="flex flex-wrap gap-2">
               {companies.map((c) => (
                 <li key={c.slug}>
-                  <a href={c.url} target="_blank" rel="noopener noreferrer" className="inline-block border border-hair hover:border-amber-300 px-3 py-1.5 text-sm text-ink-200">
+                  <a href={c.url} target="_blank" rel="noopener noreferrer" className="inline-block border border-hair hover:border-primary px-3 min-h-11 inline-flex items-center text-sm text-ink-200">
                     {c.name}
                   </a>
                 </li>
@@ -167,12 +169,12 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
         )}
 
         {science.length > 0 && (
-          <section className="max-w-5xl mx-auto px-4 sm:px-6 py-10 border-b border-hair">
+          <section className="site-shell py-10 border-b border-hair">
             <div className="flex items-baseline justify-between gap-4 mb-4">
               <h2 className="font-serif text-2xl text-ink-100">New science</h2>
               <Link
                 href={`/discoveries?problem=${slug}`}
-                className="font-mono text-[11px] uppercase tracking-wider text-amber-300 hover:underline"
+                className="font-mono text-small uppercase tracking-wider text-primary hover:underline"
               >
                 All {science.length}
               </Link>
@@ -190,7 +192,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
           boardAvailable={boardAvailable}
         />
 
-        <section className="px-4 sm:px-6 pb-16 max-w-5xl mx-auto">
+        <section className="px-4 sm:px-6 pb-16 max-w-7xl mx-auto">
           <CommitmentForm
             problemSlug={problem.slug}
             problemName={problem.name}

@@ -10,14 +10,14 @@ const WHO = { talent: 'Work', capital: 'Fund', operator: 'Run' } as const
 function Node({ c, binding, nested }: { c: Constraint; binding: string; nested?: boolean }) {
   const isBinding = c.id === binding
   return (
-    <div className={`border-l-2 pl-4 ${isBinding ? 'border-amber-300' : 'border-hair'} ${nested ? 'mt-4' : ''}`}>
-      {isBinding && <p className="font-mono text-xs uppercase tracking-wider text-amber-300 mb-1">Biggest blocker</p>}
+    <div className={`border-l-2 pl-4 ${isBinding ? 'border-primary' : 'border-hair'} ${nested ? 'mt-4' : ''}`}>
+      {isBinding && <p className="font-mono text-xs uppercase tracking-wider text-primary mb-1">Biggest blocker</p>}
       <p className="text-ink-100 text-lg leading-snug">{c.claim}</p>
       {c.entryPoints.length > 0 && (
         <ul className="mt-2 space-y-1">
           {c.entryPoints.map((e) => (
             <li key={e.action} className="text-sm text-ink-300">
-              <span className="font-mono text-xs uppercase text-amber-300 mr-2">{WHO[e.who]}</span>
+              <span className="font-mono text-xs uppercase text-primary mr-2">{WHO[e.who]}</span>
               {e.action}
             </li>
           ))}
@@ -31,7 +31,7 @@ function Node({ c, binding, nested }: { c: Constraint; binding: string; nested?:
         {c.suppliers.length > 0 && <p className="mt-2"><span className="text-ink-200">On it:</span> {c.suppliers.join(', ')}</p>}
         <p className="mt-2 text-xs">
           {c.sources.map((s, i) => (
-            <a key={s.url} href={s.url} target="_blank" rel="noopener noreferrer" className="underline decoration-dotted hover:text-amber-300">
+            <a key={s.url} href={s.url} target="_blank" rel="noopener noreferrer" className="underline decoration-dotted hover:text-primary">
               {s.label}{i < c.sources.length - 1 ? ' · ' : ''}
             </a>
           ))}
@@ -47,7 +47,7 @@ export default function ConstraintTree({ problemSlug }: { problemSlug: string })
   if (!t) return null
   return (
     <section id="why-unsolved" className="border-b border-hair">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
+      <div className="site-shell py-10">
         <h2 className="font-serif text-2xl text-ink-100 mb-6">Why it is not solved yet</h2>
         <div className="space-y-8">
           {t.root.map((c) => (

@@ -36,9 +36,9 @@ type Pt = {
 }
 
 const LAYER_META: Record<LayerKey, { label: string; color: string }> = {
-  companies: { label: 'Companies', color: '#38bdf8' }, // sky
-  founders: { label: 'Founders', color: '#fbbf24' }, // gold
-  countries: { label: 'Countries', color: '#34d399' }, // emerald
+  companies: { label: 'Companies', color: 'rgb(56, 189, 248)' }, // sky
+  founders: { label: 'Founders', color: 'rgb(251, 191, 36)' }, // gold
+  countries: { label: 'Countries', color: 'rgb(52, 211, 153)' }, // emerald
 }
 
 const fmtUSD = (v: number) => {
@@ -145,7 +145,7 @@ export default function GlobeView({
       g
         .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
         .backgroundColor('rgba(0,0,0,0)')
-        .atmosphereColor('#38bdf8')
+        .atmosphereColor('rgb(56, 189, 248)')
         .atmosphereAltitude(0.18)
         .pointLat('lat')
         .pointLng('lng')
@@ -155,7 +155,7 @@ export default function GlobeView({
         .pointsTransitionDuration(280)
         .pointLabel(
           (d: Pt) =>
-            `<div style="font-family:ui-monospace,monospace;font-size:11px;background:#08080a;color:#f6f5f2;border:1px solid ${d.color};padding:4px 8px;border-radius:4px;white-space:nowrap;">${d.name} · ${fmtUSD(d.valueUSD)}</div>`,
+            `<div style="font-family:ui-monospace,monospace;font-size:14px;background:rgb(8, 8, 10);color:rgb(246, 245, 242);border:1px solid ${d.color};padding:4px 8px;border-radius:4px;white-space:nowrap;">${d.name} · ${fmtUSD(d.valueUSD)}</div>`,
         )
 
       g.pointOfView({ lat: 25, lng: -40, altitude: 2.3 }, 0)
@@ -216,7 +216,7 @@ export default function GlobeView({
                 type="button"
                 onClick={() => toggle(k)}
                 aria-pressed={on}
-                className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider backdrop-blur transition-colors ${
+                className={`flex items-center gap-1.5 rounded-full border px-3 min-h-11 inline-flex items-center font-mono text-small uppercase tracking-wider transition-colors ${
                   on
                     ? 'border-ink-600 bg-ink-900/70 text-ink-100'
                     : 'border-hair bg-ink-900/30 text-ink-500 hover:text-ink-300'

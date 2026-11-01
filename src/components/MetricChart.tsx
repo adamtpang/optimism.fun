@@ -1,8 +1,9 @@
 import { formatMeasure, lineLayout, type SeriesPoint } from '@/lib/charts'
+import Figure from '@/components/charts/Figure'
 
 /**
  * One sourced series. The line is the stored points only. The source
- * sentence sits under the chart, including any caveat the file already states.
+ * sentence sits in the single caption, including any caveat the file already states.
  */
 export default function MetricChart({
   title,
@@ -21,25 +22,34 @@ export default function MetricChart({
 }) {
   if (series.length < 2) return null
   const width = 640
-  const height = 280
-  const layout = lineLayout(series, width, height)
+  const height = 320
+  const layout = lineLayout(series, width, height, { l: 72, r: 64, t: 28, b: 40 })
   const line = layout.points.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')
   const first = series[0]
   const last = series[series.length - 1]
-  const label = `${title}. ${formatMeasure(first.value)} in ${first.year} to ${formatMeasure(last.value)} in ${last.year}. ${unit}`
+  const label = `${title}. ${formatMeasure(first.value)} in ${first.year} to ${formatMeasure(last.value)} in ${last.year}. ${unit}. Log scale is not used. Y axis runs from ${formatMeasure(layout.dataMin)} to ${formatMeasure(layout.dataMax)}.`
+  const lastPoint = layout.points[layout.points.length - 1]
+  const yearTicks = Array.from({ length: 4 }, (_, i) => {
+    const year = Math.round(layout.minX + ((layout.maxX - layout.minX) * i) / 3)
+    return year
+  }).filter((year, index, all) => all.indexOf(year) === index)
+
+  const caption = (
+    <>
+      {sourceUrl ? (
+        <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className="text-primary underline underline-offset-2">
+          {source}
+        </a>
+      ) : (
+        source
+      )}
+      <span> · As of {asOf}</span>
+    </>
+  )
 
   return (
-    <figure className="border border-hair">
-      <figcaption className="px-4 pt-4 pb-2">
-        <p className="font-serif text-xl text-ink-100">{title}</p>
-        <p className="text-sm text-ink-400 mt-1">{unit}</p>
-      </figcaption>
-      <svg
-        viewBox={`0 0 ${width} ${height}`}
-        role="img"
-        aria-label={label}
-        className="w-full h-auto px-2"
-      >
+    <Figure title={title} subtitle={unit} source={caption}>
+      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label} className="w-full h-[240px] md:h-[320px]">
         {layout.ticks.map((tick) => {
           const y = layout.py(tick)
           return (
@@ -49,83 +59,72 @@ export default function MetricChart({
                 x2={width - layout.pad.r}
                 y1={y}
                 y2={y}
-                className="stroke-ink-700"
+                stroke="var(--chart-grid)"
                 strokeWidth="1"
+                vectorEffect="non-scaling-stroke"
               />
-              <text
-                x={layout.pad.l - 8}
-                y={y + 4}
-                textAnchor="end"
-                className="fill-ink-500"
-                fontSize="12"
-                fontFamily="ui-monospace, monospace"
-              >
+              <text x={layout.pad.l - 8} y={y} textAnchor="end" dominantBaseline="middle" className="fill-neutral-600" style={{ fontSize: '14px' }}>
                 {formatMeasure(tick)}
               </text>
             </g>
           )
         })}
+        <text x={16} y={18} className="fill-neutral-600" style={{ fontSize: '14px' }}>
+          {unit}
+        </text>
         <polyline
           points={line}
           fill="none"
-          className="stroke-amber-300"
+          stroke="var(--chart-1)"
           strokeWidth="2.5"
           strokeLinejoin="round"
           strokeLinecap="round"
+          vectorEffect="non-scaling-stroke"
         />
         {layout.points.map((p) => (
-          <circle key={p.year} cx={p.x} cy={p.y} r="3.5" className="fill-amber-300" />
+          <circle key={p.year} cx={p.x} cy={p.y} r={p.year === last.year ? 5 : 3} fill="var(--chart-1)" />
         ))}
-        {[first, last].map((p) => (
+        <text
+          x={lastPoint.x + 8}
+          y={lastPoint.y}
+          dominantBaseline="middle"
+          fill="var(--chart-1)"
+          style={{ fontSize: '14px', fontWeight: 600 }}
+        >
+          {formatMeasure(last.value)}
+        </text>
+        {yearTicks.map((year) => (
           <text
-            key={p.year}
-            x={layout.px(p.year)}
-            y={height - 8}
+            key={year}
+            x={layout.px(year)}
+            y={height - 12}
             textAnchor="middle"
-            className="fill-ink-500"
-            fontSize="12"
-            fontFamily="ui-monospace, monospace"
+            className="fill-neutral-600"
+            style={{ fontSize: '14px' }}
           >
-            {p.year}
+            {year}
           </text>
         ))}
       </svg>
-      <figcaption className="px-4 pb-4 text-sm text-ink-400 leading-relaxed">
-        {sourceUrl ? (
-          <a
-            href={sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-amber-300 underline decoration-dotted underline-offset-2 hover:text-amber-200"
-          >
-            {source}
-          </a>
-        ) : (
-          source
-        )}
-        <span className="block font-mono text-[11px] text-ink-500 mt-2">As of {asOf}</span>
-      </figcaption>
-      <details className="border-t border-hair px-4 py-3">
-        <summary className="font-mono text-[11px] uppercase tracking-wider text-ink-500 cursor-pointer">
-          Data table
-        </summary>
-        <table className="w-full text-sm mt-3">
+      <details className="px-2">
+        <summary className="text-small text-neutral-600 cursor-pointer">Data table</summary>
+        <table className="w-full text-small mt-3">
           <thead>
-            <tr className="font-mono text-[11px] uppercase tracking-wider text-ink-500 text-left">
-              <th className="py-1 pr-4">Year</th>
-              <th className="py-1 text-right">Value</th>
+            <tr className="text-left text-neutral-600">
+              <th className="py-2 pr-4 font-medium">Year</th>
+              <th className="py-2 text-right font-medium">Value</th>
             </tr>
           </thead>
           <tbody>
             {series.map((point) => (
-              <tr key={point.year} className="border-t border-hair">
-                <td className="py-1.5 pr-4 font-mono tabular-nums">{point.year}</td>
-                <td className="py-1.5 text-right font-mono tabular-nums">{point.value.toLocaleString('en-US')}</td>
+              <tr key={point.year} className="border-t border-neutral-200">
+                <td className="py-2 pr-4 tabular-nums">{point.year}</td>
+                <td className="py-2 text-right tabular-nums">{point.value.toLocaleString('en-US')}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </details>
-    </figure>
+    </Figure>
   )
 }

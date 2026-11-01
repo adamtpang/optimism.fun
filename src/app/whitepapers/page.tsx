@@ -17,14 +17,14 @@ export default function WhitepapersIndex() {
       <Navbar />
       <main>
         <section className="pt-28 pb-10 border-b border-hair">
-          <div className="max-w-3xl mx-auto px-6">
+          <div className="site-shell">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-ultra-wide text-ink-500 hover:text-amber-300 transition-colors mb-8"
+              className="inline-flex items-center gap-2 font-mono text-small uppercase text-ink-500 hover:text-primary transition-colors mb-8"
             >
               <span>&larr;</span> back
             </Link>
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               weekly drops
             </p>
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.05] text-ink-100 mb-5">
@@ -38,10 +38,10 @@ export default function WhitepapersIndex() {
           </div>
         </section>
 
-        <section className="px-6 py-10 max-w-3xl mx-auto">
+        <section className="px-6 py-10 max-w-7xl mx-auto">
           {sorted.length === 0 ? (
             <div className="border border-dashed border-hair p-8 text-center">
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+              <p className="font-mono text-small uppercase text-primary mb-3">
                 no drops yet
               </p>
               <p className="text-sm text-ink-400 leading-relaxed max-w-md mx-auto mb-4">
@@ -50,7 +50,7 @@ export default function WhitepapersIndex() {
               </p>
               <Link
                 href="/#join"
-                className="font-mono text-[11px] uppercase tracking-wider text-amber-300 border border-amber-300/40 px-4 py-2 hover:bg-amber-300/[0.08] transition-colors inline-block"
+                className="font-mono text-small uppercase tracking-wider text-primary border border-primary/40 px-4 py-2 hover:bg-primary/90 transition-colors inline-block"
               >
                 Subscribe &rarr;
               </Link>
@@ -67,10 +67,10 @@ export default function WhitepapersIndex() {
                       className="block border border-hair bg-ink-900 hover:bg-ink-800/60 transition-colors p-5"
                     >
                       <div className="flex items-baseline justify-between gap-3 mb-2">
-                        <span className="font-mono text-[11px] tabular-nums text-amber-300">
+                        <span className="font-mono text-small tabular-nums text-primary">
                           week {w.week.toString().padStart(2, '0')}
                         </span>
-                        <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
+                        <span className="font-mono text-small uppercase text-ink-500">
                           {w.publishedAt}
                         </span>
                       </div>

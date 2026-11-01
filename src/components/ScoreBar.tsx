@@ -10,7 +10,7 @@ type Props = {
 }
 
 const BAR_COLOR: Record<Props['color'], string> = {
-  amber: 'bg-amber-300',
+  amber: 'bg-blue-600',
   rose: 'bg-terminal-rose',
   green: 'bg-terminal-green',
   cyan: 'bg-terminal-cyan',
@@ -18,7 +18,7 @@ const BAR_COLOR: Record<Props['color'], string> = {
 }
 
 const TEXT_COLOR: Record<Props['color'], string> = {
-  amber: 'text-amber-300',
+  amber: 'text-blue-700',
   rose: 'text-terminal-rose',
   green: 'text-terminal-green',
   cyan: 'text-terminal-cyan',
@@ -36,7 +36,7 @@ export default function ScoreBar({
     return (
       <div className="py-2.5 font-mono border-b border-hair last:border-b-0">
         <div className="flex items-baseline justify-between mb-1.5">
-          <span className="text-[10px] uppercase tracking-ultra-wide text-ink-500">
+          <span className="text-small uppercase text-ink-500">
             {label}
           </span>
           <span className="text-xs text-ink-600">n/a</span>
@@ -51,7 +51,7 @@ export default function ScoreBar({
   return (
     <div className="py-2.5 font-mono border-b border-hair last:border-b-0">
       <div className="flex items-baseline justify-between mb-1.5 gap-2">
-        <span className="text-[10px] uppercase tracking-ultra-wide text-ink-500">
+        <span className="text-small uppercase text-ink-500">
           {label}
         </span>
         <div className="flex items-center gap-2">

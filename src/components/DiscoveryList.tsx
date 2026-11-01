@@ -11,7 +11,7 @@ const REVIEW_LABEL: Record<ReviewStatus, string> = {
 
 const REVIEW_CLASS: Record<ReviewStatus, string> = {
   'peer-reviewed': 'text-terminal-green border-terminal-green/40',
-  preprint: 'text-amber-300 border-amber-300/70',
+  preprint: 'text-primary border-primary/70',
   'trial-result': 'text-terminal-cyan border-terminal-cyan/50',
 }
 
@@ -48,18 +48,18 @@ export default function DiscoveryList({
             <article className={compact ? 'p-4' : 'p-5'}>
               <div className="flex flex-wrap items-center gap-2 mb-2">
                 <span
-                  className={`font-mono text-[10px] uppercase tracking-wider border px-1.5 py-px ${REVIEW_CLASS[item.review]}`}
+                  className={`font-mono text-small uppercase tracking-wider border px-1.5 py-px ${REVIEW_CLASS[item.review]}`}
                 >
                   {REVIEW_LABEL[item.review]}
                 </span>
                 {item.status && (
-                  <span className="font-mono text-[10px] uppercase tracking-wider border border-terminal-rose/70 bg-terminal-rose/10 text-terminal-rose px-1.5 py-px">
+                  <span className="font-mono text-small uppercase tracking-wider border border-terminal-rose/70 bg-terminal-rose/10 text-terminal-rose px-1.5 py-px">
                     {item.status === 'retracted' ? 'Retracted' : 'Challenged'}
                   </span>
                 )}
                 <time
                   dateTime={item.published || undefined}
-                  className="ml-auto font-mono text-[11px] text-ink-500 tabular-nums"
+                  className="ml-auto font-mono text-small text-ink-500 tabular-nums"
                 >
                   {item.published || 'date unknown'}
                 </time>
@@ -71,7 +71,7 @@ export default function DiscoveryList({
                     href={item.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-amber-300 transition-colors"
+                    className="hover:text-primary transition-colors"
                   >
                     {item.title}
                   </a>
@@ -82,7 +82,7 @@ export default function DiscoveryList({
                     href={item.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-amber-300 transition-colors"
+                    className="hover:text-primary transition-colors"
                   >
                     {item.title}
                   </a>
@@ -108,15 +108,15 @@ export default function DiscoveryList({
                 </p>
               )}
 
-              <div className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[12px]">
-                <span className="font-mono text-[10px] uppercase tracking-wider text-ink-500">
+              <div className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-small">
+                <span className="font-mono text-small uppercase tracking-wider text-ink-500">
                   Moves {CHANGE_LABEL[item.changes]}
                 </span>
                 {item.problemSlugs.map((slug) => (
                   <Link
                     key={slug}
                     href={`/p/${slug}`}
-                    className="text-ink-300 hover:text-amber-300 transition-colors"
+                    className="text-ink-300 hover:text-primary transition-colors"
                   >
                     {getProblemBySlug(slug)?.name ?? slug}
                   </Link>
@@ -132,12 +132,12 @@ export default function DiscoveryList({
                 ))}
               </div>
 
-              <p className="mt-2 font-mono text-[11px] text-ink-500">
+              <p className="mt-2 font-mono text-small text-ink-500">
                 <a
                   href={item.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-amber-300 underline decoration-dotted underline-offset-2"
+                  className="hover:text-primary underline decoration-dotted underline-offset-2"
                 >
                   {item.source}
                 </a>

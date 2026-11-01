@@ -16,12 +16,12 @@ export default function AboutPage() {
       <Navbar />
       <main className="min-h-screen">
         <section className="border-b border-hair pt-28 pb-12">
-          <div className="mx-auto max-w-4xl px-6">
-            <div className="mb-3 font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300">
+          <div className="mx-auto max-w-7xl px-6">
+            <div className="mb-3 font-mono text-small uppercase text-primary">
               About the project
             </div>
             <h1 className="font-serif text-4xl text-ink-100 md:text-6xl">Humanity&rsquo;s quest log.</h1>
-            <p className="mt-6 max-w-3xl text-base leading-8 text-ink-300">
+            <p className="mt-6 max-w-7xl text-base leading-8 text-ink-300">
               optimism.fun is an open-source research and navigation project that ranks major
               unsolved problems, then connects each problem to evidence, organizations, founders,
               capital, and measurable progress. Its purpose is to help builders and allocators
@@ -30,7 +30,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="mx-auto grid max-w-4xl gap-10 px-6 py-12 md:grid-cols-2">
+        <section className="mx-auto grid max-w-7xl gap-10 px-6 py-12 md:grid-cols-2">
           <div>
             <h2 className="font-serif text-2xl text-ink-100">Who is behind it</h2>
             <p className="mt-4 leading-7 text-ink-300">
@@ -39,8 +39,8 @@ export default function AboutPage() {
               files are publicly inspectable in the optimism.fun GitHub repository, so factual
               corrections can be proposed against the same material that produces the site.
             </p>
-            <div className="mt-5 flex flex-wrap gap-2 font-mono text-[11px] uppercase tracking-wider">
-              <a className="border border-hair px-3 py-2 text-amber-300 hover:border-amber-300" href="https://adampang.com">
+            <div className="mt-5 flex flex-wrap gap-2 font-mono text-small uppercase tracking-wider">
+              <a className="border border-hair px-3 py-2 text-primary hover:border-primary" href="https://adampang.com">
                 Adam Pangelinan
               </a>
               <a className="border border-hair px-3 py-2 text-ink-300 hover:border-ink-400" href="https://anchormarianas.com">
@@ -60,7 +60,7 @@ export default function AboutPage() {
               observed supply. Every number is intended to remain traceable to a source or marked
               estimate; the methodology page explains normalization, confidence, and known gaps.
             </p>
-            <Link className="mt-5 inline-block font-mono text-[11px] uppercase tracking-wider text-amber-300 hover:underline" href="/methodology">
+            <Link className="mt-5 inline-block font-mono text-small uppercase tracking-wider text-primary hover:underline" href="/methodology">
               Read the methodology &rarr;
             </Link>
           </div>

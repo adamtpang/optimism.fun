@@ -23,7 +23,7 @@ export default function TrendBadge({
   const m = META[trend]
   return (
     <span
-      className={`inline-flex items-center gap-1 font-mono text-[11px] tabular-nums ${m.cls} ${className}`}
+      className={`inline-flex items-center gap-1 font-mono text-small tabular-nums ${m.cls} ${className}`}
       title={`Trend: ${m.label}`}
     >
       <span aria-hidden>{m.arrow}</span>

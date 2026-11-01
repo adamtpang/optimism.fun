@@ -15,11 +15,11 @@ export default function LastCompanyPage() {
       <Navbar />
       <main>
         <section className="border-b border-hair pb-10 pt-28">
-          <div className="mx-auto max-w-4xl px-6">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300">
+          <div className="mx-auto max-w-7xl px-6">
+            <p className="font-mono text-small uppercase text-primary">
               The last company lab
             </p>
-            <h1 className="mt-3 max-w-3xl font-serif text-4xl font-normal leading-[1.04] text-ink-100 md:text-6xl">
+            <h1 className="mt-3 max-w-7xl font-serif text-4xl font-normal leading-[1.04] text-ink-100 md:text-6xl">
               Find the company you would still want to build in ten years.
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-ink-400">
@@ -30,7 +30,7 @@ export default function LastCompanyPage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-4xl px-6 py-10 md:py-14">
+        <section className="mx-auto max-w-7xl px-6 py-10 md:py-14">
           <LastCompanyLab />
         </section>
       </main>

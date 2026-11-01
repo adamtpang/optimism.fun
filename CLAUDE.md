@@ -339,3 +339,11 @@ with `/marketcap` still prerendered, so both new caps validate.
 - Calls to action live in `src/data/ctas.ts`. Schema: `research/CTAS.md`. 96 ingested rows. Air pollution is tagged `copd` and `climate-change` until a problem slug exists. `government` is a CTA type (UK AISI).
 - `/poster` is the ranking poster (people affected, log scale, color by neglectedness). `/where` matches skills, interests, and offers in the browser and does not store them.
 - Ranks and stored problem figures were not changed.
+
+## Design pass (2026-11-01)
+
+- Teal-700 `#0C625B` is the action color. Blue is for data and charts. The old `amber-*` alias (which was sky) is gone.
+- Inter is the only webfont. Body text is 16px. Nothing in the type scale is under 14px. `npm run lint` runs `scripts/check-design.mjs`, which fails on `text-[`, `amber-`, and hex colors in TSX.
+- One content width: 1280px (`.site-shell` / `max-w-7xl`). Glass is the nav, sticky bars, and the home door panel on desktop.
+- Home hero is the NASA Earthset, art-directed so phones request the 828 AVIF. Public-domain credit lines are staged in `public/media/CREDITS.md` and are not rendered. The NIAID CC BY line renders only if that image is used.
+- Light and dark still toggle the same way. The brand mark is unchanged. Ranking files `src/lib/priority.ts`, `src/lib/radar.ts`, `src/data/problems.ts`, and `src/data/discoveries.ts` were not edited.

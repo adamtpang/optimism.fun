@@ -28,8 +28,8 @@ const STATUS_TABS: { key: CandidateStatus | 'all'; label: string }[] = [
 
 function ConfigPanel() {
   return (
-    <div className="border border-amber-300/40 bg-amber-300/[0.04] p-6">
-      <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-2">
+    <div className="border border-primary/40 bg-primary/[0.04] p-6">
+      <p className="font-mono text-small uppercase text-primary mb-2">
         infrastructure not configured
       </p>
       <h2 className="font-serif text-xl text-ink-100 mb-3">
@@ -39,32 +39,32 @@ function ConfigPanel() {
         The daily cron + admin review depend on three env vars and one SQL
         migration. Set these in Vercel and re-deploy:
       </p>
-      <ol className="font-mono text-[12px] text-ink-300 space-y-1 list-decimal list-inside mb-4">
+      <ol className="font-mono text-small text-ink-300 space-y-1 list-decimal list-inside mb-4">
         <li>
-          <span className="text-amber-300">DATABASE_URL</span> — Neon connection
+          <span className="text-primary">DATABASE_URL</span> — Neon connection
           string
         </li>
         <li>
-          <span className="text-amber-300">ANTHROPIC_API_KEY</span> — for
+          <span className="text-primary">ANTHROPIC_API_KEY</span> — for
           scoring candidates
         </li>
         <li>
-          <span className="text-amber-300">GNEWS_API_KEY</span> — gnews.io free
+          <span className="text-primary">GNEWS_API_KEY</span> — gnews.io free
           tier is fine to start
         </li>
         <li>
-          <span className="text-amber-300">CRON_SECRET</span> — Bearer token
+          <span className="text-primary">CRON_SECRET</span> — Bearer token
           Vercel Cron uses to call /api/cron/problem-sourcing
         </li>
         <li>
-          <span className="text-amber-300">ADMIN_PASSWORD</span> — protects
+          <span className="text-primary">ADMIN_PASSWORD</span> — protects
           /admin/* via HTTP Basic Auth
         </li>
       </ol>
       <p className="text-sm text-ink-300 leading-relaxed mb-2">
         Then run the schema once in Neon:
       </p>
-      <pre className="font-mono text-[11px] text-ink-300 bg-ink-900 border border-hair p-3 overflow-x-auto">
+      <pre className="font-mono text-small text-ink-300 bg-ink-900 border border-hair p-3 overflow-x-auto">
         psql $DATABASE_URL -f scripts/db/0001_problem_candidates.sql
       </pre>
     </div>
@@ -95,14 +95,14 @@ export default async function CandidatesPage({
       <Navbar />
       <main>
         <section className="pt-28 pb-6 border-b border-hair">
-          <div className="max-w-5xl mx-auto px-6">
+          <div className="site-shell">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-ultra-wide text-ink-500 hover:text-amber-300 transition-colors mb-6"
+              className="inline-flex items-center gap-2 font-mono text-small uppercase text-ink-500 hover:text-primary transition-colors mb-6"
             >
               <span>&larr;</span> back
             </Link>
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-2">
+            <p className="font-mono text-small uppercase text-primary mb-2">
               admin &middot; candidate inbox
             </p>
             <h1 className="font-serif text-3xl md:text-5xl text-ink-100 leading-tight mb-3">
@@ -110,18 +110,18 @@ export default async function CandidatesPage({
             </h1>
             <p className="text-sm text-ink-400 leading-relaxed max-w-2xl">
               Every day{' '}
-              <code className="font-mono text-[12px] text-ink-300">
+              <code className="font-mono text-small text-ink-300">
                 /api/cron/problem-sourcing
               </code>{' '}
               pulls fresh signal, asks Claude to draft a candidate, and writes
               the result here. Promote what fits the leaderboard; reject what
               doesn&rsquo;t. Promoted candidates still need a human hand to copy
-              into <code className="font-mono text-[12px] text-ink-300">src/data/problems.ts</code>.
+              into <code className="font-mono text-small text-ink-300">src/data/problems.ts</code>.
             </p>
           </div>
         </section>
 
-        <section className="px-6 py-10 max-w-5xl mx-auto">
+        <section className="px-6 py-10 max-w-7xl mx-auto">
           {!configured && (
             <div className="mb-6">
               <ConfigPanel />
@@ -139,9 +139,9 @@ export default async function CandidatesPage({
                 <Link
                   key={t.key}
                   href={`/admin/candidates?status=${t.key}`}
-                  className={`px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider border transition-colors ${
+                  className={`px-3 min-h-11 inline-flex items-center font-mono text-small uppercase tracking-wider border transition-colors ${
                     isActive
-                      ? 'bg-amber-300/10 border-amber-300/60 text-amber-300'
+                      ? 'bg-primary/10 border-primary/60 text-primary'
                       : 'border-hair text-ink-400 hover:text-ink-100 hover:border-ink-400'
                   }`}
                 >
@@ -153,7 +153,7 @@ export default async function CandidatesPage({
           </div>
 
           {configured && candidates.length === 0 && (
-            <p className="font-mono text-[11px] text-ink-500">
+            <p className="font-mono text-small text-ink-500">
               {status === 'draft'
                 ? 'no draft candidates. the next cron run will populate this.'
                 : `no ${status} candidates.`}

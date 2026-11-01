@@ -1,26 +1,14 @@
 import type { Metadata } from 'next'
-import { IBM_Plex_Sans, IBM_Plex_Mono, Fraunces } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Providers from '@/components/Providers'
 import { PostHogProvider } from './providers'
 import './globals.css'
 
-const plexSans = IBM_Plex_Sans({
+const inter = Inter({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-plex-sans',
-})
-
-const plexMono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  variable: '--font-plex-mono',
-})
-
-const fraunces = Fraunces({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-fraunces',
+  display: 'swap',
+  variable: '--font-inter',
 })
 
 const SITE_URL = 'https://optimism.fun'
@@ -87,12 +75,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${plexSans.variable} ${plexMono.variable} ${fraunces.variable}`}
-    >
-      <body className="antialiased">
+    <html lang="en" suppressHydrationWarning className={inter.variable}>
+      <body className={`${inter.className} antialiased`}>
         <script
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
@@ -102,14 +86,6 @@ export default function RootLayout({
           <Providers>{children}</Providers>
         </PostHogProvider>
         <SpeedInsights />
-        <footer style={{padding: '1.5rem 1rem', textAlign: 'center', fontSize: '0.75rem', opacity: 0.6}}>
-          Built by <a href="https://adampang.com" style={{textDecoration: 'underline'}}>Adam Pangelinan</a>
-          {' · '}<a href="https://anchormarianas.com" style={{textDecoration: 'underline'}}>Anchor Marianas LLC</a>
-          {' · '}<a href="/about" style={{textDecoration: 'underline'}}>About</a>
-          {' · '}<a href="/contact" style={{textDecoration: 'underline'}}>Contact</a>
-          {' · '}<a href="/privacy" style={{textDecoration: 'underline'}}>Privacy</a>
-          {' · '}<a href="https://sellsniper.com" style={{textDecoration: 'underline'}}>More projects</a>
-        </footer>
       </body>
     </html>
   )

@@ -30,16 +30,16 @@ export async function generateMetadata({
 }
 
 const ACCENT_TEXT: Record<string, string> = {
-  amber: 'text-amber-300',
+  amber: 'text-primary',
   rose: 'text-terminal-rose',
   cyan: 'text-terminal-cyan',
   violet: 'text-terminal-violet',
   green: 'text-terminal-green',
-  indigo: 'text-amber-200',
+  indigo: 'text-primary',
 }
 
 const ACCENT_BORDER: Record<string, string> = {
-  amber: 'border-amber-300/40',
+  amber: 'border-primary/40',
   rose: 'border-rose-500/40',
   cyan: 'border-cyan-400/40',
   violet: 'border-violet-400/40',
@@ -77,31 +77,31 @@ export default async function SectorPage({
     0,
   )
 
-  const accent = ACCENT_TEXT[sector.accent] ?? 'text-amber-300'
-  const accentBorder = ACCENT_BORDER[sector.accent] ?? 'border-amber-300/40'
+  const accent = ACCENT_TEXT[sector.accent] ?? 'text-primary'
+  const accentBorder = ACCENT_BORDER[sector.accent] ?? 'border-primary/40'
 
   return (
     <>
       <Navbar />
       <main>
         <section className="pt-28 pb-10 border-b border-hair">
-          <div className="max-w-5xl mx-auto px-6">
+          <div className="site-shell">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-ultra-wide text-ink-500 hover:text-amber-300 transition-colors mb-8"
+              className="inline-flex items-center gap-2 font-mono text-small uppercase text-ink-500 hover:text-primary transition-colors mb-8"
             >
               <span>&larr;</span> all sectors
             </Link>
-            <p className={`font-mono text-[10px] uppercase tracking-ultra-wide mb-3 ${accent}`}>
+            <p className={`font-mono text-small uppercase mb-3 ${accent}`}>
               sector &middot; cluster
             </p>
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.05] text-ink-100 mb-5">
               {sector.name}
             </h1>
-            <p className="text-lg md:text-xl text-ink-300 leading-relaxed max-w-3xl mb-6">
+            <p className="text-lg md:text-xl text-ink-300 leading-relaxed max-w-7xl mb-6">
               {sector.tagline}
             </p>
-            <div className="flex flex-wrap gap-4 font-mono text-[11px] text-ink-500">
+            <div className="flex flex-wrap gap-4 font-mono text-small text-ink-500">
               <span>
                 <span className="text-ink-600">problems: </span>
                 <span className={`tabular-nums ${accent}`}>{sectorProblems.length}</span>
@@ -126,14 +126,14 @@ export default async function SectorPage({
           </div>
         </section>
 
-        <section className="px-6 py-12 max-w-5xl mx-auto">
+        <section className="px-6 py-12 max-w-7xl mx-auto">
           <p className="font-serif text-lg text-ink-200 leading-relaxed whitespace-pre-line mb-12">
             {sector.description}
           </p>
 
           {sector.leadVoice && (
             <div className={`border ${accentBorder} bg-ink-900/60 p-5 mb-12`}>
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+              <p className="font-mono text-small uppercase text-ink-500 mb-2">
                 lead voice
               </p>
               <a
@@ -150,7 +150,7 @@ export default async function SectorPage({
           <section className="mb-16">
             <div className="flex items-baseline justify-between mb-5 border-b border-hair pb-3">
               <h2 className="font-serif text-2xl text-ink-100">Problems in this sector</h2>
-              <span className="font-mono text-[11px] text-ink-500">
+              <span className="font-mono text-small text-ink-500">
                 {sectorProblems.length} ranked
               </span>
             </div>
@@ -164,15 +164,15 @@ export default async function SectorPage({
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <TierPill tier={p.tier} />
-                      <span className="font-sans text-base font-medium text-ink-100 group-hover:text-amber-300 transition-colors">
+                      <span className="font-sans text-base font-medium text-ink-100 group-hover:text-primary transition-colors">
                         {p.name}
                       </span>
                     </div>
                     <p className="text-sm text-ink-400 leading-relaxed">{p.tagline}</p>
                   </div>
-                  <div className="flex items-center gap-3 shrink-0 font-mono text-[11px] text-ink-500">
+                  <div className="flex items-center gap-3 shrink-0 font-mono text-small text-ink-500">
                     <span className="text-ink-600">humans</span>
-                    <span className="tabular-nums text-amber-300">
+                    <span className="tabular-nums text-primary">
                       {formatHumans(p.humansAffected.value)}
                     </span>
                   </div>
@@ -187,7 +187,7 @@ export default async function SectorPage({
                 <h2 className="font-serif text-2xl text-ink-100">Companies on it</h2>
                 <Link
                   href="/companies"
-                  className="font-mono text-[11px] text-ink-500 hover:text-amber-300 transition-colors"
+                  className="font-mono text-small text-ink-500 hover:text-primary transition-colors"
                 >
                   {sectorCompanies.length} mapped &rarr;
                 </Link>
@@ -207,7 +207,7 @@ export default async function SectorPage({
                               href={c.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="font-sans text-base font-medium text-ink-100 hover:text-amber-300 transition-colors"
+                              className="font-sans text-base font-medium text-ink-100 hover:text-primary transition-colors"
                             >
                               {c.name}
                             </a>
@@ -216,7 +216,7 @@ export default async function SectorPage({
                               {c.name}
                             </span>
                           )}
-                          <span className="font-mono text-[9px] uppercase tracking-ultra-wide text-ink-500 border border-hair px-1.5 py-px">
+                          <span className="font-mono text-small uppercase text-ink-500 border border-hair px-1.5 py-px">
                             {c.stage}
                           </span>
                         </div>
@@ -225,11 +225,11 @@ export default async function SectorPage({
                         </p>
                       </div>
                       {cap ? (
-                        <span className="font-mono tabular-nums text-amber-300 shrink-0">
+                        <span className="font-mono tabular-nums text-primary shrink-0">
                           {formatUSD(cap.value)}
                         </span>
                       ) : (
-                        <span className="font-mono text-[11px] text-ink-600 shrink-0">
+                        <span className="font-mono text-small text-ink-600 shrink-0">
                           private &middot; no disclosed cap
                         </span>
                       )}
@@ -246,7 +246,7 @@ export default async function SectorPage({
                 <h2 className="font-serif text-2xl text-ink-100">Capital on it</h2>
                 <Link
                   href="/ecosystem"
-                  className="font-mono text-[11px] text-ink-500 hover:text-amber-300 transition-colors"
+                  className="font-mono text-small text-ink-500 hover:text-primary transition-colors"
                 >
                   {sectorEcosystem.length} allocators &rarr;
                 </Link>
@@ -264,7 +264,7 @@ export default async function SectorPage({
                       <h3 className="font-sans text-base font-medium text-ink-100">
                         {e.name}
                       </h3>
-                      <span className="font-mono text-[9px] uppercase tracking-ultra-wide text-amber-300 border border-amber-300/30 px-1.5 py-px">
+                      <span className="font-mono text-small uppercase text-primary border border-primary/30 px-1.5 py-px">
                         {ECOSYSTEM_TYPE_LABEL[e.type]}
                       </span>
                     </div>
@@ -283,7 +283,7 @@ export default async function SectorPage({
                 <h2 className="font-serif text-2xl text-ink-100">Voices</h2>
                 <Link
                   href="/voices"
-                  className="font-mono text-[11px] text-ink-500 hover:text-amber-300 transition-colors"
+                  className="font-mono text-small text-ink-500 hover:text-primary transition-colors"
                 >
                   {sectorVoices.length} thinkers &rarr;
                 </Link>
@@ -293,7 +293,7 @@ export default async function SectorPage({
                   <Link
                     key={v.slug}
                     href={`/voices/${v.slug}`}
-                    className="border border-hair hover:border-terminal-violet/60 px-3 py-1.5 font-mono text-[11px] text-ink-300 hover:text-terminal-violet transition-colors"
+                    className="border border-hair hover:border-terminal-violet/60 px-3 min-h-11 inline-flex items-center font-mono text-small text-ink-300 hover:text-terminal-violet transition-colors"
                   >
                     {v.name}
                   </Link>
@@ -304,7 +304,7 @@ export default async function SectorPage({
 
           {sector.furtherReading.length > 0 && (
             <section className="border-t border-hair pt-6">
-              <h2 className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
+              <h2 className="font-mono text-small uppercase text-ink-500 mb-3">
                 Further reading
               </h2>
               <ul className="space-y-2">
@@ -314,12 +314,12 @@ export default async function SectorPage({
                       href={r.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                      className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
                     >
                       {r.title}
                     </a>
                     {r.by && (
-                      <span className="font-mono text-[11px] text-ink-500"> &middot; {r.by}</span>
+                      <span className="font-mono text-small text-ink-500"> &middot; {r.by}</span>
                     )}
                   </li>
                 ))}

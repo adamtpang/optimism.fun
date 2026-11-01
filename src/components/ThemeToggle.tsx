@@ -15,7 +15,7 @@ export default function ThemeToggle() {
     return (
       <button
         aria-label="Toggle theme"
-        className="font-mono text-[11px] text-ink-500 px-2 py-1"
+        className="inline-flex items-center justify-center h-11 w-11 text-small text-ink-500"
       >
         ◐
       </button>
@@ -30,7 +30,7 @@ export default function ThemeToggle() {
       onClick={() => setTheme(next)}
       aria-label={`Switch to ${next} mode`}
       title={`Switch to ${next} mode`}
-      className="font-mono text-[12px] text-ink-300 hover:text-amber-300 px-2 py-1 transition-colors"
+      className="inline-flex items-center justify-center h-11 w-11 text-small text-ink-300 hover:text-primary transition-colors"
     >
       {current === 'dark' ? '◐' : '◑'}
     </button>
