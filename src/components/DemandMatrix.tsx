@@ -195,6 +195,11 @@ export default function DemandMatrix({ rows }: { rows: DemandRow[] }) {
                     )}
                   </span>
                 </>
+              ) : selected.comp.unavailable ? (
+                <>
+                  <br />
+                  <span className="text-ink-300">unavailable</span>
+                </>
               ) : selected.comp.source ? (
                 <>
                   <br />

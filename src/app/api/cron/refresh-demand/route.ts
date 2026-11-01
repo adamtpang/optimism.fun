@@ -2,24 +2,25 @@
  * GET/POST /api/cron/refresh-demand
  *
  * Demand-signal snapshot: pulls every live feed in the demand-signal registry
- * (WHO GHO, OWID, NIH RePORTER, openFDA) fresh, plus — when EXA_API_KEY is
+ * (WHO, OWID, NIH RePORTER, openFDA) fresh, plus — when EXA_API_KEY is
  * set — one Exa Agent run extracting queue metrics that have no API (grid
  * interconnection backlog, housing vacancy, transplant waitlist).
  *
- * Deliberately NOT scheduled in vercel.json yet (Hobby cron-count limit); the
- * /demand page live-fetches with daily ISR on its own. This route exists to
- * (a) force-refresh and audit the signals, (b) exercise the Exa queue
- * extractor, and (c) become the persistence writer once signal history lands
- * in Neon.
+ * Not scheduled in vercel.json. EXA_API_KEY is set in production, and this
+ * route runs a medium-effort Exa Agent when that key is present. Those queue
+ * signals are returned in this response only: they are not stored and /demand
+ * does not read them. A daily cron would spend Exa credits on a discarded
+ * result. The free feeds are already refreshed by /demand (`revalidate` of
+ * one day). Hit this route by hand when you want the audit, including Exa.
+ * The older "Hobby cron-count" note is stale: four other jobs are already
+ * scheduled.
  *
  * Auth: Bearer CRON_SECRET, same contract as problem-sourcing.
  */
 import { NextResponse } from 'next/server'
 import { revalidatePath } from 'next/cache'
 import { demandSignalRegistry } from '@/data/demand-signals'
-import { fetchGho } from '@/lib/sources/who'
-import { fetchOwid } from '@/lib/sources/owid'
-import { fetchWdi } from '@/lib/sources/worldbank'
+import { fetchDemandBurden } from '@/lib/burden-feed'
 import { fetchOpenAlexCount } from '@/lib/sources/openalex'
 import { fetchFormDCount } from '@/lib/sources/edgar'
 import { fetchFederalRegisterCount } from '@/lib/sources/federal-register'
@@ -63,16 +64,7 @@ export async function POST(req: Request) {
   const signals = await Promise.all(
     entries.map(async ([slug, feeds]) => {
       const [burden, papers, raises, rulemaking, awards, research, queues] = await Promise.all([
-        feeds.burden
-          ? feeds.burden.kind === 'gho'
-            ? fetchGho(feeds.burden.code, { revalidateSeconds: 0 })
-            : feeds.burden.kind === 'owid'
-              ? fetchOwid(feeds.burden.slug, {
-                  extraParams: feeds.burden.extraParams,
-                  revalidateSeconds: 0,
-                })
-              : fetchWdi('WLD', feeds.burden.indicator, { revalidateSeconds: 0 })
-          : null,
+        feeds.burden ? fetchDemandBurden(feeds.burden, { revalidateSeconds: 0 }) : null,
         feeds.openAlexSearch
           ? fetchOpenAlexCount(feeds.openAlexSearch, { revalidateSeconds: 0 })
           : null,
@@ -92,7 +84,8 @@ export async function POST(req: Request) {
       ])
       return {
         problemSlug: slug,
-        burden: burden?.latest ?? null,
+        burden: burden?.status === 'ok' ? { year: burden.year, value: burden.value } : null,
+        burdenStatus: burden?.status ?? null,
         papers: papers?.workCount ?? null,
         privateRaises: raises?.filingCount ?? null,
         federalDocs: rulemaking?.documentCount ?? null,

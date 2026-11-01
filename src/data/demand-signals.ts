@@ -6,7 +6,7 @@
  * never a survey, never social exhaust.
  *
  * Three live classes today (each endpoint verified against the real API):
- *   burden   — WHO GHO OData, Our World in Data, World Bank WDI (world aggregates)
+ *   burden   — WHO data.who.int (xMart), Our World in Data, World Bank WDI (world aggregates)
  *   research — OpenAlex work counts across every discipline, with NIH RePORTER
  *              funded-project counts as a biomedical corroboration
  *   queues   — openFDA current drug shortages (demand markets fail to clear)
@@ -19,7 +19,7 @@
  */
 
 export type BurdenFeed =
-  | { kind: 'gho'; code: string; label: string; unit: string }
+  | { kind: 'who'; code: string; label: string; unit: string }
   | { kind: 'owid'; slug: string; extraParams?: string; label: string; unit: string }
   // World Bank WDI, via the existing lib/sources/worldbank.ts client. Used
   // where OWID publishes no OWID_WRL (World) aggregate for the metric.
@@ -135,7 +135,9 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     openAlexSearch: 'longevity|healthspan', // 45,631
     edgar: { q: 'longevity', kind: 'keyword' }, // 31 filings
     burden: {
-      kind: 'gho',
+      kind: 'who',
+      // Same GHO code as the retired OData API. Confirmed on xMart 2026-11-01:
+      // global both-sexes series, 2000–2023.
       code: 'WHOSIS_000001',
       label: 'Life expectancy at birth',
       unit: 'years',
@@ -149,7 +151,9 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     usaSpendingTerm: 'malaria', // US 1,299 awards
     openAlexSearch: 'malaria|tuberculosis', // 85,516
     burden: {
-      kind: 'gho',
+      kind: 'who',
+      // Same GHO code as the retired OData API. Confirmed on xMart 2026-11-01:
+      // global series with no sex split, 2000–2024.
       code: 'MALARIA_EST_DEATHS',
       label: 'Estimated malaria deaths',
       unit: 'deaths/yr',
@@ -196,11 +200,11 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
 /** Source metadata for the /demand page's "where the numbers come from" strip. */
 export const demandSignalSources = [
   {
-    id: 'who-gho',
-    name: 'WHO Global Health Observatory',
-    url: 'https://www.who.int/data/gho',
+    id: 'who',
+    name: 'WHO data.who.int',
+    url: 'https://data.who.int',
     feeds: 'burden',
-    access: 'Open OData API, no key',
+    access: 'Open xMart API, no key. Terms: https://data.who.int/about/data/terms-and-conditions',
     cadence: 'rolling, per indicator',
   },
   {

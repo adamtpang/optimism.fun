@@ -10,7 +10,8 @@
  */
 import { NextResponse } from 'next/server'
 import { getLatestObservations, getLatestFetchedAt } from '@/lib/indicators'
-import { allLiveIndicators, latestSourceUpdate } from '@/data/data-sources'
+import { allLiveIndicators } from '@/data/data-sources'
+import { fetchWdiLastUpdated } from '@/lib/sources/worldbank'
 import { isDbConfigured } from '@/lib/db'
 
 export const runtime = 'nodejs'
@@ -19,9 +20,10 @@ export const dynamic = 'force-dynamic'
 export async function GET() {
   const labelFor = new Map(allLiveIndicators.map((i) => [i.indicator, i.label]))
 
-  const [observations, dbFetchedAt] = await Promise.all([
+  const [observations, dbFetchedAt, sourceLastUpdated] = await Promise.all([
     getLatestObservations(),
     getLatestFetchedAt(),
+    fetchWdiLastUpdated({ revalidateSeconds: 86400 }),
   ])
 
   return NextResponse.json(
@@ -29,7 +31,7 @@ export async function GET() {
       ok: true,
       source: 'worldbank-wdi',
       dbConfigured: isDbConfigured(),
-      sourceLastUpdated: latestSourceUpdate(),
+      sourceLastUpdated,
       dbFetchedAt,
       count: observations.length,
       observations: observations.map((o) => ({

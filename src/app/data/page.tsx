@@ -76,6 +76,13 @@ export default function DataPage() {
           <span className="font-mono text-ink-300">research/CTAS.md</span> and{' '}
           <span className="font-mono text-ink-300">research/DISCOVERIES.md</span>. A human reviews it before it merges.
         </p>
+        <p className="text-sm text-ink-400 mt-4 leading-relaxed">
+          Live WHO, Our World in Data, and World Bank figures are fetched when a page renders. They are not in these downloads. WHO data is under{' '}
+          <a href="https://data.who.int/about/data/terms-and-conditions" className="text-primary underline decoration-dotted" target="_blank" rel="noopener noreferrer">
+            WHO&apos;s terms
+          </a>
+          . OWID charts are CC BY 4.0, and the citation under each chart is theirs.
+        </p>
       </main>
       <Footer />
     </>

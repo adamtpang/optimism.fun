@@ -21,9 +21,7 @@ import {
   type DemandComponent,
 } from '@/lib/demand'
 import { demandSignalRegistry } from '@/data/demand-signals'
-import { fetchGho } from '@/lib/sources/who'
-import { fetchOwid } from '@/lib/sources/owid'
-import { fetchWdi } from '@/lib/sources/worldbank'
+import { fetchDemandBurden } from '@/lib/burden-feed'
 import { fetchOpenAlexCount } from '@/lib/sources/openalex'
 import { fetchFormDCount } from '@/lib/sources/edgar'
 import { fetchFederalRegisterCount } from '@/lib/sources/federal-register'
@@ -56,7 +54,11 @@ export type LiveValue = {
   url: string | null
 }
 
-export type LiveDemandComponent = DemandComponent & { live?: LiveValue | null }
+export type LiveDemandComponent = DemandComponent & {
+  live?: LiveValue | null
+  /** Set when a mapped feed has no published equivalent. The word the UI shows. */
+  unavailable?: 'unavailable'
+}
 
 export type DemandRow = {
   slug: string
@@ -85,13 +87,7 @@ async function liveComponentsFor(
   if (!feeds) return { components: comps, attention: null }
 
   const [burden, openalex, edgar, fedreg, usaspend, wiki, nih, fda] = await Promise.all([
-    feeds.burden
-      ? feeds.burden.kind === 'gho'
-        ? fetchGho(feeds.burden.code)
-        : feeds.burden.kind === 'owid'
-          ? fetchOwid(feeds.burden.slug, { extraParams: feeds.burden.extraParams })
-          : fetchWdi('WLD', feeds.burden.indicator)
-      : Promise.resolve(null),
+    feeds.burden ? fetchDemandBurden(feeds.burden) : Promise.resolve(null),
     feeds.openAlexSearch ? fetchOpenAlexCount(feeds.openAlexSearch) : Promise.resolve(null),
     feeds.edgar
       ? fetchFormDCount(feeds.edgar.q, { kind: feeds.edgar.kind })
@@ -109,29 +105,21 @@ async function liveComponentsFor(
     feeds.fdaCategory ? fetchFdaShortages({ category: feeds.fdaCategory }) : Promise.resolve(null),
   ])
 
-  const burdenMeta = feeds.burden
-    ? feeds.burden.kind === 'gho'
-      ? { source: 'WHO GHO', url: `https://ghoapi.azureedge.net/api/${feeds.burden.code}` }
-      : feeds.burden.kind === 'owid'
-        ? { source: 'Our World in Data', url: `https://ourworldindata.org/grapher/${feeds.burden.slug}` }
-        : {
-            source: 'World Bank WDI',
-            url: `https://data.worldbank.org/indicator/${feeds.burden.indicator}`,
-          }
-    : null
-
   const mapped = comps.map((c): LiveDemandComponent => {
-    if (c.class === 'burden' && burden?.latest && feeds.burden && burdenMeta) {
+    if (c.class === 'burden' && burden?.status === 'unavailable') {
+      return { ...c, unavailable: 'unavailable' }
+    }
+    if (c.class === 'burden' && burden?.status === 'ok') {
       // Corroborate, don't re-derive: static strength stays, live number rides along.
       return {
         ...c,
         live: {
-          value: burden.latest.value,
-          unit: feeds.burden.unit,
-          label: feeds.burden.label,
-          asOf: String(burden.latest.year),
-          source: burdenMeta.source,
-          url: burdenMeta.url,
+          value: burden.value,
+          unit: burden.unit,
+          label: burden.label,
+          asOf: String(burden.year),
+          source: burden.source,
+          url: burden.url,
         },
       }
     }

@@ -78,9 +78,11 @@ export default function MetricChart({
           strokeLinecap="round"
           vectorEffect="non-scaling-stroke"
         />
-        {layout.points.map((p) => (
-          <circle key={p.year} cx={p.x} cy={p.y} r={p.year === last.year ? 5 : 3} fill="var(--chart-1)" />
-        ))}
+        {(series.length > 40 ? [layout.points[0], layout.points[layout.points.length - 1]] : layout.points).map(
+          (p) => (
+            <circle key={p.year} cx={p.x} cy={p.y} r={p.year === last.year ? 5 : 3} fill="var(--chart-1)" />
+          ),
+        )}
         <text
           x={lastPoint.x + 8}
           y={lastPoint.y}

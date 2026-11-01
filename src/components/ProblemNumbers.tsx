@@ -1,6 +1,7 @@
 import type { Problem } from '@/data/types'
 import { problemDataset } from '@/lib/open-data'
 import { formatMeasure } from '@/lib/charts'
+import { loadProblemOwidChart } from '@/lib/owid-chart'
 import MetricChart from '@/components/MetricChart'
 
 function SourceLink({ source, href }: { source: string; href: string | null }) {
@@ -17,12 +18,13 @@ function SourceLink({ source, href }: { source: string; href: string | null }) {
   )
 }
 
-export default function ProblemNumbers({ problem }: { problem: Problem }) {
+export default async function ProblemNumbers({ problem }: { problem: Problem }) {
   const data = problemDataset(problem.slug)
   if (!data) return null
   const scale = problem.scale
   const hasSeries = (scale?.series?.length ?? 0) >= 2
   const blocks = data.metrics.filter((metric) => metric.id !== 'scale' && metric.id !== 'humans_affected' && metric.id !== 'related_deaths')
+  const owid = await loadProblemOwidChart(problem.slug)
 
   return (
     <section className="site-shell py-10 border-b border-hair">
@@ -59,6 +61,25 @@ export default function ProblemNumbers({ problem }: { problem: Problem }) {
           <p className="text-sm text-ink-500 mt-3">No time series is stored for this measure.</p>
           {scale && <SourceLink source={scale.source} href={scale.sourceUrl ?? null} />}
         </div>
+      )}
+
+      {owid.state === 'ok' && (
+        <div className="mt-3">
+          <p className="font-mono text-sm uppercase tracking-wider text-ink-500 mb-2">
+            Live trend · Our World in Data
+          </p>
+          <MetricChart
+            title={owid.chart.title}
+            unit={owid.chart.unit}
+            series={owid.chart.series}
+            source={`${owid.chart.citation} CC BY 4.0.`}
+            sourceUrl={owid.chart.url}
+            asOf={owid.chart.asOf}
+          />
+        </div>
+      )}
+      {owid.state === 'unavailable' && (
+        <p className="text-sm text-ink-500 mt-3">Our World in Data trend unavailable right now.</p>
       )}
 
       {blocks.length > 0 && (
