@@ -338,7 +338,7 @@ with `/marketcap` still prerendered, so both new caps validate.
 - Downloads: `/api/problems`, `/api/series`, `/api/discoveries`, `/api/ctas`, each with a `/csv` route, plus `/api/problems/<slug>`. `/data` lists them. Stored charts use `scale.series`. Verified problems also have a live OWID series.
 - Calls to action live in `src/data/ctas.ts`. Schema: `research/CTAS.md`. 96 ingested rows. Air pollution is tagged `copd` and `climate-change` until a problem slug exists. `government` is a CTA type (UK AISI).
 - `/poster` is the ranking poster (people affected, log scale, color by neglectedness). `/where` matches skills, interests, and offers in the browser and does not store them.
-- Ranks and stored problem figures were not changed.
+- The open-tool commit did not itself change ranks or stored figures. The ranking formula below is the later change.
 
 ## Live WHO, OWID, and World Bank date (2026-11-01)
 
@@ -346,3 +346,51 @@ with `/marketcap` still prerendered, so both new caps validate.
 - Live OWID trends are mapped in `src/data/owid-charts.ts` and cached for a day. Biosecurity, loneliness, cancer, and COPD have no verified redistributable World series.
 - The World Bank last-published date is read from `meta.lastupdated` (2026-10-08 when checked). It is no longer hardcoded in `src/data/data-sources.ts`.
 - `/api/cron/refresh-demand` stays unscheduled. `EXA_API_KEY` is set in production, and that route's Exa queue extraction is not stored.
+
+## Daily research (2026-11-01)
+
+- Five rows appended: Delta toxin and NEC (`newborn-survival`), PHERGain
+  5-year outcomes and METTL1 inhibitor STM9005 (`cancer`), caloric restriction
+  and somatic mutation (`longevity`), and the 2026 Lancet Countdown
+  (`climate-change`). Ranks and scores were not changed.
+- The Cell paper's published date is the online date 2026-09-09 from the Cell
+  page and Europe PMC. Crossref only has the issue month, 2026-10.
+- The 30% and 19-month figures are from the Nature Genetics highlight
+  (10.1038/s41588-026-02803-8), which describes 19-month-old male mice
+  subjected to 30% calorie restriction. The row does not claim a start age.
+- Heat figures: 710,000 deaths and 71.5% from the Lancet Countdown data
+  explorer (indicator 1.1.5); nearly 36% from the WHO release of the same
+  report. No earlier row covered this report.
+- A Crossref updates scan of every DOI already in the feed found no
+  retractions. Four rows have errata or author corrections only, and those
+  rows were left unchanged.
+
+## Ranking formula (2026-11-01)
+
+The homepage order is `opportunityScore` in `src/lib/priority.ts`. Severity is
+a 0..1 log death rate (1 in 10,000 affected people per year scores 0; certain
+death this year scores 1), or empty when that rate is not sourced. Empty scores
+0.5. Death counts are not stored in `severity`, and values outside 0..1 throw.
+`currentSolutionQuality` is 0..1 only; financial infrastructure's 7/10 judgment
+is stored as 0.7. Neglectedness and tractability (1–10, divided by 10) multiply
+scale. Zero tagged companies and funders is unknown supply and falls back to
+neglectedness. X-risk severity is the share lost if the catastrophe occurs
+(biosecurity: 1, extinction). A probability range with no midpoint is recorded
+and not averaged. X-risk supply uses neglectedness, not the company count.
+The formula is on `/methodology`. AI control, nuclear war, and air pollution
+were not added: the opened pages did not fill scale, humans affected,
+neglectedness, and tractability together. `/poster` and the public downloads
+use this same order. The discoveries feed is main's 35 rows.
+
+## Severity sources (2026-11-01)
+
+Death-rate severity is scored for diabetes, hypertension, COPD, and cancer.
+The inputs are `mortalityPairs` on each problem. Biosecurity stays at 1, the
+extinction stake, and says so in `severityNote`. The other fourteen problems
+have no severity. Malaria, tuberculosis, and HIV each have an opened pair and
+are not added. NTDs record 119,000 deaths in 2021 and 1.495 billion people
+requiring interventions in 2023, and are not scored, because the harm is
+disability. Newborn survival has 2.3 million deaths in 2024 and no stated
+live-birth count. Each problem page has a Cite this block. `/methodology`
+lists the scored and unscored problems from the data. Ranks did not move:
+no new severity value was stored.

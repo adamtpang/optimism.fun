@@ -83,6 +83,37 @@ export function displayDeaths(problemSlug: string): number | null {
   return n > 0 ? n : null
 }
 
+/** The source of the number `displayDeaths` shows, so the figure can be a link. */
+export function displayDeathCitation(problemSlug: string): {
+  value: number
+  source: string
+  sourceUrl: string
+  year: number
+} | null {
+  const b = burdenForProblem(problemSlug)
+  if (!b) return null
+  const bestAgg = b.aggregates
+    .filter((a) => (a.deaths.value ?? 0) > 0)
+    .sort(byDeathsDesc)[0]
+  const aggVal = bestAgg?.deaths.value ?? 0
+  if (bestAgg && aggVal >= b.deaths && aggVal > 0) {
+    return {
+      value: aggVal,
+      source: bestAgg.deaths.source,
+      sourceUrl: bestAgg.deaths.sourceUrl,
+      year: bestAgg.deaths.year,
+    }
+  }
+  if (b.deaths <= 0 || b.counted.length === 0) return null
+  const top = b.counted[0]
+  return {
+    value: b.deaths,
+    source: top.deaths.source,
+    sourceUrl: top.deaths.sourceUrl,
+    year: top.deaths.year,
+  }
+}
+
 export function deathsByProblem(): Map<string, ProblemBurden> {
   const out = new Map<string, ProblemBurden>()
   const slugs = new Set(mortalityCauses.flatMap((c) => c.problemSlugs))

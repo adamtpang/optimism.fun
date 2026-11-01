@@ -61,11 +61,27 @@ export const problems: Problem[] = [
       asOf: TODAY,
     },
     severity: {
-      value: 0.85,
-      unit: 'share of wealth',
-      source: 'estimated, engineered pandemic could approach extinction',
+      value: 1,
+      unit: 'share of humanity lost if the extinction-level outcome occurs',
+      source:
+        '80,000 Hours: some researchers estimate a greater than 1 in 10,000 chance, and potentially as high as 1 in 100, of a biological catastrophe leading to human extinction within 100 years. Extinction is the loss of everyone. That range has no stated midpoint, so the rank uses the stake (this 1) and does not multiply by an averaged probability. The same page says a non-extinction catastrophe could still kill billions; that is not added on top.',
+      sourceUrl: 'https://80000hours.org/problem-profiles/preventing-catastrophic-pandemics/',
       confidence: 'low',
-      asOf: TODAY,
+      asOf: '2026-11-01',
+    },
+    severityNote:
+      'This 1 is the share of humanity lost if the extinction-level outcome occurs, not an annual death rate. COVID-19’s death toll is a past outbreak. It is not the tail this problem ranks. The appropriate measure for the tail is that share, which is what is stored, times a single probability if a source states one.',
+    catastropheProbability: {
+      low: 1 / 10_000,
+      high: 1 / 100,
+      lowIsExclusive: true,
+      horizonYears: 100,
+      outcome: 'biological catastrophe leading to human extinction',
+      source:
+        '80,000 Hours problem profile, citing researchers: greater than 1 in 10,000, and potentially as high as 1 in 100, per 100 years',
+      sourceUrl: 'https://80000hours.org/problem-profiles/preventing-catastrophic-pandemics/',
+      confidence: 'low',
+      asOf: '2026-11-01',
     },
     marketSize: {
       value: 100_000_000_000,
@@ -194,14 +210,8 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: TODAY,
     },
-    severity: {
-      value: 0.15,
-      unit: 'share of income',
-      source: 'energy ~10-20% of household spending globally (World Bank)',
-      sourceUrl: 'https://data.worldbank.org/',
-      confidence: 'med',
-      asOf: TODAY,
-    },
+    severityNote:
+      'Deaths are the wrong measure. The harm is missing and costly energy. The appropriate measure is people without electricity, or the cost and reliability of delivered power.',
     marketSize: {
       value: 10_000_000_000_000,
       unit: 'USD / year',
@@ -324,14 +334,8 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: TODAY,
     },
-    severity: {
-      value: 0.35,
-      unit: 'share of income',
-      source: 'global median housing burden (UN-Habitat, Demographia)',
-      sourceUrl: 'https://unhabitat.org/',
-      confidence: 'med',
-      asOf: TODAY,
-    },
+    severityNote:
+      'Deaths are the wrong measure. The harm is inadequate and unaffordable housing. The appropriate measure is people living in inadequate housing, or the ratio of home prices to income.',
     marketSize: {
       value: 13_000_000_000_000,
       unit: 'USD / year',
@@ -450,14 +454,8 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: TODAY,
     },
-    severity: {
-      value: 0.2,
-      unit: 'share of lifetime earnings',
-      source: 'World Bank, returns to schooling meta-analyses',
-      sourceUrl: 'https://openknowledge.worldbank.org/entities/publication/1f1b2b42-c50a-5116-9bd7-2f2a08a9e8f8',
-      confidence: 'med',
-      asOf: TODAY,
-    },
+    severityNote:
+      'Deaths are the wrong measure. The harm is children who do not learn. The appropriate measure is learning poverty: the share of children who cannot read a simple text.',
     marketSize: {
       value: 6_000_000_000_000,
       unit: 'USD / year',
@@ -583,13 +581,71 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: TODAY,
     },
-    severity: {
-      value: 0.6,
-      unit: 'share of wealth (for affected)',
-      source: 'DALY-adjusted health economics (WHO)',
-      confidence: 'med',
-      asOf: TODAY,
-    },
+    severityNote:
+      'WHO states a death toll and a matching population for malaria, tuberculosis, and HIV separately. They are not one rate. Tuberculosis deaths include 150,000 people with HIV, HIV’s figures are for 2025 while the other two are for 2024, and the denominators mix new cases with people living with HIV. Adding them would double-count. The appropriate measure is the three rates, kept separate. They are recorded below and not scored.',
+    mortalityPairs: [
+      {
+        deaths: {
+          value: 610_000,
+          year: 2024,
+          label: 'malaria deaths',
+          source: 'WHO malaria fact sheet, citing the World malaria report: 610,000 deaths in 2024',
+          sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/malaria',
+          asOf: '2026-11-01',
+        },
+        affected: {
+          value: 282_000_000,
+          year: 2024,
+          label: 'malaria cases',
+          source: 'WHO malaria fact sheet, citing the World malaria report: 282 million cases in 2024',
+          sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/malaria',
+          asOf: '2026-11-01',
+        },
+        notScoredBecause:
+          'One of three diseases on this problem. Incident malaria cases are not the HIV or tuberculosis population, so this rate is not the problem’s severity.',
+      },
+      {
+        deaths: {
+          value: 1_230_000,
+          year: 2024,
+          label: 'tuberculosis deaths, including 150,000 among people with HIV',
+          source:
+            'WHO tuberculosis fact sheet: 1.23 million deaths in 2024, including 150,000 among people with HIV',
+          sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/tuberculosis',
+          asOf: '2026-11-01',
+        },
+        affected: {
+          value: 10_700_000,
+          year: 2024,
+          label: 'people who fell ill with tuberculosis',
+          source: 'WHO tuberculosis fact sheet: 10.7 million people fell ill with TB in 2024',
+          sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/tuberculosis',
+          asOf: '2026-11-01',
+        },
+        notScoredBecause:
+          'The death toll includes 150,000 HIV-associated tuberculosis deaths. Adding it to the HIV death toll would count those deaths twice.',
+      },
+      {
+        deaths: {
+          value: 570_000,
+          year: 2025,
+          label: 'HIV-related deaths',
+          source: 'WHO HIV and AIDS fact sheet: 570,000 deaths from HIV-related causes in 2025',
+          sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/hiv-aids',
+          asOf: '2026-11-01',
+        },
+        affected: {
+          value: 41_000_000,
+          year: 2025,
+          label: 'people living with HIV at the end of 2025',
+          source: 'WHO HIV and AIDS fact sheet: 41.0 million people living with HIV at the end of 2025',
+          sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/hiv-aids',
+          asOf: '2026-11-01',
+        },
+        notScoredBecause:
+          '2025, while malaria and tuberculosis on this problem are 2024. People living with HIV is a stock, not the same denominator as incident cases.',
+      },
+    ],
     marketSize: {
       value: 200_000_000_000,
       unit: 'USD / year',
@@ -647,6 +703,9 @@ export const problems: Problem[] = [
     },
     sources: [
       { title: 'WHO World Malaria Report', url: 'https://www.who.int/teams/global-malaria-programme' },
+      { title: 'WHO malaria fact sheet', url: 'https://www.who.int/news-room/fact-sheets/detail/malaria' },
+      { title: 'WHO tuberculosis fact sheet', url: 'https://www.who.int/news-room/fact-sheets/detail/tuberculosis' },
+      { title: 'WHO HIV and AIDS fact sheet', url: 'https://www.who.int/news-room/fact-sheets/detail/hiv-aids' },
       { title: 'Copenhagen Consensus', url: 'https://copenhagenconsensus.com/' },
     ],
     asOf: TODAY,
@@ -705,13 +764,8 @@ export const problems: Problem[] = [
       confidence: 'med',
       asOf: TODAY,
     },
-    severity: {
-      value: 0.1,
-      unit: 'share of income (indirect)',
-      source: 'estimated, affects long-run growth rate, not direct spending',
-      confidence: 'low',
-      asOf: TODAY,
-    },
+    severityNote:
+      'Deaths are the wrong measure. The harm is fewer discoveries per researcher. The appropriate measure is research productivity, as in Bloom, Jones, Van Reenen and Webb (2020).',
     marketSize: {
       value: 2_500_000_000_000,
       unit: 'USD / year',
@@ -845,13 +899,8 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: TODAY,
     },
-    severity: {
-      value: 0.25,
-      unit: 'share of lifetime wealth',
-      source: 'healthcare spend concentrates in final decade of life (OECD Health Statistics)',
-      confidence: 'med',
-      asOf: TODAY,
-    },
+    severityNote:
+      'There is no cause of death called aging that is separate from diseases already scored on this index, including cancer, heart disease, stroke, COPD, and diabetes. An all-cause death rate would count those again. The appropriate measure is years of healthy life lost to aging, from one source that does not reuse those causes.',
     marketSize: {
       value: 4_000_000_000_000,
       unit: 'USD / year',
@@ -976,13 +1025,8 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: TODAY,
     },
-    severity: {
-      value: 0.15,
-      unit: 'share of long-run GDP',
-      source: 'estimated, demographic drag on growth, fiscal sustainability',
-      confidence: 'low',
-      asOf: TODAY,
-    },
+    severityNote:
+      'Deaths are the wrong measure. The harm is fewer births than a population replaces, and fewer births than people want. The appropriate measure is the total fertility rate, or the gap between intended and actual births.',
     marketSize: {
       value: 50_000_000_000,
       unit: 'USD / year',
@@ -1098,13 +1142,8 @@ export const problems: Problem[] = [
       confidence: 'med',
       asOf: TODAY,
     },
-    severity: {
-      value: 0.3,
-      unit: 'share of subjective wellbeing',
-      source: 'meta-analyses of loneliness and life satisfaction',
-      confidence: 'med',
-      asOf: TODAY,
-    },
+    severityNote:
+      'Deaths are the wrong measure. The Surgeon General compares the mortality risk of loneliness to smoking, but no page opened for this entry states an annual death toll attributable to loneliness and the matching number of lonely people. Using that comparison as a rate would invent both figures. The appropriate measure is the share of people who are lonely.',
     marketSize: {
       value: 100_000_000_000,
       unit: 'USD / year',
@@ -1189,13 +1228,8 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: '2026-06-09',
     },
-    severity: {
-      value: 0.9,
-      unit: 'share of wellbeing (for those affected)',
-      source: 'estimated — extreme poverty dominates almost every other welfare measure for those experiencing it',
-      confidence: 'med',
-      asOf: '2026-06-09',
-    },
+    severityNote:
+      'Deaths are the wrong measure. The harm is living below a poverty line. The appropriate measure is people below $2.15 a day, or the poverty gap. This entry does not use a modeled “deaths from poverty” figure.',
     marketSize: {
       value: 70_000_000_000,
       unit: 'USD / year',
@@ -1291,13 +1325,8 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: '2026-06-09',
     },
-    severity: {
-      value: 0.2,
-      unit: 'share of global GDP at risk (long-run estimates)',
-      source: 'range of integrated-assessment and macro estimates; wide uncertainty',
-      confidence: 'low',
-      asOf: '2026-06-09',
-    },
+    severityNote:
+      'WHO projects about 250,000 additional deaths per year between 2030 and 2050, from undernutrition, malaria, diarrhoea and heat stress alone. That is a future projection, not a current death toll, and the same page’s 3.6 billion people in highly susceptible areas is not the denominator of those deaths. The appropriate measure is current attributable deaths in a stated year divided by the exposed population from the same source, or damages.',
     marketSize: {
       value: 4_500_000_000_000,
       unit: 'USD / year',
@@ -1371,6 +1400,7 @@ export const problems: Problem[] = [
     sources: [
       { title: 'Our World in Data — CO2 Emissions', url: 'https://ourworldindata.org/co2-emissions' },
       { title: 'IPCC AR6 Synthesis Report', url: 'https://www.ipcc.ch/report/ar6/syr/' },
+      { title: 'WHO climate change and health fact sheet', url: 'https://www.who.int/news-room/fact-sheets/detail/climate-change-and-health' },
     ],
     asOf: '2026-06-09',
   },
@@ -1391,13 +1421,36 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: TODAY,
     },
-    severity: {
-      value: 0.8,
-      unit: 'share of wealth (chronic disability + stigma + impoverishment)',
-      source: 'estimated — WHO NTD framing: chronic disability and impoverishment rather than acute mortality',
-      confidence: 'low',
-      asOf: TODAY,
-    },
+    severityNote:
+      'Deaths are not the harm this problem is. WHO’s 2025 report says NTD-related deaths fell to 119,000 by 2021, and that 1.495 billion people required interventions in 2023. The same sentences lead with disability: 14.1 million DALYs in 2021. The death year and the intervention year differ, and “just over 1 billion” people affected in 2021 is not a precise count. A death rate on the 2023 population would sit below this scale’s floor and would treat a disability problem as mild. The appropriate measure is DALYs, or people requiring interventions.',
+    mortalityPairs: [
+      {
+        deaths: {
+          value: 119_000,
+          year: 2021,
+          label: 'NTD-related deaths',
+          source:
+            'WHO Global report on neglected tropical diseases 2025: NTD-related deaths decreased from an estimated 139,000 in 2015 to 119,000 in 2021',
+          sourceUrl:
+            'https://www.who.int/teams/control-of-neglected-tropical-diseases/global-report-on-neglected-tropical-diseases-2025',
+          asOf: '2026-11-01',
+        },
+        affected: {
+          value: 1_495_000_000,
+          year: 2023,
+          label: 'people requiring interventions against NTDs',
+          source:
+            'WHO Global report on neglected tropical diseases 2025: an estimated 1.495 billion people required interventions against NTDs in 2023',
+          sourceUrl:
+            'https://www.who.int/teams/control-of-neglected-tropical-diseases/global-report-on-neglected-tropical-diseases-2025',
+          asOf: '2026-11-01',
+        },
+        yearMismatch:
+          'Deaths are the 2021 end of a 2015–2021 comparison. People requiring interventions are for 2023.',
+        notScoredBecause:
+          'The report’s burden measure is disability (14.1 million DALYs in 2021). Scoring the death rate would put this problem on the floor of a mortality scale.',
+      },
+    ],
     marketSize: {
       value: 4_000_000_000,
       unit: 'USD — addressable diagnostics + therapeutics market at full coverage',
@@ -1490,13 +1543,8 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: TODAY,
     },
-    severity: {
-      value: 0.9,
-      unit: 'DALY-weighted severity (death within the first month of life)',
-      source: 'estimated — near-total loss of expected lifespan per case',
-      confidence: 'low',
-      asOf: TODAY,
-    },
+    severityNote:
+      'Deaths are the right measure, and the denominator is live births, not the babies who died. UNICEF states 2.3 million neonatal deaths in 2024 and a rate of 17.2 deaths per 1,000 live births in 2024, and does not state the number of live births. Dividing the rounded death toll by the rounded rate would invent a birth count. The stored “people affected” field on this row is the death toll itself, so it cannot be the denominator. The appropriate measure is neonatal deaths divided by live births from the same UN IGME release.',
     marketSize: {
       value: 60_000_000,
       unit: 'USD — CGD-estimated funding gap for a single rapid neonatal sepsis diagnostic (does not include oxygen/pulse-oximetry infrastructure, which is unquantified)',
@@ -1610,13 +1658,37 @@ export const problems: Problem[] = [
       asOf: '2026-08-27',
     },
     severity: {
-      value: 10_000_000,
-      unit: 'deaths attributed to high blood pressure per year, approximately',
-      source: 'WHO HEARTS technical package',
+      value: 0.463,
+      unit: '0–1 log of annual deaths per affected adult',
+      source:
+        'WHO HEARTS technical package: high blood pressure kills approximately 10 million people a year. WHO fact sheet: 1.4 billion adults aged 30–79 had hypertension in 2024. Rate = 10,000,000 / 1,400,000,000 = 0.00714 deaths per affected person per year. Log-normalized from 1 in 10,000 (0) to certain death this year (1): 0.463. The 23 September 2025 WHO news says "more than 10 million", so 10 million is the approximate figure, not a floor.',
       sourceUrl: 'https://www.who.int/publications/i/item/9789241511377',
       confidence: 'med',
-      asOf: '2026-08-27',
+      asOf: '2026-11-01',
     },
+    mortalityPairs: [
+      {
+        deaths: {
+          value: 10_000_000,
+          year: null,
+          label: 'deaths from high blood pressure, approximate annual toll',
+          source:
+            'WHO HEARTS technical package: high blood pressure kills approximately 10 million people a year. The 23 September 2025 WHO news says “more than 10 million”, so 10 million is the approximate figure, not a floor, and no single statistical year is stated.',
+          sourceUrl: 'https://www.who.int/publications/i/item/9789241511377',
+          asOf: '2026-11-01',
+        },
+        affected: {
+          value: 1_400_000_000,
+          year: 2024,
+          label: 'adults aged 30–79 with hypertension',
+          source: 'WHO fact sheet: 1.4 billion adults aged 30–79 had hypertension in 2024',
+          sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/hypertension',
+          asOf: '2026-11-01',
+        },
+        yearMismatch:
+          'The 1.4 billion adults are for 2024. The death toll is an approximate annual figure with no statistical year on the page.',
+      },
+    ],
     currentSolutionQuality: {
       value: 0.23,
       unit: 'share of affected adults with blood pressure controlled',
@@ -1723,13 +1795,8 @@ export const problems: Problem[] = [
       confidence: 'low',
       asOf: TODAY,
     },
-    severity: {
-      value: 0.5,
-      unit: 'share of committed AI infrastructure capex at real risk of multi-year delay',
-      source: 'estimated from interconnection-queue (2,300GW stuck) and transformer-backlog (5yr lead time) data — Lawrence Berkeley National Lab "Queued Up"; Siemens Energy backlog report, Aug 2026',
-      confidence: 'low',
-      asOf: TODAY,
-    },
+    severityNote:
+      'Deaths are the wrong measure. The harm is electricity demand from AI data centers that grids and equipment cannot yet connect. The appropriate measure is gigawatts of demand against gigawatts that can be connected.',
     marketSize: {
       value: 1_300_000_000_000,
       unit: 'USD / year (through 2030)',
@@ -1845,13 +1912,8 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: '2026-08-22',
     },
-    severity: {
-      value: 3,
-      unit: '/10 per-capita severity',
-      source: 'editorial judgement: exclusion from financial rails is a real cost, not a mortality or morbidity burden',
-      confidence: 'low',
-      asOf: '2026-08-22',
-    },
+    severityNote:
+      'Deaths are the wrong measure. The harm is the cost of moving money, and adults who have no account. The appropriate measure is adults without an account, or the fee on a payment.',
     marketSize: {
       value: 2_500_000_000_000,
       unit: 'USD / year (global payments revenue)',
@@ -1860,9 +1922,10 @@ export const problems: Problem[] = [
       asOf: '2026-08-22',
     },
     currentSolutionQuality: {
-      value: 7,
-      unit: '/10 (high = well served, low opportunity)',
-      source: 'card rails work well for the banked; the gap is cost, settlement latency, and the unbanked tail',
+      value: 0.7,
+      unit: '0–1 (high = well served, low opportunity)',
+      source:
+        'The same 7/10 editorial judgment, rescaled onto 0–1. Card rails work well for the banked; the gap is cost, settlement latency, and the unbanked tail.',
       confidence: 'med',
       asOf: '2026-08-22',
     },
@@ -1934,13 +1997,36 @@ export const problems: Problem[] = [
       asOf: '2026-09-11',
     },
     severity: {
-      value: 9_700_000,
-      unit: 'deaths per year (2022)',
-      source: 'IARC GLOBOCAN 2022, via UICC',
+      value: 0.921,
+      unit: '0–1 log of deaths per new diagnosis in 2022',
+      source:
+        'UICC on GLOBOCAN 2022: 9.7 million deaths and 20 million new cases. This problem counts affected people as new diagnoses, so the rate is 9,700,000 / 20,000,000 = 0.485 deaths per new case that year, not per person living with cancer. Log-normalized from 1 in 10,000 (0) to certain death this year (1): 0.921.',
       sourceUrl: 'https://www.uicc.org/news-and-updates/news/globocan-2022-latest-global-cancer-data-shows-rising-incidence-and-stark',
-      confidence: 'high',
-      asOf: '2026-09-11',
+      confidence: 'med',
+      asOf: '2026-11-01',
     },
+    mortalityPairs: [
+      {
+        deaths: {
+          value: 9_700_000,
+          year: 2022,
+          label: 'cancer deaths',
+          source: 'UICC on GLOBOCAN 2022: 9.7 million deaths',
+          sourceUrl:
+            'https://www.uicc.org/news-and-updates/news/globocan-2022-latest-global-cancer-data-shows-rising-incidence-and-stark',
+          asOf: '2026-11-01',
+        },
+        affected: {
+          value: 20_000_000,
+          year: 2022,
+          label: 'new cancer cases',
+          source: 'UICC on GLOBOCAN 2022: 20 million new cases',
+          sourceUrl:
+            'https://www.uicc.org/news-and-updates/news/globocan-2022-latest-global-cancer-data-shows-rising-incidence-and-stark',
+          asOf: '2026-11-01',
+        },
+      },
+    ],
     marketSize: {
       value: 252_000_000_000,
       unit: 'USD / year, global spending on cancer medicines (2024); IQVIA projects $441B by 2029',
@@ -2058,13 +2144,36 @@ export const problems: Problem[] = [
       asOf: '2026-09-11',
     },
     severity: {
-      value: 3_500_000,
-      unit: 'deaths per year (2021), about 5 percent of all deaths',
-      source: 'WHO COPD fact sheet',
+      value: 0.551,
+      unit: '0–1 log of annual deaths per prevalent case',
+      source:
+        'WHO COPD fact sheet (opened 2026-11-01): 3.4 million deaths in 2023, citing GBD 2023. GBD 2021 (PubMed 39748260): 213.39 million prevalent cases. Years differ, so the rate is approximate: 3,400,000 / 213,390,000 = 0.0159 deaths per prevalent case per year. Log-normalized from 1 in 10,000 (0) to certain death this year (1): 0.551. The mortality row still records WHO\'s earlier 3.5 million deaths for 2021.',
       sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/chronic-obstructive-pulmonary-disease-(copd)',
-      confidence: 'high',
-      asOf: '2026-09-11',
+      confidence: 'med',
+      asOf: '2026-11-01',
     },
+    mortalityPairs: [
+      {
+        deaths: {
+          value: 3_400_000,
+          year: 2023,
+          label: 'COPD deaths',
+          source: 'WHO COPD fact sheet: 3.4 million deaths in 2023, citing GBD 2023',
+          sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/chronic-obstructive-pulmonary-disease-(copd)',
+          asOf: '2026-11-01',
+        },
+        affected: {
+          value: 213_390_000,
+          year: 2021,
+          label: 'prevalent COPD cases',
+          source: 'GBD 2021: 213.39 million prevalent cases of COPD in 2021',
+          sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/39748260/',
+          doi: '10.1186/s12931-024-03051-2',
+          asOf: '2026-11-01',
+        },
+        yearMismatch: 'Deaths are for 2023. Prevalent cases are for 2021.',
+      },
+    ],
     marketSize: {
       value: 19_800_000_000,
       unit: 'USD / year, global COPD drug market (2024), market-research estimate',
@@ -2171,13 +2280,35 @@ export const problems: Problem[] = [
       asOf: '2026-09-11',
     },
     severity: {
-      value: 3_400_000,
-      unit: 'deaths attributable to diabetes per year (2024, IDF). WHO counts 1.6M deaths in 2021 with diabetes as the direct cause; the two definitions differ',
-      source: 'IDF Diabetes Atlas 2025; WHO diabetes fact sheet',
-      sourceUrl: 'https://media.idf.org/media/uploads/sites/3/2025/04/IDF_Atlas_11th_Edition_2025_Global-Factsheet.pdf',
+      value: 0.321,
+      unit: '0–1 log of annual direct deaths per person living with diabetes',
+      source:
+        'WHO diabetes fact sheet: diabetes was the direct cause of 1.6 million deaths in 2021, and 830 million people were living with diabetes in 2022. Rate = 1,600,000 / 830,000,000 = 0.00193 deaths per person per year. The years differ by one. Log-normalized from 1 in 10,000 (0) to certain death this year (1): 0.321. The IDF\'s broader 3.4 million attributable deaths is a different definition and is not used here.',
+      sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/diabetes',
       confidence: 'med',
-      asOf: '2026-09-11',
+      asOf: '2026-11-01',
     },
+    mortalityPairs: [
+      {
+        deaths: {
+          value: 1_600_000,
+          year: 2021,
+          label: 'deaths directly caused by diabetes',
+          source: 'WHO diabetes fact sheet: diabetes was the direct cause of 1.6 million deaths in 2021',
+          sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/diabetes',
+          asOf: '2026-11-01',
+        },
+        affected: {
+          value: 830_000_000,
+          year: 2022,
+          label: 'people living with diabetes',
+          source: 'WHO diabetes fact sheet: 830 million people were living with diabetes in 2022',
+          sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/diabetes',
+          asOf: '2026-11-01',
+        },
+        yearMismatch: 'Deaths are for 2021. People living with diabetes are for 2022.',
+      },
+    ],
     marketSize: {
       value: 53_460_000_000,
       unit: 'USD / year, GLP-1 class alone (2024), a floor for total diabetes medicine spend, which also includes insulin and older oral drugs',

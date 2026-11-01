@@ -5,7 +5,8 @@ import { problems, getProblemBySlug } from '@/data/problems'
 import { getCompaniesForProblem } from '@/data/companies'
 import { getCapitalFlow } from '@/data/capital-flows'
 import { getInLimitCap } from '@/data/in-limit'
-import { displayDeaths } from '@/lib/burden'
+import { displayDeathCitation, displayDeaths } from '@/lib/burden'
+import CiteThis from '@/components/CiteThis'
 import { formatHumans } from '@/lib/format'
 import { fmtUsdCompact } from '@/lib/allocation'
 import ActionBar from '@/components/ActionBar'
@@ -49,6 +50,7 @@ function Stat({
   source?: string
   href?: string
 }) {
+  const external = href?.startsWith('http')
   return (
     <div className="border border-hair p-4 min-w-0">
       <p className="font-mono text-3xl md:text-4xl tabular-nums text-ink-100">{value}</p>
@@ -56,8 +58,7 @@ function Stat({
       {source && href && (
         <a
           href={href}
-          target="_blank"
-          rel="noopener noreferrer"
+          {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
           className="block text-xs text-amber-300 underline decoration-dotted underline-offset-2 mt-2 leading-snug hover:text-amber-200 line-clamp-3"
         >
           {source}
@@ -77,7 +78,9 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
   const flow = getCapitalFlow(slug)
   const prize = getInLimitCap(slug)
   const deaths = displayDeaths(slug)
+  const deathSource = displayDeathCitation(slug)
   const people = problem.humansAffected
+  const cite = '#cite-this'
 
   const boardAvailable = isDbConfigured()
   const [commitments, allCounts] = await Promise.all([cachedListByProblem(slug), cachedCountsByProblem()])
@@ -113,15 +116,15 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
                 label="people affected"
                 value={formatHumans(people.value)}
                 source={people.source}
-                href={people.sourceUrl}
+                href={people.sourceUrl ?? cite}
               />
             )}
             {deaths && (
               <Stat
                 label="related deaths / yr"
                 value={formatHumans(deaths)}
-                source={deathsMetric?.source}
-                href={deathsMetric?.sourceUrl ?? undefined}
+                source={deathsMetric?.source ?? deathSource?.source}
+                href={deathsMetric?.sourceUrl ?? deathSource?.sourceUrl ?? cite}
               />
             )}
             {flow && (
@@ -129,7 +132,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
                 label="spent on it / yr"
                 value={fmtUsdCompact(flow.usdPerYear.value)}
                 source={flow.usdPerYear.source}
-                href={flow.usdPerYear.sourceUrl}
+                href={flow.usdPerYear.sourceUrl ?? cite}
               />
             )}
             {prize && (
@@ -137,11 +140,13 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
                 label="prize if solved"
                 value={fmtUsdCompact(prize.marketCap.value)}
                 source={prize.marketCap.source}
-                href={prize.marketCap.sourceUrl}
+                href={prize.marketCap.sourceUrl ?? cite}
               />
             )}
           </div>
         </div>
+
+        <CiteThis problem={problem} />
 
         <ActionBar />
 

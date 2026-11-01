@@ -494,6 +494,80 @@ export const discoveries: Discovery[] = [
       url: doi('10.1257/mac.20230141'),
     },
   },
+  {
+    id: 'zhang-delta-toxin-cd9-2026',
+    title: 'Clostridium perfringens Delta toxin targets CD9 to drive NEC and brain injury',
+    published: '2026-10-28',
+    added: '2026-11-01',
+    source: 'Nature',
+    doi: '10.1038/s41586-026-11211-1',
+    url: doi('10.1038/s41586-026-11211-1'),
+    problemSlugs: ['newborn-survival'],
+    summary:
+      'Delta-toxin-positive Clostridium perfringens was found in severe and fatal cases of necrotizing enterocolitis, a CRISPR screen identified CD9 as the toxin\'s receptor, and a neutralizing anti-Delta toxin monoclonal antibody protected mice against disease progression.',
+    changes: 'tractability',
+    review: 'peer-reviewed',
+  },
+  {
+    id: 'perez-garcia-phergain-2026',
+    title:
+      '5-year outcomes of chemotherapy de-escalation in HER2-positive early breast cancer and exploratory circulating tumor DNA analyses from the randomized phase 2 PHERGain trial',
+    published: '2026-10-29',
+    added: '2026-11-01',
+    source: 'Nature Medicine',
+    doi: '10.1038/s41591-026-04723-w',
+    url: doi('10.1038/s41591-026-04723-w'),
+    problemSlugs: ['cancer'],
+    summary:
+      'After a median 5.6 years of follow-up, 5-year invasive disease-free survival was 89.5% in the PET-guided arm (n = 267) and 92.4% among PET responders with pathological complete response who skipped chemotherapy entirely (n = 86), with one distant recurrence in that group. The trial was non-comparative (NCT03161353).',
+    changes: 'tractability',
+    review: 'trial-result',
+  },
+  {
+    id: 'yankova-mettl1-2026',
+    title: 'Pharmacological inhibition of METTL1 as a therapy against solid and blood cancers',
+    published: '2026-10-28',
+    added: '2026-11-01',
+    source: 'Nature',
+    doi: '10.1038/s41586-026-11178-z',
+    url: doi('10.1038/s41586-026-11178-z'),
+    problemSlugs: ['cancer'],
+    summary:
+      'A first-in-class inhibitor of the tRNA methyltransferase METTL1, STM9005, impaired tumour growth and prolonged survival across multiple mouse cancer models; results are preclinical.',
+    changes: 'tractability',
+    review: 'peer-reviewed',
+  },
+  {
+    id: 'gronska-peski-caloric-mutation-2026',
+    title: 'Caloric restriction modulates genome-wide somatic mutation in mice',
+    // Online publication date from the Cell page and Europe PMC (2026-09-09).
+    // Crossref only issues the month, 2026-10.
+    published: '2026-09-09',
+    added: '2026-11-01',
+    source: 'Cell',
+    doi: '10.1016/j.cell.2026.08.013',
+    url: doi('10.1016/j.cell.2026.08.013'),
+    problemSlugs: ['longevity'],
+    summary:
+      '30% calorie restriction in 19-month-old male mice reduced somatic substitution and indel burdens, but two restriction regimens with different lifespan effects cut mutations similarly, suggesting mutation burden is not the sole or rate-limiting driver of lifespan.',
+    changes: 'tractability',
+    review: 'peer-reviewed',
+  },
+  {
+    id: 'romanello-lancet-countdown-2026',
+    title:
+      'The 2026 report of the Lancet Countdown on health and climate change: a decade of escalating health harms and a decisive moment for all',
+    published: '2026-10-27',
+    added: '2026-11-01',
+    source: 'The Lancet',
+    doi: '10.1016/S0140-6736(26)01779-4',
+    url: doi('10.1016/S0140-6736(26)01779-4'),
+    problemSlugs: ['climate-change'],
+    summary:
+      'Heat was associated with a record estimated 710,000 deaths globally in 2023, with 71.5% attributed to human-caused climate change, and annual average heat-related deaths rose nearly 36% in the decade after the Paris Agreement compared with the decade before.',
+    changes: 'scale',
+    review: 'peer-reviewed',
+  },
 ]
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/

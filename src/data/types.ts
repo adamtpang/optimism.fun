@@ -75,6 +75,34 @@ export type SourcedNumber = {
   asOf: string
 }
 
+/**
+ * One opened count used in a death-rate severity. The year is the year the
+ * source assigns to the number. A DOI is recorded only when the page states it.
+ */
+export type CitedCount = {
+  value: number
+  /** Statistical year of the count. Null when the source gives no year. */
+  year: number | null
+  label: string
+  source: string
+  sourceUrl: string
+  doi?: string
+  asOf: string
+}
+
+/**
+ * A death toll and the population it is divided by. When `notScoredBecause`
+ * is set, the pair is evidence only: it is not the problem's severity.
+ */
+export type MortalityPair = {
+  deaths: CitedCount
+  affected: CitedCount
+  /** Set when the two years are not the same statistical year. */
+  yearMismatch?: string
+  /** Why this pair was not turned into a severity. */
+  notScoredBecause?: string
+}
+
 export type SourcedString = {
   value: string
   source: string
@@ -201,6 +229,24 @@ export type ScaleMeasure = {
   asOf: string
 }
 
+/**
+ * A sourced chance that a catastrophic outcome occurs.
+ * `low === high` and `lowIsExclusive === false` is a single probability the
+ * rank may multiply. Anything else is a range and is shown, not averaged.
+ */
+export type CatastropheProbability = {
+  low: number
+  high: number
+  /** The source said "greater than" the low number, so it is not a closed bound. */
+  lowIsExclusive: boolean
+  horizonYears: number
+  outcome: string
+  source: string
+  sourceUrl: string
+  confidence: Confidence
+  asOf: string
+}
+
 /** A 0-10 judgment (neglectedness, tractability) with a reasoned, cited rationale. */
 export type ScoredJudgment = {
   score: number // 0-10
@@ -231,15 +277,34 @@ export type Problem = {
   description: string
   /** How many humans this problem affects today. */
   humansAffected: SourcedNumber
-  /** Per-capita severity of the problem (DALYs, $-cost, or other proxy). */
-  severity: SourcedNumber
+  /**
+   * Per-person severity, 0..1, from one method: the log of annual deaths per
+   * person affected, or, for an x-risk, the share of humanity lost if the
+   * catastrophe occurs. Omitted when that fraction is not sourced.
+   */
+  severity?: SourcedNumber
+  /**
+   * Why a death rate was not scored, or why an x-risk severity is not a death
+   * rate. Required when `severity` is omitted.
+   */
+  severityNote?: string
+  /**
+   * Opened death and population counts. The pair without `notScoredBecause`
+   * is the rate behind `severity`. Other pairs were opened and not scored.
+   */
+  mortalityPairs?: MortalityPair[]
+  /**
+   * Stated probability of the catastrophic outcome. Recorded for x-risk.
+   * The rank multiplies by it only when it is a single number.
+   */
+  catastropheProbability?: CatastropheProbability
   /**
    * USD value of the addressable market for solutions — TAM proxy.
    * Drives axis 4 of the ranking: "how much money can pay for the solution."
    */
   marketSize?: SourcedNumber
   /**
-   * Current solution quality (0–10, or 0–1 normalized) — low = high opportunity.
+   * Current solution quality, 0..1 — low = high opportunity.
    * Drives axis 3 of the ranking: "how good are existing solutions."
    */
   currentSolutionQuality?: SourcedNumber

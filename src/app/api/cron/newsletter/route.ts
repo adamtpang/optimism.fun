@@ -119,7 +119,7 @@ async function draftFor(problem: Problem): Promise<Draft | null> {
     tagline: problem.tagline,
     description: problem.description,
     humansAffected: problem.humansAffected.value,
-    severity: problem.severity.value,
+    severity: problem.severity?.value ?? null,
     marketSize: problem.marketSize?.value,
     welfareBCR: problem.scores.welfareBCR?.value,
     xriskITN: problem.scores.xriskITN?.value,

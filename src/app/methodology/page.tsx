@@ -2,6 +2,8 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import LiveIndicators from '@/components/LiveIndicators'
 import Link from 'next/link'
+import { problems } from '@/data/problems'
+import { deathRatePair } from '@/lib/citations'
 
 export const metadata = {
   title: 'Methodology | optimism.fun',
@@ -206,13 +208,127 @@ export default function MethodologyPage() {
 
               <section>
                 <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
-                  Severity is willingness to pay over wealth
+                  The homepage order
                 </h2>
+                <p className="mb-4">
+                  The list on the homepage is one number, on purpose, so a visitor can see
+                  what the index currently puts first. It is not a moral score. The other
+                  lenses above still disagree with it, and that disagreement stays on the
+                  problem pages.
+                </p>
+                <p className="mb-4">
+                  <span className="text-ink-100">How many people,</span> on a log scale.
+                  One person scores 0. All 8.2 billion score 1.
+                </p>
+                <p className="mb-4">
+                  <span className="text-ink-100">How bad, per person,</span> from 0 to 1,
+                  the same way for every problem. Where a source states an annual death
+                  toll and how many people are affected, severity is the log of deaths
+                  divided by people affected. One death per 10,000 affected people per year
+                  scores 0. Certain death this year scores 1. A tenfold deadlier rate scores
+                  a quarter of the scale higher, so a rare death and a common one are not
+                  crushed together and not treated as the same. Where we cannot open both
+                  numbers, severity is left empty and scores one half: missing data is not
+                  a zero and not a free boost. Death counts are never stored in this field.
+                  A pair whose years differ is still scored, and the mismatch is written
+                  on the row. Two counts are not added when adding them would double-count
+                  or mix a stock with a flow.
+                </p>
+                <p className="mb-4 text-ink-100">Sourced on the death-rate scale</p>
+                <ul className="space-y-3 text-sm text-ink-400 mb-4">
+                  {problems.filter((p) => deathRatePair(p)).map((p) => {
+                    const pair = deathRatePair(p)!
+                    return (
+                      <li key={p.slug}>
+                        <Link href={`/p/${p.slug}`} className="text-ink-200 underline decoration-dotted">
+                          {p.name}
+                        </Link>
+                        {': '}
+                        {p.severity!.value.toFixed(3)}
+                        {'. '}
+                        {pair.deaths.value.toLocaleString('en-US')} {pair.deaths.label}
+                        {pair.deaths.year != null ? ` (${pair.deaths.year})` : ' (year not stated)'}
+                        {' / '}
+                        {pair.affected.value.toLocaleString('en-US')} {pair.affected.label}
+                        {pair.affected.year != null ? ` (${pair.affected.year})` : ''}
+                        {pair.yearMismatch ? `. Year mismatch: ${pair.yearMismatch}` : '. Same year.'}
+                      </li>
+                    )
+                  })}
+                </ul>
+                <p className="mb-4 text-ink-100">Sourced as the share lost if the catastrophe occurs</p>
+                <ul className="space-y-3 text-sm text-ink-400 mb-4">
+                  {problems
+                    .filter((p) => p.tier === 'x-risk' && p.severity && !deathRatePair(p))
+                    .map((p) => (
+                      <li key={p.slug}>
+                        <Link href={`/p/${p.slug}`} className="text-ink-200 underline decoration-dotted">
+                          {p.name}
+                        </Link>
+                        {': '}
+                        {p.severity!.value.toFixed(3)}
+                        {'. '}
+                        {p.severityNote}
+                      </li>
+                    ))}
+                </ul>
+                <p className="mb-4 text-ink-100">Not scored</p>
+                <ul className="space-y-3 text-sm text-ink-400 mb-4">
+                  {problems
+                    .filter((p) => !p.severity)
+                    .map((p) => (
+                      <li key={p.slug}>
+                        <Link href={`/p/${p.slug}`} className="text-ink-200 underline decoration-dotted">
+                          {p.name}
+                        </Link>
+                        {'. '}
+                        {p.severityNote}
+                      </li>
+                    ))}
+                </ul>
+                <p className="mb-4">
+                  <span className="text-ink-100">Scale</span> is how many times how bad.
+                  A market, log-scaled up to $10 trillion, then pulls that between half and
+                  full, so a problem nobody can pay for is halved rather than erased. An
+                  unknown market stays at the middle.
+                </p>
+                <p className="mb-4">
+                  <span className="text-ink-100">Neglectedness and tractability</span> are
+                  the 1-to-10 judgments already written on every problem, divided by 10. The
+                  product is scale × neglectedness × tractability. A large problem that is
+                  ignored and still movable outranks a large problem that is crowded or
+                  stuck. A missing judgment scores one half.
+                </p>
+                <p className="mb-4">
+                  <span className="text-ink-100">Catastrophic risk</span> is scored on the
+                  loss if it happens, not on deaths already recorded this year. When the
+                  source&apos;s outcome is human extinction, that share is 1: everyone.
+                  Expected value would multiply the stake by a probability. We multiply
+                  only when a source states one number. A range with no midpoint, including
+                  &quot;greater than 1 in 10,000, potentially 1 in 100&quot; for an
+                  extinction-level pandemic, is printed on the row and is not averaged.
+                  Averaging it would invent a figure. Tagged companies are not treated as
+                  proof the tail is handled. For an x-risk, the supply of effort is read
+                  from the neglectedness judgment.
+                </p>
+                <p className="mb-4">
+                  <span className="text-ink-100">Supply</span> is half the quality of
+                  today&apos;s solutions (0 to 1; low means a wide gap) and half who is
+                  already on it. Companies and funders tagged in this repo count on a log
+                  scale. Zero of each is missing data, not an empty field. In that case the
+                  headcount half uses neglectedness: a cause judged 8 out of 10 neglected is
+                  treated as thinly supplied, and a cause judged 2 out of 10 is treated as
+                  crowded even if we forgot to tag anyone. Solution quality outside 0 to 1
+                  is rejected. A 7-out-of-10 judgment is stored as 0.7.
+                </p>
                 <p>
-                  The severity of a problem to a person is what they would pay for a solution
-                  divided by what they have. Someone with $100 facing a $100-severity problem
-                  would spend the whole $100 to solve it. We proxy this from market data
-                  where possible, health-economics studies where not.
+                  <span className="text-ink-100">Opportunity</span> multiplies that product
+                  by how thin the supply is, then nudges it with urgency (worsening, flat,
+                  or improving, blended with the solution gap). The result is 0 to 100. It
+                  sits lower than the old score because more fractions are multiplied. Read
+                  the rank first. When a problem has no tags, neglectedness is used twice,
+                  once in the product and once as the supply assumption. That is one
+                  judgment standing in for a missing count, not two measurements.
                 </p>
               </section>
 

@@ -65,7 +65,7 @@ export default async function ProblemNumbers({ problem }: { problem: Problem }) 
 
       {owid.state === 'ok' && (
         <div className="mt-3">
-          <p className="font-mono text-[11px] uppercase tracking-wider text-ink-500 mb-2">
+          <p className="font-mono text-sm uppercase tracking-wider text-ink-500 mb-2">
             Live trend · Our World in Data
           </p>
           <MetricChart
