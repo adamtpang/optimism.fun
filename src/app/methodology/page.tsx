@@ -2,6 +2,8 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import LiveIndicators from '@/components/LiveIndicators'
 import Link from 'next/link'
+import { problems } from '@/data/problems'
+import { deathRatePair } from '@/lib/citations'
 
 export const metadata = {
   title: 'Methodology | optimism.fun',
@@ -228,7 +230,62 @@ export default function MethodologyPage() {
                   crushed together and not treated as the same. Where we cannot open both
                   numbers, severity is left empty and scores one half: missing data is not
                   a zero and not a free boost. Death counts are never stored in this field.
+                  A pair whose years differ is still scored, and the mismatch is written
+                  on the row. Two counts are not added when adding them would double-count
+                  or mix a stock with a flow.
                 </p>
+                <p className="mb-4 text-ink-100">Sourced on the death-rate scale</p>
+                <ul className="space-y-3 text-sm text-ink-400 mb-4">
+                  {problems.filter((p) => deathRatePair(p)).map((p) => {
+                    const pair = deathRatePair(p)!
+                    return (
+                      <li key={p.slug}>
+                        <Link href={`/p/${p.slug}`} className="text-ink-200 underline decoration-dotted">
+                          {p.name}
+                        </Link>
+                        {': '}
+                        {p.severity!.value.toFixed(3)}
+                        {'. '}
+                        {pair.deaths.value.toLocaleString('en-US')} {pair.deaths.label}
+                        {pair.deaths.year != null ? ` (${pair.deaths.year})` : ' (year not stated)'}
+                        {' / '}
+                        {pair.affected.value.toLocaleString('en-US')} {pair.affected.label}
+                        {pair.affected.year != null ? ` (${pair.affected.year})` : ''}
+                        {pair.yearMismatch ? `. Year mismatch: ${pair.yearMismatch}` : '. Same year.'}
+                      </li>
+                    )
+                  })}
+                </ul>
+                <p className="mb-4 text-ink-100">Sourced as the share lost if the catastrophe occurs</p>
+                <ul className="space-y-3 text-sm text-ink-400 mb-4">
+                  {problems
+                    .filter((p) => p.tier === 'x-risk' && p.severity && !deathRatePair(p))
+                    .map((p) => (
+                      <li key={p.slug}>
+                        <Link href={`/p/${p.slug}`} className="text-ink-200 underline decoration-dotted">
+                          {p.name}
+                        </Link>
+                        {': '}
+                        {p.severity!.value.toFixed(3)}
+                        {'. '}
+                        {p.severityNote}
+                      </li>
+                    ))}
+                </ul>
+                <p className="mb-4 text-ink-100">Not scored</p>
+                <ul className="space-y-3 text-sm text-ink-400 mb-4">
+                  {problems
+                    .filter((p) => !p.severity)
+                    .map((p) => (
+                      <li key={p.slug}>
+                        <Link href={`/p/${p.slug}`} className="text-ink-200 underline decoration-dotted">
+                          {p.name}
+                        </Link>
+                        {'. '}
+                        {p.severityNote}
+                      </li>
+                    ))}
+                </ul>
                 <p className="mb-4">
                   <span className="text-ink-100">Scale</span> is how many times how bad.
                   A market, log-scaled up to $10 trillion, then pulls that between half and
