@@ -73,6 +73,13 @@ body {
   max-width: 1280px;
   margin-inline: auto;
   padding-inline: 20px;
+  min-width: 0;
+}
+#cite-this a,
+#cite-this li,
+#cite-this p {
+  overflow-wrap: anywhere;
+  max-width: 100%;
 }
 @media (min-width: 768px) {
   .site-shell {

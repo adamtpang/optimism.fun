@@ -30,7 +30,7 @@ export default function HeroMedia({
 }) {
   const fallback = sources[sources.length - 1]
   return (
-    <picture className="block h-full w-full">
+    <picture className="block h-full w-full max-w-full overflow-hidden">
       {sources.map((source) => (
         <Fragment key={source.avif}>
           <source media={source.media} srcSet={source.avif} type="image/avif" />
@@ -44,7 +44,8 @@ export default function HeroMedia({
         height={height}
         decoding="async"
         fetchPriority={priority ? 'high' : 'auto'}
-        className={`h-full w-full object-cover ${className}`}
+        className={`block h-full w-full max-w-full min-w-0 object-cover ${className}`}
+        style={{ width: '100%', maxWidth: '100%', minWidth: 0 }}
       />
       {children}
     </picture>

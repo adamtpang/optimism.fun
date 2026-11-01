@@ -1,6 +1,46 @@
 import { formatMeasure, lineLayout, type SeriesPoint } from '@/lib/charts'
 import Figure from '@/components/charts/Figure'
 
+/** Mobile tick text only. Three significant figures, same units as formatMeasure. */
+function formatMobileTick(n: number): string {
+  if (!Number.isFinite(n)) return ''
+  if (n === 0) return '0'
+  const sign = n < 0 ? '-' : ''
+  const abs = Math.abs(n)
+  const exp = Math.floor(Math.log10(abs))
+  const pow = 10 ** (exp - 2)
+  const rounded = Math.round(abs / pow) * pow
+  return sign + formatMeasure(rounded)
+}
+
+/** How far a polyline runs through a label box, ignoring the stub into the last dot. */
+function lineRunThrough(
+  points: { x: number; y: number }[],
+  left: number,
+  right: number,
+  top: number,
+  bottom: number,
+) {
+  let minX = Infinity
+  let maxX = -Infinity
+  const stop = right - 4
+  for (let i = 1; i < points.length; i++) {
+    const a = points[i - 1]
+    const b = points[i]
+    const steps = Math.max(1, Math.ceil(Math.max(Math.abs(b.x - a.x), Math.abs(b.y - a.y))))
+    for (let s = 0; s <= steps; s++) {
+      const u = steps === 0 ? 0 : s / steps
+      const x = a.x + (b.x - a.x) * u
+      const y = a.y + (b.y - a.y) * u
+      if (x >= left && x <= stop && y >= top && y <= bottom) {
+        if (x < minX) minX = x
+        if (x > maxX) maxX = x
+      }
+    }
+  }
+  return maxX > minX ? maxX - minX : 0
+}
+
 /**
  * One sourced series. The line is the stored points only. The source
  * sentence sits in the single caption, including any caveat the file already states.
@@ -47,9 +87,112 @@ export default function MetricChart({
     </>
   )
 
+  // Phone width is about 320px of plot. A 640-wide viewBox scaled into that
+  // box draws 14px type at about 7px, so the narrow layout uses its own box.
+  const mobileWidth = 320
+  const mobileHeight = 220
+  const mobile = lineLayout(series, mobileWidth, mobileHeight, { l: 72, r: 60, t: 16, b: 44 })
+  const mobileLine = mobile.points.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')
+  const mobileLast = mobile.points[mobile.points.length - 1]
+  const mobileYearCandidates = Array.from({ length: 4 }, (_, i) => {
+    const year = Math.round(mobile.minX + ((mobile.maxX - mobile.minX) * i) / 3)
+    return year
+  }).filter((year, index, all) => all.indexOf(year) === index)
+  // Four labels crowd a short span (2022 sits on 2023). Fall back to the ends and the middle.
+  const mobileYearsCrowded = mobileYearCandidates.some(
+    (year, index) => index > 0 && mobile.px(year) - mobile.px(mobileYearCandidates[index - 1]) < 48,
+  )
+  const mobileYears = mobileYearsCrowded
+    ? [mobile.minX, Math.round((mobile.minX + mobile.maxX) / 2), mobile.maxX].filter(
+        (year, index, all) => all.indexOf(year) === index,
+      )
+    : mobileYearCandidates
+  const mobileYTicks =
+    mobile.dataMin === mobile.dataMax
+      ? [mobile.dataMin]
+      : [0, 1, 2].map((i) => mobile.dataMin + ((mobile.dataMax - mobile.dataMin) * i) / 2)
+  const endLabel = formatMobileTick(last.value)
+  const endWidth = endLabel.length * 9.2
+  const endX = Math.max(endWidth + 2, mobileLast.x - 8)
+  const yearTop = mobileHeight - 30
+  const labelHalf = 10
+  const labelLeft = endX - endWidth
+  const clearOfLine = (y: number) =>
+    y >= labelHalf + 2 &&
+    y + labelHalf <= yearTop - 2 &&
+    lineRunThrough(mobile.points, labelLeft, endX, y - labelHalf, y + labelHalf) < 3
+  let endY = mobileLast.y
+  if (!clearOfLine(endY)) {
+    for (const shift of [-12, -18, -24, -30, -36, 12, 18, 24]) {
+      const y = mobileLast.y + shift
+      if (clearOfLine(y)) {
+        endY = y
+        break
+      }
+    }
+  }
+  if (endY + 9 > yearTop) endY = yearTop - 10
+
   return (
     <Figure title={title} subtitle={unit} source={caption}>
-      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label} className="w-full h-[240px] md:h-[320px]">
+      <svg viewBox={`0 0 ${mobileWidth} ${mobileHeight}`} role="img" aria-label={label} className="md:hidden w-full h-auto">
+        {mobileYTicks.map((tick) => {
+          const y = mobile.py(tick)
+          return (
+            <g key={tick}>
+              <line
+                x1={mobile.pad.l}
+                x2={mobileWidth - mobile.pad.r}
+                y1={y}
+                y2={y}
+                stroke="var(--chart-grid)"
+                strokeWidth="1"
+                vectorEffect="non-scaling-stroke"
+              />
+              <text x={mobile.pad.l - 6} y={y} textAnchor="end" dominantBaseline="middle" className="fill-neutral-600" style={{ fontSize: '16px' }}>
+                {formatMobileTick(tick)}
+              </text>
+            </g>
+          )
+        })}
+        <polyline
+          points={mobileLine}
+          fill="none"
+          stroke="var(--chart-1)"
+          strokeWidth="2.5"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          vectorEffect="non-scaling-stroke"
+        />
+        {(series.length > 40 ? [mobile.points[0], mobile.points[mobile.points.length - 1]] : mobile.points).map(
+          (p) => (
+            <circle key={p.year} cx={p.x} cy={p.y} r={p.year === last.year ? 4 : 2.5} fill="var(--chart-1)" />
+          ),
+        )}
+        <text
+          x={endX}
+          y={endY}
+          textAnchor="end"
+          dominantBaseline="middle"
+          fill="var(--chart-1)"
+          style={{ fontSize: '16px', fontWeight: 600 }}
+        >
+          {endLabel}
+        </text>
+        {mobileYears.map((year) => (
+          <text
+            key={year}
+            x={mobile.px(year)}
+            y={mobileHeight - 14}
+            textAnchor="middle"
+            className="fill-neutral-600"
+            style={{ fontSize: '16px' }}
+          >
+            {year}
+          </text>
+        ))}
+      </svg>
+      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label} className="hidden md:block w-full h-[320px]">
         {layout.ticks.map((tick) => {
           const y = layout.py(tick)
           return (

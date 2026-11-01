@@ -9,7 +9,7 @@ export default function CiteThis({ problem }: { problem: Problem }) {
   const cites = citationsForProblem(problem)
   const scored = deathRatePair(problem)
   return (
-    <section id="cite-this" className="max-w-5xl mx-auto px-4 sm:px-6 py-10 border-b border-hair">
+    <section id="cite-this" className="site-shell min-w-0 py-10 border-b border-hair [overflow-wrap:anywhere]">
       <h2 className="font-serif text-2xl text-ink-100 mb-4">Cite this</h2>
       {problem.severityNote && (
         <p className="text-sm text-ink-400 leading-relaxed mb-4">{problem.severityNote}</p>
@@ -28,7 +28,7 @@ export default function CiteThis({ problem }: { problem: Problem }) {
                 {...(c.href.startsWith('http')
                   ? { target: '_blank', rel: 'noopener noreferrer' }
                   : {})}
-                className="underline decoration-dotted hover:text-amber-300"
+                className="[overflow-wrap:anywhere] underline decoration-dotted hover:text-primary"
               >
                 {c.text}
               </a>

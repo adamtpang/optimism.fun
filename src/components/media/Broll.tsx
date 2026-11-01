@@ -84,7 +84,6 @@ export default function Broll() {
           type="button"
           onClick={toggle}
           aria-label={playing ? 'Pause video' : 'Play video'}
-          aria-pressed={playing}
           className="absolute bottom-3 right-3 inline-flex h-11 w-11 items-center justify-center rounded-full bg-black/50 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500"
         >
           {playing ? (

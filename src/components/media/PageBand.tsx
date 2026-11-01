@@ -70,7 +70,7 @@ export default function PageBand({ kind }: { kind: Kind }) {
   const credit = mediaCredit(media.creditId)
   return (
     <div className="site-shell pt-20">
-      <div className="relative h-[200px] md:h-[320px] max-h-[360px] overflow-hidden rounded-xl bg-neutral-900">
+      <div className="relative w-full max-w-full min-w-0 h-[200px] md:h-[320px] max-h-[360px] overflow-hidden rounded-xl bg-neutral-900">
         <HeroMedia alt={credit.text} sources={media.sources} width={media.width} height={media.height} />
       </div>
       <Credit credit={credit} className="mt-2" />
