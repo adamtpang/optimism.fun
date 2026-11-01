@@ -75,6 +75,34 @@ export type SourcedNumber = {
   asOf: string
 }
 
+/**
+ * One opened count used in a death-rate severity. The year is the year the
+ * source assigns to the number. A DOI is recorded only when the page states it.
+ */
+export type CitedCount = {
+  value: number
+  /** Statistical year of the count. Null when the source gives no year. */
+  year: number | null
+  label: string
+  source: string
+  sourceUrl: string
+  doi?: string
+  asOf: string
+}
+
+/**
+ * A death toll and the population it is divided by. When `notScoredBecause`
+ * is set, the pair is evidence only: it is not the problem's severity.
+ */
+export type MortalityPair = {
+  deaths: CitedCount
+  affected: CitedCount
+  /** Set when the two years are not the same statistical year. */
+  yearMismatch?: string
+  /** Why this pair was not turned into a severity. */
+  notScoredBecause?: string
+}
+
 export type SourcedString = {
   value: string
   source: string
@@ -255,6 +283,16 @@ export type Problem = {
    * catastrophe occurs. Omitted when that fraction is not sourced.
    */
   severity?: SourcedNumber
+  /**
+   * Why a death rate was not scored, or why an x-risk severity is not a death
+   * rate. Required when `severity` is omitted.
+   */
+  severityNote?: string
+  /**
+   * Opened death and population counts. The pair without `notScoredBecause`
+   * is the rate behind `severity`. Other pairs were opened and not scored.
+   */
+  mortalityPairs?: MortalityPair[]
   /**
    * Stated probability of the catastrophic outcome. Recorded for x-risk.
    * The rank multiplies by it only when it is a single number.
