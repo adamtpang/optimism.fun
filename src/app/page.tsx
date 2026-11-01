@@ -7,6 +7,7 @@ import { discoveryCountByProblem } from '@/data/discoveries'
 import { computeRadarRows } from '@/lib/radar'
 import { displayDeaths } from '@/lib/burden'
 import { formatHumans } from '@/lib/format'
+import RankingPoster from '@/components/RankingPoster'
 
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
@@ -37,6 +38,17 @@ export default function Home() {
         <p className="text-ink-400 mt-4 text-lg">
           {problems.length} problems. Every number sourced. Nothing for sale.
         </p>
+        <p className="font-mono text-sm mt-3">
+          <Link href="/where" className="text-amber-300 hover:underline">Where do I fit</Link>
+          {' · '}
+          <Link href="/poster" className="text-amber-300 hover:underline">Poster</Link>
+          {' · '}
+          <Link href="/data" className="text-amber-300 hover:underline">Download the data</Link>
+        </p>
+
+        <div className="mt-8">
+          <RankingPoster />
+        </div>
 
         <div className="grid sm:grid-cols-3 gap-3 mt-10">
           {DOORS.map((d) => (
@@ -89,10 +101,10 @@ export default function Home() {
                         )}
                       </td>
                       <td className="py-3 pr-3 text-right font-mono tabular-nums text-ink-300">
-                        {people ? formatHumans(people) : '—'}
+                        {people ? formatHumans(people) : '·'}
                       </td>
                       <td className="py-3 pr-3 text-right font-mono tabular-nums text-ink-300">
-                        {deaths ? formatHumans(deaths) : '—'}
+                        {deaths ? formatHumans(deaths) : '·'}
                       </td>
                       <td className="py-3 text-right">
                         <Link

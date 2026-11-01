@@ -332,6 +332,14 @@ with `/marketcap` still prerendered, so both new caps validate.
   Hsieh and Moretti 2019 are flagged challenged. Fertility, NTDs, datacenter
   power, and financial infrastructure have no seed row.
 
+## Open tool (2026-11-01)
+
+- Code is MIT (`LICENSE`). The data compilation is CC BY 4.0 (`DATA_LICENSE.md`).
+- Downloads: `/api/problems`, `/api/series`, `/api/discoveries`, `/api/ctas`, each with a `/csv` route, plus `/api/problems/<slug>`. `/data` lists them. Charts use stored `scale.series` only.
+- Calls to action live in `src/data/ctas.ts`. Schema: `research/CTAS.md`. 96 ingested rows. Air pollution is tagged `copd` and `climate-change` until a problem slug exists. `government` is a CTA type (UK AISI).
+- `/poster` is the ranking poster (people affected, log scale, color by neglectedness). `/where` matches skills, interests, and offers in the browser and does not store them.
+- The open-tool commit did not itself change ranks or stored figures. The ranking formula below is the later change.
+
 ## Ranking formula (2026-11-01)
 
 The homepage order is `opportunityScore` in `src/lib/priority.ts`. Severity is
@@ -346,4 +354,5 @@ neglectedness. X-risk severity is the share lost if the catastrophe occurs
 and not averaged. X-risk supply uses neglectedness, not the company count.
 The formula is on `/methodology`. AI control, nuclear war, and air pollution
 were not added: the opened pages did not fill scale, humans affected,
-neglectedness, and tractability together.
+neglectedness, and tractability together. `/poster` and the public downloads
+use this same order.
