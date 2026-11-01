@@ -42,7 +42,7 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
+      <Navbar onHero />
       <main>
         <section className="relative md:h-[720px]">
           <div className="relative h-[300px] mt-14 md:mt-0 md:absolute md:inset-0 md:h-full overflow-hidden">

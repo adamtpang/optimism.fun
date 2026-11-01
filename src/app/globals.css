@@ -124,8 +124,12 @@ body {
 .nav-fade {
   transition: opacity 150ms linear;
 }
+/* step-end over 150ms, shifted -75ms, flips color at the midpoint of the fade. */
 .nav-fade-text a {
-  transition: color 150ms linear, background-color 150ms linear;
+  transition-property: color, background-color;
+  transition-duration: 150ms, 150ms;
+  transition-timing-function: step-end, linear;
+  transition-delay: -75ms, 0s;
 }
 @media (prefers-reduced-motion: reduce) {
   .nav-fade,
