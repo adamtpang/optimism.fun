@@ -17,7 +17,7 @@ export default function Footer() {
               Humanity&rsquo;s hardest problems. Bring money or work.
             </p>
           </div>
-          <div>
+          <div className="col-span-2 sm:col-span-1">
             <div className="text-small font-medium text-neutral-600 mb-3">HUMANITY&rsquo;S BOUNTY BOARD</div>
             <div className="flex flex-col text-small">
               <Link href="/" className="inline-flex items-center h-11 text-neutral-800 hover:text-primary">

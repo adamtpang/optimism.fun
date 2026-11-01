@@ -1,5 +1,12 @@
+'use client'
+
+import { useLayoutEffect, useRef, useState } from 'react'
 import { formatMeasure, lineLayout, type SeriesPoint } from '@/lib/charts'
 import Figure from '@/components/charts/Figure'
+
+/** Server and first client paint. Matches the 1440 content width; measured width replaces it. */
+const DESKTOP_INITIAL = { w: 1182, h: 400 }
+const DESKTOP_FONT = 14
 
 /** Mobile tick text only. Three significant figures, same units as formatMeasure. */
 function formatMobileTick(n: number): string {
@@ -32,19 +39,47 @@ export default function MetricChart({
   sourceUrl?: string
   asOf: string
 }) {
+  const slotRef = useRef<HTMLDivElement>(null)
+  const [desktop, setDesktop] = useState(DESKTOP_INITIAL)
+
+  useLayoutEffect(() => {
+    const el = slotRef.current
+    if (!el) return
+    const apply = () => {
+      const rect = el.getBoundingClientRect()
+      const w = Math.round(rect.width)
+      const h = Math.round(rect.height)
+      if (w < 32 || h < 32) return
+      setDesktop((prev) => (prev.w === w && prev.h === h ? prev : { w, h }))
+    }
+    apply()
+    const observer = new ResizeObserver(apply)
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
   if (series.length < 2) return null
-  const width = 640
-  const height = 320
-  const layout = lineLayout(series, width, height, { l: 72, r: 64, t: 28, b: 40 })
-  const line = layout.points.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')
   const first = series[0]
   const last = series[series.length - 1]
-  const label = `${title}. ${formatMeasure(first.value)} in ${first.year} to ${formatMeasure(last.value)} in ${last.year}. ${unit}. Log scale is not used. Y axis runs from ${formatMeasure(layout.dataMin)} to ${formatMeasure(layout.dataMax)}.`
+  const dataMin = Math.min(...series.map((point) => point.value))
+  const dataMax = Math.max(...series.map((point) => point.value))
+  const label = `${title}. ${formatMeasure(first.value)} in ${first.year} to ${formatMeasure(last.value)} in ${last.year}. ${unit}. Log scale is not used. Y axis runs from ${formatMeasure(dataMin)} to ${formatMeasure(dataMax)}.`
+  const layout = lineLayout(series, desktop.w, desktop.h, { l: 76, r: 72, t: 24, b: 48 })
+  const line = layout.points.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')
   const lastPoint = layout.points[layout.points.length - 1]
-  const yearTicks = Array.from({ length: 4 }, (_, i) => {
-    const year = Math.round(layout.minX + ((layout.maxX - layout.minX) * i) / 3)
-    return year
+  const yearCandidates = Array.from({ length: 4 }, (_, i) => {
+    return Math.round(layout.minX + ((layout.maxX - layout.minX) * i) / 3)
   }).filter((year, index, all) => all.indexOf(year) === index)
+  const yearsCrowded = yearCandidates.some(
+    (year, index) => index > 0 && layout.px(year) - layout.px(yearCandidates[index - 1]) < 44,
+  )
+  const yearTicks = yearsCrowded
+    ? [layout.minX, Math.round((layout.minX + layout.maxX) / 2), layout.maxX].filter(
+        (year, index, all) => all.indexOf(year) === index,
+      )
+    : yearCandidates
+  const desktopEnd = formatMeasure(last.value)
+  const desktopEndX = Math.min(lastPoint.x + 8, desktop.w - desktopEnd.length * 8.4 - 4)
 
   const caption = (
     <>
@@ -163,21 +198,23 @@ export default function MetricChart({
           </text>
         ))}
       </svg>
-      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label} className="hidden md:block w-full h-auto">
+      <div className="metric-desktop-frame">
+      <div ref={slotRef} className="metric-desktop-slot">
+      <svg viewBox={`0 0 ${desktop.w} ${desktop.h}`} preserveAspectRatio="xMinYMin meet" role="img" aria-label={label} className="block h-full w-full">
         {layout.ticks.map((tick) => {
           const y = layout.py(tick)
           return (
             <g key={tick}>
               <line
                 x1={layout.pad.l}
-                x2={width - layout.pad.r}
+                x2={desktop.w - layout.pad.r}
                 y1={y}
                 y2={y}
                 stroke="var(--chart-grid)"
                 strokeWidth="1"
                 vectorEffect="non-scaling-stroke"
               />
-              <text x={layout.pad.l - 8} y={y} textAnchor="end" dominantBaseline="middle" className="fill-neutral-600" style={{ fontSize: '14px' }}>
+              <text x={layout.pad.l - 8} y={y} textAnchor="end" dominantBaseline="middle" className="fill-neutral-600" style={{ fontSize: DESKTOP_FONT }}>
                 {formatMeasure(tick)}
               </text>
             </g>
@@ -198,27 +235,29 @@ export default function MetricChart({
           ),
         )}
         <text
-          x={lastPoint.x + 8}
+          x={desktopEndX}
           y={lastPoint.y}
           dominantBaseline="middle"
           fill="var(--chart-1)"
-          style={{ fontSize: '14px', fontWeight: 600 }}
+          style={{ fontSize: DESKTOP_FONT, fontWeight: 600 }}
         >
-          {formatMeasure(last.value)}
+          {desktopEnd}
         </text>
         {yearTicks.map((year) => (
           <text
             key={year}
             x={layout.px(year)}
-            y={height - 12}
+            y={desktop.h - 18}
             textAnchor="middle"
             className="fill-neutral-600"
-            style={{ fontSize: '14px' }}
+            style={{ fontSize: DESKTOP_FONT }}
           >
             {year}
           </text>
         ))}
       </svg>
+      </div>
+      </div>
       <details className="px-2">
         <summary className="text-small text-neutral-600 cursor-pointer">Data table</summary>
         <table className="w-full text-small mt-3">

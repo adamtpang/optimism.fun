@@ -23,7 +23,7 @@ export default function NavbarClient() {
 
   useEffect(() => {
     if (pathname !== '/') return
-    const update = () => setPastHero(window.scrollY >= 560)
+    const update = () => setPastHero(window.scrollY >= 100)
     update()
     window.addEventListener('scroll', update, { passive: true })
     return () => window.removeEventListener('scroll', update)
@@ -46,8 +46,10 @@ export default function NavbarClient() {
     }`
 
   return (
-    <header className={`fixed top-0 inset-x-0 z-50 ${onHero ? 'nav-on-hero' : 'glass'}`}>
-      <div className="site-shell h-14 md:h-16 flex items-center gap-2 md:gap-6">
+    <header className="fixed top-0 inset-x-0 z-50">
+      <div aria-hidden className={`nav-fade pointer-events-none absolute inset-0 nav-on-hero ${onHero ? 'opacity-100' : 'opacity-0'}`} />
+      <div aria-hidden className={`nav-fade pointer-events-none absolute inset-0 glass ${onHero ? 'opacity-0' : 'opacity-100'}`} />
+      <div className="nav-fade-text relative site-shell h-14 md:h-16 flex items-center gap-2 md:gap-6">
         <Link href="/" className={`inline-flex items-center gap-2 h-11 font-semibold text-body shrink-0 ${onHero ? 'text-ink-100 md:text-white' : 'text-ink-100'}`}>
           <img src="/brand/optimism-mark.svg" alt="" width={28} height={28} />
           optimism.fun
