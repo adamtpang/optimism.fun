@@ -148,8 +148,6 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
           </div>
         </div>
 
-        <CiteThis problem={problem} />
-
         <ActionBar />
 
         <ProblemNumbers problem={problem} />
@@ -204,6 +202,8 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
             companies={boardCompanies.map((c) => ({ slug: c.slug, name: c.name }))}
           />
         </section>
+
+        <CiteThis problem={problem} />
       </main>
       <Footer />
     </>
