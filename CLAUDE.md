@@ -335,7 +335,14 @@ with `/marketcap` still prerendered, so both new caps validate.
 ## Open tool (2026-11-01)
 
 - Code is MIT (`LICENSE`). The data compilation is CC BY 4.0 (`DATA_LICENSE.md`).
-- Downloads: `/api/problems`, `/api/series`, `/api/discoveries`, `/api/ctas`, each with a `/csv` route, plus `/api/problems/<slug>`. `/data` lists them. Charts use stored `scale.series` only.
+- Downloads: `/api/problems`, `/api/series`, `/api/discoveries`, `/api/ctas`, each with a `/csv` route, plus `/api/problems/<slug>`. `/data` lists them. Stored charts use `scale.series`. Verified problems also have a live OWID series.
 - Calls to action live in `src/data/ctas.ts`. Schema: `research/CTAS.md`. 96 ingested rows. Air pollution is tagged `copd` and `climate-change` until a problem slug exists. `government` is a CTA type (UK AISI).
 - `/poster` is the ranking poster (people affected, log scale, color by neglectedness). `/where` matches skills, interests, and offers in the browser and does not store them.
 - Ranks and stored problem figures were not changed.
+
+## Live WHO, OWID, and World Bank date (2026-11-01)
+
+- The GHO OData host `ghoapi.azureedge.net` returns HTTP 500. WHO indicators now come from the public xMart mart at `xmart-api-public.who.int/GHO`, which feeds data.who.int. `WHOSIS_000001` and `MALARIA_EST_DEATHS` still exist and return a global series. A code with no equivalent is `unavailable`. WHO terms are noted in `DATA_LICENSE.md`.
+- Live OWID trends are mapped in `src/data/owid-charts.ts` and cached for a day. Biosecurity, loneliness, cancer, and COPD have no verified redistributable World series.
+- The World Bank last-published date is read from `meta.lastupdated` (2026-10-08 when checked). It is no longer hardcoded in `src/data/data-sources.ts`.
+- `/api/cron/refresh-demand` stays unscheduled. `EXA_API_KEY` is set in production, and that route's Exa queue extraction is not stored.

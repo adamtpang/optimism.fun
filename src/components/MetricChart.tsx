@@ -73,9 +73,11 @@ export default function MetricChart({
           strokeLinejoin="round"
           strokeLinecap="round"
         />
-        {layout.points.map((p) => (
-          <circle key={p.year} cx={p.x} cy={p.y} r="3.5" className="fill-amber-300" />
-        ))}
+        {(series.length > 40 ? [layout.points[0], layout.points[layout.points.length - 1]] : layout.points).map(
+          (p) => (
+            <circle key={p.year} cx={p.x} cy={p.y} r="3.5" className="fill-amber-300" />
+          ),
+        )}
         {[first, last].map((p) => (
           <text
             key={p.year}

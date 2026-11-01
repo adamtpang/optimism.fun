@@ -3,8 +3,8 @@
  *   1. Tell the refresh cron which indicators to pull for which problems.
  *   2. Power the "data last updated" freshness display on the site.
  *
- * `lastUpdated` is each source's own published refresh date (from its API
- * metadata), so the freshness we show is the source's truth, not ours.
+ * The World Bank last-published date is not stored here. It is read from
+ * `meta.lastupdated` at request time (`fetchWdiLastUpdated`).
  */
 
 export type LiveIndicator = {
@@ -22,8 +22,6 @@ export type LiveSource = {
   id: string
   name: string
   url: string
-  /** The source's own last-published date (e.g. World Bank meta.lastupdated). */
-  lastUpdated: string
   indicators: LiveIndicator[]
 }
 
@@ -32,8 +30,6 @@ export const liveSources: LiveSource[] = [
     id: 'worldbank-wdi',
     name: 'World Bank · World Development Indicators',
     url: 'https://data.worldbank.org',
-    // World Bank meta.lastupdated, verified live via the API.
-    lastUpdated: '2026-04-08',
     indicators: [
       {
         indicator: 'SI.POV.DDAY',
@@ -68,10 +64,3 @@ export const allLiveIndicators = liveSources.flatMap((s) =>
   s.indicators.map((i) => ({ ...i, sourceId: s.id })),
 )
 
-/** The most recent source-published date across all live sources (for the badge). */
-export function latestSourceUpdate(): string {
-  return liveSources
-    .map((s) => s.lastUpdated)
-    .sort()
-    .reverse()[0]
-}

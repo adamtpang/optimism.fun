@@ -25,6 +25,38 @@ export type WdiResult = {
 
 const BASE = 'https://api.worldbank.org/v2'
 
+const DATE = /^\d{4}-\d{2}-\d{2}$/
+
+/** World Bank `meta.lastupdated` from the indicator response envelope. */
+export function readWdiLastUpdated(payload: unknown): string | null {
+  if (!Array.isArray(payload) || payload.length < 1 || !payload[0] || typeof payload[0] !== 'object') {
+    return null
+  }
+  const date = (payload[0] as { lastupdated?: unknown }).lastupdated
+  return typeof date === 'string' && DATE.test(date) ? date : null
+}
+
+/**
+ * The dataset's own last-published date. Any WDI indicator carries the same
+ * `meta.lastupdated`; life expectancy is the probe because it is always present.
+ */
+export async function fetchWdiLastUpdated(
+  opts: { revalidateSeconds?: number } = {},
+): Promise<string | null> {
+  const url = `${BASE}/country/WLD/indicator/SP.DYN.LE00.IN?format=json&per_page=1`
+  try {
+    const res = await fetch(url, {
+      headers: { accept: 'application/json' },
+      signal: AbortSignal.timeout(8_000),
+      next: { revalidate: opts.revalidateSeconds ?? 86400 },
+    })
+    if (!res.ok) return null
+    return readWdiLastUpdated(await res.json())
+  } catch {
+    return null
+  }
+}
+
 export async function fetchWdi(
   countryIso3: string,
   indicator: string,

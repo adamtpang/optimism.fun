@@ -16,7 +16,7 @@ type Obs = {
 type Resp = {
   ok: boolean
   dbConfigured: boolean
-  sourceLastUpdated: string
+  sourceLastUpdated: string | null
   dbFetchedAt: string | null
   count: number
   observations: Obs[]
@@ -85,7 +85,7 @@ export default function LiveIndicators() {
       )}
       <p className="mt-3 font-mono text-[10px] text-ink-500">
         <span className="text-amber-300">●</span> source: World Bank WDI · published{' '}
-        {day(data.sourceLastUpdated)} · our copy refreshed {day(data.dbFetchedAt)}
+        {data.sourceLastUpdated ? day(data.sourceLastUpdated) : 'unavailable'} · our copy refreshed {day(data.dbFetchedAt)}
       </p>
     </div>
   )
