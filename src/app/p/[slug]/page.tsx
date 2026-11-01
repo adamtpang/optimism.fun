@@ -5,7 +5,8 @@ import { problems, getProblemBySlug } from '@/data/problems'
 import { getCompaniesForProblem } from '@/data/companies'
 import { getCapitalFlow } from '@/data/capital-flows'
 import { getInLimitCap } from '@/data/in-limit'
-import { displayDeaths } from '@/lib/burden'
+import { displayDeathCitation, displayDeaths } from '@/lib/burden'
+import CiteThis from '@/components/CiteThis'
 import { formatHumans } from '@/lib/format'
 import { fmtUsdCompact } from '@/lib/allocation'
 import ActionBar from '@/components/ActionBar'
@@ -41,12 +42,16 @@ function Stat({ label, value, href }: { label: string; value: string; href?: str
       <p className="text-sm text-ink-500 mt-1">{label}</p>
     </>
   )
-  return href ? (
-    <a href={href} target="_blank" rel="noopener noreferrer" className="border border-hair p-4 hover:border-amber-300">
+  if (!href) return <div className="border border-hair p-4">{body}</div>
+  const external = href.startsWith('http')
+  return (
+    <a
+      href={href}
+      {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      className="border border-hair p-4 hover:border-amber-300"
+    >
       {body}
     </a>
-  ) : (
-    <div className="border border-hair p-4">{body}</div>
   )
 }
 
@@ -59,7 +64,9 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
   const flow = getCapitalFlow(slug)
   const prize = getInLimitCap(slug)
   const deaths = displayDeaths(slug)
+  const deathSource = displayDeathCitation(slug)
   const people = problem.humansAffected
+  const cite = '#cite-this'
 
   const boardAvailable = isDbConfigured()
   const [commitments, allCounts] = await Promise.all([cachedListByProblem(slug), cachedCountsByProblem()])
@@ -81,12 +88,34 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
           <p className="text-lg text-ink-400 mt-3 max-w-3xl">{problem.tagline}</p>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-8">
-            {people && <Stat label="people affected" value={formatHumans(people.value)} href={people.sourceUrl} />}
-            {deaths && <Stat label="related deaths / yr" value={formatHumans(deaths)} />}
-            {flow && <Stat label="spent on it / yr" value={fmtUsdCompact(flow.usdPerYear.value)} href={flow.usdPerYear.sourceUrl} />}
-            {prize && <Stat label="prize if solved" value={fmtUsdCompact(prize.marketCap.value)} href={prize.marketCap.sourceUrl} />}
+            {people && (
+              <Stat label="people affected" value={formatHumans(people.value)} href={people.sourceUrl ?? cite} />
+            )}
+            {deaths && (
+              <Stat
+                label="related deaths / yr"
+                value={formatHumans(deaths)}
+                href={deathSource?.sourceUrl ?? cite}
+              />
+            )}
+            {flow && (
+              <Stat
+                label="spent on it / yr"
+                value={fmtUsdCompact(flow.usdPerYear.value)}
+                href={flow.usdPerYear.sourceUrl ?? cite}
+              />
+            )}
+            {prize && (
+              <Stat
+                label="prize if solved"
+                value={fmtUsdCompact(prize.marketCap.value)}
+                href={prize.marketCap.sourceUrl ?? cite}
+              />
+            )}
           </div>
         </div>
+
+        <CiteThis problem={problem} />
 
         <ActionBar />
 

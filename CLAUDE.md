@@ -347,3 +347,16 @@ and not averaged. X-risk supply uses neglectedness, not the company count.
 The formula is on `/methodology`. AI control, nuclear war, and air pollution
 were not added: the opened pages did not fill scale, humans affected,
 neglectedness, and tractability together.
+
+## Severity sources (2026-11-01)
+
+Death-rate severity is scored for diabetes, hypertension, COPD, and cancer.
+The inputs are `mortalityPairs` on each problem. Biosecurity stays at 1, the
+extinction stake, and says so in `severityNote`. The other fourteen problems
+have no severity. Malaria, tuberculosis, and HIV each have an opened pair and
+are not added. NTDs record 119,000 deaths in 2021 and 1.495 billion people
+requiring interventions in 2023, and are not scored, because the harm is
+disability. Newborn survival has 2.3 million deaths in 2024 and no stated
+live-birth count. Each problem page has a Cite this block. `/methodology`
+lists the scored and unscored problems from the data. Ranks did not move:
+no new severity value was stored.
