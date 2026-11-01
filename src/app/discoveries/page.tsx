@@ -78,6 +78,11 @@ export default async function DiscoveriesPage({
             <p className="text-ink-400 mt-4 text-lg max-w-2xl">
               Verified findings, newest first. Preprints are marked. Challenged results stay visible.
             </p>
+            <p className="font-mono text-sm mt-3">
+              <a href="/api/discoveries" className="text-amber-300 hover:underline">JSON</a>
+              {' · '}
+              <a href="/api/discoveries/csv" className="text-amber-300 hover:underline">CSV</a>
+            </p>
           </div>
         </section>
 
