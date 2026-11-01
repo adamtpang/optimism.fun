@@ -15,19 +15,21 @@ const NAV_TABS = [
   { name: 'Markets', href: '/command#markets' },
 ]
 
-export default function NavbarClient() {
+export default function NavbarClient({ onHero: onHeroProp = false }: { onHero?: boolean }) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [pastHero, setPastHero] = useState(false)
-  const onHero = pathname === '/' && !pastHero
+  // The prop is true only on the home page, so the server markup is the clear
+  // hero bar. pastHero starts false and is corrected from scrollY after mount.
+  const onHero = onHeroProp && !pastHero
 
   useEffect(() => {
-    if (pathname !== '/') return
+    if (!onHeroProp) return
     const update = () => setPastHero(window.scrollY >= 100)
     update()
     window.addEventListener('scroll', update, { passive: true })
     return () => window.removeEventListener('scroll', update)
-  }, [pathname])
+  }, [onHeroProp])
 
   const isActive = (href: string) => {
     const path = href.split('#')[0]
