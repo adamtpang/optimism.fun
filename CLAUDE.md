@@ -332,6 +332,14 @@ with `/marketcap` still prerendered, so both new caps validate.
   Hsieh and Moretti 2019 are flagged challenged. Fertility, NTDs, datacenter
   power, and financial infrastructure have no seed row.
 
+## Open tool (2026-11-01)
+
+- Code is MIT (`LICENSE`). The data compilation is CC BY 4.0 (`DATA_LICENSE.md`).
+- Downloads: `/api/problems`, `/api/series`, `/api/discoveries`, `/api/ctas`, each with a `/csv` route, plus `/api/problems/<slug>`. `/data` lists them. Charts use stored `scale.series` only.
+- Calls to action live in `src/data/ctas.ts`. Schema: `research/CTAS.md`. 96 ingested rows. Air pollution is tagged `copd` and `climate-change` until a problem slug exists. `government` is a CTA type (UK AISI).
+- `/poster` is the ranking poster (people affected, log scale, color by neglectedness). `/where` matches skills, interests, and offers in the browser and does not store them.
+- Ranks and stored problem figures were not changed.
+
 ## Daily research (2026-11-01)
 
 - Five rows appended: Delta toxin and NEC (`newborn-survival`), PHERGain

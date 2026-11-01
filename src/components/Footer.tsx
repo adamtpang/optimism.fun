@@ -42,6 +42,15 @@ export default function Footer() {
               <Link href="/discoveries" className="text-ink-300 hover:text-amber-300 transition-colors">
                 discoveries
               </Link>
+              <Link href="/where" className="text-ink-300 hover:text-amber-300 transition-colors">
+                where do I fit
+              </Link>
+              <Link href="/poster" className="text-ink-300 hover:text-amber-300 transition-colors">
+                poster
+              </Link>
+              <Link href="/data" className="text-ink-300 hover:text-amber-300 transition-colors">
+                open data
+              </Link>
             </div>
           </div>
           <div>
