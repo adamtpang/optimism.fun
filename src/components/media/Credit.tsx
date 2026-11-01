@@ -1,23 +1,20 @@
-/**
- * Media credit line.
- *
- * Public-domain and CC0 lines are staged in public/media/CREDITS.md and are
- * not rendered until that copy is approved. CC BY attribution is mandatory,
- * so a `cc-by` credit renders beside the image that requires it.
- */
-import type { ReactNode } from 'react'
+import type { MediaCredit } from './credits'
 
+/** Renders one credit line from CREDITS.md. The link target is the URL in that file. */
 export default function Credit({
-  license,
-  children,
+  credit,
   onDark = false,
+  className = '',
 }: {
-  license: 'cc-by' | 'cc0' | 'public-domain'
-  children: ReactNode
+  credit: MediaCredit
   onDark?: boolean
+  className?: string
 }) {
-  if (license !== 'cc-by') return null
   return (
-    <p className={onDark ? 'text-small text-neutral-300' : 'text-small text-neutral-600'}>{children}</p>
+    <p className={`text-small ${onDark ? 'text-neutral-300' : 'text-neutral-600'} ${className}`}>
+      <a href={credit.href} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">
+        {credit.text}
+      </a>
+    </p>
   )
 }

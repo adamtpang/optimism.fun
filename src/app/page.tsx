@@ -6,13 +6,14 @@ import Container from '@/components/layout/Container'
 import Section from '@/components/layout/Section'
 import HeroMedia from '@/components/media/HeroMedia'
 import Broll from '@/components/media/Broll'
-import NeglectMeter from '@/components/charts/NeglectMeter'
+import Credit from '@/components/media/Credit'
+import { mediaCredit } from '@/components/media/credits'
+import RankedProblems from '@/components/RankedProblems'
 import { Button } from '@/components/ui/button'
 import { problems } from '@/data/problems'
 import { discoveryCountByProblem } from '@/data/discoveries'
 import { computeRadarRows } from '@/lib/radar'
 import { displayDeaths } from '@/lib/burden'
-import { formatHumans } from '@/lib/format'
 import { decadeBarPercent } from '@/lib/charts'
 
 export const metadata: Metadata = {
@@ -44,15 +45,20 @@ export default function Home() {
       <Navbar />
       <main>
         <section className="relative md:h-[720px]">
-          <div className="h-[300px] mt-14 md:mt-0 md:absolute md:inset-0 md:h-full">
+          <div className="relative h-[300px] mt-14 md:mt-0 md:absolute md:inset-0 md:h-full">
             <HeroMedia
-              alt="A Breathtaking Earthset from Orion, Artemis II, NASA"
+              alt={mediaCredit('earthset').text}
               sources={EARTHSET}
               width={1920}
               height={1080}
               priority
             />
             <div className="hero-scrim absolute inset-0 hidden md:block" />
+            <Credit
+              credit={mediaCredit('earthset')}
+              onDark
+              className="absolute right-4 bottom-3 md:bottom-32 z-10 max-w-[36ch] text-right"
+            />
           </div>
           <Container className="relative z-10 py-8 md:h-full md:flex md:flex-col md:justify-center">
             <h1 className="text-display-1 text-neutral-900 md:text-white max-w-[15ch]">
@@ -111,89 +117,22 @@ export default function Home() {
               Longer bar, more people, on a log scale. The order is the site ranking. Ranked by need against how well-served each problem is. Related deaths count every cause a problem feeds, so they overlap.
             </p>
 
-            <div className="mt-8 border border-neutral-200 rounded-xl bg-white shadow-sm overflow-hidden">
-              <div className="hidden md:grid grid-cols-[48px_minmax(0,1.3fr)_minmax(0,1.5fr)_120px_150px_72px] gap-4 items-center h-12 px-6 bg-neutral-50 border-b border-neutral-200 text-small font-medium text-neutral-600">
-                <span>#</span>
-                <span>Problem</span>
-                <span className="flex justify-between pr-14">
-                  <span>1M</span>
-                  <span>10M</span>
-                  <span>100M</span>
-                  <span>1B</span>
-                  <span>10B</span>
-                </span>
-                <span className="text-right">Related deaths / yr</span>
-                <span>Neglected</span>
-                <span />
-              </div>
-              <ol>
-                {rows.map((r, i) => {
-                  const p = bySlug.get(r.slug)
-                  const people = p?.humansAffected?.value
-                  const unit = p?.humansAffected?.unit
-                  const deaths = displayDeaths(r.slug)
-                  const discoveries = discoveryCounts.get(r.slug) ?? 0
-                  const width = people ? decadeBarPercent(people) : 0
-                  const score = p?.neglectedness?.score ?? null
-                  return (
-                    <li
-                      key={r.slug}
-                      className="grid grid-cols-[28px_minmax(0,1fr)_auto] md:grid-cols-[48px_minmax(0,1.3fr)_minmax(0,1.5fr)_120px_150px_72px] gap-x-3 gap-y-2 items-center px-4 md:px-6 py-4 border-b border-neutral-100 last:border-b-0"
-                    >
-                      <span className="text-small text-neutral-600 font-medium self-start md:self-center">{i + 1}</span>
-                      <div className="min-w-0">
-                        <Link href={`/p/${r.slug}`} className="text-body font-semibold text-ink-100 hover:text-primary">
-                          {r.name}
-                        </Link>
-                        <p className="text-small text-neutral-600">
-                          {unit}
-                          {discoveries > 0 && (
-                            <>
-                              {' · '}
-                              <Link href={`/discoveries?problem=${r.slug}`} className="text-primary hover:underline">
-                                {discoveries === 1 ? '1 discovery' : `${discoveries} discoveries`}
-                              </Link>
-                            </>
-                          )}
-                        </p>
-                      </div>
-                      <Link
-                        href={`/p/${r.slug}#coordinate`}
-                        className="md:hidden inline-flex items-center justify-center h-11 w-11 rounded-lg border border-neutral-200 text-primary font-semibold"
-                        aria-label={`Act on ${r.name}`}
-                      >
-                        →
-                      </Link>
-                      <div className="col-start-2 md:col-start-auto md:col-span-1 flex items-center gap-3 min-w-0">
-                        <div className="decade-track relative h-3 flex-1 rounded-full overflow-hidden" aria-hidden>
-                          <div className="absolute inset-y-0 left-0 bg-blue-600 rounded-full" style={{ width: `${width}%` }} />
-                        </div>
-                        <span className="text-small font-semibold text-blue-700 tabular-nums w-14 text-right">
-                          {people ? formatHumans(people) : '—'}
-                        </span>
-                      </div>
-                      <span className="hidden md:block text-small text-right tabular-nums text-neutral-900">
-                        {deaths ? formatHumans(deaths) : '—'}
-                      </span>
-                      <span className="hidden md:flex">
-                        <NeglectMeter score={score} />
-                      </span>
-                      <p className="col-start-2 md:hidden text-small text-neutral-600">
-                        {deaths ? `${formatHumans(deaths)} related deaths / yr` : null}
-                        {deaths ? ' · ' : null}
-                        {score == null ? 'neglectedness unscored' : `${score}/10 neglected`}
-                      </p>
-                      <Link
-                        href={`/p/${r.slug}#coordinate`}
-                        className="hidden md:inline-flex items-center justify-center h-11 px-3 rounded-lg border border-neutral-200 text-small font-semibold text-primary hover:bg-teal-50"
-                      >
-                        Act
-                      </Link>
-                    </li>
-                  )
-                })}
-              </ol>
-            </div>
+            <RankedProblems
+              rows={rows.map((r) => {
+                const p = bySlug.get(r.slug)
+                const people = p?.humansAffected?.value ?? null
+                return {
+                  slug: r.slug,
+                  name: r.name,
+                  people,
+                  unit: p?.humansAffected?.unit ?? null,
+                  deaths: displayDeaths(r.slug),
+                  discoveries: discoveryCounts.get(r.slug) ?? 0,
+                  width: people ? decadeBarPercent(people) : 0,
+                  score: p?.neglectedness?.score ?? null,
+                }
+              })}
+            />
 
             <div className="mt-4 flex flex-col md:flex-row md:items-start md:justify-between gap-3 text-small text-neutral-600">
               <p className="max-w-[68ch]">

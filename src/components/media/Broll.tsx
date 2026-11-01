@@ -1,6 +1,8 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Credit from './Credit'
+import { mediaCredit } from './credits'
 
 /**
  * Desktop-only b-roll. Muted, plays when at least half in view, and never
@@ -31,19 +33,25 @@ export default function Broll() {
     return () => observer.disconnect()
   }, [])
 
+  const credit = mediaCredit('iss_night')
   return (
-    <video
-      ref={ref}
-      className="hidden md:block w-full h-[360px] object-cover bg-neutral-900"
-      muted
-      playsInline
-      loop
-      preload="none"
-      poster="/media/iss_night-poster.avif"
-      aria-hidden
-    >
-      <source src="/media/iss_night-1280.webm" type="video/webm" />
-      <source src="/media/iss_night-1280.mp4" type="video/mp4" />
-    </video>
+    <figure className="hidden md:block">
+      <video
+        ref={ref}
+        className="w-full h-[360px] object-cover bg-neutral-900"
+        muted
+        playsInline
+        loop
+        preload="none"
+        poster="/media/iss_night-poster.avif"
+        aria-label={credit.text}
+      >
+        <source src="/media/iss_night-1280.webm" type="video/webm" />
+        <source src="/media/iss_night-1280.mp4" type="video/mp4" />
+      </video>
+      <figcaption className="site-shell py-3">
+        <Credit credit={credit} />
+      </figcaption>
+    </figure>
   )
 }

@@ -1,9 +1,7 @@
-/* Color tokens. Light is the default. Dark stays available through the theme toggle.
-   Text steps used as copy are at least 4.5:1 on the canvas. Teal-700 is the action
-   color on light; dark mode flips --primary to teal-200 so links stay readable. */
+/* Light-only color tokens. Text steps used as copy are at least 4.5:1 on white.
+   Teal-700 is the action color. */
 
-:root,
-[data-theme='light'] {
+:root {
   --bg: 255 255 255;
   --fg: 18 25 32;
   --paper: 247 249 250;
@@ -61,65 +59,6 @@
   --ring: 174 78.9% 33.5%;
   --info: 221 71.6% 37.3%;
   --radius: 0.5rem;
-}
-
-[data-theme='dark'] {
-  --bg: 18 25 32;
-  --fg: 247 249 250;
-  --paper: 28 36 44;
-
-  --ink-100: 247 249 250;
-  --ink-200: 225 230 234;
-  --ink-300: 201 209 216;
-  --ink-400: 176 186 194;
-  --ink-500: 176 186 194;
-  --ink-600: 201 209 216;
-  --ink-700: 54 65 75;
-  --ink-800: 35 44 53;
-  --ink-900: 24 32 40;
-
-  --terminal-green: 110 200 150;
-  --terminal-rose: 255 170 160;
-  --terminal-violet: 196 181 253;
-  --terminal-cyan: 147 180 255;
-
-  --line: 247 249 250;
-  --line-opacity: 0.12;
-  --line-strong-opacity: 0.2;
-
-  color-scheme: dark;
-
-  --surface-canvas: #121920;
-  --surface-paper: #1c242c;
-  --surface-raised: #182028;
-  --surface-hover: #232c35;
-
-  --text-primary: #f7f9fa;
-  --text-secondary: #e1e6ea;
-  --text-tertiary: #c9d1d8;
-  --text-muted: #b0bac2;
-  --text-faint: #c9d1d8;
-
-  --background: 210 28% 9.8%;
-  --foreground: 200 23.1% 97.5%;
-  --card: 210 20% 12%;
-  --card-foreground: 200 23.1% 97.5%;
-  --popover: 210 20% 12%;
-  --popover-foreground: 200 23.1% 97.5%;
-  --primary: 168 63.9% 76.1%;
-  --primary-foreground: 210 28% 9.8%;
-  --secondary: 210 16% 18%;
-  --secondary-foreground: 200 23.1% 97.5%;
-  --muted: 210 16% 16%;
-  --muted-foreground: 207 17% 78%;
-  --accent: 175 30% 18%;
-  --accent-foreground: 168 63.9% 76.1%;
-  --destructive: 4 70% 55%;
-  --destructive-foreground: 0 0% 100%;
-  --border: 210 14% 24%;
-  --input: 210 12% 32%;
-  --ring: 168 63.9% 76.1%;
-  --info: 221 80% 72%;
 }
 
 :root {

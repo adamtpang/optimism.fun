@@ -1,10 +1,12 @@
 import HeroMedia, { type MediaSource } from './HeroMedia'
+import Credit from './Credit'
+import { mediaCredit } from './credits'
 
 type Kind = 'bluemarble' | 'blackmarble' | 'sunrise' | 'cdc' | 'solar'
 
-const MEDIA: Record<Kind, { alt: string; sources: MediaSource[]; width: number; height: number }> = {
+const MEDIA: Record<Kind, { creditId: string; sources: MediaSource[]; width: number; height: number }> = {
   bluemarble: {
-    alt: 'Apollo 17, NASA',
+    creditId: 'bluemarble',
     width: 1280,
     height: 1280,
     sources: [
@@ -13,7 +15,7 @@ const MEDIA: Record<Kind, { alt: string; sources: MediaSource[]; width: number; 
     ],
   },
   blackmarble: {
-    alt: 'Black Marble, City Lights 2012, NASA Earth Observatory/NASA GSFC',
+    creditId: 'blackmarble',
     width: 1600,
     height: 800,
     sources: [
@@ -22,7 +24,7 @@ const MEDIA: Record<Kind, { alt: string; sources: MediaSource[]; width: number; 
     ],
   },
   sunrise: {
-    alt: 'orbital sunrise, NASA',
+    creditId: 'iss_sunrise',
     width: 1600,
     height: 900,
     sources: [
@@ -31,7 +33,7 @@ const MEDIA: Record<Kind, { alt: string; sources: MediaSource[]; width: number; 
     ],
   },
   cdc: {
-    alt: 'CDC scientist transfers H7N9, James Gathany / CDC',
+    creditId: 'cdc_lab',
     width: 1280,
     height: 720,
     sources: [
@@ -40,7 +42,7 @@ const MEDIA: Record<Kind, { alt: string; sources: MediaSource[]; width: number; 
     ],
   },
   solar: {
-    alt: 'Mead, Nebraska solar farm aerial 2026, AllTheUsernamesAreInUse',
+    creditId: 'mead_solar',
     width: 1280,
     height: 854,
     sources: [
@@ -62,14 +64,16 @@ export function problemBandKind(slug: string): Kind | null {
   return PROBLEM_KIND[slug] ?? null
 }
 
-/** Header photograph. Public-domain credit lines stay in public/media/CREDITS.md. */
+/** Header photograph with the credit line from CREDITS.md. */
 export default function PageBand({ kind }: { kind: Kind }) {
   const media = MEDIA[kind]
+  const credit = mediaCredit(media.creditId)
   return (
     <div className="site-shell pt-20">
       <div className="relative h-[200px] md:h-[320px] max-h-[360px] overflow-hidden rounded-xl bg-neutral-900">
-        <HeroMedia alt={media.alt} sources={media.sources} width={media.width} height={media.height} />
+        <HeroMedia alt={credit.text} sources={media.sources} width={media.width} height={media.height} />
       </div>
+      <Credit credit={credit} className="mt-2" />
     </div>
   )
 }

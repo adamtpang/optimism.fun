@@ -346,4 +346,5 @@ with `/marketcap` still prerendered, so both new caps validate.
 - Inter is the only webfont. Body text is 16px. Nothing in the type scale is under 14px. `npm run lint` runs `scripts/check-design.mjs`, which fails on `text-[`, `amber-`, and hex colors in TSX.
 - One content width: 1280px (`.site-shell` / `max-w-7xl`). Glass is the nav, sticky bars, and the home door panel on desktop.
 - Home hero is the NASA Earthset, art-directed so phones request the 828 AVIF. Public-domain credit lines are staged in `public/media/CREDITS.md` and are not rendered. The NIAID CC BY line renders only if that image is used.
-- Light and dark still toggle the same way. The brand mark is unchanged. Ranking files `src/lib/priority.ts`, `src/lib/radar.ts`, `src/data/problems.ts`, and `src/data/discoveries.ts` were not edited.
+- The site is light only. The theme toggle and `next-themes` are gone. The brand mark is a teal-600 to blue-600 gradient on the same path. Home can sort Ranked, People, or Neglected. Credit lines from `public/media/CREDITS.md` render on the media that is used, and `/about` lists every credit in that file. The footer column label is HUMANITY'S BOUNTY BOARD.
+- Ranking files `src/lib/priority.ts`, `src/lib/radar.ts`, `src/data/problems.ts`, and `src/data/discoveries.ts` were not edited. `src/app/methodology/page.tsx` is left for the ranking-fix PR.

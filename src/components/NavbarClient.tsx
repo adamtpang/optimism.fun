@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import ThemeToggle from './ThemeToggle'
 import { FeedbackButton } from './FeedbackWidget'
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
 
@@ -58,7 +57,6 @@ export default function NavbarClient() {
           >
             GitHub
           </a>
-          <ThemeToggle />
         </div>
 
         <Sheet open={open} onOpenChange={setOpen}>
@@ -100,9 +98,8 @@ export default function NavbarClient() {
               >
                 GitHub
               </a>
-              <div className="flex items-center h-12 gap-4">
+              <div className="flex items-center h-12">
                 <FeedbackButton />
-                <ThemeToggle />
               </div>
             </nav>
           </SheetContent>

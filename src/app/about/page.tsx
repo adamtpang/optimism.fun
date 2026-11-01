@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { MEDIA_CREDITS } from '@/components/media/credits'
 
 export const metadata: Metadata = {
   title: 'About | optimism.fun',
@@ -84,6 +85,19 @@ export default function AboutPage() {
               should use the substantive pages and the project&rsquo;s llms.txt guidance instead.
             </p>
           </div>
+        </section>
+
+        <section className="mx-auto max-w-7xl px-6 pb-16">
+          <h2 className="font-serif text-2xl text-ink-100">Media credits</h2>
+          <ul className="mt-4 space-y-3 text-small text-neutral-700">
+            {MEDIA_CREDITS.map((credit) => (
+              <li key={credit.id}>
+                <a href={credit.href} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">
+                  {credit.text}
+                </a>
+              </li>
+            ))}
+          </ul>
         </section>
       </main>
       <Footer />

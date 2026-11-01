@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import ThemeToggle from './ThemeToggle'
 import { FeedbackButton } from './FeedbackWidget'
 
 export default function Footer() {
@@ -19,7 +18,7 @@ export default function Footer() {
             </p>
           </div>
           <div>
-            <div className="text-small font-medium uppercase text-neutral-600 mb-3">The five</div>
+            <div className="text-small font-medium text-neutral-600 mb-3">HUMANITY&rsquo;S BOUNTY BOARD</div>
             <div className="flex flex-col text-small">
               <Link href="/" className="inline-flex items-center h-11 text-neutral-800 hover:text-primary">
                 problems
@@ -82,7 +81,6 @@ export default function Footer() {
                 github
               </a>
               <FeedbackButton className="h-11 justify-start px-0" />
-              <ThemeToggle />
             </div>
           </div>
         </div>

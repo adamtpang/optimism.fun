@@ -16,20 +16,28 @@ function rg(args) {
 
 const failures = []
 
-const small = rg(['-n', 'text-\\[(9|10|11|12|13)', 'src'])
+const skipMethodology = ['--glob', '!src/app/methodology/**']
+
+const small = rg(['-n', 'text-\\[(9|10|11|12|13)', 'src', ...skipMethodology])
 if (small.trim()) failures.push('text below 14px:\n' + small)
 
-const arbitrary = rg(['-n', 'text-\\[', 'src', '--glob', '*.tsx', '--glob', '*.ts'])
+const arbitrary = rg(['-n', 'text-\\[', 'src', '--glob', '*.tsx', '--glob', '*.ts', ...skipMethodology])
 if (arbitrary.trim()) failures.push('arbitrary text-[ utilities:\n' + arbitrary)
 
-const amber = rg(['-n', 'amber-', 'src'])
+const amber = rg(['-n', 'amber-', 'src', ...skipMethodology])
 if (amber.trim()) failures.push('amber- alias still present:\n' + amber)
 
-const hex = rg(['-n', '#[0-9a-fA-F]{6}', 'src', '--glob', '*.tsx'])
+const hex = rg(['-n', '#[0-9a-fA-F]{6}', 'src', '--glob', '*.tsx', ...skipMethodology])
 if (hex.trim()) failures.push('hex literals in tsx:\n' + hex)
 
 const diff = spawnSync('git', ['diff', '--name-only', 'origin/main'], { encoding: 'utf8' })
-const forbidden = ['src/lib/priority.ts', 'src/lib/radar.ts', 'src/data/problems.ts', 'src/data/discoveries.ts']
+const forbidden = [
+  'src/lib/priority.ts',
+  'src/lib/radar.ts',
+  'src/data/problems.ts',
+  'src/data/discoveries.ts',
+  'src/app/methodology/page.tsx',
+]
 const touched = (diff.stdout || '').split('\n').filter((file) => forbidden.includes(file))
 if (touched.length) failures.push('forbidden files changed:\n' + touched.join('\n'))
 

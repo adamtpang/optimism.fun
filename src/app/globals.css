@@ -24,10 +24,6 @@ body {
   outline-offset: 2px;
 }
 
-[data-theme='dark'] :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-  outline-color: #9be9da;
-}
-
 ::selection {
   background: rgba(12, 98, 91, 0.18);
   color: rgb(var(--fg));
@@ -102,10 +98,6 @@ body {
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border-bottom: 1px solid rgba(15, 23, 42, 0.06);
 }
-[data-theme='dark'] .glass {
-  background: rgba(18, 25, 32, 0.86);
-  border-bottom-color: rgba(247, 249, 250, 0.08);
-}
 .glass-panel {
   background: rgba(255, 255, 255, 0.86);
   backdrop-filter: blur(20px) saturate(180%);
@@ -121,9 +113,6 @@ body {
   .glass-panel {
     background: rgba(255, 255, 255, 0.96);
   }
-  [data-theme='dark'] .glass {
-    background: rgba(18, 25, 32, 0.96);
-  }
 }
 @media (prefers-reduced-transparency: reduce) {
   .glass,
@@ -131,9 +120,6 @@ body {
     background: #fff;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-  }
-  [data-theme='dark'] .glass {
-    background: #121920;
   }
 }
 
