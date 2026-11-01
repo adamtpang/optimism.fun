@@ -120,14 +120,14 @@ export default function LastCompanyLab() {
       <section className="border border-hair bg-[rgb(var(--bg))] p-5 md:p-8">
         <div className="flex flex-col gap-2 border-b border-hair pb-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300">
+            <p className="font-mono text-small uppercase text-primary">
               01 · write the commitment brief
             </p>
             <h2 className="mt-2 font-serif text-2xl text-ink-100 md:text-3xl">
               Make the idea survive contact with your actual life.
             </h2>
           </div>
-          <p className="font-mono text-[10px] text-ink-500" aria-live="polite">
+          <p className="font-mono text-small text-ink-500" aria-live="polite">
             {answered} / {QUESTIONS.length} answered · saved on this device
           </p>
         </div>
@@ -135,7 +135,7 @@ export default function LastCompanyLab() {
         <div className="mt-6 space-y-6">
           {QUESTIONS.map(({ key, label, prompt: question }) => (
             <label key={key} className="block">
-              <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
+              <span className="font-mono text-small uppercase text-ink-500">
                 {label}
               </span>
               <span className="mt-1 block text-sm leading-relaxed text-ink-200">{question}</span>
@@ -143,7 +143,7 @@ export default function LastCompanyLab() {
                 value={draft[key]}
                 onChange={(event) => setDraft((current) => ({ ...current, [key]: event.target.value }))}
                 rows={3}
-                className="mt-2 w-full resize-y border border-hair-strong bg-[rgb(var(--paper))] px-3 py-3 text-sm leading-relaxed text-ink-100 outline-none placeholder:text-ink-600 focus:border-amber-300/70"
+                className="mt-2 w-full resize-y border border-hair-strong bg-[rgb(var(--paper))] px-3 py-3 text-sm leading-relaxed text-ink-100 outline-none placeholder:text-ink-600 focus:border-primary/70"
                 placeholder="Use concrete evidence, not the person you hope to become."
               />
             </label>
@@ -151,7 +151,7 @@ export default function LastCompanyLab() {
         </div>
 
         <label className="mt-7 block border-t border-hair pt-6">
-          <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300">
+          <span className="font-mono text-small uppercase text-primary">
             Your one-sentence candidate
           </span>
           <span className="mt-1 block text-sm leading-relaxed text-ink-300">
@@ -161,7 +161,7 @@ export default function LastCompanyLab() {
             value={draft.thesis}
             onChange={(event) => setDraft((current) => ({ ...current, thesis: event.target.value }))}
             rows={2}
-            className="mt-2 w-full resize-y border border-amber-300/40 bg-amber-300/[0.03] px-3 py-3 font-serif text-lg leading-relaxed text-ink-100 outline-none placeholder:text-ink-600 focus:border-amber-300"
+            className="mt-2 w-full resize-y border border-primary/40 bg-primary/[0.03] px-3 py-3 font-serif text-lg leading-relaxed text-ink-100 outline-none placeholder:text-ink-600 focus:border-primary"
             placeholder="Name one company thesis. A portfolio is not an answer."
           />
         </label>
@@ -169,7 +169,7 @@ export default function LastCompanyLab() {
 
       <section className="grid gap-5 md:grid-cols-[0.9fr_1.1fr]">
         <div className="border border-hair bg-ink-900/20 p-5 md:p-6">
-          <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300">
+          <p className="font-mono text-small uppercase text-primary">
             02 · ask history
           </p>
           <h2 className="mt-2 font-serif text-2xl text-ink-100">Convene the Founders council.</h2>
@@ -181,7 +181,7 @@ export default function LastCompanyLab() {
             <button
               type="button"
               onClick={copyCouncilPrompt}
-              className="inline-flex min-h-11 items-center bg-amber-300 px-4 font-mono text-[10px] uppercase tracking-wider text-paper transition-colors hover:bg-amber-200"
+              className="inline-flex min-h-11 items-center bg-primary px-4 font-mono text-small uppercase tracking-wider text-paper transition-colors hover:bg-primary/90"
             >
               {copied ? 'Copied council brief' : 'Copy council brief'}
             </button>
@@ -189,7 +189,7 @@ export default function LastCompanyLab() {
               href="https://summon.guide/chat/source/founders-podcast"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center border border-hair px-4 font-mono text-[10px] uppercase tracking-wider text-ink-300 transition-colors hover:border-amber-300 hover:text-ink-100"
+              className="inline-flex min-h-11 items-center border border-hair px-4 font-mono text-small uppercase tracking-wider text-ink-300 transition-colors hover:border-primary hover:text-ink-100"
             >
               Open Summon ↗
             </a>
@@ -197,7 +197,7 @@ export default function LastCompanyLab() {
         </div>
 
         <div className="border border-hair bg-[rgb(var(--bg))] p-5 md:p-6">
-          <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300">
+          <p className="font-mono text-small uppercase text-primary">
             03 · earn the decision
           </p>
           <h2 className="mt-2 font-serif text-2xl text-ink-100">Run the 30-day reality test.</h2>
@@ -219,24 +219,24 @@ export default function LastCompanyLab() {
                         return { ...current, proofs }
                       })
                     }
-                    className="mt-0.5 h-4 w-4 accent-amber-300"
+                    className="mt-0.5 h-4 w-4 accent-primary"
                   />
                   <span>{test}</span>
                 </label>
               </li>
             ))}
           </ul>
-          <p className="mt-5 border-t border-hair pt-4 font-mono text-[10px] uppercase tracking-wider text-ink-500">
+          <p className="mt-5 border-t border-hair pt-4 font-mono text-small uppercase tracking-wider text-ink-500">
             Evidence gate · {proofCount} / {PROOF_TESTS.length} complete
           </p>
         </div>
       </section>
 
-      <aside className="border-l-2 border-amber-300/50 bg-amber-300/[0.03] px-5 py-4">
-        <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300">
+      <aside className="border-l-2 border-primary/50 bg-primary/[0.03] px-5 py-4">
+        <p className="font-mono text-small uppercase text-primary">
           The commitment rule
         </p>
-        <p className="mt-2 max-w-3xl font-serif text-xl leading-relaxed text-ink-100">
+        <p className="mt-2 max-w-7xl font-serif text-xl leading-relaxed text-ink-100">
           Do not choose the company because the story feels important. Choose it when sustained
           energy, earned insight, a real person&rsquo;s demand, and a survivable life all point in the
           same direction.

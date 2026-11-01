@@ -15,7 +15,7 @@ import type { AllocationVerdict } from '@/data/types'
 import { fmtRatio } from '@/lib/allocation'
 
 const VERDICT: Record<AllocationVerdict, { label: string; tone: string }> = {
-  underallocated: { label: 'under-supplied', tone: 'text-amber-300' },
+  underallocated: { label: 'under-supplied', tone: 'text-primary' },
   balanced: { label: 'proportional', tone: 'text-ink-400' },
   overallocated: { label: 'over-supplied', tone: 'text-terminal-rose' },
 }
@@ -42,8 +42,8 @@ function Row({ row }: { row: SupplyDemandRow }) {
         className="w-full text-left px-3 py-3 hover:bg-ink-800/30 transition-colors"
       >
         <div className="flex items-baseline justify-between gap-3 mb-2">
-          <span className="font-sans text-[14px] text-ink-100">{row.name}</span>
-          <span className="shrink-0 font-mono text-[11px]">
+          <span className="font-sans text-small text-ink-100">{row.name}</span>
+          <span className="shrink-0 font-mono text-small">
             <span className={v.tone}>{fmtRatio(row.meanRatio)}</span>
             <span className="text-ink-600"> {v.label}</span>
           </span>
@@ -62,11 +62,11 @@ function Row({ row }: { row: SupplyDemandRow }) {
             className="absolute top-0 h-2.5 w-1.5 rounded-sm"
             style={{
               left: `calc(${pct}% - 3px)`,
-              backgroundColor: under ? '#fcd34d' : '#0ea5e9',
+              backgroundColor: under ? 'rgb(252, 211, 77)' : 'rgb(14, 165, 233)',
             }}
           />
         </div>
-        <div className="flex justify-between font-mono text-[9px] text-ink-700 mt-0.5">
+        <div className="flex justify-between font-mono text-small text-ink-700 mt-0.5">
           <span>0.01×</span>
           <span>parity</span>
           <span>100×</span>
@@ -75,19 +75,19 @@ function Row({ row }: { row: SupplyDemandRow }) {
 
       {open && (
         <div className="px-3 pb-4 space-y-2 bg-ink-900/40">
-          <p className="font-mono text-[10px] text-ink-500">
+          <p className="font-mono text-small text-ink-500">
             {(row.demandShare * 100).toFixed(1)}% of measured demand
           </p>
           {row.signals.map((s) => (
             <div key={s.kind} className="flex items-baseline justify-between gap-3">
-              <span className="font-mono text-[11px] text-ink-300">
+              <span className="font-mono text-small text-ink-300">
                 {s.label}
                 <span className="text-ink-600">
                   {' '}
                   {s.value.toLocaleString()} {s.unit}
                 </span>
               </span>
-              <span className="font-mono text-[11px] shrink-0">
+              <span className="font-mono text-small shrink-0">
                 <span className="text-ink-500">{(s.share * 100).toFixed(1)}% of world </span>
                 <span className={VERDICT[s.verdict].tone}>{fmtRatio(s.ratio)}</span>
               </span>
@@ -95,7 +95,7 @@ function Row({ row }: { row: SupplyDemandRow }) {
           ))}
           <Link
             href={`/p/${row.slug}`}
-            className="inline-block font-mono text-[10px] text-amber-300 hover:underline pt-1"
+            className="inline-block font-mono text-small text-primary hover:underline pt-1"
           >
             the problem →
           </Link>
@@ -113,18 +113,18 @@ export default function SupplyDemandIndex({ rows }: { rows: SupplyDemandRow[] })
           <Row key={r.slug} row={r} />
         ))}
       </div>
-      <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-[10px] text-ink-500">
+      <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-small text-ink-500">
         <span className="flex items-center gap-1.5">
           <span
             className="inline-block w-1.5 h-2.5 rounded-sm"
-            style={{ backgroundColor: '#fcd34d' }}
+            style={{ backgroundColor: 'rgb(252, 211, 77)' }}
           />
           under-supplied — less effort than its share of need
         </span>
         <span className="flex items-center gap-1.5">
           <span
             className="inline-block w-1.5 h-2.5 rounded-sm"
-            style={{ backgroundColor: '#0ea5e9' }}
+            style={{ backgroundColor: 'rgb(14, 165, 233)' }}
           />
           over-supplied
         </span>

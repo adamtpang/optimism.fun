@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
   <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#38bdf8"></stop>
-      <stop offset="100%" stop-color="#0284c7"></stop>
+    <linearGradient id="mark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0B7A71"></stop>
+      <stop offset="100%" stop-color="#1F56C9"></stop>
     </linearGradient>
   </defs>
   <rect width="32" height="32" rx="7" fill="#ffffff"></rect>
-  <path d="M 8 16 C 8 12 11 11 13 13 L 15 15 Q 16 16 17 15 L 19 13 C 21 11 24 12 24 16 C 24 20 21 21 19 19 L 17 17 Q 16 16 15 17 L 13 19 C 11 21 8 20 8 16 Z" fill="none" stroke="url(#sky)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path>
+  <path d="M 8 16 C 8 12 11 11 13 13 L 15 15 Q 16 16 17 15 L 19 13 C 21 11 24 12 24 16 C 24 20 21 21 19 19 L 17 17 Q 16 16 15 17 L 13 19 C 11 21 8 20 8 16 Z" fill="none" stroke="url(#mark)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>

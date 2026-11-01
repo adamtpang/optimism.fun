@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import EmailCapture from '@/components/EmailCapture'
 import { problems } from '@/data/problems'
+import PageBand from '@/components/media/PageBand'
 
 export const metadata: Metadata = {
   title: 'Manifesto | optimism.fun',
@@ -48,16 +49,17 @@ export default function ManifestoPage() {
   return (
     <>
       <Navbar />
+      <PageBand kind="sunrise" />
       <main>
         {/* Hero */}
-        <section className="pt-28 pb-12 border-b border-hair">
-          <div className="max-w-3xl mx-auto px-6">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-5">
+        <section className="pt-8 pb-12 border-b border-hair">
+          <div className="site-shell">
+            <p className="font-mono text-small uppercase text-primary mb-5">
               The manifesto
             </p>
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.04] text-ink-100 mb-6">
               Every problem is a door.
-              <span className="block text-amber-300">Open one.</span>
+              <span className="block text-primary">Open one.</span>
             </h1>
             <p className="text-lg md:text-xl text-ink-300 leading-relaxed">
               optimism.fun is a map of what is worth doing with a human life: humanity&rsquo;s
@@ -69,10 +71,10 @@ export default function ManifestoPage() {
 
         {/* Tenets */}
         <section className="px-6 py-4">
-          <div className="max-w-3xl mx-auto divide-y divide-hair">
+          <div className="max-w-7xl mx-auto divide-y divide-hair">
             {tenets.map((t) => (
               <div key={t.n} className="py-10 grid md:grid-cols-[3rem_1fr] gap-x-6 gap-y-3">
-                <span className="font-mono text-sm tabular-nums text-amber-300">{t.n}</span>
+                <span className="font-mono text-sm tabular-nums text-primary">{t.n}</span>
                 <div>
                   <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight mb-3">
                     {t.title}
@@ -86,12 +88,12 @@ export default function ManifestoPage() {
 
         {/* The closing line */}
         <section className="border-y border-hair surface-paper">
-          <div className="max-w-3xl mx-auto px-6 py-16 text-center">
+          <div className="site-shell py-16 text-center">
             <p className="font-serif text-2xl md:text-4xl text-ink-100 leading-snug">
               All problems are explainable.
-              <span className="block text-amber-300">All solutions are creatable.</span>
+              <span className="block text-primary">All solutions are creatable.</span>
             </p>
-            <p className="font-mono text-[11px] text-ink-500 mt-4">
+            <p className="font-mono text-small text-ink-500 mt-4">
               David Deutsch, via Karl Popper, operationalized with data.
             </p>
           </div>
@@ -99,8 +101,8 @@ export default function ManifestoPage() {
 
         {/* CTAs: talent + investors */}
         <section className="px-6 py-16">
-          <div className="max-w-5xl mx-auto">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-6 text-center">
+          <div className="max-w-7xl mx-auto">
+            <p className="font-mono text-small uppercase text-ink-500 mb-6 text-center">
               Three ways in
             </p>
             <div className="grid md:grid-cols-3 gap-px bg-ink-700/50 border border-hair">
@@ -108,10 +110,10 @@ export default function ManifestoPage() {
                 href="/"
                 className="group block bg-ink-900 hover:bg-ink-800/70 transition-colors p-7"
               >
-                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-2">
+                <p className="font-mono text-small uppercase text-primary mb-2">
                   If you build
                 </p>
-                <h3 className="font-serif text-xl text-ink-100 mb-2 group-hover:text-amber-300 transition-colors">
+                <h3 className="font-serif text-xl text-ink-100 mb-2 group-hover:text-primary transition-colors">
                   Find your problem &rarr;
                 </h3>
                 <p className="text-sm text-ink-400 leading-relaxed">
@@ -123,10 +125,10 @@ export default function ManifestoPage() {
                 href="/ecosystem"
                 className="group block bg-ink-900 hover:bg-ink-800/70 transition-colors p-7"
               >
-                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-terminal-green mb-2">
+                <p className="font-mono text-small uppercase text-terminal-green mb-2">
                   If you fund
                 </p>
-                <h3 className="font-serif text-xl text-ink-100 mb-2 group-hover:text-amber-300 transition-colors">
+                <h3 className="font-serif text-xl text-ink-100 mb-2 group-hover:text-primary transition-colors">
                   See the field &rarr;
                 </h3>
                 <p className="text-sm text-ink-400 leading-relaxed">
@@ -138,10 +140,10 @@ export default function ManifestoPage() {
                 href="/rfs"
                 className="group block bg-ink-900 hover:bg-ink-800/70 transition-colors p-7"
               >
-                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-terminal-violet mb-2">
+                <p className="font-mono text-small uppercase text-terminal-violet mb-2">
                   If you are deciding
                 </p>
-                <h3 className="font-serif text-xl text-ink-100 mb-2 group-hover:text-amber-300 transition-colors">
+                <h3 className="font-serif text-xl text-ink-100 mb-2 group-hover:text-primary transition-colors">
                   Read the requests &rarr;
                 </h3>
                 <p className="text-sm text-ink-400 leading-relaxed">

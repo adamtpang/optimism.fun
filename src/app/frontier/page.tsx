@@ -23,7 +23,7 @@ const PATTERN_LABEL: Record<FrontierPattern, string> = {
 }
 
 const PATTERN_TONE: Record<FrontierPattern, string> = {
-  'frontier-bets': 'text-amber-300',
+  'frontier-bets': 'text-primary',
   'conventional-philanthropy': 'text-terminal-cyan',
   'prestige-giving': 'text-ink-500',
   'scaling-proven-tech': 'text-ink-500',
@@ -36,25 +36,25 @@ function BetRow({ b }: { b: BetWithFounder }) {
   return (
     <div className="border-t border-hair pt-2.5 mt-2.5 first:border-t-0 first:pt-0 first:mt-0">
       <div className="flex items-baseline justify-between gap-3 mb-0.5">
-        <span className="font-sans text-[13px] text-ink-100">{b.vehicle}</span>
+        <span className="font-sans text-small text-ink-100">{b.vehicle}</span>
         {b.amount && (
-          <span className="font-mono text-[11px] text-amber-300 shrink-0 tabular-nums">
+          <span className="font-mono text-small text-primary shrink-0 tabular-nums">
             {formatUSD(b.amount.value)}
           </span>
         )}
       </div>
-      <p className="text-[12px] text-ink-400 leading-relaxed mb-1.5">{b.description}</p>
+      <p className="text-small text-ink-400 leading-relaxed mb-1.5">{b.description}</p>
       <div className="flex items-center gap-2 flex-wrap">
         {problem && (
           <Link
             href={`/p/${problem.slug}`}
-            className="font-mono text-[10px] uppercase tracking-wide text-terminal-cyan border border-terminal-cyan/40 rounded px-1.5 py-0.5 hover:bg-terminal-cyan/10 transition-colors"
+            className="font-mono text-small uppercase tracking-wide text-terminal-cyan border border-terminal-cyan/40 rounded px-1.5 py-0.5 hover:bg-terminal-cyan/10 transition-colors"
           >
             validates → {problem.name}
           </Link>
         )}
         {b.gapLabel && (
-          <span className="font-mono text-[10px] uppercase tracking-wide text-amber-300 border border-amber-300/40 rounded px-1.5 py-0.5">
+          <span className="font-mono text-small uppercase tracking-wide text-primary border border-primary/40 rounded px-1.5 py-0.5">
             not on the index → {b.gapLabel}
           </span>
         )}
@@ -62,7 +62,7 @@ function BetRow({ b }: { b: BetWithFounder }) {
           href={b.sourceUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="font-mono text-[10px] text-ink-600 hover:text-ink-300 transition-colors ml-auto"
+          className="font-mono text-small text-ink-600 hover:text-ink-300 transition-colors ml-auto"
         >
           source →
         </a>
@@ -97,13 +97,13 @@ export default function FrontierPage() {
       <Navbar />
       <main>
         <section className="pt-28 pb-8 border-b border-hair">
-          <div className="max-w-4xl mx-auto px-6">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               The frontier of demand
             </p>
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.04] text-ink-100 mb-4">
               The rich buy the future first.
-              <span className="block text-amber-300">Then it gets cheap.</span>
+              <span className="block text-primary">Then it gets cheap.</span>
             </h1>
             <p className="text-ink-400 leading-relaxed max-w-2xl text-base">
               Technology comes down a cost curve. Solar, gene sequencing, and satellite launch were
@@ -117,7 +117,7 @@ export default function FrontierPage() {
         </section>
 
         <section className="border-b border-hair bg-ink-900/30">
-          <div className="max-w-4xl mx-auto px-6 py-10">
+          <div className="site-shell py-10">
             <HeroFigure
               value={String(gapNames.length)}
               label="Problem domains this money reveals that aren't on the ranked index yet"
@@ -131,24 +131,24 @@ export default function FrontierPage() {
         </section>
 
         {/* per-person cards */}
-        <section className="max-w-4xl mx-auto px-6 py-12">
-          <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-6">
+        <section className="site-shell py-12">
+          <p className="font-mono text-small uppercase text-ink-500 mb-6">
             Disclosed capital, top {founders.length} by net worth
           </p>
           <div className="space-y-6">
             {founders.map((f) => (
               <div key={f.name} className="border border-hair rounded-lg px-4 py-4">
                 <div className="flex items-baseline justify-between gap-3 mb-1">
-                  <span className="font-sans text-[16px] text-ink-100">
+                  <span className="font-sans text-body text-ink-100">
                     {f.name}
-                    <span className="text-ink-500 font-mono text-[11px] ml-2">{f.source}</span>
+                    <span className="text-ink-500 font-mono text-small ml-2">{f.source}</span>
                   </span>
-                  <span className="font-mono text-[12px] text-amber-300 tabular-nums shrink-0">
+                  <span className="font-mono text-small text-primary tabular-nums shrink-0">
                     {formatUSD(f.netWorth.value)}
                   </span>
                 </div>
                 {f.frontierPattern && (
-                  <p className={`font-mono text-[10px] uppercase tracking-wide mb-3 ${PATTERN_TONE[f.frontierPattern]}`}>
+                  <p className={`font-mono text-small uppercase tracking-wide mb-3 ${PATTERN_TONE[f.frontierPattern]}`}>
                     {PATTERN_LABEL[f.frontierPattern]}
                   </p>
                 )}
@@ -159,7 +159,7 @@ export default function FrontierPage() {
                     ))}
                   </div>
                 ) : (
-                  <p className="font-mono text-[11px] text-ink-600">No disclosed frontier bets researched yet.</p>
+                  <p className="font-mono text-small text-ink-600">No disclosed frontier bets researched yet.</p>
                 )}
               </div>
             ))}
@@ -169,8 +169,8 @@ export default function FrontierPage() {
         {/* rollup: validated problems */}
         {byProblem.size > 0 && (
           <section className="border-y border-hair bg-ink-900/30">
-            <div className="max-w-4xl mx-auto px-6 py-10">
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-terminal-cyan mb-3">
+            <div className="site-shell py-10">
+              <p className="font-mono text-small uppercase text-terminal-cyan mb-3">
                 Already validated
               </p>
               <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight mb-5">
@@ -182,10 +182,10 @@ export default function FrontierPage() {
                   if (!problem) return null
                   return (
                     <div key={slug} className="flex items-baseline justify-between gap-4 border-b border-hair pb-3 last:border-b-0">
-                      <Link href={`/p/${slug}`} className="text-ink-100 text-[14px] hover:text-amber-300 transition-colors">
+                      <Link href={`/p/${slug}`} className="text-ink-100 text-small hover:text-primary transition-colors">
                         {problem.name}
                       </Link>
-                      <span className="font-mono text-[11px] text-ink-500 shrink-0">
+                      <span className="font-mono text-small text-ink-500 shrink-0">
                         {[...new Set(bets.map((b) => b.founderName))].join(', ')}
                       </span>
                     </div>
@@ -199,8 +199,8 @@ export default function FrontierPage() {
         {/* rollup: new gaps */}
         {byGap.size > 0 && (
           <section className="border-b border-hair">
-            <div className="max-w-4xl mx-auto px-6 py-10">
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+            <div className="site-shell py-10">
+              <p className="font-mono text-small uppercase text-primary mb-3">
                 Not on the index
               </p>
               <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight mb-2">
@@ -208,7 +208,7 @@ export default function FrontierPage() {
               </h2>
               <p className="text-ink-400 leading-relaxed max-w-2xl mb-5 text-sm">
                 A fourth taxonomy for the{' '}
-                <Link href="/coverage" className="text-amber-300 hover:underline">
+                <Link href="/coverage" className="text-primary hover:underline">
                   coverage audit
                 </Link>{' '}
                 — sourced from revealed capital instead of a published list.
@@ -216,8 +216,8 @@ export default function FrontierPage() {
               <div className="space-y-3">
                 {[...byGap.entries()].map(([gap, bets]) => (
                   <div key={gap} className="flex items-baseline justify-between gap-4 border-b border-hair pb-3 last:border-b-0">
-                    <span className="text-ink-100 text-[14px]">{gap}</span>
-                    <span className="font-mono text-[11px] text-ink-500 shrink-0">
+                    <span className="text-ink-100 text-small">{gap}</span>
+                    <span className="font-mono text-small text-ink-500 shrink-0">
                       {[...new Set(bets.map((b) => b.founderName))].join(', ')}
                     </span>
                   </div>
@@ -230,8 +230,8 @@ export default function FrontierPage() {
         {/* not everyone fits */}
         {others.length > 0 && (
           <section className="border-b border-hair bg-ink-900/30">
-            <div className="max-w-4xl mx-auto px-6 py-10">
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
+            <div className="site-shell py-10">
+              <p className="font-mono text-small uppercase text-ink-500 mb-3">
                 The honest exception
               </p>
               <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight mb-4">
@@ -245,16 +245,16 @@ export default function FrontierPage() {
               <div className="space-y-4">
                 {others.map((f) => (
                   <div key={f.name} className="border-l-2 border-hair pl-4">
-                    <p className="text-ink-100 text-[14px] mb-0.5">
+                    <p className="text-ink-100 text-small mb-0.5">
                       {f.name}{' '}
                       {f.frontierPattern && (
-                        <span className={`font-mono text-[10px] uppercase ml-2 ${PATTERN_TONE[f.frontierPattern]}`}>
+                        <span className={`font-mono text-small uppercase ml-2 ${PATTERN_TONE[f.frontierPattern]}`}>
                           {PATTERN_LABEL[f.frontierPattern]}
                         </span>
                       )}
                     </p>
                     {f.frontierBets?.map((b, i) => (
-                      <p key={i} className="text-ink-400 text-[12px] leading-relaxed">
+                      <p key={i} className="text-ink-400 text-small leading-relaxed">
                         {b.description}
                       </p>
                     ))}
@@ -267,11 +267,11 @@ export default function FrontierPage() {
 
         {/* method */}
         <section className="border-b border-hair">
-          <div className="max-w-4xl mx-auto px-6 py-10">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell py-10">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               How this is built
             </p>
-            <div className="space-y-4 font-mono text-[11px] leading-relaxed text-ink-400 max-w-3xl">
+            <div className="space-y-4 font-mono text-small leading-relaxed text-ink-400 max-w-7xl">
               <p>
                 <span className="text-ink-100">Disclosed capital only.</span> A funding round, a
                 pledge with a number, a foundation&apos;s public grant. Never an interview quote
@@ -283,12 +283,12 @@ export default function FrontierPage() {
                 <span className="text-ink-100">Hand-curated, not live.</span> This is ~10 named
                 individuals, not a statistical aggregate — there is no API for &quot;what
                 billionaires fund.&quot; Each entry is researched and cited individually, the same
-                way <Link href="/founders" className="text-amber-300 hover:underline">/founders</Link> itself
+                way <Link href="/founders" className="text-primary hover:underline">/founders</Link> itself
                 is.
               </p>
               <p>
                 <span className="text-ink-100">Top {founders.length} so far.</span> Same caveat as{' '}
-                <Link href="/founders" className="text-amber-300 hover:underline">/founders</Link> —
+                <Link href="/founders" className="text-primary hover:underline">/founders</Link> —
                 more coming. Some bets shown here (Calico, Altos Labs) are company- or
                 consortium-funded, not solely personal; where a personal share isn&apos;t disclosed,
                 the total is shown with that caveat stated, never presented as one person&apos;s
@@ -299,17 +299,17 @@ export default function FrontierPage() {
         </section>
 
         <section className="border-b border-hair">
-          <div className="max-w-4xl mx-auto px-6 py-10">
+          <div className="site-shell py-10">
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/coverage"
-                className="px-4 py-2 border border-amber-300/40 text-amber-300 font-mono text-[12px] hover:bg-amber-300/[0.06] transition-colors"
+                className="px-4 py-2 border border-primary/40 text-primary font-mono text-small hover:bg-primary/90 transition-colors"
               >
                 The full coverage audit →
               </Link>
               <Link
                 href="/founders"
-                className="px-4 py-2 border border-hair text-ink-200 font-mono text-[12px] hover:bg-ink-800/40 transition-colors"
+                className="px-4 py-2 border border-hair text-ink-200 font-mono text-small hover:bg-ink-800/40 transition-colors"
               >
                 All 10 by net worth →
               </Link>

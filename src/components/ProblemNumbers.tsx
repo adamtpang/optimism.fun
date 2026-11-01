@@ -10,7 +10,7 @@ function SourceLink({ source, href }: { source: string; href: string | null }) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="block text-xs text-amber-300 underline decoration-dotted underline-offset-2 mt-2 leading-snug hover:text-amber-200"
+      className="block text-xs text-primary underline decoration-dotted underline-offset-2 mt-2 leading-snug hover:text-primary"
     >
       {source}
     </a>
@@ -25,17 +25,17 @@ export default function ProblemNumbers({ problem }: { problem: Problem }) {
   const blocks = data.metrics.filter((metric) => metric.id !== 'scale' && metric.id !== 'humans_affected' && metric.id !== 'related_deaths')
 
   return (
-    <section className="max-w-5xl mx-auto px-4 sm:px-6 py-10 border-b border-hair">
+    <section className="site-shell py-10 border-b border-hair">
       <div className="flex flex-wrap items-baseline justify-between gap-3 mb-5">
         <h2 className="font-serif text-2xl text-ink-100">The numbers</h2>
-        <p className="font-mono text-[11px] text-ink-500">
+        <p className="font-mono text-small text-ink-500">
           Updated {data.lastUpdated}
           {' · '}
-          <a className="text-amber-300 hover:underline" href={`/api/problems/${problem.slug}/csv`}>
+          <a className="text-primary hover:underline" href={`/api/problems/${problem.slug}/csv`}>
             CSV
           </a>
           {' · '}
-          <a className="text-amber-300 hover:underline" href={`/api/problems/${problem.slug}`}>
+          <a className="text-primary hover:underline" href={`/api/problems/${problem.slug}`}>
             JSON
           </a>
         </p>
@@ -65,11 +65,11 @@ export default function ProblemNumbers({ problem }: { problem: Problem }) {
         <div className="grid sm:grid-cols-2 gap-3 mt-3">
           {blocks.map((metric) => (
             <div key={metric.id} className="border border-hair p-4">
-              <p className="font-mono text-[11px] uppercase tracking-wider text-ink-500">{metric.label}</p>
+              <p className="font-mono text-small uppercase tracking-wider text-ink-500">{metric.label}</p>
               <p className="font-mono text-3xl tabular-nums text-ink-100 mt-1">{formatMeasure(metric.value)}</p>
               <p className="text-sm text-ink-400 mt-1">{metric.unit}</p>
               <SourceLink source={metric.source} href={metric.sourceUrl} />
-              <p className="font-mono text-[10px] text-ink-500 mt-2">As of {metric.asOf}</p>
+              <p className="font-mono text-small text-ink-500 mt-2">As of {metric.asOf}</p>
             </div>
           ))}
         </div>

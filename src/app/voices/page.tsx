@@ -18,7 +18,7 @@ export default function VoicesPage() {
       <Navbar />
       <main>
         <section className="pt-32 pb-20 px-6">
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-7xl mx-auto">
             <Link
               href="/"
               className="inline-flex items-center gap-2 text-sm text-ink-500 hover:text-ink-300 transition-colors mb-8"
@@ -31,7 +31,7 @@ export default function VoicesPage() {
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.1] mb-6">
               What the thinkers say.
             </h1>
-            <p className="text-lg text-ink-400 leading-relaxed max-w-3xl mb-16">
+            <p className="text-lg text-ink-400 leading-relaxed max-w-7xl mb-16">
               The people who have spent careers thinking about which problems humanity should
               work on, and what they&rsquo;ve actually said. When multiple voices point at the
               same quest, that&rsquo;s a convergence signal. Disagreement is information too.
@@ -70,7 +70,7 @@ export default function VoicesPage() {
                         <Link
                           key={pos.problemSlug}
                           href={`/p/${pos.problemSlug}`}
-                          className="inline-flex items-center rounded-none border border-hair bg-ink-900 px-2.5 py-0.5 text-[11px] text-ink-400 hover:border-terminal-violet/30 hover:text-terminal-violet transition-colors"
+                          className="inline-flex items-center rounded-none border border-hair bg-ink-900 px-2.5 min-h-11 py-2 text-small text-ink-400 hover:border-terminal-violet/30 hover:text-terminal-violet transition-colors"
                         >
                           {problem.name}
                         </Link>

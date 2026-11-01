@@ -43,7 +43,7 @@ export default async function SignalsPage() {
 
         {top && (
           <section className="border-b border-hair bg-ink-900/30">
-            <div className="max-w-4xl mx-auto px-6 py-10">
+            <div className="site-shell py-10">
               <HeroFigure
                 value={`${fmtPct(top.cagrPct)}/yr`}
                 label={`${top.category.name} — annualized, ${top.baseline.year} to ${top.latest.year}`}
@@ -57,7 +57,7 @@ export default async function SignalsPage() {
           <div className="overflow-x-auto border border-hair">
             <table className="min-w-full font-mono text-xs">
               <thead>
-                <tr className="border-b border-hair-strong bg-ink-800/40 text-left text-[10px] uppercase tracking-ultra-wide text-ink-400">
+                <tr className="border-b border-hair-strong bg-ink-800/40 text-left text-small uppercase text-ink-400">
                   <th className="px-3 py-2.5 font-medium w-10">#</th>
                   <th className="px-3 py-2.5 font-medium">category</th>
                   <th className="px-3 py-2.5 font-medium text-right">baseline</th>
@@ -78,7 +78,7 @@ export default async function SignalsPage() {
                     </td>
                     <td className="px-3 py-2.5">
                       <span className="text-ink-100 font-sans text-sm block">{s.category.name}</span>
-                      <span className="text-ink-500 text-[10px] leading-relaxed block max-w-md mt-0.5">
+                      <span className="text-ink-500 text-small leading-relaxed block max-w-md mt-0.5">
                         {s.category.note}
                       </span>
                     </td>
@@ -98,7 +98,7 @@ export default async function SignalsPage() {
                     </td>
                     <td
                       className={`px-3 py-2.5 text-right tabular-nums font-medium ${
-                        s.cagrPct >= 0 ? 'text-amber-300' : 'text-terminal-rose'
+                        s.cagrPct >= 0 ? 'text-primary' : 'text-terminal-rose'
                       }`}
                     >
                       {fmtPct(s.cagrPct)}
@@ -108,13 +108,13 @@ export default async function SignalsPage() {
               </tbody>
             </table>
           </div>
-          <p className="mt-3 font-mono text-[11px] text-ink-500">
+          <p className="mt-3 font-mono text-small text-ink-500">
             <span className="text-ink-600">source:</span>{' '}
             <a
               href="https://data.worldbank.org"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+              className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
             >
               World Bank Open Data
             </a>
@@ -124,11 +124,11 @@ export default async function SignalsPage() {
         </section>
 
         <section className="border-t border-hair">
-          <div className="max-w-4xl mx-auto px-6 py-10">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell py-10">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               How this is built, and what&apos;s next
             </p>
-            <div className="space-y-4 font-mono text-[11px] leading-relaxed text-ink-400 max-w-3xl">
+            <div className="space-y-4 font-mono text-small leading-relaxed text-ink-400 max-w-7xl">
               <p>
                 <span className="text-ink-100">Usage, not attention.</span> Every series here is
                 World Bank Open Data — real adoption, production, or spend, worldwide, keyless and
@@ -156,17 +156,17 @@ export default async function SignalsPage() {
         </section>
 
         <section className="border-t border-hair">
-          <div className="max-w-4xl mx-auto px-6 py-10">
+          <div className="site-shell py-10">
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/movers"
-                className="px-4 py-2 border border-hair text-ink-200 font-mono text-[12px] hover:bg-ink-800/40 transition-colors"
+                className="px-4 py-2 border border-hair text-ink-200 font-mono text-small hover:bg-ink-800/40 transition-colors"
               >
                 Company-level growth →
               </Link>
               <Link
                 href="/trends"
-                className="px-4 py-2 border border-hair text-ink-200 font-mono text-[12px] hover:bg-ink-800/40 transition-colors"
+                className="px-4 py-2 border border-hair text-ink-200 font-mono text-small hover:bg-ink-800/40 transition-colors"
               >
                 Attention, tracked separately →
               </Link>

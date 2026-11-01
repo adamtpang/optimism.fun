@@ -40,18 +40,18 @@ export default function DataPage() {
   return (
     <>
       <Navbar />
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 pt-28 pb-16">
-        <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">Open data</p>
+      <main className="site-shell pt-28 pb-16">
+        <p className="font-mono text-small uppercase text-primary mb-3">Open data</p>
         <h1 className="font-serif text-4xl md:text-6xl text-ink-100 leading-[1.05]">Download the data.</h1>
         <p className="text-ink-400 mt-4 text-lg">
           Code is MIT. This compilation is {DATA_LICENSE.name}. Cite optimism.fun and the source on each row.
         </p>
         <p className="text-sm mt-3">
-          <a href={DATA_LICENSE.url} className="text-amber-300 underline decoration-dotted" target="_blank" rel="noopener noreferrer">
+          <a href={DATA_LICENSE.url} className="text-primary underline decoration-dotted" target="_blank" rel="noopener noreferrer">
             {DATA_LICENSE.id}
           </a>
           {' · '}
-          <Link href="/poster" className="text-amber-300 underline decoration-dotted">
+          <Link href="/poster" className="text-primary underline decoration-dotted">
             Poster
           </Link>
         </p>
@@ -62,9 +62,9 @@ export default function DataPage() {
               <h2 className="font-serif text-2xl text-ink-100">{set.name}</h2>
               <p className="text-sm text-ink-400 mt-1">{set.note}</p>
               <p className="font-mono text-sm mt-3">
-                <a href={set.json} className="text-amber-300 hover:underline">JSON</a>
+                <a href={set.json} className="text-primary hover:underline">JSON</a>
                 {' · '}
-                <a href={set.csv} className="text-amber-300 hover:underline">CSV</a>
+                <a href={set.csv} className="text-primary hover:underline">CSV</a>
               </p>
             </li>
           ))}

@@ -165,7 +165,7 @@ export default function CommitmentForm({
         id="coordinate"
         className="border border-terminal-green/40 bg-terminal-green/[0.04] p-6 scroll-mt-24"
       >
-        <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-terminal-green mb-2">
+        <p className="font-mono text-small uppercase text-terminal-green mb-2">
           Submitted · not yet public
         </p>
         <p className="text-ink-200 text-sm leading-relaxed">
@@ -176,9 +176,9 @@ export default function CommitmentForm({
     )
   }
 
-  const label = 'block font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1.5'
+  const label = 'block font-mono text-small uppercase text-ink-500 mb-1.5'
   const field =
-    'w-full bg-ink-900/60 border border-hair px-3 py-2 text-sm text-ink-100 placeholder:text-ink-600 focus:border-amber-300 focus:outline-none'
+    'w-full bg-ink-900/60 border border-hair px-3 py-2 text-sm text-ink-100 placeholder:text-ink-600 focus:border-primary focus:outline-none'
 
   return (
     <div ref={rootRef} id="coordinate" className="border border-hair scroll-mt-24">
@@ -216,9 +216,9 @@ export default function CommitmentForm({
               type="button"
               onClick={() => pickActor(a)}
               aria-pressed={actor === a}
-              className={`px-3 py-2.5 font-mono text-[11px] transition-colors ${
+              className={`px-3 py-2.5 font-mono text-small transition-colors ${
                 actor === a
-                  ? 'bg-amber-300 text-ink-900 font-medium'
+                  ? 'bg-primary text-ink-900 font-medium'
                   : 'bg-ink-900/60 text-ink-400 hover:text-ink-100'
               }`}
             >
@@ -238,9 +238,9 @@ export default function CommitmentForm({
                   name="intent"
                   checked={intent === i}
                   onChange={() => setIntent(i)}
-                  className="mt-1 accent-amber-300"
+                  className="mt-1 accent-primary"
                 />
-                <span className="text-[13px] text-ink-300 group-hover:text-ink-100 leading-snug">
+                <span className="text-small text-ink-300 group-hover:text-ink-100 leading-snug">
                   {INTENT_LABEL[i]}
                 </span>
               </label>
@@ -269,7 +269,7 @@ export default function CommitmentForm({
                 ))}
               </select>
               {companies.length === 0 && (
-                <p className="font-mono text-[10px] text-terminal-rose mt-1.5">
+                <p className="font-mono text-small text-terminal-rose mt-1.5">
                   No company is tracked on this problem yet. Use the contribute path to add one.
                 </p>
               )}
@@ -356,7 +356,7 @@ export default function CommitmentForm({
             placeholder={prompt.placeholder}
             className={`${field} resize-y leading-relaxed`}
           />
-          <p className="font-mono text-[10px] text-ink-600 mt-1 tabular-nums">
+          <p className="font-mono text-small text-ink-600 mt-1 tabular-nums">
             {proof.length} / {MAX_PROOF}
           </p>
         </div>
@@ -406,28 +406,28 @@ export default function CommitmentForm({
         </div>
 
         <div className="space-y-2 border-t border-hair pt-4">
-          <label className="flex items-start gap-2.5 cursor-pointer">
+          <label className="flex min-h-11 items-center gap-2.5 cursor-pointer">
             <input
               type="checkbox"
               checked={anon}
               onChange={(e) => setAnon(e.target.checked)}
-              className="mt-0.5 accent-amber-300"
+              className="mt-0.5 accent-primary"
             />
-            <span className="text-[13px] text-ink-400 leading-snug">
+            <span className="text-small text-ink-400 leading-snug">
               Show this without my name.{' '}
               {actor === 'capital'
                 ? 'The band and the thesis still appear, so the signal survives.'
                 : 'Your commitment still counts on the board.'}
             </span>
           </label>
-          <label className="flex items-start gap-2.5 cursor-pointer">
+          <label className="flex min-h-11 items-center gap-2.5 cursor-pointer">
             <input
               type="checkbox"
               checked={wantsIntro}
               onChange={(e) => setWantsIntro(e.target.checked)}
-              className="mt-0.5 accent-amber-300"
+              className="mt-0.5 accent-primary"
             />
-            <span className="text-[13px] text-ink-400 leading-snug">
+            <span className="text-small text-ink-400 leading-snug">
               Ask for an intro. Brokered by hand, not automatically.
             </span>
           </label>
@@ -436,7 +436,7 @@ export default function CommitmentForm({
         {errors.length > 0 && (
           <ul className="border border-terminal-rose/40 bg-terminal-rose/[0.05] px-4 py-3 space-y-1">
             {errors.map((e) => (
-              <li key={e} className="text-[13px] text-terminal-rose leading-snug">
+              <li key={e} className="text-small text-terminal-rose leading-snug">
                 {e}
               </li>
             ))}
@@ -446,11 +446,11 @@ export default function CommitmentForm({
         <button
           type="submit"
           disabled={state === 'sending'}
-          className="w-full bg-amber-300 text-ink-900 font-medium text-sm py-3 hover:bg-amber-400 disabled:opacity-50 transition-colors"
+          className="w-full bg-primary text-ink-900 font-medium text-sm py-3 hover:bg-primary/90 disabled:opacity-50 transition-colors"
         >
           {state === 'sending' ? 'Sending...' : 'Commit'}
         </button>
-        <p className="font-mono text-[10px] text-ink-600 text-center">
+        <p className="font-mono text-small text-ink-600 text-center">
           A human reviews every submission. Nothing publishes itself.
         </p>
       </form>

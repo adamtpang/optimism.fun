@@ -31,10 +31,10 @@ export default function CtaBoard({
   const items = listCtas({ problemSlug, riskSlug })
 
   return (
-    <section id={embedded ? undefined : 'do'} className={embedded ? 'mt-8' : 'max-w-5xl mx-auto px-4 sm:px-6 py-10 border-b border-hair'}>
+    <section id={embedded ? undefined : 'do'} className={embedded ? 'mt-8' : 'site-shell py-10 border-b border-hair'}>
       <div className="flex flex-wrap items-baseline justify-between gap-3 mb-5">
         <h2 className="font-serif text-2xl text-ink-100">What you can do</h2>
-        <a href="/data" className="font-mono text-[11px] uppercase tracking-wider text-amber-300 hover:underline">
+        <a href="/data" className="font-mono text-small uppercase tracking-wider text-primary hover:underline">
           Open data
         </a>
       </div>
@@ -47,7 +47,7 @@ export default function CtaBoard({
           return (
             <div key={kind} className="border border-hair min-w-0">
               <div className="px-3 py-2 border-b border-hair">
-                <h3 className="font-mono text-[11px] uppercase tracking-wider text-ink-100">{COPY[kind].label}</h3>
+                <h3 className="font-mono text-small uppercase tracking-wider text-ink-100">{COPY[kind].label}</h3>
                 <p className="text-xs text-ink-500 mt-0.5">{COPY[kind].hint}</p>
               </div>
               {rows.length === 0 ? (
@@ -56,7 +56,7 @@ export default function CtaBoard({
                 <ul>
                   {rows.map((cta) => (
                     <li key={cta.id} className="px-3 py-3 border-b border-hair last:border-b-0">
-                      <p className="font-mono text-[10px] uppercase tracking-wider text-ink-500">
+                      <p className="font-mono text-small uppercase tracking-wider text-ink-500">
                         {TYPE_LABEL[cta.type] ?? cta.type}
                         {cta.location ? ` · ${cta.location}` : ''}
                       </p>
@@ -64,7 +64,7 @@ export default function CtaBoard({
                         href={cta.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-ink-100 hover:text-amber-300 mt-1 inline-block"
+                        className="text-ink-100 hover:text-primary mt-1 inline-block"
                       >
                         {cta.name}
                       </a>
@@ -76,13 +76,13 @@ export default function CtaBoard({
                             href={cta.amount.sourceUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-amber-300 underline decoration-dotted underline-offset-2"
+                            className="text-primary underline decoration-dotted underline-offset-2"
                           >
                             source
                           </a>
                         </p>
                       )}
-                      <p className="font-mono text-[10px] text-ink-500 mt-2">Checked {cta.checkedDate}</p>
+                      <p className="font-mono text-small text-ink-500 mt-2">Checked {cta.checkedDate}</p>
                     </li>
                   ))}
                 </ul>

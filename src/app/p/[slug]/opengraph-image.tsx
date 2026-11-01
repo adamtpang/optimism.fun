@@ -11,9 +11,9 @@ export function generateStaticParams() {
 }
 
 const TREND = {
-  improving: { arrow: '↗', label: 'improving', color: '#15803d' },
-  worsening: { arrow: '↘', label: 'worsening', color: '#be123c' },
-  flat: { arrow: '→', label: 'flat', color: '#475569' },
+  improving: { arrow: '↗', label: 'improving', color: 'rgb(21, 128, 61)' },
+  worsening: { arrow: '↘', label: 'worsening', color: 'rgb(190, 18, 60)' },
+  flat: { arrow: '→', label: 'flat', color: 'rgb(71, 85, 105)' },
 } as const
 
 function compact(n: number): string {
@@ -29,9 +29,9 @@ function compact(n: number): string {
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const p = getProblemBySlug(slug)
-  const accent = '#0ea5e9'
-  const ink = '#0f172a'
-  const muted = '#64748b'
+  const accent = 'rgb(14, 165, 233)'
+  const ink = 'rgb(15, 23, 42)'
+  const muted = 'rgb(100, 116, 139)'
 
   if (!p) {
     return new ImageResponse(
@@ -56,7 +56,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          background: '#ffffff',
+          background: 'rgb(255, 255, 255)',
           backgroundImage:
             'radial-gradient(1200px 600px at 60% -20%, rgba(14,165,233,0.10), transparent 70%)',
           padding: '64px 72px',

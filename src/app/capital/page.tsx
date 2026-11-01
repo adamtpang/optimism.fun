@@ -34,26 +34,26 @@ export default function CapitalPage() {
       <Navbar />
       <main>
         <section className="pt-28 pb-8 border-b border-hair">
-          <div className="max-w-6xl mx-auto px-6">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               The capital map
             </p>
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.04] text-ink-100 mb-4">
               Capital is not scarce.
-              <span className="block text-amber-300">Permission is scarce.</span>
+              <span className="block text-primary">Permission is scarce.</span>
             </h1>
             <p className="text-ink-400 leading-relaxed max-w-2xl text-base">
               The world is awash in money with nowhere good to go. What is missing is the wire, the
               permit, and the buyer. This is the supply side of the{' '}
-              <Link href="/demand" className="text-amber-300 hover:underline">
+              <Link href="/demand" className="text-primary hover:underline">
                 demand map
               </Link>
               : where the money actually sits, how much of it can genuinely move, and the specific
               things damming it from the places it would rather be.
             </p>
-            <p className="mt-4 font-mono text-[11px] text-ink-500">
+            <p className="mt-4 font-mono text-small text-ink-500">
               {fmtUsdCompact(totalHeld)} held across {capitalPools.length} pools ·{' '}
-              <span className="text-amber-300">{fmtUsdCompact(totalDeployable)}</span> of it
+              <span className="text-primary">{fmtUsdCompact(totalDeployable)}</span> of it
               realistically deployable · {dammedFlows.length} dams mapped
             </p>
           </div>
@@ -61,19 +61,19 @@ export default function CapitalPage() {
 
         {/* Kardashev framing */}
         <section className="border-b border-hair bg-ink-900/30">
-          <div className="max-w-6xl mx-auto px-6 py-10">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-2">
+          <div className="site-shell py-10">
+            <p className="font-mono text-small uppercase text-primary mb-2">
               Why this matters
             </p>
             <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight mb-3">
               Humanity is at Kardashev {kNow}. Type I needs {kMultiple}× the power.
             </h2>
-            <p className="text-ink-400 max-w-3xl text-sm leading-relaxed">
+            <p className="text-ink-400 max-w-7xl text-sm leading-relaxed">
               We use roughly 20 terawatts. A Type I civilisation harnesses its whole planet, about
               10<sup>16</sup> watts. Growth in GDP has tracked growth in energy for two centuries,
               so climbing that curve is the same problem as growing the economy without limit.
             </p>
-            <p className="mt-3 text-ink-300 max-w-3xl text-sm leading-relaxed">
+            <p className="mt-3 text-ink-300 max-w-7xl text-sm leading-relaxed">
               Here is the part worth sitting with:{' '}
               <span className="text-ink-100">
                 the thing standing between us and that climb is not physics, and it is not money.
@@ -87,9 +87,9 @@ export default function CapitalPage() {
 
         {/* Where the money is */}
         <section className="border-b border-hair">
-          <div className="max-w-6xl mx-auto px-6 py-10">
+          <div className="site-shell py-10">
             <div className="mb-5">
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-1">
+              <p className="font-mono text-small uppercase text-primary mb-1">
                 Where the money is
               </p>
               <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight">
@@ -109,9 +109,9 @@ export default function CapitalPage() {
 
         {/* The dams */}
         <section className="border-b border-hair">
-          <div className="max-w-6xl mx-auto px-6 py-10">
+          <div className="site-shell py-10">
             <div className="mb-5">
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-1">
+              <p className="font-mono text-small uppercase text-primary mb-1">
                 The dams
               </p>
               <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight">
@@ -129,8 +129,8 @@ export default function CapitalPage() {
 
         {/* The wedge */}
         <section className="border-b border-hair">
-          <div className="max-w-6xl mx-auto px-6 py-10">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-2">
+          <div className="site-shell py-10">
+            <p className="font-mono text-small uppercase text-primary mb-2">
               The wedge
             </p>
             <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight mb-3">
@@ -145,11 +145,11 @@ export default function CapitalPage() {
             <div className="grid sm:grid-cols-2 gap-px bg-hair border border-hair">
               {wedge.map((f) => (
                 <div key={f.slug} className="bg-ink p-4">
-                  <p className="font-sans text-[13.5px] text-amber-300">{f.destination}</p>
-                  <p className="mt-1 font-mono text-[10px] tabular-nums text-ink-400">
+                  <p className="font-sans text-small text-primary">{f.destination}</p>
+                  <p className="mt-1 font-mono text-small tabular-nums text-ink-400">
                     {fmtUsdCompact(f.waiting.value)} waiting
                   </p>
-                  <p className="mt-2 text-ink-400 text-[12px] leading-snug">{f.unlock}</p>
+                  <p className="mt-2 text-ink-400 text-small leading-snug">{f.unlock}</p>
                 </div>
               ))}
             </div>
@@ -158,11 +158,11 @@ export default function CapitalPage() {
 
         {/* honesty */}
         <section className="border-b border-hair">
-          <div className="max-w-6xl mx-auto px-6 py-8">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell py-8">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               How honest these numbers are
             </p>
-            <p className="font-mono text-[11px] text-ink-500 max-w-3xl leading-relaxed">
+            <p className="font-mono text-small text-ink-500 max-w-7xl leading-relaxed">
               Every figure is an order-of-magnitude estimate from a named public source, tagged with
               a confidence level and an as-of date, with a scope note stating what is counted and
               excluded so it is falsifiable and improvable by PR. Two things are explicitly
@@ -170,7 +170,7 @@ export default function CapitalPage() {
               of each pool, and the derived dollar conversions on the queue and housing rows. Those
               are the numbers to attack first. Next: the Exa sourcer refreshes pool sizes and stated
               funding priorities live, the way the{' '}
-              <Link href="/demand" className="text-amber-300 hover:underline">
+              <Link href="/demand" className="text-primary hover:underline">
                 demand map
               </Link>{' '}
               already pulls from open statistical APIs.
@@ -180,7 +180,7 @@ export default function CapitalPage() {
 
         {/* close the loop */}
         <section className="border-b border-hair">
-          <div className="max-w-6xl mx-auto px-6 py-10">
+          <div className="site-shell py-10">
             <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight mb-2">
               Demand on one side. Capital on the other. The gap is the business.
             </h2>
@@ -192,19 +192,19 @@ export default function CapitalPage() {
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/demand"
-                className="px-4 py-2 border border-hair text-ink-200 font-mono text-[12px] hover:bg-ink-800/40 transition-colors"
+                className="px-4 py-2 border border-hair text-ink-200 font-mono text-small hover:bg-ink-800/40 transition-colors"
               >
                 What humanity needs → the Demand Map
               </Link>
               <Link
                 href="/rankings"
-                className="px-4 py-2 border border-amber-300/40 text-amber-300 font-mono text-[12px] hover:bg-amber-300/[0.06] transition-colors"
+                className="px-4 py-2 border border-primary/40 text-primary font-mono text-small hover:bg-primary/90 transition-colors"
               >
                 What to build → the Power Rankings
               </Link>
               <Link
                 href="/ecosystem"
-                className="px-4 py-2 border border-hair text-ink-200 font-mono text-[12px] hover:bg-ink-800/40 transition-colors"
+                className="px-4 py-2 border border-hair text-ink-200 font-mono text-small hover:bg-ink-800/40 transition-colors"
               >
                 Who funds people like you → Allocators
               </Link>

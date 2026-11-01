@@ -80,7 +80,7 @@ export default function AnnotatedFigure({
                   style={LEADER[c.leader].style}
                 />
               )}
-              <p className="font-mono text-[10px] leading-snug text-ink-300 bg-ink/85 backdrop-blur-sm px-1.5 py-1 rounded">
+              <p className="text-small leading-snug text-neutral-900 bg-white border border-neutral-200 px-2 py-1 rounded-md">
                 {c.text}
               </p>
             </div>
@@ -89,12 +89,12 @@ export default function AnnotatedFigure({
       </div>
 
       {source && (
-        <p className="mt-3 font-mono text-[9.5px] text-ink-600 leading-relaxed">{source}</p>
+        <p className="mt-3 font-mono text-small text-ink-600 leading-relaxed">{source}</p>
       )}
 
       {tableView && (
         <details className="mt-3 group">
-          <summary className="font-mono text-[10px] text-ink-500 hover:text-ink-300 cursor-pointer list-none">
+          <summary className="font-mono text-small text-ink-500 hover:text-ink-300 cursor-pointer list-none">
             <span className="group-open:hidden">▸ show the numbers</span>
             <span className="hidden group-open:inline">▾ hide the numbers</span>
           </summary>

@@ -84,8 +84,8 @@ export default function RfsPage() {
 
         {/* The rubric — make the Choose Good Quests test explicit */}
         <section className="border-b border-hair surface-paper">
-          <div className="max-w-4xl mx-auto px-6 py-12">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-paper-copper mb-3">
+          <div className="site-shell py-12">
+            <p className="font-mono text-small uppercase text-paper-copper mb-3">
               The test
             </p>
             <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight mb-5">
@@ -93,7 +93,7 @@ export default function RfsPage() {
             </h2>
             <div className="grid sm:grid-cols-3 gap-px bg-ink-700/50 border border-hair">
               <div className="bg-[rgb(var(--bg))] p-5">
-                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-2">
+                <p className="font-mono text-small uppercase text-primary mb-2">
                   Important if it works
                 </p>
                 <p className="text-sm text-ink-300 leading-relaxed">
@@ -102,7 +102,7 @@ export default function RfsPage() {
                 </p>
               </div>
               <div className="bg-[rgb(var(--bg))] p-5">
-                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-terminal-violet mb-2">
+                <p className="font-mono text-small uppercase text-terminal-violet mb-2">
                   A genuine frontier
                 </p>
                 <p className="text-sm text-ink-300 leading-relaxed">
@@ -111,7 +111,7 @@ export default function RfsPage() {
                 </p>
               </div>
               <div className="bg-[rgb(var(--bg))] p-5">
-                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-terminal-green mb-2">
+                <p className="font-mono text-small uppercase text-terminal-green mb-2">
                   Unambiguously good
                 </p>
                 <p className="text-sm text-ink-300 leading-relaxed">
@@ -128,8 +128,8 @@ export default function RfsPage() {
 
         {/* Closer + newsletter */}
         <section className="border-t border-hair">
-          <div className="max-w-4xl mx-auto px-6 py-14">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
+          <div className="site-shell py-14">
+            <p className="font-mono text-small uppercase text-ink-500 mb-3">
               This list is a conjecture
             </p>
             <p className="font-serif text-lg md:text-xl text-ink-200 leading-relaxed mb-4">
@@ -138,13 +138,13 @@ export default function RfsPage() {
               success would be good — all of it is open to refutation. If a
               request is wrong, or one is missing, tell us.
             </p>
-            <p className="font-mono text-[11px] text-ink-500">
+            <p className="font-mono text-small text-ink-500">
               corrections → feedback widget in the nav · open issue at{' '}
               <a
                 href="https://github.com/adamtpang/optimism.fun"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
               >
                 github.com/adamtpang/optimism.fun
               </a>

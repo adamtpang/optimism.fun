@@ -26,13 +26,13 @@ export default async function UnderservedPage() {
       <Navbar />
       <main>
         <section className="pt-28 pb-8 border-b border-hair">
-          <div className="max-w-4xl mx-auto px-6">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               The supply-demand index
             </p>
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.04] text-ink-100 mb-4">
               What humanity needs,
-              <span className="block text-amber-300">and nobody is working on.</span>
+              <span className="block text-primary">and nobody is working on.</span>
             </h1>
             <p className="text-ink-400 leading-relaxed max-w-2xl text-base">
               Every problem, ranked by how far its share of the world&apos;s effort falls short of
@@ -45,7 +45,7 @@ export default async function UnderservedPage() {
 
         {worst && worst.meanRatio != null && (
           <section className="border-b border-hair bg-ink-900/30">
-            <div className="max-w-4xl mx-auto px-6 py-10">
+            <div className="site-shell py-10">
               <HeroFigure
                 value={fmtRatio(worst.meanRatio)}
                 label={`${worst.name} — its share of effort, against its share of need`}
@@ -62,18 +62,18 @@ export default async function UnderservedPage() {
         )}
 
         <section className="border-b border-hair">
-          <div className="max-w-4xl mx-auto px-6 py-10">
+          <div className="site-shell py-10">
             <SupplyDemandIndex rows={rows} />
           </div>
         </section>
 
         {/* method */}
         <section className="border-b border-hair">
-          <div className="max-w-4xl mx-auto px-6 py-10">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell py-10">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               How it is computed
             </p>
-            <div className="space-y-4 font-mono text-[11px] leading-relaxed text-ink-400 max-w-3xl">
+            <div className="space-y-4 font-mono text-small leading-relaxed text-ink-400 max-w-7xl">
               <p>
                 <span className="text-ink-100">Shares, not raw ratios.</span> For each problem we
                 take its share of total demand and its share of each supply signal, then divide.
@@ -89,13 +89,13 @@ export default async function UnderservedPage() {
               </p>
               <p>
                 <span className="text-ink-100">Demand here is need, not the composite.</span> The{' '}
-                <Link href="/demand" className="text-amber-300 hover:underline">
+                <Link href="/demand" className="text-primary hover:underline">
                   demand composite
                 </Link>{' '}
                 contains research and capital as signal classes, so using it would put the
                 numerator inside the denominator. This uses quantity of humans × severity, gated by
                 ability to pay — the same basis as the capital verdicts on{' '}
-                <Link href="/radar" className="text-amber-300 hover:underline">
+                <Link href="/radar" className="text-primary hover:underline">
                   the radar
                 </Link>
                 .
@@ -125,20 +125,20 @@ export default async function UnderservedPage() {
         </section>
 
         <section className="border-b border-hair">
-          <div className="max-w-4xl mx-auto px-6 py-10">
+          <div className="site-shell py-10">
             <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight mb-2">
               Found the gap? Now find the company.
             </h2>
             <div className="flex flex-wrap gap-3 mt-5">
               <Link
                 href="/rankings"
-                className="px-4 py-2 border border-amber-300/40 text-amber-300 font-mono text-[12px] hover:bg-amber-300/[0.06] transition-colors"
+                className="px-4 py-2 border border-primary/40 text-primary font-mono text-small hover:bg-primary/90 transition-colors"
               >
                 What to build → the Power Rankings
               </Link>
               <Link
                 href="/capital"
-                className="px-4 py-2 border border-hair text-ink-200 font-mono text-[12px] hover:bg-ink-800/40 transition-colors"
+                className="px-4 py-2 border border-hair text-ink-200 font-mono text-small hover:bg-ink-800/40 transition-colors"
               >
                 Who funds it → the Capital Map
               </Link>

@@ -18,7 +18,7 @@ read these to go deeper — the component vocabulary, copy, and data model all l
 
 - **GitHub (web app):** https://github.com/adamtpang/optimism.fun
   - `src/app/globals.css` — the canonical color system, lattice background, theme variables
-  - `tailwind.config.ts` — the full token map (note: the sky-blue accent is named `amber-*` in code for legacy continuity)
+  - `tailwind.config.ts` — the full token map (note: the sky-blue accent is named `teal-*` in code for legacy continuity)
   - `src/components/` — `ProblemTable`, `ScoreBar`, `TierPill`, `SourceBadge`, `Navbar`, `Footer`, `EmailCapture`, `PageHeader`, `InfoTip`, `MarketTable`
   - `src/app/page.tsx`, `src/app/rfs/page.tsx`, `src/app/methodology/page.tsx` — page composition + voice
 
@@ -136,12 +136,12 @@ slides, no parallax.** Framer Motion is used for restrained fades/reveals. Respe
 
 **Hover states.** Text brightens toward ink-100 or shifts to the accent; surfaces lift one
 ink step (`ink-900 → ink-800`); bordered elements warm their border toward the accent
-(`border-amber-300/60`). **Press** is conveyed by a darker accent (`#0284c7`), not by
+(`border-teal-300/60`). **Press** is conveyed by a darker accent (`#0284c7`), not by
 scale/shrink. Disabled = `opacity: 0.4` + `not-allowed`.
 
 **Transparency & blur.** Used sparingly and purposefully: the fixed navbar gains
 `backdrop-blur-md` + `bg-ink/90` once scrolled; tints are layered via low-opacity accent
-washes (`amber-300/[0.04]–0.10`). No frosted-glass everywhere — blur signals "floating
+washes (`teal-300/[0.04]–0.10`). No frosted-glass everywhere — blur signals "floating
 above content," nothing more.
 
 **Layout rules.** Fixed top navbar (two rows: brand/meta + scrollable data-tab rail).

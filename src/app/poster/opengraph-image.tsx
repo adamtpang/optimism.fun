@@ -36,29 +36,29 @@ export default function Image() {
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          background: '#f4f1ea',
-          color: '#161616',
+          background: 'rgb(244, 241, 234)',
+          color: 'rgb(22, 22, 22)',
           padding: '36px 48px',
           fontFamily: 'sans-serif',
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 22, fontWeight: 650 }}>
-            <div style={{ width: 14, height: 14, background: '#0ea5e9', transform: 'rotate(45deg)' }} />
+            <div style={{ width: 14, height: 14, background: 'rgb(14, 165, 233)', transform: 'rotate(45deg)' }} />
             optimism.fun
           </div>
-          <div style={{ fontSize: 16, letterSpacing: 1, color: '#0369a1' }}>CC BY 4.0</div>
+          <div style={{ fontSize: 16, letterSpacing: 1, color: 'rgb(3, 105, 161)' }}>CC BY 4.0</div>
         </div>
         <div style={{ display: 'flex', fontSize: 42, fontWeight: 560, marginTop: 12, lineHeight: 1.05 }}>
           Humanity&apos;s hardest problems
         </div>
-        <div style={{ display: 'flex', fontSize: 18, color: '#3f3f46', marginTop: 6, marginBottom: 14 }}>
+        <div style={{ display: 'flex', fontSize: 18, color: 'rgb(63, 63, 70)', marginTop: 6, marginBottom: 14 }}>
           Bar length is people reached, log scale. Color is neglectedness.
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
           {rows.map((row) => (
             <div key={row.rank} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
-              <div style={{ width: 28, fontSize: 16, color: '#71717a' }}>{String(row.rank).padStart(2, '0')}</div>
+              <div style={{ width: 28, fontSize: 16, color: 'rgb(113, 113, 122)' }}>{String(row.rank).padStart(2, '0')}</div>
               <div style={{ width: 280, fontSize: 20 }}>{row.name}</div>
               <div style={{ width: 90, fontSize: 18, textAlign: 'right' }}>{formatMeasure(row.people)}</div>
               <div style={{ display: 'flex', flex: 1, height: 14, background: 'rgba(0,0,0,0.06)' }}>
@@ -73,7 +73,7 @@ export default function Image() {
             </div>
           ))}
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 16, color: '#52525b' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 16, color: 'rgb(82, 82, 91)' }}>
           <span>Top 8 of the full ranking</span>
           <span>optimism.fun/poster</span>
         </div>

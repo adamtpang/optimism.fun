@@ -27,14 +27,33 @@ export function logBarPercent(value: number, min: number, max: number): number {
   return Math.round((8 + clamped * 92) * 10) / 10
 }
 
-/** 0 = well funded (cyan), 10 = neglected (rose). Null is a neutral gray. */
+/** Blue to orange, colorblind-separated. 0 = funded, 10 = neglected. Null is neutral. */
+const NEGLECT_STOPS: ReadonlyArray<readonly [number, number, number]> = [
+  [31, 86, 201],
+  [85, 144, 244],
+  [188, 212, 253],
+  [225, 230, 234],
+  [243, 201, 155],
+  [224, 138, 46],
+  [184, 92, 0],
+]
+
 export function neglectColor(score: number | null): string {
-  if (score == null || Number.isNaN(score)) return '#94a3b8'
+  if (score == null || Number.isNaN(score)) return 'rgb(103, 116, 128)'
   const t = Math.max(0, Math.min(10, score)) / 10
-  const a = [8, 145, 178]
-  const b = [190, 18, 60]
-  const c = a.map((v, i) => Math.round(v + (b[i] - v) * t))
+  const scaled = t * (NEGLECT_STOPS.length - 1)
+  const i = Math.min(NEGLECT_STOPS.length - 2, Math.floor(scaled))
+  const local = scaled - i
+  const a = NEGLECT_STOPS[i]
+  const b = NEGLECT_STOPS[i + 1]
+  const c = a.map((v, channel) => Math.round(v + (b[channel] - v) * local))
   return `rgb(${c[0]}, ${c[1]}, ${c[2]})`
+}
+
+/** Position on a fixed log axis from 1M to 10B. */
+export function decadeBarPercent(value: number): number {
+  const t = (Math.log10(Math.max(value, 1)) - 6) / 4
+  return Math.round(Math.max(0, Math.min(1, t)) * 1000) / 10
 }
 
 export function lineLayout(

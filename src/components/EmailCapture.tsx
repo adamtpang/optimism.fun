@@ -50,12 +50,12 @@ export default function EmailCapture({ variant = 'prominent' }: { variant?: Vari
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
-          className="flex-1 bg-[rgb(var(--bg))] border border-hair-strong text-ink-100 font-sans text-sm px-3 py-2 focus:outline-none focus:border-amber-300/60 placeholder:text-ink-500"
+          className="flex-1 bg-[rgb(var(--bg))] border border-hair-strong text-ink-100 font-sans text-sm px-3 py-2 focus:outline-none focus:border-primary/60 placeholder:text-ink-500"
         />
         <button
           type="submit"
           disabled={status === 'sending' || !email.trim()}
-          className="font-mono text-[11px] uppercase tracking-wider text-amber-300 border border-amber-300/40 px-4 py-2 hover:bg-amber-300/[0.08] disabled:opacity-40 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
+          className="font-mono text-small uppercase tracking-wider text-primary border border-primary/40 px-4 py-2 hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
         >
           {status === 'sent' ? 'thanks →' : status === 'sending' ? 'joining…' : 'join'}
         </button>
@@ -65,15 +65,15 @@ export default function EmailCapture({ variant = 'prominent' }: { variant?: Vari
 
   return (
     <section id="join" className="border-y border-hair-strong surface-paper">
-      <div className="max-w-5xl mx-auto px-6 py-16 md:py-20">
+      <div className="site-shell py-16 md:py-20">
         <div className="grid lg:grid-cols-[1.2fr_1fr] gap-10 items-center">
           <div>
-            <div className="font-mono text-[10px] uppercase tracking-ultra-wide text-paper-copper mb-4">
+            <div className="font-mono text-small uppercase text-paper-copper mb-4">
               Weekly whitepaper drop
             </div>
             <h2 className="font-serif text-3xl md:text-5xl text-ink-100 leading-[1.05] mb-5">
               One problem.
-              <span className="block text-amber-300">One whitepaper. Every week.</span>
+              <span className="block text-primary">One whitepaper. Every week.</span>
             </h2>
             <p className="text-ink-200 leading-relaxed text-base md:text-lg max-w-xl mb-6">
               Each week we ship a deep-dive whitepaper on a top-ranked humanity-scale
@@ -84,8 +84,8 @@ export default function EmailCapture({ variant = 'prominent' }: { variant?: Vari
             </p>
 
             {status === 'sent' ? (
-              <div className="inline-flex items-center gap-3 border border-amber-300/40 bg-amber-300/[0.06] px-4 py-3">
-                <span className="text-amber-300 font-mono">◆</span>
+              <div className="inline-flex items-center gap-3 border border-primary/40 bg-primary/[0.06] px-4 py-3">
+                <span className="text-primary font-mono">◆</span>
                 <span className="text-ink-100 text-sm">
                   Logged. Welcome to the ledger.
                 </span>
@@ -103,12 +103,12 @@ export default function EmailCapture({ variant = 'prominent' }: { variant?: Vari
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="flex-1 bg-[rgb(var(--bg))] border border-hair-strong text-ink-100 font-sans text-base px-4 py-3 focus:outline-none focus:border-amber-300/60 placeholder:text-ink-500"
+                  className="flex-1 bg-[rgb(var(--bg))] border border-hair-strong text-ink-100 font-sans text-base px-4 py-3 focus:outline-none focus:border-primary/60 placeholder:text-ink-500"
                 />
                 <button
                   type="submit"
                   disabled={status === 'sending' || !email.trim()}
-                  className="font-mono text-[13px] uppercase tracking-wider text-[#08080a] bg-amber-300 hover:bg-amber-200 disabled:opacity-40 disabled:cursor-not-allowed transition-colors px-6 py-3 whitespace-nowrap border border-amber-300 font-semibold"
+                  className="font-mono text-small uppercase tracking-wider text-primary-foreground bg-primary hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-colors px-6 py-3 whitespace-nowrap border border-primary font-semibold"
                 >
                   {status === 'sending' ? 'subscribing…' : 'subscribe →'}
                 </button>
@@ -116,24 +116,24 @@ export default function EmailCapture({ variant = 'prominent' }: { variant?: Vari
             )}
 
             {status === 'error' && (
-              <p className="mt-3 font-mono text-[11px] text-terminal-rose">
+              <p className="mt-3 font-mono text-small text-terminal-rose">
                 failed. try again in a moment.
               </p>
             )}
 
-            <p className="mt-5 font-mono text-[11px] text-ink-500 max-w-xl leading-relaxed">
+            <p className="mt-5 font-mono text-small text-ink-500 max-w-xl leading-relaxed">
               optimism.fun uses your email address only to send low-volume project updates
               through Resend. You can unsubscribe with one click at any time; read the{' '}
-              <a href="/privacy" className="text-amber-300 hover:underline">privacy policy</a>.
+              <a href="/privacy" className="text-primary hover:underline">privacy policy</a>.
             </p>
           </div>
 
-          <div className="hidden lg:flex flex-col gap-3 font-mono text-[11px]">
-            <div className="text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
+          <div className="hidden lg:flex flex-col gap-3 font-mono text-small">
+            <div className="text-small uppercase text-ink-500 mb-1">
               the three routings
             </div>
             <div className="border border-hair p-4 bg-[rgb(var(--bg)/0.3)]">
-              <div className="text-amber-300 mb-1">1 &middot; weekly whitepaper</div>
+              <div className="text-primary mb-1">1 &middot; weekly whitepaper</div>
               <div className="text-ink-300 leading-relaxed">
                 one humanity-scale problem per week, deep-dived to whitepaper depth.
                 ships every monday.

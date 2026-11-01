@@ -63,11 +63,11 @@ function SectionHeading({
   return (
     <header className="mb-5 border-b border-hair pb-3">
       <div className="flex items-baseline gap-3 mb-1">
-        <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 tabular-nums">
+        <span className="font-mono text-small uppercase text-primary tabular-nums">
           §{number}
         </span>
         {kicker ? (
-          <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
+          <span className="font-mono text-small uppercase text-ink-500">
             {kicker}
           </span>
         ) : null}
@@ -82,15 +82,15 @@ function SectionHeading({
 /** Card for sections that need deeper authorship. */
 function InProgressCallout({ note }: { note: string }) {
   return (
-    <div className="border border-dashed border-amber-300/50 bg-amber-300/[0.04] p-5 text-sm text-ink-300 leading-relaxed">
-      <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-2">
+    <div className="border border-dashed border-primary/50 bg-primary/[0.04] p-5 text-sm text-ink-300 leading-relaxed">
+      <p className="font-mono text-small uppercase text-primary mb-2">
         Section in progress
       </p>
       <p>
         {note} New whitepaper sections ship with each Monday newsletter drop.{' '}
         <Link
           href="/#join"
-          className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+          className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
         >
           Subscribe
         </Link>{' '}
@@ -99,7 +99,7 @@ function InProgressCallout({ note }: { note: string }) {
           href="https://github.com/adamtpang/optimism.fun"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+          className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
         >
           contribute on GitHub
         </a>
@@ -141,27 +141,27 @@ export default async function WhitepaperPage({
       <main className="surface-paper">
         {/* Cover */}
         <section className="pt-28 pb-10 border-b border-hair">
-          <div className="max-w-3xl mx-auto px-6">
+          <div className="site-shell">
             <Link
               href={`/p/${problem.slug}`}
-              className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-ultra-wide text-ink-500 hover:text-amber-300 transition-colors mb-8"
+              className="inline-flex items-center gap-2 font-mono text-small uppercase text-ink-500 hover:text-primary transition-colors mb-8"
             >
               <span>←</span> back to problem page
             </Link>
 
             <div className="flex flex-wrap items-center gap-2 mb-5">
-              <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300">
+              <span className="font-mono text-small uppercase text-primary">
                 Whitepaper · v0.1
               </span>
-              <span className="font-mono text-[10px] text-ink-500">·</span>
+              <span className="font-mono text-small text-ink-500">·</span>
               <TierPill tier={problem.tier} />
-              <span className="font-mono text-[10px] text-ink-500">·</span>
-              <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
+              <span className="font-mono text-small text-ink-500">·</span>
+              <span className="font-mono text-small uppercase text-ink-500">
                 open to refutation
               </span>
             </div>
 
-            <p className="font-mono text-[11px] uppercase tracking-ultra-wide text-paper-copper mb-3">
+            <p className="font-mono text-small uppercase text-paper-copper mb-3">
               An optimism.fun request for startups
             </p>
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.05] text-ink-100 mb-5">
@@ -171,27 +171,27 @@ export default async function WhitepaperPage({
               {problem.tagline}
             </p>
 
-            <div className="mt-8 font-mono text-[11px] text-ink-500 grid grid-cols-2 sm:grid-cols-4 gap-y-3 gap-x-6 border-t border-hair pt-6">
+            <div className="mt-8 font-mono text-small text-ink-500 grid grid-cols-2 sm:grid-cols-4 gap-y-3 gap-x-6 border-t border-hair pt-6">
               <div>
-                <p className="text-[10px] uppercase tracking-ultra-wide text-ink-600 mb-1">
+                <p className="text-small uppercase text-ink-600 mb-1">
                   Published
                 </p>
                 <p className="text-ink-200 tabular-nums">{problem.asOf}</p>
               </div>
               <div>
-                <p className="text-[10px] uppercase tracking-ultra-wide text-ink-600 mb-1">
+                <p className="text-small uppercase text-ink-600 mb-1">
                   Authors
                 </p>
                 <p className="text-ink-200">optimism.fun</p>
               </div>
               <div>
-                <p className="text-[10px] uppercase tracking-ultra-wide text-ink-600 mb-1">
+                <p className="text-small uppercase text-ink-600 mb-1">
                   Status
                 </p>
                 <p className="text-ink-200">Draft · v0.1</p>
               </div>
               <div>
-                <p className="text-[10px] uppercase tracking-ultra-wide text-ink-600 mb-1">
+                <p className="text-small uppercase text-ink-600 mb-1">
                   License
                 </p>
                 <p className="text-ink-200">CC BY 4.0</p>
@@ -200,7 +200,7 @@ export default async function WhitepaperPage({
           </div>
         </section>
 
-        <article className="max-w-3xl mx-auto px-6 py-12 space-y-16">
+        <article className="site-shell py-12 space-y-16">
           {editorialDoc && (
             <section>
               <SectionHeading
@@ -208,14 +208,14 @@ export default async function WhitepaperPage({
                 kicker={`weekly drop · week ${editorialDoc.week}`}
                 title="Editor’s drop"
               />
-              <p className="font-mono text-[11px] text-ink-500 mb-6">
+              <p className="font-mono text-small text-ink-500 mb-6">
                 Published {editorialDoc.publishedAt}
                 {editorialDoc.authors?.length
                   ? ` · ${editorialDoc.authors.join(', ')}`
                   : ''}
               </p>
-              <div className="border-l-2 border-amber-300/50 pl-5 mb-8">
-                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-2">
+              <div className="border-l-2 border-primary/50 pl-5 mb-8">
+                <p className="font-mono text-small uppercase text-primary mb-2">
                   blackpaper · the problem
                 </p>
                 <div className="font-serif text-lg text-ink-200 leading-relaxed whitespace-pre-line">
@@ -223,7 +223,7 @@ export default async function WhitepaperPage({
                 </div>
               </div>
               <div className="border-l-2 border-terminal-green/50 pl-5 mb-6">
-                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-terminal-green mb-2">
+                <p className="font-mono text-small uppercase text-terminal-green mb-2">
                   whitepaper · the proposal
                 </p>
                 <div className="font-serif text-lg text-ink-200 leading-relaxed whitespace-pre-line">
@@ -231,8 +231,8 @@ export default async function WhitepaperPage({
                 </div>
               </div>
               {editorialDoc.cta && (
-                <div className="border border-amber-300/40 bg-amber-300/[0.04] p-5">
-                  <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-2">
+                <div className="border border-primary/40 bg-primary/[0.04] p-5">
+                  <p className="font-mono text-small uppercase text-primary mb-2">
                     request for {editorialDoc.cta.for}s
                   </p>
                   <p className="font-serif text-ink-200 leading-relaxed mb-3 whitespace-pre-line">
@@ -243,7 +243,7 @@ export default async function WhitepaperPage({
                       href={editorialDoc.cta.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-block px-4 py-2 font-mono text-[11px] uppercase tracking-wider text-amber-300 border border-amber-300/40 hover:bg-amber-300/[0.08] transition-colors"
+                      className="inline-block px-4 py-2 font-mono text-small uppercase tracking-wider text-primary border border-primary/40 hover:bg-primary/90 transition-colors"
                     >
                       {editorialDoc.cta.ctaLabel ?? 'apply'} &rarr;
                     </a>
@@ -269,10 +269,10 @@ export default async function WhitepaperPage({
 
             <div className="grid sm:grid-cols-2 gap-px bg-ink-700/50 border border-hair">
               <div className="bg-[rgb(var(--bg))] p-5">
-                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+                <p className="font-mono text-small uppercase text-ink-500 mb-2">
                   Quantity · humans affected
                 </p>
-                <p className="font-mono text-2xl tabular-nums text-amber-300 mb-1">
+                <p className="font-mono text-2xl tabular-nums text-primary mb-1">
                   {formatHumans(problem.humansAffected.value)}
                 </p>
                 <SourceBadge
@@ -282,7 +282,7 @@ export default async function WhitepaperPage({
                 />
               </div>
               <div className="bg-[rgb(var(--bg))] p-5">
-                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+                <p className="font-mono text-small uppercase text-ink-500 mb-2">
                   Severity · 0–1
                 </p>
                 {problem.severity ? (
@@ -302,7 +302,7 @@ export default async function WhitepaperPage({
               </div>
               {problem.currentSolutionQuality ? (
                 <div className="bg-[rgb(var(--bg))] p-5">
-                  <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+                  <p className="font-mono text-small uppercase text-ink-500 mb-2">
                     Current solutions
                   </p>
                   <p className="font-mono text-2xl tabular-nums text-terminal-violet mb-1">
@@ -317,7 +317,7 @@ export default async function WhitepaperPage({
               ) : null}
               {problem.marketSize ? (
                 <div className="bg-[rgb(var(--bg))] p-5">
-                  <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+                  <p className="font-mono text-small uppercase text-ink-500 mb-2">
                     Market size · TAM
                   </p>
                   <p className="font-mono text-2xl tabular-nums text-terminal-cyan mb-1">
@@ -395,7 +395,7 @@ export default async function WhitepaperPage({
                                 href={c.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="hover:text-amber-300 transition-colors"
+                                className="hover:text-primary transition-colors"
                               >
                                 {c.name}
                               </a>
@@ -403,7 +403,7 @@ export default async function WhitepaperPage({
                               c.name
                             )}
                           </h3>
-                          <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
+                          <span className="font-mono text-small uppercase text-ink-500">
                             {c.stage}
                             {c.country ? ` · ${c.country}` : null}
                           </span>
@@ -414,26 +414,26 @@ export default async function WhitepaperPage({
                       </div>
                       <div className="text-right font-mono tabular-nums">
                         {c.marketCap?.value ? (
-                          <p className="text-sm text-amber-300">
+                          <p className="text-sm text-primary">
                             {formatUSD(c.marketCap.value)}
                           </p>
                         ) : c.valuation?.value ? (
-                          <p className="text-sm text-amber-300">
+                          <p className="text-sm text-primary">
                             {formatUSD(c.valuation.value)}
                           </p>
                         ) : (
-                          <p className="text-[11px] text-ink-500">undisclosed</p>
+                          <p className="text-small text-ink-500">undisclosed</p>
                         )}
                       </div>
                     </div>
                   ))}
                 </div>
                 {companies.length > 12 ? (
-                  <p className="font-mono text-[11px] text-ink-500 mt-4">
+                  <p className="font-mono text-small text-ink-500 mt-4">
                     {companies.length - 12} more entries on the{' '}
                     <Link
                       href={`/p/${problem.slug}`}
-                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                      className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
                     >
                       problem page
                     </Link>
@@ -449,7 +449,7 @@ export default async function WhitepaperPage({
                   href="https://github.com/adamtpang/optimism.fun"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                  className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
                 >
                   open a PR
                 </a>
@@ -468,7 +468,7 @@ export default async function WhitepaperPage({
             {problem.transformation ? (
               <>
                 <div className="border border-hair p-6 bg-[rgb(var(--bg))] mb-6">
-                  <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-terminal-green mb-3">
+                  <p className="font-mono text-small uppercase text-terminal-green mb-3">
                     After · {problem.transformation.horizon}
                   </p>
                   <p className="font-serif text-lg text-ink-100 leading-relaxed">
@@ -477,7 +477,7 @@ export default async function WhitepaperPage({
                 </div>
                 {requests.length > 0 ? (
                   <div className="mb-6">
-                    <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
+                    <p className="font-mono text-small uppercase text-ink-500 mb-3">
                       Requests for startups · {requests.length} concrete companies to build
                     </p>
                     <div className="space-y-3">
@@ -491,19 +491,19 @@ export default async function WhitepaperPage({
                           </p>
                           <dl className="grid sm:grid-cols-3 gap-x-5 gap-y-2 text-sm">
                             <div>
-                              <dt className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-0.5">
+                              <dt className="font-mono text-small uppercase text-ink-500 mb-0.5">
                                 why now
                               </dt>
                               <dd className="text-ink-300 leading-relaxed">{r.whyNow}</dd>
                             </div>
                             <div>
-                              <dt className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-0.5">
+                              <dt className="font-mono text-small uppercase text-ink-500 mb-0.5">
                                 shape
                               </dt>
                               <dd className="text-ink-300 leading-relaxed">{r.shape}</dd>
                             </div>
                             <div>
-                              <dt className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-0.5">
+                              <dt className="font-mono text-small uppercase text-ink-500 mb-0.5">
                                 success
                               </dt>
                               <dd className="text-ink-300 leading-relaxed">
@@ -514,11 +514,11 @@ export default async function WhitepaperPage({
                         </div>
                       ))}
                     </div>
-                    <p className="font-mono text-[11px] text-ink-500 mt-3">
+                    <p className="font-mono text-small text-ink-500 mt-3">
                       full rubric + framing on the{' '}
                       <Link
                         href="/rfs"
-                        className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                        className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
                       >
                         Requests for Startups
                       </Link>{' '}
@@ -543,7 +543,7 @@ export default async function WhitepaperPage({
               <>
                 <p className="font-serif text-lg text-ink-200 leading-relaxed mb-4">
                   The world is already paying{' '}
-                  <strong className="text-amber-300 font-mono tabular-nums">
+                  <strong className="text-primary font-mono tabular-nums">
                     {formatUSD(problem.marketSize.value)}
                   </strong>{' '}
                   per year against this problem ({problem.marketSize.source};{' '}
@@ -594,7 +594,7 @@ export default async function WhitepaperPage({
                       key={e.slug}
                       className="border border-hair p-4 flex items-start gap-4"
                     >
-                      <span className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 whitespace-nowrap mt-1">
+                      <span className="font-mono text-small uppercase text-primary whitespace-nowrap mt-1">
                         {ECOSYSTEM_TYPE_LABEL[e.type]}
                       </span>
                       <div className="flex-1">
@@ -604,7 +604,7 @@ export default async function WhitepaperPage({
                               href={e.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="hover:text-amber-300 transition-colors"
+                              className="hover:text-primary transition-colors"
                             >
                               {e.name}
                             </a>
@@ -633,12 +633,12 @@ export default async function WhitepaperPage({
                 {positions.slice(0, 6).map(({ voice, position }) => (
                   <blockquote
                     key={voice.slug}
-                    className="border-l-2 border-amber-300/50 pl-4"
+                    className="border-l-2 border-primary/50 pl-4"
                   >
                     <p className="font-serif text-base text-ink-200 leading-relaxed italic mb-2">
                       &ldquo;{position.stance}&rdquo;
                     </p>
-                    <footer className="font-mono text-[11px] text-ink-500">
+                    <footer className="font-mono text-small text-ink-500">
                       — {voice.name}
                       {voice.role ? ` · ${voice.role}` : null}
                     </footer>
@@ -662,26 +662,26 @@ export default async function WhitepaperPage({
             </p>
             <ul className="space-y-2 mb-6 list-none">
               {problem.sources.map((s, i) => (
-                <li key={i} className="font-mono text-[12px] text-ink-400">
+                <li key={i} className="font-mono text-small text-ink-400">
                   <span className="text-ink-600">[{i + 1}]</span>{' '}
                   <a
                     href={s.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                    className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
                   >
                     {s.title}
                   </a>
                 </li>
               ))}
             </ul>
-            <p className="font-mono text-[11px] text-ink-500 leading-relaxed">
+            <p className="font-mono text-small text-ink-500 leading-relaxed">
               corrections → use the feedback widget in the nav · open issue at{' '}
               <a
                 href="https://github.com/adamtpang/optimism.fun"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
               >
                 github.com/adamtpang/optimism.fun
               </a>

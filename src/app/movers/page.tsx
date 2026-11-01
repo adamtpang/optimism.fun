@@ -40,7 +40,7 @@ export default function MoversPage() {
           <div className="overflow-x-auto border border-hair">
             <table className="min-w-full font-mono text-xs">
               <thead>
-                <tr className="border-b border-hair-strong bg-ink-800/40 text-left text-[10px] uppercase tracking-ultra-wide text-ink-400">
+                <tr className="border-b border-hair-strong bg-ink-800/40 text-left text-small uppercase text-ink-400">
                   <th className="px-3 py-2.5 font-medium w-10">#</th>
                   <th className="px-3 py-2.5 font-medium">company</th>
                   <th className="px-3 py-2.5 font-medium text-right">market cap now</th>
@@ -68,7 +68,7 @@ export default function MoversPage() {
                       </td>
                       <td
                         className={`px-3 py-2.5 text-right tabular-nums ${
-                          g >= 0 ? 'text-amber-300' : 'text-terminal-rose'
+                          g >= 0 ? 'text-primary' : 'text-terminal-rose'
                         }`}
                       >
                         {g >= 0 ? '+' : ''}
@@ -83,13 +83,13 @@ export default function MoversPage() {
               </tbody>
             </table>
           </div>
-          <p className="mt-3 font-mono text-[11px] text-ink-500">
+          <p className="mt-3 font-mono text-small text-ink-500">
             <span className="text-ink-600">source:</span>{' '}
             <a
               href="https://companiesmarketcap.com/time-machine/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+              className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
             >
               companiesmarketcap.com Time Machine
             </a>
@@ -100,8 +100,8 @@ export default function MoversPage() {
 
         {withoutGrowth.length > 0 && (
           <section className="border-t border-hair bg-ink-900/30">
-            <div className="max-w-4xl mx-auto px-6 py-10">
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+            <div className="site-shell py-10">
+              <p className="font-mono text-small uppercase text-primary mb-3">
                 Probably bigger risers, left unquantified
               </p>
               <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight mb-3">
@@ -119,7 +119,7 @@ export default function MoversPage() {
                 {withoutGrowth.map((c) => (
                   <span
                     key={c.ticker}
-                    className="font-mono text-[11px] text-ink-300 border border-hair rounded px-2 py-1"
+                    className="font-mono text-small text-ink-300 border border-hair rounded px-2 py-1"
                   >
                     {c.name} <span className="text-ink-600">#{c.rank}</span>
                   </span>
@@ -130,17 +130,17 @@ export default function MoversPage() {
         )}
 
         <section className="border-t border-hair">
-          <div className="max-w-4xl mx-auto px-6 py-10">
+          <div className="site-shell py-10">
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/companies"
-                className="px-4 py-2 border border-hair text-ink-200 font-mono text-[12px] hover:bg-ink-800/40 transition-colors"
+                className="px-4 py-2 border border-hair text-ink-200 font-mono text-small hover:bg-ink-800/40 transition-colors"
               >
                 Rank by size instead →
               </Link>
               <Link
                 href="/frontier"
-                className="px-4 py-2 border border-amber-300/40 text-amber-300 font-mono text-[12px] hover:bg-amber-300/[0.06] transition-colors"
+                className="px-4 py-2 border border-primary/40 text-primary font-mono text-small hover:bg-primary/90 transition-colors"
               >
                 The people behind the capital →
               </Link>

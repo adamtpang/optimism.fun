@@ -51,8 +51,8 @@ export default function WealthPage() {
             {/* Countries */}
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-terminal-cyan text-[10px]">◆</span>
-                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-400">
+                <span className="text-terminal-cyan text-small">◆</span>
+                <p className="font-mono text-small uppercase text-ink-400">
                   Countries · by GDP
                 </p>
               </div>
@@ -67,7 +67,7 @@ export default function WealthPage() {
                         <td className="px-3 py-2 text-ink-600 tabular-nums w-8">
                           {c.rank}
                         </td>
-                        <td className="px-3 py-2 text-ink-100 font-sans text-[13px]">
+                        <td className="px-3 py-2 text-ink-100 font-sans text-small">
                           {c.name}
                         </td>
                         <td className="px-3 py-2 text-right tabular-nums text-terminal-cyan">
@@ -78,7 +78,7 @@ export default function WealthPage() {
                   </tbody>
                 </table>
               </div>
-              <p className="mt-2 font-mono text-[10px] text-ink-500">
+              <p className="mt-2 font-mono text-small text-ink-500">
                 {countries.length} ranked ·{' '}
                 <a
                   href="https://data.worldbank.org/indicator/NY.GDP.MKTP.CD"
@@ -98,8 +98,8 @@ export default function WealthPage() {
             {/* Companies */}
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-amber-300 text-[10px]">◆</span>
-                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-400">
+                <span className="text-primary text-small">◆</span>
+                <p className="font-mono text-small uppercase text-ink-400">
                   Companies · by market cap
                 </p>
               </div>
@@ -114,10 +114,10 @@ export default function WealthPage() {
                         <td className="px-3 py-2 text-ink-600 tabular-nums w-8">
                           {c.rank}
                         </td>
-                        <td className="px-3 py-2 text-ink-100 font-sans text-[13px]">
+                        <td className="px-3 py-2 text-ink-100 font-sans text-small">
                           {c.name}
                         </td>
-                        <td className="px-3 py-2 text-right tabular-nums text-amber-300">
+                        <td className="px-3 py-2 text-right tabular-nums text-primary">
                           {formatUSD(c.marketCap.value)}
                         </td>
                       </tr>
@@ -125,18 +125,18 @@ export default function WealthPage() {
                   </tbody>
                 </table>
               </div>
-              <p className="mt-2 font-mono text-[10px] text-ink-500">
+              <p className="mt-2 font-mono text-small text-ink-500">
                 {publicCompanies.length} ranked ·{' '}
                 <a
                   href="https://companiesmarketcap.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-ink-400 hover:text-amber-300 underline decoration-dotted underline-offset-2"
+                  className="text-ink-400 hover:text-primary underline decoration-dotted underline-offset-2"
                 >
                   companiesmarketcap.com
                 </a>{' '}
                 · full list at{' '}
-                <a href="/companies" className="text-ink-400 hover:text-amber-300 underline decoration-dotted underline-offset-2">
+                <a href="/companies" className="text-ink-400 hover:text-primary underline decoration-dotted underline-offset-2">
                   /companies
                 </a>
               </p>
@@ -145,8 +145,8 @@ export default function WealthPage() {
             {/* Individuals */}
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-terminal-violet text-[10px]">◆</span>
-                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-400">
+                <span className="text-terminal-violet text-small">◆</span>
+                <p className="font-mono text-small uppercase text-ink-400">
                   Individuals · by net worth
                 </p>
               </div>
@@ -161,7 +161,7 @@ export default function WealthPage() {
                         <td className="px-3 py-2 text-ink-600 tabular-nums w-8">
                           {f.rank}
                         </td>
-                        <td className="px-3 py-2 text-ink-100 font-sans text-[13px]">
+                        <td className="px-3 py-2 text-ink-100 font-sans text-small">
                           {f.name}
                         </td>
                         <td className="px-3 py-2 text-right tabular-nums text-terminal-violet">
@@ -172,7 +172,7 @@ export default function WealthPage() {
                   </tbody>
                 </table>
               </div>
-              <p className="mt-2 font-mono text-[10px] text-ink-500">
+              <p className="mt-2 font-mono text-small text-ink-500">
                 {founders.length} ranked ·{' '}
                 <a
                   href="https://en.wikipedia.org/wiki/The_World%27s_Billionaires"
@@ -193,19 +193,19 @@ export default function WealthPage() {
 
         <section className="px-6 pb-16 max-w-7xl mx-auto">
           <div className="border border-hair p-8 md:p-10">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-terminal-green mb-4">
+            <p className="font-mono text-small uppercase text-terminal-green mb-4">
               BANT applied to extreme poverty
             </p>
             <h2 className="font-serif text-2xl md:text-3xl text-ink-100 mb-5 max-w-2xl leading-snug">
               The poor aren&rsquo;t the customer. The customer is whoever can afford to care about the poor.
             </h2>
-            <div className="max-w-3xl space-y-4 text-ink-300 text-[15px] leading-relaxed">
+            <div className="max-w-7xl space-y-4 text-ink-300 text-body leading-relaxed">
               <p>
                 Extreme poverty prices out at{' '}
                 <span className="text-ink-100 font-medium">{formatUSD(povertyMarket)}/yr</span> in current
                 spend and a <span className="text-ink-100 font-medium">{formatUSD(povertyInLimit)}</span>{' '}
                 in-limit prize for whoever builds the winning delivery platform — both figures on the{' '}
-                <a href="/p/extreme-poverty" className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2">
+                <a href="/p/extreme-poverty" className="text-primary hover:text-primary underline decoration-dotted underline-offset-2">
                   extreme poverty problem page
                 </a>
                 . Set that next to this ledger:{' '}
@@ -230,27 +230,27 @@ export default function WealthPage() {
 
             <div className="grid md:grid-cols-3 gap-4 mt-8">
               <div className="border border-hair p-5">
-                <p className="font-mono text-[10px] text-ink-500 mb-2">Buyer type 01</p>
+                <p className="font-mono text-small text-ink-500 mb-2">Buyer type 01</p>
                 <h3 className="text-ink-100 font-medium text-sm mb-2">Government aid budgets</h3>
-                <p className="text-ink-400 text-[13px] leading-relaxed">
+                <p className="text-ink-400 text-small leading-relaxed">
                   A slice of GDP, not GDP itself — but the only payer sized to the problem. Sell the
                   platform, not the service: license to the state or multilateral, don&rsquo;t try to
                   bill the household directly.
                 </p>
               </div>
               <div className="border border-hair p-5">
-                <p className="font-mono text-[10px] text-ink-500 mb-2">Buyer type 02</p>
+                <p className="font-mono text-small text-ink-500 mb-2">Buyer type 02</p>
                 <h3 className="text-ink-100 font-medium text-sm mb-2">Corporate ESG / supply-chain budgets</h3>
-                <p className="text-ink-400 text-[13px] leading-relaxed">
+                <p className="text-ink-400 text-small leading-relaxed">
                   A company on this page needs its supply chain, workforce, or market to not be in
                   extreme poverty. A real, recurring line item — smaller than government but faster
                   to close and renews yearly.
                 </p>
               </div>
               <div className="border border-hair p-5">
-                <p className="font-mono text-[10px] text-ink-500 mb-2">Buyer type 03</p>
+                <p className="font-mono text-small text-ink-500 mb-2">Buyer type 03</p>
                 <h3 className="text-ink-100 font-medium text-sm mb-2">Billionaire foundations</h3>
-                <p className="text-ink-400 text-[13px] leading-relaxed">
+                <p className="text-ink-400 text-small leading-relaxed">
                   Smallest pool on this page in aggregate, but the fastest capital to move — no board,
                   no election cycle, no procurement process. The right entry point for an unproven
                   model before it&rsquo;s ready for buyer types 01 or 02.

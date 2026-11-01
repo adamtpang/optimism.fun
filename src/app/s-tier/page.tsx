@@ -28,24 +28,24 @@ export default function STierPage() {
       <Navbar />
       <main>
         <section className="pt-28 pb-10 border-b border-hair">
-          <div className="max-w-6xl mx-auto px-6">
-            <div className="flex items-center gap-2 mb-3 text-terminal-rose">
+          <div className="site-shell">
+            <div className="flex items-center gap-2 mb-3 text-primary">
               <ShieldCheck size={15} aria-hidden />
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide">
+              <p className="font-mono text-small uppercase">
                 S-tier only
               </p>
             </div>
-            <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.04] text-ink-100 max-w-4xl">
+            <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.04] text-ink-100 max-w-7xl">
               Problems humanity
-              <span className="block text-terminal-rose">cannot afford to lose.</span>
+              <span className="block text-primary">cannot afford to lose.</span>
             </h1>
-            <p className="mt-5 text-ink-400 leading-relaxed max-w-3xl text-base">
+            <p className="mt-5 text-ink-400 leading-relaxed max-w-7xl text-base">
               S-tier is not the top percentile of a long list. It is a consequence class: a
               credible path to human extinction or permanent loss of civilization&apos;s future.
               The ranking below separates the existential mechanism from the concrete defenses
               a founder, researcher, funder, or institution can build now.
             </p>
-            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[11px] text-ink-500">
+            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 font-mono text-small text-ink-500">
               <span><strong className="text-ink-100">{existentialRisks.length}</strong> threat classes</span>
               <span><strong className="text-ink-100">{existentialRisks.reduce((sum, risk) => sum + risk.quests.length, 0)}</strong> concrete quests</span>
               <span><strong className="text-ink-100">0</strong> invented probabilities</span>
@@ -55,8 +55,8 @@ export default function STierPage() {
         </section>
 
         <section className="border-b border-hair bg-ink-900/30">
-          <div className="max-w-6xl mx-auto px-6 py-7 grid md:grid-cols-[12rem_1fr] gap-4 md:gap-10">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-terminal-rose">
+          <div className="site-shell py-7 grid md:grid-cols-[12rem_1fr] gap-4 md:gap-10">
+            <p className="font-mono text-small uppercase text-terminal-rose">
               The admission test
             </p>
             <div className="grid sm:grid-cols-3 gap-5 text-sm leading-relaxed text-ink-400">
@@ -73,19 +73,19 @@ export default function STierPage() {
             const science = listDiscoveries({ riskSlug: risk.slug })
             return (
               <article key={risk.slug} id={risk.slug} className="border-b border-hair scroll-mt-24">
-                <div className="max-w-6xl mx-auto px-6 py-10 md:py-14">
+                <div className="site-shell py-10 md:py-14">
                   <div className="grid lg:grid-cols-[7rem_minmax(0,1fr)] gap-6 lg:gap-10">
                     <div className="flex lg:flex-col items-center lg:items-start gap-3">
                       <span className="h-12 w-12 inline-flex items-center justify-center border border-terminal-rose/40 text-terminal-rose" aria-hidden>
                         <Icon size={23} />
                       </span>
-                      <span className="font-mono text-[11px] uppercase tracking-wide text-terminal-rose">
+                      <span className="font-mono text-small uppercase tracking-wide text-terminal-rose">
                         S{risk.rank}
                       </span>
                     </div>
 
                     <div className="min-w-0">
-                      <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-600 mb-2">
+                      <p className="font-mono text-small uppercase text-ink-600 mb-2">
                         {risk.shortName}
                       </p>
                       <h2 className="font-serif text-3xl md:text-4xl text-ink-100 leading-tight">
@@ -94,35 +94,35 @@ export default function STierPage() {
 
                       <div className="mt-7 grid md:grid-cols-2 gap-x-10 gap-y-6 text-sm leading-relaxed">
                         <div>
-                          <p className="font-mono text-[10px] uppercase tracking-wide text-terminal-rose mb-2">Failure mechanism</p>
+                          <p className="font-mono text-small uppercase tracking-wide text-terminal-rose mb-2">Failure mechanism</p>
                           <p className="text-ink-300">{risk.mechanism}</p>
                         </div>
                         <div>
-                          <p className="font-mono text-[10px] uppercase tracking-wide text-terminal-cyan mb-2">What evidence says</p>
+                          <p className="font-mono text-small uppercase tracking-wide text-terminal-cyan mb-2">What evidence says</p>
                           <p className="text-ink-400">{risk.evidenceState}</p>
                         </div>
                         <div>
-                          <p className="font-mono text-[10px] uppercase tracking-wide text-terminal-green mb-2">Victory condition</p>
+                          <p className="font-mono text-small uppercase tracking-wide text-terminal-green mb-2">Victory condition</p>
                           <p className="text-ink-300">{risk.objective}</p>
                         </div>
                         <div>
-                          <p className="font-mono text-[10px] uppercase tracking-wide text-amber-300 mb-2">Rate-limiting bottleneck</p>
+                          <p className="font-mono text-small uppercase tracking-wide text-primary mb-2">Rate-limiting bottleneck</p>
                           <p className="text-ink-400">{risk.bottleneck}</p>
                         </div>
                       </div>
 
                       <div className="mt-9 border-t border-hair">
                         <div className="py-3 flex items-center justify-between gap-4 border-b border-hair">
-                          <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">Buildable quests</p>
-                          <span className="font-mono text-[10px] text-ink-600">proof, not aspiration</span>
+                          <p className="font-mono text-small uppercase text-ink-500">Buildable quests</p>
+                          <span className="font-mono text-small text-ink-600">proof, not aspiration</span>
                         </div>
                         {risk.quests.map((quest, index) => (
                           <div key={quest.title} className="grid md:grid-cols-[2rem_13rem_minmax(0,1fr)] gap-3 md:gap-5 py-5 border-b border-hair last:border-b-0">
-                            <span className="font-mono text-[11px] tabular-nums text-ink-600">{String(index + 1).padStart(2, '0')}</span>
+                            <span className="font-mono text-small tabular-nums text-ink-600">{String(index + 1).padStart(2, '0')}</span>
                             <h3 className="font-serif text-lg text-ink-100 leading-snug">{quest.title}</h3>
                             <div className="min-w-0">
                               <p className="text-sm leading-relaxed text-ink-400">{quest.wedge}</p>
-                              <p className="mt-2 font-mono text-[10px] leading-relaxed text-terminal-green">
+                              <p className="mt-2 font-mono text-small leading-relaxed text-terminal-green">
                                 PROOF: {quest.proof}
                               </p>
                             </div>
@@ -136,7 +136,7 @@ export default function STierPage() {
                         href={risk.source.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-5 inline-flex items-center gap-2 font-mono text-[11px] text-ink-500 hover:text-terminal-cyan transition-colors"
+                        className="mt-5 inline-flex items-center gap-2 font-mono text-small text-ink-500 hover:text-terminal-cyan transition-colors"
                       >
                         Primary evidence: {risk.source.label}
                         <ExternalLink size={13} aria-hidden />
@@ -144,12 +144,12 @@ export default function STierPage() {
                       {science.length > 0 && (
                         <div className="mt-8">
                           <div className="flex items-baseline justify-between gap-4 mb-3">
-                            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500">
+                            <p className="font-mono text-small uppercase text-ink-500">
                               Discoveries
                             </p>
                             <Link
                               href={`/discoveries?risk=${risk.slug}`}
-                              className="font-mono text-[11px] text-terminal-rose hover:underline"
+                              className="font-mono text-small text-terminal-rose hover:underline"
                             >
                               All {science.length}
                             </Link>
@@ -166,15 +166,15 @@ export default function STierPage() {
         </section>
 
         <section className="border-b border-hair">
-          <div className="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-[1fr_auto] gap-6 md:items-center">
+          <div className="site-shell py-12 grid md:grid-cols-[1fr_auto] gap-6 md:items-center">
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-terminal-rose mb-2">The focus rule</p>
+              <p className="font-mono text-small uppercase text-terminal-rose mb-2">The focus rule</p>
               <h2 className="font-serif text-2xl md:text-3xl text-ink-100">Everything else is supporting infrastructure.</h2>
               <p className="mt-2 text-sm leading-relaxed text-ink-400 max-w-2xl">
                 Energy, climate resilience, institutions, scientific productivity, and demographic health matter here when they measurably reduce one of these four risks. They are not relabeled existential merely because they are important.
               </p>
             </div>
-            <Link href="/fit" className="h-10 inline-flex items-center justify-center px-4 border border-terminal-rose/50 text-terminal-rose font-mono text-[11px] uppercase tracking-wide hover:bg-terminal-rose/10 transition-colors">
+            <Link href="/fit" className="h-10 inline-flex items-center justify-center px-4 border border-terminal-rose/50 text-terminal-rose font-mono text-small uppercase tracking-wide hover:bg-terminal-rose/10 transition-colors">
               Find your S-tier fit
             </Link>
           </div>

@@ -150,13 +150,13 @@ export default function FitFinder() {
           <button
             type="button"
             onClick={startInterview}
-            className="text-left border-2 border-amber-300/60 bg-amber-300/[0.04] hover:bg-amber-300/[0.08] p-5 transition-colors group"
+            className="text-left border-2 border-primary/60 bg-primary/[0.04] hover:bg-primary/90 p-5 transition-colors group"
           >
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-2">
+            <p className="font-mono text-small uppercase text-primary mb-2">
               recommended
             </p>
             <p className="font-serif text-lg text-ink-100 mb-1">Interview me with AI</p>
-            <p className="text-[13px] text-ink-400 leading-relaxed">
+            <p className="text-small text-ink-400 leading-relaxed">
               A short, adaptive conversation. It learns your obsession, edge, and risk appetite,
               then matches you to your best founder-problem-market fit.
             </p>
@@ -167,13 +167,13 @@ export default function FitFinder() {
               track('fit_mode', { mode: 'quick' })
               setStep('domains')
             }}
-            className="text-left border border-hair hover:border-amber-300/60 p-5 transition-colors"
+            className="text-left border border-hair hover:border-primary/60 p-5 transition-colors"
           >
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+            <p className="font-mono text-small uppercase text-ink-500 mb-2">
               60 seconds
             </p>
             <p className="font-serif text-lg text-ink-100 mb-1">Quick two-question version</p>
-            <p className="text-[13px] text-ink-400 leading-relaxed">
+            <p className="text-small text-ink-400 leading-relaxed">
               Pick the domains you can&rsquo;t stop thinking about and the way you build. Instant,
               deterministic, no AI.
             </p>
@@ -192,15 +192,15 @@ export default function FitFinder() {
         <div className="space-y-4 mb-5">
           {messages.map((m, i) =>
             m.role === 'assistant' ? (
-              <div key={i} className="border-l-2 border-amber-300/50 pl-4">
-                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-1">
+              <div key={i} className="border-l-2 border-primary/50 pl-4">
+                <p className="font-mono text-small uppercase text-primary mb-1">
                   interviewer
                 </p>
                 <p className="text-ink-100 leading-relaxed">{m.content}</p>
               </div>
             ) : (
               <div key={i} className="pl-4">
-                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
+                <p className="font-mono text-small uppercase text-ink-500 mb-1">
                   you
                 </p>
                 <p className="text-ink-300 leading-relaxed">{m.content}</p>
@@ -208,7 +208,7 @@ export default function FitFinder() {
             ),
           )}
           {pending && (
-            <p className="font-mono text-[11px] text-ink-500 pl-4 animate-pulse">
+            <p className="font-mono text-small text-ink-500 pl-4 animate-pulse">
               thinking&hellip;
             </p>
           )}
@@ -220,7 +220,7 @@ export default function FitFinder() {
             <button
               type="button"
               onClick={() => setStep('domains')}
-              className="font-mono text-[11px] uppercase tracking-wider text-amber-300 border border-amber-300/40 px-3 py-2 hover:bg-amber-300/[0.08] transition-colors"
+              className="font-mono text-small uppercase tracking-wider text-primary border border-primary/40 px-3 py-2 hover:bg-primary/90 transition-colors"
             >
               Take the quick version &rarr;
             </button>
@@ -237,15 +237,15 @@ export default function FitFinder() {
                 }}
                 rows={3}
                 placeholder="Answer honestly — the polished version helps no one."
-                className="w-full bg-[rgb(var(--bg))] border border-hair-strong text-ink-100 text-sm px-3 py-2 focus:outline-none focus:border-amber-300/60 placeholder:text-ink-600 resize-y"
+                className="w-full bg-[rgb(var(--bg))] border border-hair-strong text-ink-100 text-sm px-3 py-2 focus:outline-none focus:border-primary/60 placeholder:text-ink-600 resize-y"
               />
               <div className="flex items-center justify-between mt-2">
-                <span className="font-mono text-[10px] text-ink-600">⌘/Ctrl + Enter to send</span>
+                <span className="font-mono text-small text-ink-600">⌘/Ctrl + Enter to send</span>
                 <button
                   type="button"
                   onClick={submitAnswer}
                   disabled={!answer.trim()}
-                  className="font-mono text-[11px] uppercase tracking-ultra-wide text-paper bg-amber-300 hover:bg-amber-200 disabled:opacity-30 disabled:cursor-not-allowed px-4 py-2 rounded transition-colors"
+                  className="font-mono text-small uppercase text-paper bg-primary hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed px-4 py-2 rounded transition-colors"
                 >
                   Send &rarr;
                 </button>
@@ -257,7 +257,7 @@ export default function FitFinder() {
         <button
           type="button"
           onClick={restart}
-          className="mt-6 font-mono text-[11px] uppercase tracking-wider text-ink-500 hover:text-ink-300 transition-colors"
+          className="mt-6 font-mono text-small uppercase tracking-wider text-ink-500 hover:text-ink-300 transition-colors"
         >
           &larr; start over
         </button>
@@ -285,9 +285,9 @@ export default function FitFinder() {
                 type="button"
                 onClick={() => toggleDomain(d)}
                 aria-pressed={on}
-                className={`px-3 py-2 font-mono text-[11px] uppercase tracking-wider border transition-colors ${
+                className={`px-3 py-2 font-mono text-small uppercase tracking-wider border transition-colors ${
                   on
-                    ? 'bg-amber-300/10 border-amber-300/60 text-amber-300'
+                    ? 'bg-primary/10 border-primary/60 text-primary'
                     : 'border-hair text-ink-400 hover:text-ink-100 hover:border-ink-400'
                 }`}
               >
@@ -303,7 +303,7 @@ export default function FitFinder() {
             track('fit_domains', { domains: Array.from(domains) })
             setStep('disposition')
           }}
-          className="font-mono text-[11px] uppercase tracking-ultra-wide text-paper bg-amber-300 hover:bg-amber-200 disabled:opacity-30 disabled:cursor-not-allowed px-5 py-3 rounded transition-colors"
+          className="font-mono text-small uppercase text-paper bg-primary hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed px-5 py-3 rounded transition-colors"
         >
           Next &rarr;
         </button>
@@ -333,19 +333,19 @@ export default function FitFinder() {
                 track('fit_archetype', { archetype: d.archetype })
                 setStep('results')
               }}
-              className="text-left border border-hair hover:border-amber-300/60 hover:bg-amber-300/[0.04] p-4 transition-colors group"
+              className="text-left border border-hair hover:border-primary/60 hover:bg-primary/90 p-4 transition-colors group"
             >
-              <p className="font-sans text-sm font-medium text-ink-100 group-hover:text-amber-300 transition-colors mb-1">
+              <p className="font-sans text-sm font-medium text-ink-100 group-hover:text-primary transition-colors mb-1">
                 {d.label}
               </p>
-              <p className="text-[12px] text-ink-500 leading-relaxed">{d.sub}</p>
+              <p className="text-small text-ink-500 leading-relaxed">{d.sub}</p>
             </button>
           ))}
         </div>
         <button
           type="button"
           onClick={() => setStep('domains')}
-          className="font-mono text-[11px] uppercase tracking-wider text-ink-500 hover:text-ink-300 transition-colors"
+          className="font-mono text-small uppercase tracking-wider text-ink-500 hover:text-ink-300 transition-colors"
         >
           &larr; back
         </button>
@@ -357,8 +357,8 @@ export default function FitFinder() {
   return (
     <Shell stepLabel="your quests">
       {aiSummary && (
-        <div className="mb-6 border-l-2 border-amber-300/50 pl-4">
-          <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-1">
+        <div className="mb-6 border-l-2 border-primary/50 pl-4">
+          <p className="font-mono text-small uppercase text-primary mb-1">
             What the interview heard
           </p>
           <p className="text-ink-200 leading-relaxed">{aiSummary}</p>
@@ -366,8 +366,8 @@ export default function FitFinder() {
       )}
 
       {arch && (
-        <div className="mb-8 border border-amber-300/30 bg-amber-300/[0.03] p-5">
-          <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-1">
+        <div className="mb-8 border border-primary/30 bg-primary/[0.03] p-5">
+          <p className="font-mono text-small uppercase text-primary mb-1">
             Your archetype
           </p>
           <h2 className="font-serif text-2xl text-ink-100">{arch.name}</h2>
@@ -378,7 +378,7 @@ export default function FitFinder() {
         </div>
       )}
 
-      <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-4">
+      <p className="font-mono text-small uppercase text-ink-500 mb-4">
         The problems that could be your life&rsquo;s work — most-fit first
       </p>
 
@@ -395,9 +395,9 @@ export default function FitFinder() {
                   </span>
                   <h3 className="font-serif text-xl md:text-2xl text-ink-100">{r.name}</h3>
                 </div>
-                <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-ultra-wide">
+                <div className="flex items-center gap-2 font-mono text-small uppercase">
                   {prize && (
-                    <span className="text-amber-300 border border-amber-300/40 px-2 py-1">
+                    <span className="text-primary border border-primary/40 px-2 py-1">
                       {fmtUsdCompact(prize.marketCap.value)} prize
                     </span>
                   )}
@@ -405,8 +405,8 @@ export default function FitFinder() {
                 </div>
               </div>
 
-              <div className="border-l-2 border-amber-300/50 pl-4 mb-5">
-                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-1.5">
+              <div className="border-l-2 border-primary/50 pl-4 mb-5">
+                <p className="font-mono text-small uppercase text-primary mb-1.5">
                   Why this is your quest
                 </p>
                 <ul className="space-y-1">
@@ -420,7 +420,7 @@ export default function FitFinder() {
 
               {rfs && (
                 <div className="mb-5">
-                  <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1.5">
+                  <p className="font-mono text-small uppercase text-ink-500 mb-1.5">
                     The company to build
                   </p>
                   <p className="font-serif text-lg text-ink-100">{rfs.title}</p>
@@ -429,18 +429,18 @@ export default function FitFinder() {
               )}
 
               <div className="mb-5">
-                <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+                <p className="font-mono text-small uppercase text-ink-500 mb-2">
                   Your first three moves
                 </p>
                 <ol className="space-y-1.5">
                   {[
                     <>
                       Read the{' '}
-                      <Link href={`/p/${r.slug}/whitepaper`} className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2">
+                      <Link href={`/p/${r.slug}/whitepaper`} className="text-primary hover:text-primary underline decoration-dotted underline-offset-2">
                         {r.name} whitepaper
                       </Link>{' '}
                       and its{' '}
-                      <Link href="/rfs" className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2">
+                      <Link href="/rfs" className="text-primary hover:text-primary underline decoration-dotted underline-offset-2">
                         Requests for Startups
                       </Link>
                       . Get to the frontier of what is already known.
@@ -461,25 +461,25 @@ export default function FitFinder() {
                     that ends in prose routes nobody; this hands it to the board. */}
                 <Link
                   href={`/p/${r.slug}#coordinate`}
-                  className="font-mono text-[10px] uppercase tracking-wider text-paper bg-amber-300 hover:bg-amber-200 px-3 py-2 rounded transition-colors"
+                  className="font-mono text-small uppercase tracking-wider text-paper bg-primary hover:bg-primary/90 px-3 py-2 rounded transition-colors"
                 >
                   Commit to this problem &rarr;
                 </Link>
                 <Link
                   href="/last-company"
-                  className="font-mono text-[10px] uppercase tracking-wider text-ink-300 border border-hair hover:border-amber-300 px-3 py-2 rounded transition-colors"
+                  className="font-mono text-small uppercase tracking-wider text-ink-300 border border-hair hover:border-primary px-3 py-2 rounded transition-colors"
                 >
                   Pressure-test as your last company &rarr;
                 </Link>
                 <Link
                   href="/journey"
-                  className="font-mono text-[10px] uppercase tracking-wider text-ink-300 border border-hair hover:border-amber-300 px-3 py-2 rounded transition-colors"
+                  className="font-mono text-small uppercase tracking-wider text-ink-300 border border-hair hover:border-primary px-3 py-2 rounded transition-colors"
                 >
                   Open the full quest &rarr;
                 </Link>
                 <Link
                   href={`/p/${r.slug}`}
-                  className="font-mono text-[10px] uppercase tracking-wider text-ink-300 border border-hair hover:border-amber-300 px-3 py-2 rounded transition-colors"
+                  className="font-mono text-small uppercase tracking-wider text-ink-300 border border-hair hover:border-primary px-3 py-2 rounded transition-colors"
                 >
                   See the problem &rarr;
                 </Link>
@@ -491,17 +491,17 @@ export default function FitFinder() {
 
       {arch && (
         <div className="mt-8 border-t border-hair pt-6">
-          <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-3">
+          <p className="font-mono text-small uppercase text-ink-500 mb-3">
             Founders who share your shape — copy the move, not the outcome
           </p>
           <div className="grid sm:grid-cols-3 gap-3">
             {arch.exemplars.map((e) => (
               <div key={e.name} className="border border-hair p-4">
                 <p className="font-sans text-sm font-medium text-ink-100">{e.name}</p>
-                <p className="font-mono text-[10px] uppercase tracking-wider text-amber-300 mb-1.5">
+                <p className="font-mono text-small uppercase tracking-wider text-primary mb-1.5">
                   {e.company}
                 </p>
-                <p className="text-[12px] text-ink-400 leading-relaxed">{e.note}</p>
+                <p className="text-small text-ink-400 leading-relaxed">{e.note}</p>
               </div>
             ))}
           </div>
@@ -511,7 +511,7 @@ export default function FitFinder() {
       <button
         type="button"
         onClick={restart}
-        className="mt-8 font-mono text-[11px] uppercase tracking-wider text-ink-500 hover:text-ink-300 transition-colors"
+        className="mt-8 font-mono text-small uppercase tracking-wider text-ink-500 hover:text-ink-300 transition-colors"
       >
         &larr; start over
       </button>
@@ -522,7 +522,7 @@ export default function FitFinder() {
 function Shell({ stepLabel, children }: { stepLabel: string; children: React.ReactNode }) {
   return (
     <div className="border border-hair bg-[rgb(var(--bg))] p-6 md:p-8">
-      <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-5">
+      <p className="font-mono text-small uppercase text-ink-500 mb-5">
         {stepLabel}
       </p>
       {children}

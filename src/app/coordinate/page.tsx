@@ -30,7 +30,7 @@ export default async function CoordinatePage({
       <main>
         {confirm === 'invalid' && (
           <div className="pt-24 px-6">
-            <p className="max-w-3xl mx-auto border border-terminal-rose/40 bg-terminal-rose/[0.05] px-4 py-3 text-[13px] text-terminal-rose">
+            <p className="max-w-7xl mx-auto border border-terminal-rose/40 bg-terminal-rose/[0.05] px-4 py-3 text-small text-terminal-rose">
               That confirmation link is not valid, or it was already used. Submit again if you think
               this is wrong.
             </p>
@@ -38,13 +38,13 @@ export default async function CoordinatePage({
         )}
 
         <section className={`${confirm ? 'pt-8' : 'pt-28'} pb-8 border-b border-hair`}>
-          <div className="max-w-3xl mx-auto px-6">
-            <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-3">
+          <div className="site-shell">
+            <p className="font-mono text-small uppercase text-primary mb-3">
               How this works
             </p>
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.04] text-ink-100 mb-4">
               The map is research.
-              <span className="block text-amber-300">The board is the market.</span>
+              <span className="block text-primary">The board is the market.</span>
             </h1>
             <p className="text-ink-400 leading-relaxed text-base">
               Two datasets live on this site and they are deliberately not the same thing. Confusing
@@ -53,29 +53,29 @@ export default async function CoordinatePage({
           </div>
         </section>
 
-        <section className="max-w-3xl mx-auto px-6 py-12 space-y-12">
+        <section className="site-shell py-12 space-y-12">
           <div className="grid md:grid-cols-2 gap-px bg-hair border border-hair">
             <div className="bg-ink-900/40 px-5 py-6">
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-2">
+              <p className="font-mono text-small uppercase text-ink-500 mb-2">
                 The map
               </p>
               <p className="text-ink-100 text-sm font-medium mb-2">
                 {problems.length} ranked problems, curated
               </p>
-              <p className="text-ink-400 text-[13px] leading-relaxed">
+              <p className="text-ink-400 text-small leading-relaxed">
                 Every number is sourced, dated and carries a visible confidence tag, or it is left
                 null rather than guessed. Attention is weighted zero, because it measures crowding,
                 not need. Nothing on the map can be bought, and no company can pay for a rank.
               </p>
             </div>
             <div className="bg-ink-900/40 px-5 py-6">
-              <p className="font-mono text-[10px] uppercase tracking-ultra-wide text-amber-300 mb-2">
+              <p className="font-mono text-small uppercase text-primary mb-2">
                 The board
               </p>
               <p className="text-ink-100 text-sm font-medium mb-2">
                 {total} live commitments, user-submitted
               </p>
-              <p className="text-ink-400 text-[13px] leading-relaxed">
+              <p className="text-ink-400 text-small leading-relaxed">
                 Real people saying they will start, join, fund or hire against a specific problem.
                 Every row is marked user-submitted so it is never mistaken for research, and a
                 commitment never changes a rank or feeds a demand score.
@@ -88,7 +88,7 @@ export default async function CoordinatePage({
             <ol className="space-y-4">
               <li className="border-l-2 border-hair pl-4">
                 <p className="text-ink-100 text-sm font-medium mb-1">Human review</p>
-                <p className="text-ink-400 text-[13px] leading-relaxed">
+                <p className="text-ink-400 text-small leading-relaxed">
                   A person reads every submission before it appears. This is slower than an open
                   board and it is the only reason the board is worth reading. Your email address is
                   never shown, and never given to anyone without you asking for an intro.
@@ -99,7 +99,7 @@ export default async function CoordinatePage({
 
           <div>
             <h2 className="font-serif text-2xl text-ink-100 mb-4">What this deliberately is not</h2>
-            <ul className="space-y-2 text-[13px] text-ink-400 leading-relaxed">
+            <ul className="space-y-2 text-small text-ink-400 leading-relaxed">
               <li className="flex gap-2">
                 <span className="text-terminal-rose">Not</span> a feed, a DM inbox, or a karma
                 score. There is nothing here to farm.
@@ -122,14 +122,14 @@ export default async function CoordinatePage({
 
           <div>
             <h2 className="font-serif text-2xl text-ink-100 mb-4">Correcting the research</h2>
-            <p className="text-ink-400 text-[13px] leading-relaxed mb-3">
+            <p className="text-ink-400 text-small leading-relaxed mb-3">
               A wrong number is worse than a missing one. Every problem page takes a contribute
               commitment, which is the path for a correction, a better source, or an introduction.
               Corrections are reviewed like everything else, and a good one changes the ledger.
             </p>
             <Link
               href={`/p/${problems[0].slug}#coordinate`}
-              className="font-mono text-[11px] uppercase tracking-wider text-amber-300 hover:underline"
+              className="font-mono text-small uppercase tracking-wider text-primary hover:underline"
             >
               Correct a number &rarr;
             </Link>
@@ -145,7 +145,7 @@ export default async function CoordinatePage({
                     href={`/p/${c.problemSlug}`}
                     className="block px-4 py-3 hover:bg-ink-900/40 transition-colors"
                   >
-                    <p className="text-ink-200 text-[13px]">
+                    <p className="text-ink-200 text-small">
                       {c.name ?? 'Anonymous'} · {c.intent} ·{' '}
                       {problems.find((p) => p.slug === c.problemSlug)?.name ?? c.problemSlug}
                     </p>
@@ -156,10 +156,10 @@ export default async function CoordinatePage({
           )}
 
           {!isDbConfigured() && (
-            <p className="border border-amber-300/40 bg-amber-300/[0.04] px-4 py-3 text-[13px] text-ink-300">
+            <p className="border border-primary/40 bg-primary/[0.04] px-4 py-3 text-small text-ink-300">
               The board is not connected on this deployment. Set{' '}
-              <code className="text-amber-300">DATABASE_URL</code> and run{' '}
-              <code className="text-amber-300">scripts/db/0005_commitments.sql</code>.
+              <code className="text-primary">DATABASE_URL</code> and run{' '}
+              <code className="text-primary">scripts/db/0005_commitments.sql</code>.
             </p>
           )}
         </section>

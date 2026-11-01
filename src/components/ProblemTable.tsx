@@ -47,7 +47,7 @@ const LENS_META: Record<Lens, { label: string; desc: string }> = {
 
 const CONFIDENCE_DOT: Record<Confidence, string> = {
   high: 'bg-terminal-green',
-  med: 'bg-amber-300',
+  med: 'bg-primary',
   low: 'bg-terminal-rose',
 }
 
@@ -242,9 +242,9 @@ export default function ProblemTable({ problems = defaultProblems }: { problems?
     sortKey !== key ? (
       <span className="text-ink-600">·</span>
     ) : sortDir === 'desc' ? (
-      <span className="text-amber-300">▾</span>
+      <span className="text-primary">▾</span>
     ) : (
-      <span className="text-amber-300">▴</span>
+      <span className="text-primary">▴</span>
     )
 
   const totalHumans = rows.reduce((s, r) => s + r.p.humansAffected.value, 0)
@@ -256,30 +256,30 @@ export default function ProblemTable({ problems = defaultProblems }: { problems?
       {/* ── Headline KPI strip ─────────────────────────────────────────── */}
       <div className="mb-4 grid grid-cols-2 md:grid-cols-4 gap-px bg-ink-700/50 border border-hair">
         <div className="bg-ink-900 px-4 py-3">
-          <div className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
+          <div className="font-mono text-small uppercase text-ink-500 mb-1">
             matched
           </div>
-          <div className="font-mono tabular-nums text-xl text-amber-300">
+          <div className="font-mono tabular-nums text-xl text-primary">
             {rows.length}
             <span className="text-ink-600 text-sm"> / {problems.length}</span>
           </div>
         </div>
         <div className="bg-ink-900 px-4 py-3">
-          <div className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
+          <div className="font-mono text-small uppercase text-ink-500 mb-1">
             humans affected
           </div>
-          <div className="font-mono tabular-nums text-xl text-amber-300">
+          <div className="font-mono tabular-nums text-xl text-primary">
             {formatHumans(totalHumans)}
           </div>
         </div>
         <div className="bg-ink-900 px-4 py-3">
-          <div className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
+          <div className="font-mono text-small uppercase text-ink-500 mb-1">
             lens
           </div>
           <div className="font-mono text-xs text-ink-200">{LENS_META[lens].label}</div>
         </div>
         <div className="bg-ink-900 px-4 py-3">
-          <div className="font-mono text-[10px] uppercase tracking-ultra-wide text-ink-500 mb-1">
+          <div className="font-mono text-small uppercase text-ink-500 mb-1">
             sorted by
           </div>
           <div className="font-mono text-xs text-ink-200">
@@ -295,9 +295,9 @@ export default function ProblemTable({ problems = defaultProblems }: { problems?
             <button
               key={l}
               onClick={() => setLens(l)}
-              className={`px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider transition-colors ${
+              className={`px-3 min-h-11 inline-flex items-center font-mono text-small uppercase tracking-wider transition-colors ${
                 lens === l
-                  ? 'bg-amber-300/10 text-amber-300'
+                  ? 'bg-primary/10 text-primary'
                   : 'text-ink-400 hover:text-ink-100 hover:bg-ink-800'
               }`}
             >
@@ -305,7 +305,7 @@ export default function ProblemTable({ problems = defaultProblems }: { problems?
             </button>
           ))}
         </div>
-        <div className="font-mono text-[11px] text-ink-500">
+        <div className="font-mono text-small text-ink-500">
           <span className="text-ink-600">weighting: </span>
           {LENS_META[lens].desc}
         </div>
@@ -316,9 +316,9 @@ export default function ProblemTable({ problems = defaultProblems }: { problems?
         <div className="flex flex-wrap gap-1.5">
           <button
             onClick={setAllTiers}
-            className={`px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider border transition-colors ${
+            className={`px-3 min-h-11 inline-flex items-center font-mono text-small uppercase tracking-wider border transition-colors ${
               allTiersOn
-                ? 'bg-amber-300/10 border-amber-300/60 text-amber-300'
+                ? 'bg-primary/10 border-primary/60 text-primary'
                 : 'border-hair text-ink-400 hover:text-ink-100 hover:border-ink-400'
             }`}
           >
@@ -333,11 +333,11 @@ export default function ProblemTable({ problems = defaultProblems }: { problems?
                 key={t}
                 onClick={() => toggleTier(t)}
                 disabled={count === 0}
-                className={`px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider border transition-colors ${
+                className={`px-3 min-h-11 inline-flex items-center font-mono text-small uppercase tracking-wider border transition-colors ${
                   count === 0
                     ? 'border-hair/40 text-ink-700 cursor-not-allowed'
                     : active
-                      ? 'bg-amber-300/10 border-amber-300/60 text-amber-300'
+                      ? 'bg-primary/10 border-primary/60 text-primary'
                       : 'border-hair text-ink-400 hover:text-ink-100 hover:border-ink-400'
                 }`}
               >
@@ -348,7 +348,7 @@ export default function ProblemTable({ problems = defaultProblems }: { problems?
           })}
           <button
             onClick={() => setRisingOnly((v) => !v)}
-            className={`px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider border transition-colors ${
+            className={`px-3 min-h-11 inline-flex items-center font-mono text-small uppercase tracking-wider border transition-colors ${
               risingOnly
                 ? 'bg-terminal-rose/10 border-terminal-rose/60 text-terminal-rose'
                 : 'border-hair text-ink-400 hover:text-ink-100 hover:border-ink-400'
@@ -365,7 +365,7 @@ export default function ProblemTable({ problems = defaultProblems }: { problems?
             type="button"
             onClick={() => setColsOpen((v) => !v)}
             aria-expanded={colsOpen}
-            className="px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider border border-hair text-ink-300 hover:text-ink-100 hover:border-ink-400 transition-colors"
+            className="px-3 min-h-11 inline-flex items-center font-mono text-small uppercase tracking-wider border border-hair text-ink-300 hover:text-ink-100 hover:border-ink-400 transition-colors"
           >
             columns{' '}
             <span className="tabular-nums text-ink-500">
@@ -381,18 +381,18 @@ export default function ProblemTable({ problems = defaultProblems }: { problems?
               {ALL_COLS.map((c) => (
                 <label
                   key={c}
-                  className="flex items-center gap-2 px-2 py-1.5 font-mono text-[11px] text-ink-200 hover:bg-ink-800/60 cursor-pointer"
+                  className="flex items-center gap-2 px-2 py-1.5 font-mono text-small text-ink-200 hover:bg-ink-800/60 cursor-pointer"
                 >
                   <input
                     type="checkbox"
                     checked={visibleCols.has(c)}
                     onChange={() => toggleCol(c)}
-                    className="accent-amber-300"
+                    className="accent-primary"
                   />
                   <span>{COL_LABEL[c]}</span>
                 </label>
               ))}
-              <div className="px-2 pt-1 pb-0.5 font-mono text-[9px] text-ink-600 leading-relaxed">
+              <div className="px-2 pt-1 pb-0.5 font-mono text-small text-ink-600 leading-relaxed">
                 persisted to this browser
               </div>
             </div>
@@ -404,7 +404,7 @@ export default function ProblemTable({ problems = defaultProblems }: { problems?
       <div className="overflow-x-auto border border-hair">
         <table className="min-w-full font-mono text-xs">
           <thead>
-            <tr className="border-b border-hair-strong bg-ink-800/40 text-left text-[10px] uppercase tracking-ultra-wide text-ink-400">
+            <tr className="border-b border-hair-strong bg-ink-800/40 text-left text-small uppercase text-ink-400">
               <th className="px-3 py-2.5 font-medium w-10">#</th>
               <th className="px-3 py-2.5 font-medium">problem</th>
               <th className="px-3 py-2.5 font-medium">tier</th>
@@ -506,13 +506,13 @@ export default function ProblemTable({ problems = defaultProblems }: { problems?
                     <div className="flex items-center gap-2">
                       <Link
                         href={`/p/${p.slug}`}
-                        className="block font-sans text-sm font-medium text-ink-100 group-hover:text-amber-300 transition-colors"
+                        className="block font-sans text-sm font-medium text-ink-100 group-hover:text-primary transition-colors"
                       >
                         {p.name}
                       </Link>
                       {p.scale?.trend && <TrendBadge trend={p.scale.trend} showLabel={false} />}
                     </div>
-                    <div className="mt-0.5 text-[11px] text-ink-500 line-clamp-1 max-w-md">
+                    <div className="mt-0.5 text-small text-ink-500 line-clamp-1 max-w-md">
                       {p.tagline}
                     </div>
                   </td>
@@ -551,7 +551,7 @@ export default function ProblemTable({ problems = defaultProblems }: { problems?
                     </td>
                   )}
                   {colShown('util') && (
-                    <td className="px-3 py-3 text-right tabular-nums text-amber-300">
+                    <td className="px-3 py-3 text-right tabular-nums text-primary">
                       {p.scores.utilityDelta ? (
                         `${(p.scores.utilityDelta.value * 100).toFixed(0)}%`
                       ) : (
@@ -594,14 +594,14 @@ export default function ProblemTable({ problems = defaultProblems }: { problems?
         </table>
       </div>
 
-      <div className="mt-3 font-mono text-[11px] text-ink-500 leading-relaxed">
+      <div className="mt-3 font-mono text-small text-ink-500 leading-relaxed">
         <span className="text-ink-600">●</span> confidence dot on humans —{' '}
         <span className="text-terminal-green">high</span>,{' '}
-        <span className="text-amber-300">med</span>,{' '}
+        <span className="text-primary">med</span>,{' '}
         <span className="text-terminal-rose">low</span>. full method in{' '}
         <Link
           href="/methodology"
-          className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+          className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"
         >
           methodology
         </Link>
