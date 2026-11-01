@@ -7,6 +7,7 @@ import DataFreshness from '@/components/DataFreshness'
 import { existentialRisks } from '@/data/existential-risks'
 import { listDiscoveries } from '@/data/discoveries'
 import DiscoveryList from '@/components/DiscoveryList'
+import CtaBoard from '@/components/CtaBoard'
 
 export const metadata: Metadata = {
   title: 'S-Tier Existential Quests | optimism.fun',
@@ -128,6 +129,8 @@ export default function STierPage() {
                           </div>
                         ))}
                       </div>
+
+                      <CtaBoard riskSlug={risk.slug} embedded />
 
                       <a
                         href={risk.source.url}
