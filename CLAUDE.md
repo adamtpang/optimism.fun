@@ -403,3 +403,9 @@ no new severity value was stored.
 - Home hero is the NASA Earthset, art-directed so phones request the 828 AVIF. Public-domain credit lines are staged in `public/media/CREDITS.md` and are not rendered. The NIAID CC BY line renders only if that image is used.
 - The site is light only. The theme toggle and `next-themes` are gone. The brand mark is a teal-600 to blue-600 gradient on the same path. Home can sort Ranked, People, or Neglected. Credit lines from `public/media/CREDITS.md` render on the media that is used, and `/about` lists every credit in that file. The footer column label is HUMANITY'S BOUNTY BOARD.
 - Ranking files `src/lib/priority.ts`, `src/lib/radar.ts`, `src/data/problems.ts`, and `src/data/discoveries.ts` were not edited. `src/app/methodology/page.tsx` is left for the ranking-fix PR.
+
+## PostHog (2026-11-02)
+
+- Client init stays in `src/app/providers.tsx`. It reads `NEXT_PUBLIC_POSTHOG_KEY` and optional `NEXT_PUBLIC_POSTHOG_HOST`. An empty or non-URL host uses the same-origin `/ingest` proxy in `next.config.mjs`. No key means no init.
+- Pageviews use `capture_pageview: 'history_change'` (one on load, then path changes only) and `capture_pageleave: true`. Session recording stays enabled. `session_recording.maskAllInputs` is true.
+- Names are in `.env.example` and `.env.local.example`. The privacy page states the input masking. Ranks were not changed.

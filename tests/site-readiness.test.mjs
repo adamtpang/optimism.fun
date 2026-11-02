@@ -38,6 +38,17 @@ test('the PostHog proxy uses an absolute same-origin URL compatible with CSP', a
   assert.match(contentSecurityPolicy, /connect-src 'self'/)
 })
 
+test('PostHog reads a trimmed env key, masks inputs, and does not turn recording off', async () => {
+  const providers = await read('src/app/providers.tsx')
+  assert.match(providers, /NEXT_PUBLIC_POSTHOG_KEY\?\.trim\(\)/)
+  assert.match(providers, /if \(!key \|\| posthog\.__loaded\) return/)
+  assert.match(providers, /capture_pageview: 'history_change'/)
+  assert.match(providers, /capture_pageleave: true/)
+  assert.match(providers, /maskAllInputs: true/)
+  assert.doesNotMatch(providers, /disable_session_recording/)
+  assert.doesNotMatch(providers, /phc_/)
+})
+
 test('the two formerly unnamed homepage controls have stable accessible names', async () => {
   const [radar, newsletter] = await Promise.all([
     read('src/components/RadarClient.tsx'),

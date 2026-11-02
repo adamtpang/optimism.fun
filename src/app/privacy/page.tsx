@@ -52,7 +52,8 @@ export default function PrivacyPage() {
             </p>
             <p className="mt-4 leading-8">
               The code configures PostHog person profiles as identified-only and does not call an
-              identify method. Proxying analytics through optimism.fun does not make PostHog the
+              identify method. Session replay masks every input value. Text outside input fields is
+              not masked by that setting. Proxying analytics through optimism.fun does not make PostHog the
               operator: analytics events and replay data are still processed by PostHog in its US
               service. Avoid entering secrets or sensitive personal information anywhere on the site.
             </p>

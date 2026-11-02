@@ -38,6 +38,10 @@ npx tsc --noEmit
 npm run build
 ```
 
+## Analytics
+
+PostHog runs in the browser only when `NEXT_PUBLIC_POSTHOG_KEY` is set. `NEXT_PUBLIC_POSTHOG_HOST` is optional: a site path such as `/ingest`, or an `http(s)` URL. Any other value, including empty, sends events to the same-origin `/ingest` proxy. The first load and each client-side path change record one pageview, and page leaves are recorded. Session replay stays on, and input values are masked. With no key, PostHog does not initialize. Names are listed in `.env.example`.
+
 ## What the pages are
 
 - `/` the ranking, and a poster of it
