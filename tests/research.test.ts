@@ -65,7 +65,8 @@ describe('citation filtering', () => {
     expect(isExcludedUrl('https://scholar.google.co.uk/scholar?q=heat')).toBe(true)
     const shaped = shapeResearchAnswer({
       retrieved: [{ ...nature }, { url: RESEARCHGATE, title: 'Gate', text: 'Copied text.' }],
-      answer: 'ResearchGate confirms it [1].',
+      numberedSources: [{ ...nature }, { url: RESEARCHGATE, title: 'Gate', text: 'Copied text.' }],
+      answer: { sentences: [{ text: 'ResearchGate confirms it.', urls: [RESEARCHGATE] }] },
       answerCitations: [{ url: RESEARCHGATE, title: 'Gate', text: 'Copied text.' }],
       now: AS_OF,
     })
@@ -150,7 +151,8 @@ describe('citation display', () => {
   it('does not guess peer review, and does label a preprint from its host', () => {
     expect(paperStatus({ url: 'https://example.edu/paper', retracted: null, corrected: null })).toBe('unknown')
     expect(paperStatus({ url: ARXIV_PDF })).toBe('preprint')
-    expect(paperStatus({ url: NATURE })).toBe('peer-reviewed')
+    expect(paperStatus({ url: NATURE })).toBe('unknown')
+    expect(paperStatus({ url: NATURE, crossrefType: 'journal-article', retractionChecked: true, retracted: false })).toBe('peer-reviewed')
     expect(paperStatus({ url: NATURE, corrected: true })).toBe('corrected')
     const shaped = shapeResearchAnswer({
       retrieved: [arxiv, nature],
@@ -161,7 +163,7 @@ describe('citation display', () => {
     const journal = shaped.retrieved.find((paper) => paper.sourceUrl === NATURE)
     expect(preprint?.statusLabel).toBe('Preprint')
     expect(preprint?.href).toBe('https://arxiv.org/abs/2401.00001')
-    expect(journal?.statusLabel).toBe('Peer-reviewed')
+    expect(journal?.statusLabel).toBe('Status unknown')
     expect(shaped.retrieved[0]?.sourceUrl).toBe(NATURE)
   })
 })
@@ -223,9 +225,8 @@ describe('metadata resolvers', () => {
       { fetchImpl: hung, timeoutMs: 20 },
     )
     expect(calls).toBe(3)
-    expect(meta.retracted).toBeNull()
-    expect(meta.citationCount).toBeNull()
-    expect(paperStatus({ url: 'https://example.edu/x', ...meta })).toBe('unknown')
+    expect(meta.retractionChecked).toBe(false)
+    expect(paperStatus({ url: 'https://example.edu/x', ...meta })).toBe('unverified')
 
     calls = 0
     const skipped = await resolvePaperMetadata({ url: 'https://example.edu/x' }, { fetchImpl: hung, timeoutMs: 20 })
@@ -289,6 +290,10 @@ describe('Exa research requests', () => {
       exaPost: async (path, body) => {
         calls.push({ path, body: body as Record<string, unknown> })
         if (path === '/search') return { results: [nature, arxiv] }
+        const schema = JSON.stringify((body as { outputSchema?: unknown }).outputSchema ?? {})
+        if (schema.includes('supported')) {
+          return { answer: { checks: [{ n: 1, supported: true }] } }
+        }
         return {
           answer: {
             sentences: [
@@ -300,7 +305,7 @@ describe('Exa research requests', () => {
         }
       },
     })
-    expect(calls.map((call) => call.path)).toEqual(['/search', '/answer'])
+    expect(calls.map((call) => call.path)).toEqual(['/search', '/answer', '/answer'])
     const search = calls[0].body
     expect(search.category).toBe('research paper')
     expect(search.type).toBe('auto')

@@ -9,6 +9,8 @@ const STATUS_CLASS: Record<ResearchPaper['status'], string> = {
   preprint: 'text-primary border-primary/70',
   corrected: 'text-terminal-cyan border-terminal-cyan/50',
   retracted: 'text-terminal-rose border-terminal-rose/70',
+  concern: 'text-terminal-rose border-terminal-rose/70',
+  unverified: 'text-ink-400 border-hair',
   unknown: 'text-ink-400 border-hair',
 }
 
@@ -217,20 +219,6 @@ export default function ResearchDesk({ configured }: { configured: boolean }) {
 
       {live && live.sentences.length === 0 && !askError ? (
         <p className="text-body text-ink-400">No cited answer. Sentences without a retrieved source are not shown as findings.</p>
-      ) : null}
-
-      {live && live.uncited.length > 0 ? (
-        <section aria-label="Uncited" className="space-y-3">
-          <h2 className="font-serif text-2xl text-ink-100">Uncited</h2>
-          <p className="text-small text-ink-400">Not a finding. These sentences lost their sources or never had one.</p>
-          <ul className="space-y-2">
-            {live.uncited.map((sentence) => (
-              <li key={sentence.text} className="border border-hair px-4 py-3 text-body text-ink-400">
-                {sentence.text}
-              </li>
-            ))}
-          </ul>
-        </section>
       ) : null}
 
       {live && live.citations.length > 0 ? (

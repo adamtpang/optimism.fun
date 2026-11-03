@@ -31,6 +31,9 @@ export const PREPRINT_DOMAINS = ['arxiv.org', 'biorxiv.org', 'medrxiv.org', 'ssr
 
 export const TRIAL_DOMAINS = ['clinicaltrials.gov', 'who.int'] as const
 
+/** Publisher mirrors. Resolve them to a DOI, PMID, or arXiv id, or drop them. */
+export const MIRROR_DOMAINS = ['springermedizin.de', 'malariaworld.org', 'medscape.com'] as const
+
 /**
  * News and press-release hosts. They may be shown as Coverage links.
  * They are never evidence. Press-release aggregators the research lead
@@ -173,6 +176,40 @@ export function isPreprintUrl(raw: string): boolean {
 export function isPeerReviewedUrl(raw: string): boolean {
   const host = hostOf(raw)
   return Boolean(host && hostMatchesList(host, PEER_REVIEWED_DOMAINS))
+}
+
+export function isMirrorUrl(raw: string): boolean {
+  const host = hostOf(raw)
+  return Boolean(host && hostMatchesList(host, MIRROR_DOMAINS))
+}
+
+/** Nature news DOIs and Science magazine news pages are not research articles. */
+export function isNewsRecord(url: string, doi?: string | null): boolean {
+  if (doi && /\/d41586-/i.test(doi)) return true
+  if (isCoverageUrl(url)) return true
+  try {
+    const parsed = new URL(url)
+    const host = parsed.hostname.toLowerCase().replace(/^www\./, '')
+    if ((host === 'science.org' || host.endsWith('.science.org')) && parsed.pathname.toLowerCase().includes('/content/article/')) {
+      return true
+    }
+  } catch {
+    return false
+  }
+  return false
+}
+
+export function isPerspectiveRecord(url: string, title?: string | null, articleType?: string | null): boolean {
+  if (articleType && /perspective/i.test(articleType)) return true
+  if (title && /^\s*perspective\b/i.test(title)) return true
+  try {
+    const parsed = new URL(url)
+    const host = parsed.hostname.toLowerCase().replace(/^www\./, '')
+    if ((host === 'nejm.org' || host.endsWith('.nejm.org')) && /perspective/i.test(parsed.pathname)) return true
+  } catch {
+    return false
+  }
+  return false
 }
 
 export const PRIORITY_QUERY_HINT =

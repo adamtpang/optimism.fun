@@ -417,6 +417,7 @@ no new severity value was stored.
 - A sentence is a finding only when Exa retrieved that paper's text, highlights, or summary. Excluded domains, news, and retracted papers cannot support a claim. Domain lists live in `src/lib/research/domains.ts`.
 - OpenAlex, Crossref, and Semantic Scholar resolve DOI, venue, citation count, and retraction only. They are not cited as the source of a claim. Docs: `docs/EXA_RESEARCH.md`.
 - Ranks and scores were not changed. Page copy still needs Adam's OK before merge.
+- 2026-11-03 review: status comes from Crossref and OpenAlex types. A retraction timeout is Unverified and not citable. Crossref `updated-by` is read. `[1]` follows the prompt list. Answer-only citations need a DOI, PMID, or arXiv id. A second `/answer` call drops sentences the excerpt does not support.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

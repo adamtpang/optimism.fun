@@ -1,5 +1,6 @@
 import {
-  isPeerReviewedUrl,
+  isNewsRecord,
+  isPerspectiveRecord,
   isPreprintUrl,
   priorityBand,
   type PriorityBand,
@@ -36,11 +37,126 @@ export function normalizeUrl(raw: string): string {
   }
 }
 
-export function doiFromText(raw: string | null | undefined): string | null {
+const PREPRINT_DOI_PREFIXES = ['10.1101/', '10.48550/', '10.2139/', '10.21203/']
+
+/** Pull a DOI and strip version and file suffixes that 404 on bioRxiv and medRxiv. */
+export function cleanDoi(raw: string | null | undefined): string | null {
   if (!raw) return null
   const match = raw.match(/10\.\d{4,9}\/[^\s?#]+/i)
   if (!match) return null
-  return match[0].replace(/[).,;]+$/g, '').toLowerCase()
+  let doi = match[0].replace(/[).,;\]>]+$/g, '')
+  doi = doi.replace(/\/(full|pdf|abstract|html|epdf|meta|abs)$/i, '')
+  doi = doi.replace(/\.full\.pdf$/i, '')
+  doi = doi.replace(/\.full$/i, '')
+  doi = doi.replace(/\.pdf$/i, '')
+  doi = doi.replace(/v\d+$/i, '')
+  doi = doi.replace(/[).,;]+$/g, '')
+  return doi || null
+}
+
+export function doiFromText(raw: string | null | undefined): string | null {
+  return cleanDoi(raw)
+}
+
+export function isPreprintDoi(doi: string | null | undefined): boolean {
+  if (!doi) return false
+  const lower = doi.toLowerCase()
+  return PREPRINT_DOI_PREFIXES.some((prefix) => lower.startsWith(prefix))
+}
+
+/** Header DOI only. A DOI deep in the reference list is not this paper. */
+export function doiFromExcerpt(text: string | null | undefined): string | null {
+  if (!text) return null
+  const head = text.slice(0, 3000)
+  const link = head.match(/https?:\/\/(?:dx\.)?doi\.org\/(10\.\d{4,9}\/[^\s?#]+)/i)
+  if (link) return cleanDoi(link[1])
+  const early = text.slice(0, 800)
+  const label = early.match(/\bdoi:\s*(10\.\d{4,9}\/[^\s?#]+)/i)
+  if (label) return cleanDoi(label[1])
+  return null
+}
+
+export function pmcidFromUrl(raw: string | null | undefined): string | null {
+  if (!raw) return null
+  const match = raw.match(/\/articles\/(PMC\d+)/i)
+  return match ? match[1].toUpperCase() : null
+}
+
+export function medscapePmid(raw: string | null | undefined): string | null {
+  if (!raw) return null
+  const match =
+    raw.match(/medscape\.com\/(?:medline\/abstract|pubmed)\/(\d+)/i) ||
+    raw.match(/[?&]pmid=(\d+)/i)
+  return match ? match[1] : null
+}
+
+export function sciencedirectPii(raw: string | null | undefined): string | null {
+  if (!raw) return null
+  const match = raw.match(/sciencedirect\.com\/science\/article\/pii\/([A-Za-z0-9]+)/i)
+  return match ? match[1] : null
+}
+
+/** DOI from the URL, including Lancet PII and Nature article ids. */
+export function doiFromUrl(raw: string | null | undefined): string | null {
+  if (!raw) return null
+  const direct = cleanDoi(raw)
+  if (direct) return direct
+  try {
+    const url = new URL(raw)
+    const host = url.hostname.toLowerCase().replace(/^www\./, '')
+    const path = decodeURIComponent(url.pathname)
+    if (host === 'nature.com' || host.endsWith('.nature.com')) {
+      const article = path.match(/\/articles\/([a-z0-9][a-z0-9.-]+)/i)
+      if (article) return `10.1038/${article[1].replace(/\.+$/g, '')}`
+    }
+    if (host === 'thelancet.com' || host.endsWith('.thelancet.com')) {
+      const pii = path.match(/\/article\/PII([^/]+)/i)
+      if (pii) return `10.1016/${pii[1]}`
+    }
+  } catch {
+    return null
+  }
+  return null
+}
+
+export function stripTrackingUrl(raw: string): string {
+  try {
+    const url = new URL(raw)
+    for (const key of [...url.searchParams.keys()]) {
+      const name = key.toLowerCase()
+      if (name === 'code' || name === 'error' || name === 'fbclid' || name === 'gclid' || name.startsWith('utm_')) {
+        url.searchParams.delete(key)
+      }
+    }
+    return url.toString()
+  } catch {
+    return raw
+  }
+}
+
+export function cleanTitle(title: string): string {
+  let text = title.replace(/\s+/g, ' ').trim()
+  text = text.replace(/^Frontiers\s*\|\s*/i, '')
+  text = text.replace(/\s*\|\s*springermedizin\.de\s*$/i, '')
+  text = text.replace(/\s+-\s+PubMed\s*$/i, '')
+  text = text.replace(/\s+-\s+PMC\s*$/i, '')
+  return text.trim()
+}
+
+export function normalizeTitle(title: string): string {
+  const cleaned = cleanTitle(title)
+  const parts = cleaned.split(/\s+\|\s+/)
+  const core = parts[0] && parts[0].length >= 40 ? parts[0] : cleaned
+  return core
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+export function plainExcerpt(text: string): string {
+  return text.replace(/\u2014/g, '-')
 }
 
 export function arxivIdFromUrl(raw: string | null | undefined): string | null {
@@ -56,7 +172,9 @@ export function pmidFromUrl(raw: string | null | undefined): string | null {
   const match =
     raw.match(/pubmed\.ncbi\.nlm\.nih\.gov\/(\d+)/i) ||
     raw.match(/ncbi\.nlm\.nih\.gov\/pubmed\/(\d+)/i) ||
-    raw.match(/europepmc\.org\/article\/MED\/(\d+)/i)
+    raw.match(/europepmc\.org\/article\/MED\/(\d+)/i) ||
+    raw.match(/medscape\.com\/(?:medline\/abstract|pubmed)\/(\d+)/i) ||
+    raw.match(/[?&]pmid=(\d+)/i)
   return match ? match[1] : null
 }
 
@@ -76,13 +194,13 @@ export type CitationLink = {
   label: string | null
 }
 
-/** DOI, then the arXiv abstract, then PubMed. Never a PDF. */
+/** DOI, then the arXiv abstract, then PubMed. Never a PDF or a raw mirror URL. */
 export function citationLink(input: {
   url: string
   doi?: string | null
   pmid?: string | null
 }): CitationLink {
-  const doi = input.doi?.trim().toLowerCase() || doiFromText(input.url)
+  const doi = cleanDoi(input.doi) || doiFromUrl(input.url)
   if (doi) {
     const href = `https://doi.org/${doi}`
     return { href, kind: 'doi', label: href }
@@ -98,7 +216,8 @@ export function citationLink(input: {
     return { href, kind: 'pubmed', label: href }
   }
   if (isPdfUrl(input.url)) return { href: null, kind: null, label: null }
-  return { href: input.url, kind: null, label: input.url }
+  const href = stripTrackingUrl(input.url)
+  return { href, kind: null, label: href }
 }
 
 export function formatAuthors(names: string[]): string {
@@ -143,7 +262,7 @@ export function retrievedExcerpt(input: {
 }
 
 export function workKey(input: { url: string; doi?: string | null; pmid?: string | null }): string {
-  const doi = input.doi?.trim().toLowerCase() || doiFromText(input.url)
+  const doi = (cleanDoi(input.doi) || doiFromUrl(input.url))?.toLowerCase() || null
   if (doi) return `doi:${doi}`
   const arxiv = arxivIdFromUrl(input.url)
   if (arxiv) return `arxiv:${arxiv}`
@@ -159,26 +278,58 @@ export function rankByPriority<T extends { url: string }>(items: T[]): T[] {
     .map((row) => row.item)
 }
 
-export type PaperStatus = 'peer-reviewed' | 'preprint' | 'corrected' | 'retracted' | 'unknown'
+export type PaperStatus =
+  | 'peer-reviewed'
+  | 'preprint'
+  | 'corrected'
+  | 'retracted'
+  | 'concern'
+  | 'unverified'
+  | 'unknown'
 
 export function statusLabel(status: PaperStatus): string {
   if (status === 'peer-reviewed') return 'Peer-reviewed'
   if (status === 'preprint') return 'Preprint'
   if (status === 'corrected') return 'Corrected'
   if (status === 'retracted') return 'Retracted'
+  if (status === 'concern') return 'Concern'
+  if (status === 'unverified') return 'Unverified'
   return 'Status unknown'
 }
 
+/**
+ * Status comes from Crossref and OpenAlex types, not from the website host.
+ * A retraction check that timed out is Unverified and must not be cited as peer-reviewed.
+ */
 export function paperStatus(input: {
   url: string
+  doi?: string | null
+  title?: string | null
   retracted?: boolean | null
   corrected?: boolean | null
+  concern?: boolean | null
+  journal?: boolean | null
+  crossrefType?: string | null
+  openAlexType?: string | null
+  retractionChecked?: boolean | null
+  articleType?: string | null
 }): PaperStatus {
+  if (input.retractionChecked === false) return 'unverified'
   if (input.retracted === true) return 'retracted'
+  if (input.concern === true) return 'concern'
   if (input.corrected === true) return 'corrected'
-  if (pathIsNewsOnly(input.url)) return 'unknown'
-  if (isPreprintUrl(input.url)) return 'preprint'
-  if (isPeerReviewedUrl(input.url)) return 'peer-reviewed'
+  const doi = cleanDoi(input.doi) || doiFromUrl(input.url)
+  if (isNewsRecord(input.url, doi) || pathIsNewsOnly(input.url)) return 'unknown'
+  if (isPerspectiveRecord(input.url, input.title, input.articleType)) return 'unknown'
+  if (isPreprintDoi(doi) || isPreprintUrl(input.url) || input.openAlexType === 'preprint' || input.crossrefType === 'posted-content') {
+    return 'preprint'
+  }
+  const journal =
+    input.journal === true ||
+    input.crossrefType === 'journal-article' ||
+    input.openAlexType === 'article' ||
+    input.openAlexType === 'review'
+  if (journal) return 'peer-reviewed'
   return 'unknown'
 }
 

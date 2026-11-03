@@ -1,33 +1,68 @@
-import { isCoverageUrl, isExcludedUrl } from '@/lib/research/domains'
+import { isCoverageUrl, isExcludedUrl, isMirrorUrl, isNewsRecord, isPerspectiveRecord } from '@/lib/research/domains'
 import {
   arxivIdFromUrl,
   citationLink,
+  cleanDoi,
+  cleanTitle,
   doiFromText,
+  doiFromUrl,
   formatAuthors,
   formatCitationCount,
   normalizeUrl,
   paperStatus,
   parseAuthorField,
+  plainExcerpt,
   pmidFromUrl,
+  pmcidFromUrl,
   rankByPriority,
   retrievedExcerpt,
   statusLabel,
+  stripTrackingUrl,
   workKey,
   yearFromDate,
   type PaperStatus,
 } from '@/lib/research/papers'
 
-export type CitationBlock = 'ok' | 'excluded' | 'coverage' | 'no-content' | 'retracted'
+export type CitationBlock =
+  | 'ok'
+  | 'excluded'
+  | 'coverage'
+  | 'no-content'
+  | 'retracted'
+  | 'unverified'
+  | 'not-research'
+  | 'mirror'
+
+function resolvableId(input: { url: string; doi?: string | null; pmid?: string | null; text?: string | null; summary?: string | null }): boolean {
+  const excerpt = [input.text, input.summary].filter(Boolean).join('\n')
+  return Boolean(
+    cleanDoi(input.doi) ||
+      doiFromUrl(input.url) ||
+      doiFromText(excerpt.slice(0, 3000)) ||
+      input.pmid ||
+      pmidFromUrl(input.url) ||
+      pmcidFromUrl(input.url) ||
+      arxivIdFromUrl(input.url),
+  )
+}
 
 export function allowCitation(input: {
   url: string
   text?: string | null
   summary?: string | null
   highlights?: string[] | null
+  title?: string | null
+  doi?: string | null
   retracted?: boolean | null
+  retractionChecked?: boolean | null
+  articleType?: string | null
 }): CitationBlock {
+  const doi = cleanDoi(input.doi) || doiFromUrl(input.url)
   if (isExcludedUrl(input.url)) return 'excluded'
-  if (isCoverageUrl(input.url)) return 'coverage'
+  if (isNewsRecord(input.url, doi) || isCoverageUrl(input.url)) return 'coverage'
+  if (isMirrorUrl(input.url) && !resolvableId(input)) return 'mirror'
+  if (isPerspectiveRecord(input.url, input.title, input.articleType)) return 'not-research'
+  if (input.retractionChecked === false) return 'unverified'
   if (input.retracted === true) return 'retracted'
   if (!retrievedExcerpt(input)) return 'no-content'
   return 'ok'
@@ -51,10 +86,19 @@ export type PaperMeta = {
   authors?: string[] | null
   year?: string | null
   venue?: string | null
+  title?: string | null
   retracted?: boolean | null
   corrected?: boolean | null
+  concern?: boolean | null
   /** Set only when OpenAlex returned a count. */
   citationCount?: number | null
+  crossrefType?: string | null
+  openAlexType?: string | null
+  articleType?: string | null
+  journal?: boolean | null
+  /** True when Crossref or OpenAlex answered. False when that check timed out. */
+  retractionChecked?: boolean | null
+  recordOk?: boolean
 }
 
 export type ResearchPaper = {
@@ -146,29 +190,39 @@ function toPaper(work: Work, n: number | null, asOf: Date): ResearchPaper {
       : parseAuthorField(fields.author),
   )
   const link = citationLink({ url: fields.url, doi: fields.doi, pmid: fields.pmid })
+  const title = cleanTitle(fields.title?.trim() || 'Title unavailable')
   const status = paperStatus({
     url: fields.url,
+    doi: fields.doi,
+    title,
     retracted: work.meta.retracted,
     corrected: work.meta.corrected,
+    concern: work.meta.concern,
+    journal: work.meta.journal,
+    crossrefType: work.meta.crossrefType,
+    openAlexType: work.meta.openAlexType,
+    retractionChecked: work.meta.retractionChecked,
+    articleType: work.meta.articleType,
   })
   const year = work.meta.year ?? yearFromDate(fields.publishedDate)
   const count = work.meta.citationCount
+  const excerpt = work.excerpt.text ? plainExcerpt(work.excerpt.text) : null
   return {
     n,
-    title: fields.title?.trim() || 'Title unavailable',
+    title,
     authors,
     year,
     venue: work.meta.venue?.trim() || null,
     href: link.href,
     hrefLabel: link.label,
-    doi: fields.doi?.trim().toLowerCase() || null,
+    doi: cleanDoi(fields.doi) || doiFromUrl(fields.url),
     status,
     statusLabel: statusLabel(status),
     citationCount:
       typeof count === 'number' && Number.isFinite(count) ? formatCitationCount(count, asOf) : null,
-    excerpt: work.excerpt.text,
-    excerptKind: work.excerpt.kind,
-    sourceUrl: fields.url,
+    excerpt,
+    excerptKind: excerpt ? work.excerpt.kind : null,
+    sourceUrl: stripTrackingUrl(fields.url),
   }
 }
 
@@ -184,9 +238,13 @@ function addWork(
     text: merged.text,
     summary: merged.summary,
     highlights: merged.highlights,
+    title: merged.title,
+    doi: merged.doi,
     retracted: meta.retracted,
+    retractionChecked: meta.retractionChecked,
+    articleType: meta.articleType,
   })
-  if (decision !== 'ok') return null
+  if (decision !== 'ok' && decision !== 'unverified') return null
   const excerpt = retrievedExcerpt(merged)
   if (!excerpt) return null
   const key = workKey(merged)
@@ -309,7 +367,11 @@ function classifySide(
     text: merged.text,
     summary: merged.summary,
     highlights: merged.highlights,
+    title: merged.title,
+    doi: merged.doi,
     retracted: meta.retracted,
+    retractionChecked: meta.retractionChecked,
+    articleType: meta.articleType,
   })
   if (decision === 'coverage') {
     const href = merged.url
@@ -335,6 +397,8 @@ export function shapeResearchAnswer(input: {
   retrieved: SourceFields[]
   answer?: unknown
   answerCitations?: SourceFields[]
+  /** The numbered list embedded in the answer prompt. [1] maps to this list, not to Exa's own citations. */
+  numberedSources?: SourceFields[]
   metaByKey?: Record<string, PaperMeta>
   now?: Date
 }): ShapedResearch {
@@ -351,14 +415,19 @@ export function shapeResearchAnswer(input: {
     addWork(works, fields, metaByKey)
   }
 
-  const answerCitations = input.answerCitations ?? []
+  const numbered = input.numberedSources ?? input.retrieved
+  const answerCitations = (input.answerCitations ?? []).filter((fields) => {
+    const fromSearch = numbered.some((source) => workKey(source) === workKey(fields) || normalizeUrl(source.url) === normalizeUrl(fields.url))
+    if (fromSearch) return true
+    return resolvableId(fields)
+  })
   for (const fields of answerCitations) {
     const meta = metaFor(fields, metaByKey)
     classifySide(fields, meta, coverage, retractedWorks)
     addWork(works, fields, metaByKey)
   }
 
-  const citationList = answerCitations
+  const citationList = numbered
   const sentencesIn = readAnswerSentences(input.answer, citationList)
 
   type Kept = { text: string; keys: string[]; reason: UncitedSentence['reason'] | null }
@@ -376,7 +445,12 @@ export function shapeResearchAnswer(input: {
     const pools = [[...works.values()], retractedWorks]
     for (const url of urls) {
       const work = findWork(pools, url)
-      if (work && works.has(work.key) && allowCitation({ ...work.fields, retracted: work.meta.retracted }) === 'ok') {
+      if (work && works.has(work.key) && allowCitation({
+        ...work.fields,
+        retracted: work.meta.retracted,
+        retractionChecked: work.meta.retractionChecked,
+        articleType: work.meta.articleType,
+      }) === 'ok') {
         citedWorks.push(work)
         blocks.push('ok')
         continue
@@ -387,7 +461,11 @@ export function shapeResearchAnswer(input: {
         text: work?.fields.text,
         summary: work?.fields.summary,
         highlights: work?.fields.highlights,
+        title: work?.fields.title,
+        doi: work?.fields.doi,
         retracted: meta.retracted === true,
+        retractionChecked: meta.retractionChecked,
+        articleType: meta.articleType,
       })
       blocks.push(decision === 'ok' ? 'no-content' : decision)
     }
@@ -409,18 +487,19 @@ export function shapeResearchAnswer(input: {
     })
   }
 
-  const order: string[] = []
-  for (const sentence of keptSentences) {
-    for (const key of sentence.keys) {
-      if (!order.includes(key)) order.push(key)
-    }
-  }
-  const numberOf = new Map(order.map((key, index) => [key, index + 1]))
+  const promptNumber = new Map<string, number>()
+  numbered.forEach((fields, index) => {
+    const meta = metaFor(fields, metaByKey)
+    const key = workKey(withMeta(fields, meta))
+    if (!promptNumber.has(key)) promptNumber.set(key, index + 1)
+  })
+  const extras = [...works.keys()].filter((key) => !promptNumber.has(key))
+  extras.forEach((key, index) => promptNumber.set(key, numbered.length + index + 1))
 
-  const citations = order
-    .map((key) => works.get(key))
-    .filter((work): work is Work => Boolean(work))
-    .map((work) => toPaper(work, numberOf.get(work.key) ?? null, asOf))
+  const citations = [...promptNumber.entries()]
+    .filter(([key]) => works.has(key) && keptSentences.some((sentence) => sentence.keys.includes(key)))
+    .sort((a, b) => a[1] - b[1])
+    .map(([key, n]) => toPaper(works.get(key) as Work, n, asOf))
 
   const sentences: CitedSentence[] = []
   const uncited: UncitedSentence[] = []
@@ -429,14 +508,14 @@ export function shapeResearchAnswer(input: {
       uncited.push({ text: sentence.text, reason: sentence.reason ?? 'no-source' })
       continue
     }
-    const cites = sentence.keys.map((key) => numberOf.get(key)).filter((n): n is number => Boolean(n))
+    const cites = sentence.keys.map((key) => promptNumber.get(key)).filter((n): n is number => Boolean(n))
     sentences.push({
       text: `${sentence.text} ${cites.map((n) => `[${n}]`).join('')}`,
       cites,
     })
   }
 
-  const used = new Set(order)
+  const used = new Set(keptSentences.flatMap((sentence) => sentence.keys))
   const retrievedPapers = [...works.values()]
     .filter((work) => !used.has(work.key))
     .map((work) => toPaper(work, null, asOf))

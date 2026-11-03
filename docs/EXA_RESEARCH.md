@@ -14,8 +14,8 @@ Do not print the key. Errors name the path and HTTP status only.
 
 | Route | Exa | Notes |
 | --- | --- | --- |
-| `POST /api/research/ask` | `POST /search`, then `POST /answer` | Search uses `category: "research paper"`, `type: "auto"`, `numResults: 10`, and contents `text`, `highlights`, and `summary`. Answer uses model `exa` (not `exa-research`) with `text: true` and a JSON schema of cited sentences. |
-| `POST /api/research/similar` | `POST /findSimilar` | Same category and contents, `numResults: 8`. The current Exa spec marks `/findSimilar` deprecated. This route still calls it because the demo asked for findSimilar. |
+| `POST /api/research/ask` | `POST /search`, then `POST /answer` twice | Search uses `category: "research paper"`, `type: "auto"`, `numResults: 10`, and contents `text`, `highlights`, and `summary`. The first answer uses model `exa` and the numbered source list from that search. The second answer checks each sentence against the cited excerpt and drops a sentence that fails. |
+| `POST /api/research/similar` | `POST /findSimilar` | Same category and contents, `numResults: 8`. The input paper and copies with the same DOI or normalized title are removed. |
 
 Neither request sends `includeDomains`. Both send `excludeDomains` from `src/lib/research/domains.ts`.
 
@@ -26,13 +26,16 @@ Priority journals, indexes, preprint servers, and trial registries are a ranking
 OpenAlex, Crossref, and Semantic Scholar are metadata resolvers only. They are not cited as the source of a claim.
 
 - OpenAlex and Crossref get a `mailto` from `OPENALEX_CONTACT`, or `adamtpang@gmail.com` when that is unset. The same address is in the `User-Agent`.
-- Each resolver has a 2.5 second timeout and they run in parallel. A miss or timeout leaves the status as Preprint or Peer-reviewed only when the host is in those lists. Otherwise the tag is "Status unknown".
-- Retraction comes from OpenAlex `is_retracted` or Crossref `update-to` / relation. Correction comes from Crossref `update-to`. A retracted paper is not used as support.
+- Each resolver has a 2.5 second timeout and they run in parallel. Status comes from Crossref `type` and OpenAlex `type`, not from the website host. DOI prefixes `10.1101`, `10.48550`, `10.2139`, and `10.21203` are Preprint. PubMed and Europe PMC get a status only after the DOI resolves.
+- If the retraction check times out, the paper is Unverified and is not cited. Retraction is read from OpenAlex `is_retracted` and from Crossref `update-to`, `updated-by`, and relation. An expression of concern is tagged Concern.
+- A DOI can be read from the URL (Nature article ids, Lancet PII, a DOI path) or from a header DOI in the excerpt. PMC and PMID use the NCBI ID converter. A title lookup against OpenAlex or Crossref is used only when the normalized titles match. No new key.
+- springermedizin.de, malariaworld.org, and Medscape are mirrors. They are kept only when a DOI, PMID, or arXiv id resolves, and the link is then doi.org or PubMed, not the mirror.
+- Answer citations that were not in the search are kept only when they carry a DOI, PMID, or arXiv id. `[1]` maps to source 1 in the prompt list.
 - A citation count is shown only from OpenAlex, with the lookup date, for example `cited 412 times (OpenAlex, Nov 3, 2026)`.
 
 ## What can support a sentence
 
-A URL can support a sentence only when Exa returned its text, highlights, or summary, the host is not excluded, it is not a news or press-release page, and it is not retracted. Anything else is dropped. A sentence left with no source is labeled uncited and is not shown as a finding.
+A URL can support a sentence only when Exa returned its text, highlights, or summary, the retraction check completed, and the paper is not excluded, news, a mirror without an id, or retracted. Uncited sentences are dropped from the answer. Displayed excerpts replace an em dash with a hyphen.
 
 News and press-release links can appear under Coverage. They are not evidence.
 
