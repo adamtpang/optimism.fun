@@ -8,6 +8,7 @@ import {
   doiFromUrl,
   normalizeTitle,
   plainAbstract,
+  titlesMatch,
   pmcidFromUrl,
   pmidFromUrl,
   sciencedirectPii,
@@ -229,19 +230,49 @@ export function mergePaperMeta(openAlex: PaperMeta, crossref: PaperMeta, scholar
 
 function localIds(fields: SourceFields): {
   doi: string | null
+  /** A DOI from Exa's field or the page text. Not trusted until the Crossref title matches. */
+  candidateDoi: string | null
   pmid: string | null
   pmcid: string | null
   arxiv: string | null
   pii: string | null
 } {
   const excerpt = [fields.text, fields.summary, ...(fields.highlights ?? [])].filter(Boolean).join('\n')
+  const doi = doiFromUrl(fields.url)
+  const candidate = cleanDoi(fields.doi) || doiFromExcerpt(excerpt)
   return {
-    doi: cleanDoi(fields.doi) || doiFromUrl(fields.url) || doiFromExcerpt(excerpt),
+    doi,
+    candidateDoi: candidate && candidate.toLowerCase() !== (doi || '').toLowerCase() ? candidate : null,
     pmid: fields.pmid?.trim() || pmidFromUrl(fields.url),
     pmcid: pmcidFromUrl(fields.url),
     arxiv: arxivIdFromUrl(fields.url),
     pii: sciencedirectPii(fields.url),
   }
+}
+
+function longerText(a: string | null | undefined, b: string | null | undefined): string | null {
+  const left = a?.trim() || ''
+  const right = b?.trim() || ''
+  if (right.length > left.length) return right
+  return left || null
+}
+
+/** An excerpt DOI is the paper's own only when Crossref's title matches the page title. */
+async function confirmedCandidateDoi(
+  fields: SourceFields,
+  candidate: string | null,
+  fetchImpl: FetchLike,
+  timeoutMs: number,
+  mailto: string,
+): Promise<string | null> {
+  if (!candidate || !fields.title?.trim()) return null
+  const payload = await getJson(
+    fetchImpl,
+    `https://api.crossref.org/works/${encodeURIComponent(candidate)}?mailto=${mailto}`,
+    timeoutMs,
+  )
+  const title = readCrossref(payload).title
+  return title && titlesMatch(title, fields.title) ? candidate : null
 }
 
 export function readEuropePmcAbstract(payload: unknown): string | null {
@@ -338,6 +369,9 @@ export async function resolvePaperMetadata(
   const fetchImpl = opts.fetchImpl ?? fetch
   const timeoutMs = opts.timeoutMs ?? METADATA_TIMEOUT_MS
   const mailto = encodeURIComponent(contact())
+  if (!ids.doi && ids.candidateDoi) {
+    ids.doi = await confirmedCandidateDoi(fields, ids.candidateDoi, fetchImpl, timeoutMs, mailto)
+  }
   const found = await lookupDoi(fields, ids, fetchImpl, timeoutMs, mailto)
   const doi = found.doi
   const pmid = found.pmid
@@ -354,29 +388,24 @@ export async function resolvePaperMetadata(
   const scholarUrl =
     `https://api.semanticscholar.org/graph/v1/paper/${encodeURIComponent(scholarId)}` +
     '?fields=title,year,authors,externalIds,venue,publicationVenue'
+  const europeUrl = doi
+    ? `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:${encodeURIComponent(doi)}&format=json&resultType=core&pageSize=1`
+    : null
 
-  const [openAlexPayload, crossrefPayload, scholarPayload] = await Promise.all([
+  const [openAlexPayload, crossrefPayload, scholarPayload, europePayload] = await Promise.all([
     getJson(fetchImpl, openAlexUrl, timeoutMs),
     crossrefUrl ? getJson(fetchImpl, crossrefUrl, timeoutMs) : Promise.resolve(null),
     getJson(fetchImpl, scholarUrl, timeoutMs),
+    europeUrl ? getJson(fetchImpl, europeUrl, timeoutMs) : Promise.resolve(null),
   ])
   const openAlex = openAlexPayload ? readOpenAlex(openAlexPayload) : { recordOk: false }
   const crossref = crossrefUrl ? (crossrefPayload ? readCrossref(crossrefPayload) : { recordOk: false }) : {}
   const scholar = scholarPayload ? readSemanticScholar(scholarPayload) : {}
   const merged = mergePaperMeta(openAlex, crossref, scholar)
-  let abstract = merged.abstract
-  if (!abstract && doi) {
-    const europe = await getJson(
-      fetchImpl,
-      `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:${encodeURIComponent(doi)}&format=json&resultType=core&pageSize=1`,
-      timeoutMs,
-    )
-    abstract = readEuropePmcAbstract(europe)
-  }
   return {
     ...merged,
     doi: merged.doi || doi,
     pmid: merged.pmid || pmid,
-    abstract: abstract || null,
+    abstract: longerText(merged.abstract, readEuropePmcAbstract(europePayload)),
   }
 }

@@ -141,6 +141,8 @@ export function cleanTitle(title: string): string {
   text = text.replace(/[ \t\r\n]+(?=<\s*\/?\s*(?:sub|sup)\b)/gi, '')
   text = text.replace(/\s+/g, ' ').trim()
   text = text.replace(/<\s*\/?\s*(?:sub|sup|i|em|b|strong|span)\b[^>]*>/gi, '')
+  text = text.replace(/\s*\u2014\s*/g, ', ')
+  text = text.replace(/,\s*,/g, ',')
   text = text.replace(/\s*(?:\.{3}|…)+\s*$/g, '')
   text = text.replace(/^Frontiers\s*\|\s*/i, '')
   text = text.replace(/\s*\|\s*springermedizin\.de\s*$/i, '')
@@ -205,6 +207,37 @@ export function studyDirection(text: string): StudyDirection {
   if (benefitWord) return 'benefit'
   if (nullPrimary) return 'no-effect'
   return 'unclear'
+}
+
+/** True when two titles are the same work after normalization, including a shortened page title. */
+export function titlesMatch(a: string | null | undefined, b: string | null | undefined): boolean {
+  const left = normalizeTitle(a || '')
+  const right = normalizeTitle(b || '')
+  if (!left || !right) return false
+  if (left === right) return true
+  const shorter = left.length <= right.length ? left : right
+  const longer = left.length <= right.length ? right : left
+  if (shorter.length >= 24 && longer.includes(shorter)) return true
+  const words = (value: string) => new Set(value.split(' ').filter((word) => word.length > 3))
+  const lt = words(left)
+  const rt = words(right)
+  if (lt.size < 3 || rt.size < 3) return false
+  let shared = 0
+  for (const word of lt) if (rt.has(word)) shared += 1
+  const union = lt.size + rt.size - shared
+  return shared >= 4 && shared / union >= 0.6
+}
+
+/** Drop a leading connective that points at a sentence the reader does not have. */
+export function repairOpening(text: string): string {
+  let next = text.trim()
+  next = next.replace(
+    /^(?:in contrast|by contrast|conversely|however|on the other hand|similarly|likewise|furthermore|moreover|additionally|in addition|meanwhile)\s*,?\s+/i,
+    '',
+  )
+  next = next.replace(/^the same (trial|study|paper)\b/i, 'The $1')
+  if (!next) return text.trim()
+  return next.charAt(0).toUpperCase() + next.slice(1)
 }
 
 export function normalizeTitle(title: string): string {

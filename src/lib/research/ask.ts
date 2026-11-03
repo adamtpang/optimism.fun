@@ -1,7 +1,7 @@
 import { excludeDomains, PRIORITY_QUERY_HINT } from '@/lib/research/domains'
 import { resolvePaperMetadata } from '@/lib/research/metadata'
 import { isCoverageUrl, isExcludedUrl, isMirrorUrl, isRejectedResultUrl } from '@/lib/research/domains'
-import { arxivIdFromUrl, cleanDoi, doiFromUrl, isPdfUrl, normalizeTitle, normalizeUrl, pmidFromUrl, studyDirection, validateQuestion, workKey } from '@/lib/research/papers'
+import { arxivIdFromUrl, cleanDoi, doiFromUrl, isPdfUrl, normalizeTitle, normalizeUrl, pmidFromUrl, repairOpening, studyDirection, validateQuestion, workKey } from '@/lib/research/papers'
 import { pinsForQuestion } from '@/lib/research/pins'
 import {
   readSource,
@@ -265,7 +265,7 @@ async function verifyShaped(
     const excerpts = sentence.cites
       .map((n) => {
         const paper = shaped.citations.find((item) => item.n === n)
-        const excerpt = (paper?.excerpt || '').slice(0, 1200)
+        const excerpt = (paper?.excerpt || '').slice(0, 2800)
         return excerpt ? `Source [${n}] excerpt: ${excerpt}` : `Source [${n}] has no excerpt.`
       })
       .join('\n')
@@ -293,7 +293,16 @@ async function verifyShaped(
       )
     }
     const supported = new Map(checks.map((check) => [check.n, check.supported]))
-    const sentences = shaped.sentences.filter((_, index) => supported.get(index + 1) === true)
+    const sentences: typeof shaped.sentences = []
+    let previousKept = false
+    shaped.sentences.forEach((sentence, index) => {
+      if (supported.get(index + 1) !== true) {
+        previousKept = false
+        return
+      }
+      sentences.push({ ...sentence, text: previousKept ? sentence.text : repairOpening(sentence.text) })
+      previousKept = true
+    })
     if (sentences.length === 0) {
       return restoreSources(shaped, UNVERIFIED_ANSWER)
     }

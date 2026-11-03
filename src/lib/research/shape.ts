@@ -19,6 +19,7 @@ import {
   pmcidFromUrl,
   quotedFigures,
   rankByPriority,
+  repairOpening,
   retrievedExcerpt,
   statusLabel,
   stripTrackingUrl,
@@ -416,6 +417,24 @@ function citationSupportsSentence(work: Work, plain: string): boolean {
   return quotedFigures(plain).every((figure) => figureAppears(figure, blob))
 }
 
+/** A retrieved paper whose abstract, not a reference-list excerpt, prints every figure. */
+function abstractSupports(work: Work, plain: string): boolean {
+  if (!work.meta.abstract?.trim()) return false
+  const decision = allowCitation({
+    url: work.fields.url,
+    text: work.fields.text,
+    summary: work.fields.summary,
+    highlights: work.fields.highlights,
+    title: work.fields.title,
+    doi: work.fields.doi,
+    retracted: work.meta.retracted,
+    retractionChecked: work.meta.retractionChecked,
+    articleType: work.meta.articleType,
+  })
+  if (decision !== 'ok') return false
+  return citationSupportsSentence(work, plain)
+}
+
 function showRetrieved(paper: ResearchPaper): boolean {
   if (!paper.title || paper.title === 'Title unavailable') return false
   if (paper.status === 'unverified' && !paper.doi) return false
@@ -534,8 +553,16 @@ export function shapeResearchAnswer(input: {
     const unique = [...new Map(citedWorks.map((work) => [work.key, work])).values()]
     const plain = stripMarkers(sentence.text)
     if (!plain) continue
-    if (unique.length > 0) {
-      const supporting = unique.filter((work) => citationSupportsSentence(work, plain))
+    const hadAttempt = sentence.urls.length > 0 || sentence.markers.length > 0
+    const sawRetracted = blocks.includes('retracted')
+    const onlyRetracted = sawRetracted && blocks.every((block) => block === 'retracted')
+    if (!onlyRetracted && (unique.length > 0 || hadAttempt)) {
+      let supporting = unique.filter((work) => citationSupportsSentence(work, plain))
+      if (supporting.length === 0) {
+        const citedKeys = new Set(unique.map((work) => work.key))
+        const alternate = [...works.values()].find((work) => !citedKeys.has(work.key) && abstractSupports(work, plain))
+        if (alternate) supporting = [alternate]
+      }
       for (const work of unique) {
         if (supporting.some((item) => item.key === work.key)) continue
         const blob = supportBlob(work)
@@ -554,9 +581,6 @@ export function shapeResearchAnswer(input: {
       keptSentences.push({ text: plain, keys: supporting.map((work) => work.key), reason: null })
       continue
     }
-    const sawRetracted = blocks.includes('retracted')
-    const onlyRetracted = sawRetracted && blocks.every((block) => block === 'retracted')
-    const hadAttempt = sentence.urls.length > 0 || sentence.markers.length > 0
     keptSentences.push({
       text: plain,
       keys: [],
@@ -579,14 +603,18 @@ export function shapeResearchAnswer(input: {
 
   const sentences: CitedSentence[] = []
   const uncited: UncitedSentence[] = []
+  let previousKept = false
   for (const sentence of keptSentences) {
     if (sentence.reason || sentence.keys.length === 0) {
       uncited.push({ text: sentence.text, reason: sentence.reason ?? 'no-source' })
+      previousKept = false
       continue
     }
+    const body = previousKept ? sentence.text : repairOpening(sentence.text)
+    previousKept = true
     const cites = sentence.keys.map((key) => displayNumber.get(key)).filter((n): n is number => Boolean(n))
     sentences.push({
-      text: `${sentence.text} ${cites.map((n) => `[${n}]`).join('')}`,
+      text: `${body} ${cites.map((n) => `[${n}]`).join('')}`,
       cites,
     })
   }

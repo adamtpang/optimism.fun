@@ -13,6 +13,7 @@ import {
   paperStatus,
   plainExcerpt,
   studyDirection,
+  titlesMatch,
 } from '@/lib/research/papers'
 import { allowCitation, shapeResearchAnswer, type SourceFields } from '@/lib/research/shape'
 
@@ -648,6 +649,9 @@ describe('review fixtures', () => {
       'Phase 2b Controlled Trial of M72/AS01E Vaccine to Prevent Tuberculosis',
     )
     expect(cleanTitle('Trial of M72/AS01<i>E</i> in adults')).toBe('Trial of M72/AS01E in adults')
+    expect(cleanTitle('Interim Guidance: 4-Month Rifapentine-Moxifloxacin Regimen for the Treatment of Drug-Susceptible Pulmonary Tuberculosis — United States, 2022')).toBe(
+      'Interim Guidance: 4-Month Rifapentine-Moxifloxacin Regimen for the Treatment of Drug-Susceptible Pulmonary Tuberculosis, United States, 2022',
+    )
     expect(cleanTitle('Early Time-Restricted Feeding Improves Insulin Sensitivity - Cell Metabolism')).toBe(
       'Early Time-Restricted Feeding Improves Insulin Sensitivity',
     )
@@ -657,8 +661,9 @@ describe('review fixtures', () => {
     const excerpt = 'The Canadian trial is described in the full text. doi: 10.1016/j.cjca.2023.09.017. End of page.'
     expect(doiFromExcerpt(excerpt)).toBe('10.1016/j.cjca.2023.09.017')
     const calls: string[] = []
+    const matchedTitle = 'A Crossref title for the Canadian trial'
     const meta = await resolvePaperMetadata(
-      { url: 'https://publisher.example/cjca-page', title: 'Publisher page title', text: excerpt },
+      { url: 'https://publisher.example/cjca-page', title: matchedTitle, text: excerpt },
       {
         timeoutMs: 1000,
         fetchImpl: async (url) => {
@@ -684,6 +689,52 @@ describe('review fixtures', () => {
     expect(meta.doi?.toLowerCase()).toBe('10.1016/j.cjca.2023.09.017')
     expect(meta.title).toBe('A Crossref title for the Canadian trial')
     expect(meta.venue).toBe('Canadian Journal of Cardiology')
+    expect(titlesMatch(matchedTitle, 'A Crossref title for the Canadian trial')).toBe(true)
+  })
+
+  it('rejects a reference-list DOI when the Crossref title does not match the page', async () => {
+    const pageTitle = 'Early time-restricted feeding and glycemic markers in adults: a systematic review'
+    const referenceDoi = '10.1016/0197-2456(95)00134-4'
+    const ownDoi = '10.3390/nu14153223'
+    const excerpt = `The review covers early time-restricted feeding trials. A cited methods paper is doi: ${referenceDoi}.`
+    expect(doiFromExcerpt(excerpt)?.toLowerCase()).toBe(referenceDoi)
+    const meta = await resolvePaperMetadata(
+      {
+        url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9382685/',
+        title: pageTitle,
+        text: excerpt,
+      },
+      {
+        timeoutMs: 1000,
+        fetchImpl: async (url) => {
+          if (url.includes('0197-2456')) {
+            return json({
+              message: {
+                DOI: referenceDoi,
+                type: 'journal-article',
+                title: ['Assessing the quality of reports of randomized clinical trials: Is blinding necessary?'],
+              },
+            })
+          }
+          if (url.includes('idconv')) return json({ records: [{ doi: ownDoi, pmid: '35971234' }] })
+          if (url.includes('nu14153223') || url.includes(encodeURIComponent(ownDoi))) {
+            return json({
+              message: {
+                DOI: ownDoi,
+                type: 'journal-article',
+                title: [pageTitle],
+                'container-title': ['Nutrients'],
+              },
+            })
+          }
+          if (url.includes('api.openalex.org')) return json({ type: 'article', is_retracted: false, display_name: pageTitle })
+          return json({})
+        },
+      },
+    )
+    expect(meta.doi?.toLowerCase()).toBe(ownDoi)
+    expect(meta.title).toBe(pageTitle)
+    expect(titlesMatch(pageTitle, 'Assessing the quality of reports of randomized clinical trials: Is blinding necessary?')).toBe(false)
   })
 
   it('uses a Europe PMC abstract when Crossref and OpenAlex have none', async () => {
@@ -708,6 +759,105 @@ describe('review fixtures', () => {
       'Early time-restricted feeding improves insulin sensitivity.',
     )
     expect(meta.abstract).toBe('Early time-restricted feeding improves insulin sensitivity.')
+  })
+
+  it('keeps the longer abstract when OpenAlex omits a printed result', async () => {
+    const doi = '10.1056/nejmoa2033400'
+    const meta = await resolvePaperMetadata(
+      { url: `https://doi.org/${doi}`, doi, title: 'Four-Month Rifapentine Regimens with or without Moxifloxacin for Tuberculosis' },
+      {
+        timeoutMs: 1000,
+        fetchImpl: async (url) => {
+          if (url.includes('api.crossref.org')) {
+            return json({ message: { DOI: doi, type: 'journal-article', title: ['Four-Month Rifapentine Regimens with or without Moxifloxacin for Tuberculosis'], 'container-title': ['New England Journal of Medicine'] } })
+          }
+          if (url.includes('api.openalex.org')) {
+            return json({
+              type: 'article',
+              is_retracted: false,
+              display_name: 'Four-Month Rifapentine Regimens with or without Moxifloxacin for Tuberculosis',
+              abstract_inverted_index: { 'A short abstract.': [0] },
+            })
+          }
+          if (url.includes('europepmc')) {
+            return json({ resultList: { result: [{ abstractText: 'A short abstract. Results Among 2516 participants the 4-month regimen was noninferior to the 6-month regimen in Study 31.' }] } })
+          }
+          return json({})
+        },
+      },
+    )
+    expect(meta.abstract).toContain('2516')
+  })
+
+  it('keeps a sentence the pinned abstract supports and drops a connective that no longer has a predecessor', () => {
+    const pin = {
+      url: 'https://doi.org/10.1056/nejmoa2033400',
+      title: 'Four-Month Rifapentine Regimens with or without Moxifloxacin for Tuberculosis',
+      text: 'A landing page.',
+      doi: '10.1056/nejmoa2033400',
+    }
+    const other = {
+      url: 'https://doi.org/10.15585/mmwr.mm7108a1',
+      title: 'Interim Guidance',
+      text: 'The guidance summarizes the trial.',
+      doi: '10.15585/mmwr.mm7108a1',
+    }
+    const abstract = 'In an open-label, phase 3, randomized, controlled trial, a 4-month regimen was compared with a 6-month regimen. Results Among 2516 participants in Study 31, rifapentine with moxifloxacin was noninferior.'
+    const shaped = shapeResearchAnswer({
+      retrieved: [pin, other],
+      numberedSources: [other, pin],
+      answer: {
+        sentences: [
+          { text: 'In the Phase 3 randomized controlled trial TBTC Study 31/ACTG A5349, which involved 2,516 participants, a 4-month regimen was noninferior to the standard 6-month regimen.', urls: [other.url] },
+          { text: 'Cure rates were 84.5% versus 85.4%.', urls: [pin.url] },
+          { text: 'In contrast, the same trial found that the rifapentine-only regimen was not noninferior.', urls: [pin.url] },
+        ],
+      },
+      metaByKey: {
+        [pin.url]: { doi: pin.doi, title: pin.title, abstract, retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article' },
+        [other.url]: { doi: other.doi, title: other.title, retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article' },
+      },
+    })
+    expect(shaped.sentences.map((sentence) => sentence.text)).toEqual([
+      'In the Phase 3 randomized controlled trial TBTC Study 31/ACTG A5349, which involved 2,516 participants, a 4-month regimen was noninferior to the standard 6-month regimen. [1]',
+      'The trial found that the rifapentine-only regimen was not noninferior. [1]',
+    ])
+    expect(shaped.citations.map((paper) => paper.doi)).toEqual(['10.1056/nejmoa2033400'])
+    expect(shaped.uncited.some((sentence) => sentence.text.includes('84.5%'))).toBe(true)
+  })
+
+  it('cites the pinned abstract for a 54.0% sentence that was attached to another page', () => {
+    const pin = {
+      url: 'https://doi.org/10.1056/nejmoa1803484',
+      title: 'Phase 2b Controlled Trial of M72/AS01E Vaccine to Prevent Tuberculosis',
+      text: 'Publisher page.',
+      doi: '10.1056/nejmoa1803484',
+    }
+    const other = {
+      url: 'https://www.nature.com/articles/d41586-example',
+      title: 'News brief',
+      text: 'A news writeup of the trial.',
+      doi: '10.1038/d41586-example',
+    }
+    const shaped = shapeResearchAnswer({
+      retrieved: [pin, other],
+      numberedSources: [other],
+      answer: { sentences: [{ text: 'The vaccine efficacy was 54.0% (P = 0.04).', urls: [other.url] }] },
+      metaByKey: {
+        [pin.url]: {
+          doi: pin.doi,
+          title: pin.title,
+          abstract: 'The vaccine efficacy was 54.0% (P = 0.04).',
+          retractionChecked: true,
+          retracted: false,
+          journal: true,
+          crossrefType: 'journal-article',
+        },
+        [other.url]: { doi: other.doi, title: other.title, retractionChecked: true, retracted: false, journal: true },
+      },
+    })
+    expect(shaped.sentences).toHaveLength(1)
+    expect(shaped.citations.map((paper) => paper.doi)).toEqual(['10.1056/nejmoa1803484'])
   })
 
   it('pins papers that the attached runs actually returned', () => {
