@@ -137,7 +137,9 @@ export function stripTrackingUrl(raw: string): string {
 }
 
 export function cleanTitle(title: string): string {
-  let text = title.replace(/\s+/g, ' ').trim()
+  let text = title
+  text = text.replace(/[ \t\r\n]+(?=<\s*\/?\s*(?:sub|sup)\b)/gi, '')
+  text = text.replace(/\s+/g, ' ').trim()
   text = text.replace(/<\s*\/?\s*(?:sub|sup|i|em|b|strong|span)\b[^>]*>/gi, '')
   text = text.replace(/\s*(?:\.{3}|…)+\s*$/g, '')
   text = text.replace(/^Frontiers\s*\|\s*/i, '')

@@ -244,6 +244,16 @@ function localIds(fields: SourceFields): {
   }
 }
 
+export function readEuropePmcAbstract(payload: unknown): string | null {
+  const results = asRecord(asRecord(payload)?.resultList)?.result
+  if (!Array.isArray(results)) return null
+  for (const row of results) {
+    const text = asRecord(row)?.abstractText
+    if (typeof text === 'string' && text.trim()) return plainAbstract(text)
+  }
+  return null
+}
+
 export function readNcbiIdconv(payload: unknown): { doi: string | null; pmid: string | null } {
   const records = asRecord(payload)?.records
   if (!Array.isArray(records)) return { doi: null, pmid: null }
@@ -354,9 +364,19 @@ export async function resolvePaperMetadata(
   const crossref = crossrefUrl ? (crossrefPayload ? readCrossref(crossrefPayload) : { recordOk: false }) : {}
   const scholar = scholarPayload ? readSemanticScholar(scholarPayload) : {}
   const merged = mergePaperMeta(openAlex, crossref, scholar)
+  let abstract = merged.abstract
+  if (!abstract && doi) {
+    const europe = await getJson(
+      fetchImpl,
+      `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:${encodeURIComponent(doi)}&format=json&resultType=core&pageSize=1`,
+      timeoutMs,
+    )
+    abstract = readEuropePmcAbstract(europe)
+  }
   return {
     ...merged,
     doi: merged.doi || doi,
     pmid: merged.pmid || pmid,
+    abstract: abstract || null,
   }
 }

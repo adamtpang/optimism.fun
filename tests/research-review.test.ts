@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { ANSWER_SYSTEM, UNVERIFIED_ANSWER, answerQuery, askResearch, readSupportChecks, researchHttpStatus, similarResearch } from '@/lib/research/ask'
 import { pinsForQuestion } from '@/lib/research/pins'
 import { isNewsRecord } from '@/lib/research/domains'
-import { readCrossref, readNcbiIdconv, readOpenAlex, resolvePaperMetadata } from '@/lib/research/metadata'
+import { readCrossref, readEuropePmcAbstract, readNcbiIdconv, readOpenAlex, resolvePaperMetadata } from '@/lib/research/metadata'
 import {
   chooseTitle,
   citationLink,
@@ -644,6 +644,9 @@ describe('review fixtures', () => {
     expect(cleanTitle('Phase 2b Controlled Trial of M72/AS01<sub>E</sub> Vaccine to Prevent Tuberculosis')).toBe(
       'Phase 2b Controlled Trial of M72/AS01E Vaccine to Prevent Tuberculosis',
     )
+    expect(cleanTitle('Phase 2b Controlled Trial of M72/AS01\n                    <sub>E</sub> Vaccine to Prevent Tuberculosis')).toBe(
+      'Phase 2b Controlled Trial of M72/AS01E Vaccine to Prevent Tuberculosis',
+    )
     expect(cleanTitle('Trial of M72/AS01<i>E</i> in adults')).toBe('Trial of M72/AS01E in adults')
     expect(cleanTitle('Early Time-Restricted Feeding Improves Insulin Sensitivity - Cell Metabolism')).toBe(
       'Early Time-Restricted Feeding Improves Insulin Sensitivity',
@@ -681,6 +684,30 @@ describe('review fixtures', () => {
     expect(meta.doi?.toLowerCase()).toBe('10.1016/j.cjca.2023.09.017')
     expect(meta.title).toBe('A Crossref title for the Canadian trial')
     expect(meta.venue).toBe('Canadian Journal of Cardiology')
+  })
+
+  it('uses a Europe PMC abstract when Crossref and OpenAlex have none', async () => {
+    const doi = '10.1016/j.cmet.2018.04.010'
+    const meta = await resolvePaperMetadata(
+      { url: `https://doi.org/${doi}`, doi, title: 'Early time-restricted feeding' },
+      {
+        timeoutMs: 1000,
+        fetchImpl: async (url) => {
+          if (url.includes('api.crossref.org/works/')) {
+            return json({ message: { DOI: doi, type: 'journal-article', title: ['Early Time-Restricted Feeding Improves Insulin Sensitivity'] } })
+          }
+          if (url.includes('api.openalex.org')) return json({ type: 'article', is_retracted: false, display_name: 'Early Time-Restricted Feeding Improves Insulin Sensitivity' })
+          if (url.includes('europepmc')) {
+            return json({ resultList: { result: [{ abstractText: 'Early time-restricted feeding improves insulin sensitivity.' }] } })
+          }
+          return json({})
+        },
+      },
+    )
+    expect(readEuropePmcAbstract({ resultList: { result: [{ abstractText: 'Early time-restricted feeding improves insulin sensitivity.' }] } })).toBe(
+      'Early time-restricted feeding improves insulin sensitivity.',
+    )
+    expect(meta.abstract).toBe('Early time-restricted feeding improves insulin sensitivity.')
   })
 
   it('pins papers that the attached runs actually returned', () => {

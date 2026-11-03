@@ -224,7 +224,7 @@ describe('metadata resolvers', () => {
       { url: 'https://doi.org/10.1038/s41586-020-2649-2' },
       { fetchImpl: hung, timeoutMs: 20 },
     )
-    expect(calls).toBe(3)
+    expect(calls).toBe(4)
     expect(meta.retractionChecked).toBe(false)
     expect(paperStatus({ url: 'https://example.edu/x', ...meta })).toBe('unverified')
 
@@ -248,7 +248,7 @@ describe('metadata resolvers', () => {
     expect(seen.map((call) => call.url).join('\n')).toContain('api.openalex.org')
     expect(seen.map((call) => call.url).join('\n')).toContain('api.crossref.org')
     expect(seen.map((call) => call.url).join('\n')).toContain('api.semanticscholar.org')
-    expect(seen.every((call) => call.url.includes('mailto=') || call.url.includes('semanticscholar.org'))).toBe(true)
+    expect(seen.every((call) => call.url.includes('mailto=') || call.url.includes('semanticscholar.org') || call.url.includes('europepmc'))).toBe(true)
     expect(seen.every((call) => call.agent.includes('mailto:'))).toBe(true)
     expect(JSON.stringify(seen)).not.toContain('EXA_API_KEY')
   })
