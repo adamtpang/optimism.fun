@@ -3,7 +3,6 @@ import {
   arxivIdFromUrl,
   chooseTitle,
   citationLink,
-  citesRctWithoutSupport,
   cleanDoi,
   doiFromText,
   doiFromUrl,
@@ -15,12 +14,15 @@ import {
   paperStatus,
   parseAuthorField,
   plainExcerpt,
+  plainSentence,
   pmidFromUrl,
   pmcidFromUrl,
   quotedFigures,
   rankByPriority,
   repairOpening,
   retrievedExcerpt,
+  claimOverlap,
+  sentenceFitsSupport,
   statusLabel,
   stripTrackingUrl,
   workKey,
@@ -411,15 +413,10 @@ function supportBlob(work: Work): string {
   return [work.excerpt.text, work.fields.summary, ...(work.fields.highlights ?? [])].filter(Boolean).join('\n')
 }
 
-function citationSupportsSentence(work: Work, plain: string): boolean {
+function fitToWork(work: Work, plain: string): string | null {
   const blob = supportBlob(work)
-  if (citesRctWithoutSupport(plain, blob)) return false
-  return quotedFigures(plain).every((figure) => figureAppears(figure, blob))
-}
-
-/** A retrieved paper whose abstract, not a reference-list excerpt, prints every figure. */
-function abstractSupports(work: Work, plain: string): boolean {
-  if (!work.meta.abstract?.trim()) return false
+  const fitted = sentenceFitsSupport(plain, blob)
+  if (!fitted) return null
   const decision = allowCitation({
     url: work.fields.url,
     text: work.fields.text,
@@ -431,8 +428,7 @@ function abstractSupports(work: Work, plain: string): boolean {
     retractionChecked: work.meta.retractionChecked,
     articleType: work.meta.articleType,
   })
-  if (decision !== 'ok') return false
-  return citationSupportsSentence(work, plain)
+  return decision === 'ok' ? fitted : null
 }
 
 function showRetrieved(paper: ResearchPaper): boolean {
@@ -557,14 +553,21 @@ export function shapeResearchAnswer(input: {
     const sawRetracted = blocks.includes('retracted')
     const onlyRetracted = sawRetracted && blocks.every((block) => block === 'retracted')
     if (!onlyRetracted && (unique.length > 0 || hadAttempt)) {
-      let supporting = unique.filter((work) => citationSupportsSentence(work, plain))
+      const fitted = unique
+        .map((work) => ({ work, text: fitToWork(work, plain) }))
+        .filter((item): item is { work: Work; text: string } => Boolean(item.text))
+      let supporting = fitted
       if (supporting.length === 0) {
         const citedKeys = new Set(unique.map((work) => work.key))
-        const alternate = [...works.values()].find((work) => !citedKeys.has(work.key) && abstractSupports(work, plain))
-        if (alternate) supporting = [alternate]
+        const alternate = [...works.values()].find((work) => {
+          if (citedKeys.has(work.key) || !claimOverlap(plain, supportBlob(work))) return false
+          return Boolean(fitToWork(work, plain))
+        })
+        const text = alternate ? fitToWork(alternate, plain) : null
+        if (alternate && text) supporting = [{ work: alternate, text }]
       }
       for (const work of unique) {
-        if (supporting.some((item) => item.key === work.key)) continue
+        if (supporting.some((item) => item.work.key === work.key)) continue
         const blob = supportBlob(work)
         const missing = quotedFigures(plain).some((figure) => !figureAppears(figure, blob))
         dropReasons.set(
@@ -578,7 +581,11 @@ export function shapeResearchAnswer(input: {
         keptSentences.push({ text: plain, keys: [], reason: 'dropped-citation' })
         continue
       }
-      keptSentences.push({ text: plain, keys: supporting.map((work) => work.key), reason: null })
+      keptSentences.push({
+        text: supporting[0].text,
+        keys: supporting.map((item) => item.work.key),
+        reason: null,
+      })
       continue
     }
     keptSentences.push({
@@ -610,7 +617,7 @@ export function shapeResearchAnswer(input: {
       previousKept = false
       continue
     }
-    const body = previousKept ? sentence.text : repairOpening(sentence.text)
+    const body = plainSentence(previousKept ? sentence.text : repairOpening(sentence.text))
     previousKept = true
     const cites = sentence.keys.map((key) => displayNumber.get(key)).filter((n): n is number => Boolean(n))
     sentences.push({

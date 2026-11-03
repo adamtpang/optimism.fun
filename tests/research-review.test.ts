@@ -649,6 +649,9 @@ describe('review fixtures', () => {
       'Phase 2b Controlled Trial of M72/AS01E Vaccine to Prevent Tuberculosis',
     )
     expect(cleanTitle('Trial of M72/AS01<i>E</i> in adults')).toBe('Trial of M72/AS01E in adults')
+    expect(cleanTitle('Final Analysis of a Trial of M72/AS01 E Vaccine to Prevent Tuberculosis')).toBe(
+      'Final Analysis of a Trial of M72/AS01E Vaccine to Prevent Tuberculosis',
+    )
     expect(cleanTitle('Interim Guidance: 4-Month Rifapentine-Moxifloxacin Regimen for the Treatment of Drug-Susceptible Pulmonary Tuberculosis — United States, 2022')).toBe(
       'Interim Guidance: 4-Month Rifapentine-Moxifloxacin Regimen for the Treatment of Drug-Susceptible Pulmonary Tuberculosis, United States, 2022',
     )
@@ -826,6 +829,105 @@ describe('review fixtures', () => {
     expect(shaped.uncited.some((sentence) => sentence.text.includes('84.5%'))).toBe(true)
   })
 
+  it('moves the Sutton sentence off a paper whose abstract does not describe that trial', () => {
+    const wrong = {
+      url: 'https://doi.org/10.1210/clinem/dgae594',
+      title: 'Effect of Time-Restricted Eating on β-Cell Function in Adults With Type 2 Diabetes',
+      text: 'In 39 adults with type 2 diabetes, 6 weeks of TRE used a 4 to 8 hour eating window. BMI was 32.4 ± 5.7.',
+      doi: '10.1210/clinem/dgae594',
+    }
+    const sutton = {
+      url: 'https://doi.org/10.1016/j.cmet.2018.04.010',
+      title: 'Early Time-Restricted Feeding Improves Insulin Sensitivity in Men with Prediabetes',
+      text: 'Men with prediabetes were randomized to eTRF, a form of early time-restricted feeding, for 5 weeks. eTRF improved insulin sensitivity independent of weight loss.',
+      doi: '10.1016/j.cmet.2018.04.010',
+    }
+    const shaped = shapeResearchAnswer({
+      retrieved: [wrong, sutton],
+      numberedSources: [wrong, sutton],
+      answer: {
+        sentences: [{
+          text: 'In a 5-week randomized controlled crossover trial involving 8 men with prediabetes, early time-restricted feeding (eTRF)—a form of intermittent fasting—improved insulin sensitivity independent of weight loss.',
+          urls: [wrong.url],
+        }],
+      },
+      metaByKey: {
+        [wrong.url]: { doi: wrong.doi, title: wrong.title, abstract: wrong.text, retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article' },
+        [sutton.url]: { doi: sutton.doi, title: sutton.title, abstract: sutton.text, retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article' },
+      },
+    })
+    expect(shaped.citations.map((paper) => paper.doi)).toEqual(['10.1016/j.cmet.2018.04.010'])
+    expect(shaped.sentences[0]?.text).toContain('prediabetes')
+    expect(shaped.sentences[0]?.text).not.toContain('8 men')
+    expect(shaped.sentences[0]?.text).toContain('(eTRF), a form of intermittent fasting')
+    expect(shaped.sentences[0]?.text).not.toContain('\u2014')
+  })
+
+  it('keeps a null result in the answer when the model cited only a benefit', async () => {
+    process.env.EXA_API_KEY = 'test-key-value'
+    const benefit = {
+      url: 'https://doi.org/10.1016/j.cmet.2018.04.010',
+      title: 'Early time-restricted feeding',
+      text: 'Early time-restricted feeding improves insulin sensitivity in men with prediabetes.',
+      doi: '10.1016/j.cmet.2018.04.010',
+    }
+    const none = {
+      url: 'https://doi.org/10.1002/oby.23620',
+      title: 'Time-restricted eating pilot',
+      text: 'In adults with overweight or obesity, time-restricted eating did not significantly alter insulin sensitivity over 12 weeks.',
+      doi: '10.1002/oby.23620',
+    }
+    const result = await askResearch('Does intermittent fasting improve insulin sensitivity?', {
+      resolve: async () => ({ retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article' }),
+      exaPost: async (path, body) => {
+        if (path === '/search') return { results: [benefit, none] }
+        const schema = JSON.stringify((body as { outputSchema?: unknown }).outputSchema ?? {})
+        if (schema.includes('supported')) return { answer: { checks: [{ n: 1, supported: true }, { n: 2, supported: true }] } }
+        return { answer: { sentences: [{ text: benefit.text, urls: [benefit.url] }] }, citations: [] }
+      },
+    })
+    delete process.env.EXA_API_KEY
+    expect(result.configured).toBe(true)
+    if (!result.configured) return
+    expect(result.sentences.some((sentence) => sentence.text.includes('did not significantly alter insulin sensitivity'))).toBe(true)
+    expect(result.citations.map((paper) => paper.doi)).toContain('10.1002/oby.23620')
+    expect(result.citations.map((paper) => paper.doi)).toContain('10.1016/j.cmet.2018.04.010')
+  })
+
+  it('keeps the 54.0% sentence by quoting the printed enrollment instead of 3,573', () => {
+    const pin = {
+      url: 'https://doi.org/10.1056/nejmoa1803484',
+      title: 'Phase 2b Controlled Trial of M72/AS01E Vaccine to Prevent Tuberculosis',
+      text: 'Trial page.',
+      doi: '10.1056/nejmoa1803484',
+    }
+    const other = {
+      url: 'https://doi.org/10.1016/j.vaccine.2025.126816',
+      title: 'Optimising the phase 3 trial',
+      text: 'A later paper discusses the phase 2b trial.',
+      doi: '10.1016/j.vaccine.2025.126816',
+    }
+    const abstract = 'We conducted a randomized, double-blind, placebo-controlled, phase 2b trial of HIV-negative adults 18 to 50 years of age. A total of 1786 participants received M72/AS01E and 1787 received placebo. The vaccine efficacy was 54.0% (P = 0.04) after a mean of 2.3 years.'
+    const shaped = shapeResearchAnswer({
+      retrieved: [pin, other],
+      numberedSources: [other, pin],
+      answer: {
+        sentences: [{
+          text: 'In a phase 2b trial of 3,573 HIV-negative adults aged 18 to 50 years, the M72/AS01E vaccine showed 54.0% efficacy after a mean follow-up of 2.3 years.',
+          urls: [other.url],
+        }],
+      },
+      metaByKey: {
+        [pin.url]: { doi: pin.doi, title: pin.title, abstract, retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article' },
+        [other.url]: { doi: other.doi, title: other.title, retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article' },
+      },
+    })
+    expect(shaped.citations.map((paper) => paper.doi)).toEqual(['10.1056/nejmoa1803484'])
+    expect(shaped.sentences[0]?.text).toContain('1786 plus 1787')
+    expect(shaped.sentences[0]?.text).toContain('54.0%')
+    expect(shaped.sentences[0]?.text).not.toContain('3,573')
+  })
+
   it('cites the pinned abstract for a 54.0% sentence that was attached to another page', () => {
     const pin = {
       url: 'https://doi.org/10.1056/nejmoa1803484',
@@ -944,7 +1046,8 @@ describe('review fixtures', () => {
     for (const doi of fasting) expect(query, doi).toContain(doi)
     const present = new Set([...result.citations, ...result.retrieved].map((paper) => paper.doi?.toLowerCase()))
     for (const doi of fasting) expect(present.has(doi), doi).toBe(true)
-    expect(result.sentences).toHaveLength(1)
+    expect(result.sentences.some((sentence) => sentence.text.includes('improves insulin sensitivity'))).toBe(true)
+    expect(result.sentences.some((sentence) => sentence.text.includes('did not alter insulin sensitivity'))).toBe(true)
   })
 
   it('injects the M72 trials for the vaccine question and the Dorman trial for the regimen question', async () => {

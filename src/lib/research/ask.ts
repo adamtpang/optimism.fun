@@ -1,7 +1,7 @@
 import { excludeDomains, PRIORITY_QUERY_HINT } from '@/lib/research/domains'
 import { resolvePaperMetadata } from '@/lib/research/metadata'
 import { isCoverageUrl, isExcludedUrl, isMirrorUrl, isRejectedResultUrl } from '@/lib/research/domains'
-import { arxivIdFromUrl, cleanDoi, doiFromUrl, isPdfUrl, normalizeTitle, normalizeUrl, pmidFromUrl, repairOpening, studyDirection, validateQuestion, workKey } from '@/lib/research/papers'
+import { arxivIdFromUrl, cleanDoi, doiFromUrl, isPdfUrl, normalizeTitle, normalizeUrl, nullFindingSentence, plainSentence, pmidFromUrl, repairOpening, studyDirection, validateQuestion, workKey } from '@/lib/research/papers'
 import { pinsForQuestion } from '@/lib/research/pins'
 import {
   readSource,
@@ -51,6 +51,7 @@ export const ANSWER_SYSTEM = [
   'Keep the source population wording. If the source says overweight or obesity, do not narrow it to obesity.',
   'If a total is not printed in the source, do not state a computed total. Quote the printed counts, such as 17 plus 3 participants.',
   'When the retrieved sources disagree, say that they disagree and cite both sides. Do not summarize only the majority.',
+  'If a retrieved paper reports that the outcome did not change, include that null or mixed result in its own sentence.',
   'If the question is about intermittent fasting in general and the sources only study time-restricted eating, say that the evidence is from time-restricted eating.',
   'If a sentence has no supporting source, omit it.',
   'Do not cite news, press releases, ResearchGate, Academia.edu, Wikipedia, or other excluded domains as evidence.',
@@ -300,7 +301,10 @@ async function verifyShaped(
         previousKept = false
         return
       }
-      sentences.push({ ...sentence, text: previousKept ? sentence.text : repairOpening(sentence.text) })
+      sentences.push({
+        ...sentence,
+        text: plainSentence(previousKept ? sentence.text : repairOpening(sentence.text)),
+      })
       previousKept = true
     })
     if (sentences.length === 0) {
@@ -393,6 +397,40 @@ async function injectMissingPins(question: string, found: SourceFields[], resolv
   return [...pins, ...found]
 }
 
+/** When the model cites only benefits, keep a null sentence copied from a retrieved abstract. */
+function addMissingNulls(shaped: ShapedResearch): ShapedResearch {
+  const hasBenefit = [...shaped.citations, ...shaped.sentences].some((item) =>
+    studyDirection('text' in item ? item.text : item.excerpt || '') === 'benefit',
+  )
+  const hasNull = [...shaped.citations, ...shaped.sentences].some((item) =>
+    studyDirection('text' in item ? item.text : item.excerpt || '') === 'no-effect',
+  )
+  if (!hasBenefit || hasNull || shaped.sentences.length === 0) return shaped
+  const extras: { paper: ShapedResearch['retrieved'][number]; sentence: string }[] = []
+  for (const paper of shaped.retrieved) {
+    const sentence = nullFindingSentence(paper.excerpt || '')
+    if (!sentence || studyDirection(sentence) !== 'no-effect') continue
+    extras.push({ paper, sentence: plainSentence(sentence) })
+    if (extras.length >= 2) break
+  }
+  if (extras.length === 0) return shaped
+  let nextN = shaped.citations.reduce((max, paper) => Math.max(max, paper.n || 0), 0)
+  const citations = [...shaped.citations]
+  const sentences = [...shaped.sentences]
+  const added = new Set(extras.map((extra) => extra.paper))
+  for (const extra of extras) {
+    nextN += 1
+    citations.push({ ...extra.paper, n: nextN, dropReason: null })
+    sentences.push({ text: `${extra.sentence} [${nextN}]`, cites: [nextN] })
+  }
+  return renumberCitations({
+    ...shaped,
+    citations,
+    sentences,
+    retrieved: shaped.retrieved.filter((paper) => !added.has(paper)),
+  })
+}
+
 export async function askResearch(question: string, partial?: Partial<Deps>): Promise<AskResponse> {
   if (!isExaConfigured()) return { configured: false }
   const deps = depsFrom(partial)
@@ -440,7 +478,7 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
         ...restored,
       }
     }
-    return { configured: true, question, ...checked }
+    return { configured: true, question, ...addMissingNulls(checked) }
   } catch (err) {
     const message = err instanceof ExaRequestError ? err.message : err instanceof Error ? err.message : 'Exa request failed.'
     const shaped = shapeResearchAnswer({ retrieved: found, answer: null, now: deps.now })

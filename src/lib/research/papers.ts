@@ -141,6 +141,7 @@ export function cleanTitle(title: string): string {
   text = text.replace(/[ \t\r\n]+(?=<\s*\/?\s*(?:sub|sup)\b)/gi, '')
   text = text.replace(/\s+/g, ' ').trim()
   text = text.replace(/<\s*\/?\s*(?:sub|sup|i|em|b|strong|span)\b[^>]*>/gi, '')
+  text = text.replace(/\bAS01\s+E\b/g, 'AS01E')
   text = text.replace(/\s*\u2014\s*/g, ', ')
   text = text.replace(/,\s*,/g, ',')
   text = text.replace(/\s*(?:\.{3}|…)+\s*$/g, '')
@@ -200,9 +201,11 @@ export function studyDirection(text: string): StudyDirection {
     hasSignificantP(sample) && /\befficac\w*\b[^.]{0,200}\d+(?:\.\d+)?\s*%|\d+(?:\.\d+)?\s*%[^.]{0,80}\befficac\w*\b/.test(sample)
   const benefitWord = /\b(improv(?:e|es|ed|ement)?|benefit|beneficial|reduc(?:e|ed|tion)|decreas(?:e|ed)|protect(?:ion|ed)?)\b/.test(sample)
   const nullPrimary =
-    /\b(did not|didn't|no significant|not significant|unchanged|no effect|no difference|not different|failed to)\b[^.]{0,160}\b(primary outcome|insulin sensitivity|glucose|homa-?ir|hba1c|fasting insulin|vaccine efficacy)\b/.test(sample) ||
-    /\b(primary outcome|insulin sensitivity|glucose|homa-?ir|hba1c|fasting insulin|vaccine efficacy)\b[^.]{0,160}\b(did not|didn't|no significant|not significant|unchanged|no effect|no difference|not different|failed to)\b/.test(sample)
+    /\b(did not|didn't|does not|do not|no significant|not significant|unchanged|no effect|no difference|not different|failed to|unaffected|not accompanied by)\b[^.]{0,160}\b(primary outcome|insulin sensitivity|glucose|homa-?ir|hba1c|fasting insulin|vaccine efficacy)\b/.test(sample) ||
+    /\b(primary outcome|insulin sensitivity|glucose|homa-?ir|hba1c|fasting insulin|vaccine efficacy)\b[^.]{0,160}\b(did not|didn't|does not|do not|no significant|not significant|unchanged|no effect|no difference|not different|failed to|unaffected)\b/.test(sample)
+  const negatedBenefit = /\b(?:did not|didn't|does not|do not|no|not)\s+(?:\w+\s+){0,3}(?:improv|benefit|reduc|decreas|protect)/.test(sample)
   if (significantEfficacy) return 'benefit'
+  if (nullPrimary && negatedBenefit) return 'no-effect'
   if (benefitWord && nullPrimary) return 'unclear'
   if (benefitWord) return 'benefit'
   if (nullPrimary) return 'no-effect'
@@ -254,6 +257,11 @@ export function normalizeTitle(title: string): string {
 
 export function plainExcerpt(text: string): string {
   return text.replace(/\u2014/g, '-')
+}
+
+/** Answer sentences use a comma where a title would. Excerpts keep a hyphen. */
+export function plainSentence(text: string): string {
+  return text.replace(/\s*\u2014\s*/g, ', ').replace(/,\s*,/g, ',').replace(/\s+/g, ' ').trim()
 }
 
 /** Rebuild an OpenAlex abstract from its inverted index. */
@@ -321,10 +329,91 @@ export function figureAppears(figure: string, text: string): boolean {
   if (!wanted.body) return true
   const hay = text.replace(/,/g, '')
   const token = wanted.body.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  const number = new RegExp(`(?:^|[^\\d.])${token}(?:\\.0+)?(?=$|[^\\d])`, 'i')
+  // 5 must not match inside 5.7. A sentence-ending period still counts.
+  const boundary = '(?:$|[^\\d.]|\\.(?!\\d))'
+  const number = new RegExp(`(?:^|[^\\d.])${token}(?:\\.0+)?${boundary}`, 'i')
   if (!number.test(hay)) return false
   if (!wanted.percent) return true
-  return new RegExp(`${token}(?:\\.0+)?\\s*(?:%|percent)`, 'i').test(hay)
+  return new RegExp(`(?:^|[^\\d.])${token}(?:\\.0+)?\\s*(?:%|percent)`, 'i').test(hay)
+}
+
+/** Replace a headcount that is exactly the sum of two nearby counts the abstract prints. */
+export function rewriteDerivedTotals(sentence: string, support: string): string {
+  let next = sentence
+  const printed = [...support.matchAll(/\b\d{2,}\b/g)].map((match) => ({
+    raw: match[0],
+    value: Number(match[0]),
+    index: match.index ?? 0,
+  }))
+  for (const figure of quotedFigures(sentence)) {
+    if (figureAppears(figure, support)) continue
+    const wanted = figureBody(figure)
+    if (wanted.percent || wanted.sample || !/^\d+$/.test(wanted.body)) continue
+    const target = Number(wanted.body)
+    if (target < 20) continue
+    let pair: { raw: string; index: number }[] | null = null
+    for (let i = 0; i < printed.length; i += 1) {
+      for (let j = i + 1; j < printed.length; j += 1) {
+        if (printed[j].index - printed[i].index > 90) break
+        if (printed[i].value + printed[j].value === target) pair = [printed[i], printed[j]]
+      }
+    }
+    if (!pair) continue
+    next = next.replace(figure, `${pair[0].raw} plus ${pair[1].raw}`)
+  }
+  return next
+}
+
+const CLAIM_ANCHORS = [/\bprediabetes\b/i, /\bearly time-restricted\b|\betRF\b/i]
+
+function anchorsMatch(sentence: string, support: string): boolean {
+  return CLAIM_ANCHORS.every((pattern) => !pattern.test(sentence) || pattern.test(support))
+}
+
+/**
+ * Drop a sample-size digit the abstract does not print when the population word is there.
+ * Returns null when some other figure is still missing.
+ */
+export function stripUnprintedCounts(sentence: string, support: string): string | null {
+  let next = sentence
+  for (const figure of quotedFigures(next)) {
+    if (figureAppears(figure, support)) continue
+    const wanted = figureBody(figure)
+    if (wanted.percent || wanted.sample || !/^\d+$/.test(wanted.body)) return null
+    const count = new RegExp(`\\b${wanted.body}\\s+(men|women|adults|participants|patients|children|people)\\b`, 'i')
+    const match = next.match(count)
+    if (!match) return null
+    if (!new RegExp(`\\b${match[1]}\\b`, 'i').test(support)) return null
+    next = next.replace(count, match[1])
+  }
+  return next
+}
+
+/** A sentence copied from an abstract that reports a null on its own. */
+export function nullFindingSentence(text: string): string | null {
+  const parts = text
+    .replace(/\s+/g, ' ')
+    .split(/(?<=\.)\s+/)
+    .map((part) => part.trim())
+    .filter((part) => part.length > 40 && part.length <= 420)
+  const hits = parts.filter((part) => studyDirection(part) === 'no-effect')
+  const standalone = hits.find((part) => !/^(however|these|this|that|it|they)\b/i.test(part))
+  return standalone || hits[0] || null
+}
+
+/** True when the sentence and the abstract share a printed figure or a population phrase. */
+export function claimOverlap(sentence: string, support: string): boolean {
+  if (quotedFigures(sentence).some((figure) => figureAppears(figure, support))) return true
+  return CLAIM_ANCHORS.some((pattern) => pattern.test(sentence) && pattern.test(support))
+}
+
+export function sentenceFitsSupport(sentence: string, support: string): string | null {
+  if (!support.trim() || !anchorsMatch(sentence, support)) return null
+  if (citesRctWithoutSupport(sentence, support)) return null
+  const rewritten = stripUnprintedCounts(rewriteDerivedTotals(sentence, support), support)
+  if (!rewritten) return null
+  if (!quotedFigures(rewritten).every((figure) => figureAppears(figure, support))) return null
+  return rewritten
 }
 
 export function citesRctWithoutSupport(sentence: string, support: string): boolean {
