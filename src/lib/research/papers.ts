@@ -136,11 +136,47 @@ export function stripTrackingUrl(raw: string): string {
 
 export function cleanTitle(title: string): string {
   let text = title.replace(/\s+/g, ' ').trim()
+  text = text.replace(/\s*(?:\.{3}|…)+\s*$/g, '')
   text = text.replace(/^Frontiers\s*\|\s*/i, '')
   text = text.replace(/\s*\|\s*springermedizin\.de\s*$/i, '')
-  text = text.replace(/\s+-\s+PubMed\s*$/i, '')
-  text = text.replace(/\s+-\s+PMC\s*$/i, '')
-  return text.trim()
+  text = text.replace(/\s+-\s+(?:PubMed|PMC)\s*$/i, '')
+  const parts = text.split(/\s+\|\s+/)
+  while (parts.length > 1 && siteSuffix(parts[parts.length - 1] ?? '')) parts.pop()
+  const cleaned = parts.join(' | ').trim()
+  return cleaned || title.trim()
+}
+
+function siteSuffix(segment: string): boolean {
+  const text = segment.trim()
+  if (!text) return true
+  if (text.length <= 24) return true
+  return /\b(plos|springer|wiley|nature|pubmed|pmc|elsevier|lancet|oxford|frontiers|sciencedirect|nejm|bmj|endocrine|medicine|journal|researcher|discovery)\b/i.test(text) && text.length <= 80
+}
+
+/** Prefer the catalog title when the scraped title is cut off or shorter. */
+export function chooseTitle(scraped: string | null | undefined, catalog: string | null | undefined): string {
+  const fromPage = cleanTitle(scraped || '')
+  const fromCatalog = cleanTitle(catalog || '')
+  if (!fromPage) return fromCatalog || 'Title unavailable'
+  if (!fromCatalog) return fromPage
+  const pageWasCut = /\.{3}|…/.test(scraped || '')
+  const catalogLonger = fromCatalog.length > fromPage.length + 8
+  if (!pageWasCut && !catalogLonger) return fromPage
+  const probe = fromPage.slice(0, 24).toLowerCase()
+  if (probe.length >= 12 && fromCatalog.toLowerCase().includes(probe)) return fromCatalog
+  return fromPage
+}
+
+export type StudyDirection = 'benefit' | 'no-effect' | 'unclear'
+
+export function studyDirection(text: string): StudyDirection {
+  const sample = text.toLowerCase()
+  const benefit = /\b(improv(?:e|es|ed|ement)?|benefit|beneficial|reduc(?:e|ed|tion)|decreas(?:e|ed))\b/.test(sample)
+  const none = /\b(did not|didn't|no significant|not significant|unchanged|no effect|no difference|were similar|was similar)\b/.test(sample)
+  if (benefit && none) return 'unclear'
+  if (benefit) return 'benefit'
+  if (none) return 'no-effect'
+  return 'unclear'
 }
 
 export function normalizeTitle(title: string): string {

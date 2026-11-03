@@ -1,7 +1,7 @@
 import { excludeDomains, PRIORITY_QUERY_HINT } from '@/lib/research/domains'
 import { resolvePaperMetadata } from '@/lib/research/metadata'
 import { isCoverageUrl, isExcludedUrl, isMirrorUrl, isRejectedResultUrl } from '@/lib/research/domains'
-import { arxivIdFromUrl, isPdfUrl, normalizeTitle, normalizeUrl, pmidFromUrl, validateQuestion, workKey } from '@/lib/research/papers'
+import { arxivIdFromUrl, isPdfUrl, normalizeTitle, normalizeUrl, pmidFromUrl, studyDirection, validateQuestion, workKey } from '@/lib/research/papers'
 import {
   readSource,
   renumberCitations,
@@ -44,6 +44,7 @@ export const ANSWER_SYSTEM = [
   'Label a subgroup, cumulative, or secondary result as such. Do not present it as the overall finding.',
   'When only one meta-analysis is cited, call it a meta-analysis.',
   'Name the outcome that was measured, such as clamp, HOMA-IR, OGTT, fasting glucose, or HbA1c, instead of saying only insulin sensitivity.',
+  'Keep the source population wording. If the source says overweight or obesity, do not narrow it to obesity.',
   'If the question is about intermittent fasting in general and the sources only study time-restricted eating, say that the evidence is from time-restricted eating.',
   'If a sentence has no supporting source, omit it.',
   'Do not cite news, press releases, ResearchGate, Academia.edu, Wikipedia, or other excluded domains as evidence.',
@@ -217,6 +218,20 @@ export function readSupportChecks(payload: unknown): { n: number; supported: boo
   return out
 }
 
+export const UNVERIFIED_ANSWER = "We couldn't verify a sourced answer for this question."
+
+function restoreSources(shaped: ShapedResearch & { error?: string }, message: string): ShapedResearch & { error?: string } {
+  const seen = new Set<string>()
+  const retrieved: ResearchPaper[] = []
+  for (const paper of [...shaped.retrieved, ...shaped.citations]) {
+    const key = `${paper.doi || ''}|${paper.sourceUrl}`
+    if (seen.has(key)) continue
+    seen.add(key)
+    retrieved.push({ ...paper, n: null })
+  }
+  return { ...shaped, sentences: [], citations: [], retrieved, error: shaped.error || message }
+}
+
 function resolvablePaper(paper: { url: string; doi?: string | null; pmid?: string | null; text?: string | null; summary?: string | null }): boolean {
   return workKey(paper).startsWith('doi:') || workKey(paper).startsWith('pmid:') || workKey(paper).startsWith('arxiv:')
 }
@@ -253,15 +268,16 @@ async function verifyShaped(
     )
     const checks = readSupportChecks(payload)
     if (!checks) {
-      return {
-        ...shaped,
-        sentences: [],
-        citations: [],
-        error: 'The abstract check did not finish, so those claims are not shown.',
-      }
+      return restoreSources(
+        { ...shaped, sentences: [], citations: [] },
+        'The abstract check did not finish, so those claims are not shown.',
+      )
     }
     const supported = new Map(checks.map((check) => [check.n, check.supported]))
     const sentences = shaped.sentences.filter((_, index) => supported.get(index + 1) === true)
+    if (sentences.length === 0) {
+      return restoreSources(shaped, UNVERIFIED_ANSWER)
+    }
     const used = new Set(sentences.flatMap((sentence) => sentence.cites))
     return renumberCitations({
       ...shaped,
@@ -270,22 +286,33 @@ async function verifyShaped(
     })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'The abstract check did not finish, so those claims are not shown.'
-    return { ...shaped, sentences: [], citations: [], error: redactSecrets(message) }
+    return restoreSources({ ...shaped, sentences: [], citations: [] }, redactSecrets(message))
   }
 }
 
-function answerQuery(question: string, papers: SourceFields[]): string {
+export function answerQuery(question: string, papers: SourceFields[], metaByKey: Record<string, PaperMeta> = {}): string {
+  const notes = papers.slice(0, SEARCH_RESULTS).map((paper) => {
+    const meta = metaByKey[paper.url] ?? metaByKey[workKey(paper)] ?? {}
+    return studyDirection(meta.abstract || paper.summary || paper.text || '')
+  })
+  const bothSides = notes.includes('benefit') && notes.includes('no-effect')
   const lines = papers.slice(0, SEARCH_RESULTS).map((paper, index) => {
-    const excerpt = (paper.summary || paper.highlights?.join('\n') || paper.text || '').slice(0, 1200)
-    return `[${index + 1}] ${paper.title ?? 'Untitled'}\nURL: ${paper.url}\nExcerpt: ${excerpt}`
+    const meta = metaByKey[paper.url] ?? metaByKey[workKey(paper)] ?? {}
+    const excerpt = (meta.abstract || paper.summary || paper.highlights?.join('\n') || paper.text || '').slice(0, 1200)
+    const direction = notes[index]
+    const tag = direction === 'benefit' ? 'Reports a benefit.' : direction === 'no-effect' ? 'Reports no effect.' : ''
+    return `[${index + 1}] ${paper.title ?? 'Untitled'}\nURL: ${paper.url}\n${tag}\nExcerpt: ${excerpt}`.trim()
   })
   return [
     `Question: ${question}`,
     '',
     'Use only these retrieved sources, and only when the excerpt supports the claim. Copy the source URL into sentences[].urls.',
+    bothSides
+      ? 'The retrieved studies include both a reported benefit and a reported no effect. Cite at least one of each. Do not answer from the null studies only. Include positive early time-restricted feeding trials when they are in this list.'
+      : '',
     '',
     lines.join('\n\n'),
-  ].join('\n')
+  ].filter((line) => line !== undefined).join('\n')
 }
 
 export function parsePaperUrl(raw: unknown): { ok: true; url: string } | { ok: false; error: string } {
@@ -319,21 +346,19 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
     return { configured: true, question, error: redactSecrets(message), ...emptyShape() }
   }
   try {
-    const [answered, foundMeta] = await Promise.all([
-      deps.exaPost(
-        '/answer',
-        {
-          query: answerQuery(question, found),
-          stream: false,
-          text: true,
-          model: 'exa',
-          systemPrompt: ANSWER_SYSTEM,
-          outputSchema: ANSWER_SCHEMA,
-        },
-        ANSWER_TIMEOUT_MS,
-      ),
-      metaMap(found, deps.resolve),
-    ])
+    const foundMeta = await metaMap(found, deps.resolve)
+    const answered = await deps.exaPost(
+      '/answer',
+      {
+        query: answerQuery(question, found, foundMeta),
+        stream: false,
+        text: true,
+        model: 'exa',
+        systemPrompt: ANSWER_SYSTEM,
+        outputSchema: ANSWER_SCHEMA,
+      },
+      ANSWER_TIMEOUT_MS,
+    )
     const answer = readAnswer(answered)
     const novel = answer.citations.filter((citation) => !foundMeta[citation.url] && !foundMeta[workKey(citation)])
     const extraMeta = novel.length ? await metaMap(novel, deps.resolve) : {}
@@ -347,6 +372,9 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
       now: deps.now,
     })
     const checked = await verifyShaped(question, shaped, deps.exaPost)
+    if (checked.sentences.length === 0) {
+      return { configured: true, question, ...restoreSources(checked, UNVERIFIED_ANSWER) }
+    }
     return { configured: true, question, ...checked }
   } catch (err) {
     const message = err instanceof ExaRequestError ? err.message : err instanceof Error ? err.message : 'Exa request failed.'

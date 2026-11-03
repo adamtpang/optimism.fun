@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { ANSWER_SYSTEM, askResearch, readSupportChecks, similarResearch } from '@/lib/research/ask'
+import { ANSWER_SYSTEM, UNVERIFIED_ANSWER, answerQuery, askResearch, readSupportChecks, similarResearch } from '@/lib/research/ask'
 import { isNewsRecord } from '@/lib/research/domains'
 import { readCrossref, readNcbiIdconv, readOpenAlex, resolvePaperMetadata } from '@/lib/research/metadata'
 import {
+  chooseTitle,
   citationLink,
   cleanDoi,
   cleanTitle,
@@ -487,6 +488,105 @@ describe('review fixtures', () => {
       abstract_inverted_index: { The: [0], program: [1], reached: [2], '4800': [3], children: [4] },
     })
     expect(meta.abstract).toBe('The program reached 4800 children')
+  })
+
+  it('keeps the Lancet paper and explains when every sentence fails verification', async () => {
+    process.env.EXA_API_KEY = 'test-key-value'
+    const lancet = {
+      url: 'https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(23)02511-4/fulltext',
+      title: 'Seasonal malaria vaccination with R21',
+      text: 'Vaccine efficacy was 75% in children.',
+      doi: '10.1016/S0140-6736(23)02511-4',
+    }
+    const result = await askResearch('How well does the R21 malaria vaccine work?', {
+      resolve: async () => ({ retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article', doi: lancet.doi }),
+      exaPost: async (path, body) => {
+        if (path === '/search') return { results: [lancet] }
+        const schema = JSON.stringify((body as { outputSchema?: unknown }).outputSchema ?? {})
+        if (schema.includes('supported')) return { answer: { checks: [{ n: 1, supported: false }] } }
+        return { answer: { sentences: [{ text: 'Vaccine efficacy was 75% in children.', urls: [lancet.url] }] }, citations: [] }
+      },
+    })
+    delete process.env.EXA_API_KEY
+    expect(result.configured).toBe(true)
+    if (!result.configured) return
+    expect(result.sentences).toEqual([])
+    expect(result.citations).toEqual([])
+    expect(result.error).toBe(UNVERIFIED_ANSWER)
+    expect(result.retrieved.some((paper) => paper.doi?.toLowerCase() === '10.1016/s0140-6736(23)02511-4')).toBe(true)
+  })
+
+  it('rejects a derived headcount and keeps a literal one', () => {
+    const url = 'https://doi.org/10.1002/oby.23620'
+    const doi = '10.1002/oby.23620'
+    const abstract = 'Participants were 17 women and 3 men with overweight or obesity.'
+    const derived = shapeResearchAnswer({
+      retrieved: [{ url, title: 'Pilot', text: 'Secondary analysis.', doi }],
+      answer: 'A pilot of 20 adults with obesity found no change [1].',
+      metaByKey: { [url]: { doi, abstract, retractionChecked: true, retracted: false, journal: true } },
+    })
+    expect(derived.sentences).toEqual([])
+    const literal = shapeResearchAnswer({
+      retrieved: [{ url, title: 'Pilot', text: 'Secondary analysis.', doi }],
+      answer: 'The trial enrolled 17 women and 3 men with overweight or obesity [1].',
+      metaByKey: { [url]: { doi, abstract, retractionChecked: true, retracted: false, journal: true } },
+    })
+    expect(literal.sentences).toHaveLength(1)
+  })
+
+  it('drops a citation that does not cover that sentence', () => {
+    const counts = { url: 'https://doi.org/10.1000/counts', title: 'Main trial', text: '10 of 1786 and 22 of 1787, efficacy 54.0%.', doi: '10.1000/counts' }
+    const percent = { url: 'https://doi.org/10.1000/percent', title: 'Other trial', text: 'Efficacy was 54.0%.', doi: '10.1000/percent' }
+    const shaped = shapeResearchAnswer({
+      retrieved: [counts, percent],
+      numberedSources: [counts, percent],
+      answer: { sentences: [{ text: 'There were 10 of 1786 and 22 of 1787 events, and efficacy was 54.0%.', urls: [counts.url, percent.url] }] },
+    })
+    expect(shaped.citations.map((paper) => paper.doi)).toEqual(['10.1000/counts'])
+    expect(shaped.sentences[0]?.cites).toEqual([1])
+  })
+
+  it('strips site suffixes, keeps the full title, and links aggregators to doi.org', () => {
+    expect(cleanTitle('Roll out and prospects of the malaria vaccine R21/Matrix-M | PLOS Medicine')).toBe(
+      'Roll out and prospects of the malaria vaccine R21/Matrix-M',
+    )
+    const full = 'Efficacy of seasonal malaria vaccination with R21 in children over two transmission seasons'
+    expect(chooseTitle(`${full.slice(0, 40)}... | Endocrine Reviews | Oxford Ac`, full)).toBe(full)
+    const shaped = shapeResearchAnswer({
+      retrieved: [{
+        url: 'https://discovery.researcher.life/article/r21/10.1016/s0140-6736(23)02511-4',
+        title: 'Seasonal malaria vaccination | Lancet',
+        text: 'A phase 3 trial.',
+        doi: '10.1016/S0140-6736(23)02511-4',
+      }],
+      answer: null,
+      metaByKey: {
+        'https://discovery.researcher.life/article/r21/10.1016/s0140-6736(23)02511-4': {
+          doi: '10.1016/S0140-6736(23)02511-4',
+          title: 'Seasonal malaria vaccination with R21 in Matrix-M adjuvant',
+          retractionChecked: true,
+          retracted: false,
+          journal: true,
+        },
+      },
+    })
+    expect(shaped.retrieved[0]?.sourceUrl?.toLowerCase()).toBe('https://doi.org/10.1016/s0140-6736(23)02511-4')
+    expect(shaped.retrieved[0]?.href?.toLowerCase()).toBe('https://doi.org/10.1016/s0140-6736(23)02511-4')
+    expect(shaped.retrieved[0]?.title).toBe('Seasonal malaria vaccination with R21 in Matrix-M adjuvant')
+  })
+
+  it('tells the model to cite both a benefit and a null trial when both were retrieved', () => {
+    const query = answerQuery(
+      'Does intermittent fasting improve insulin sensitivity?',
+      [
+        { url: 'https://doi.org/10.1016/j.cmet.2018.04.010', title: 'Early time-restricted feeding', text: 'Early time-restricted feeding improves insulin sensitivity.' },
+        { url: 'https://doi.org/10.1002/oby.23620', title: 'Time-restricted eating pilot', text: 'Time-restricted eating did not change insulin sensitivity.' },
+      ],
+    )
+    expect(query).toContain('Cite at least one of each')
+    expect(query).toContain('Reports a benefit.')
+    expect(query).toContain('Reports no effect.')
+    expect(ANSWER_SYSTEM).toContain('overweight or obesity')
   })
 })
 

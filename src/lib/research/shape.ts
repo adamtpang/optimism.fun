@@ -1,10 +1,10 @@
-import { isCoverageUrl, isExcludedUrl, isMirrorUrl, isNewsRecord, isPerspectiveRecord, isRejectedResultUrl } from '@/lib/research/domains'
+import { isCoverageUrl, isExcludedUrl, isAggregatorUrl, isMirrorUrl, isNewsRecord, isPerspectiveRecord, isRejectedResultUrl } from '@/lib/research/domains'
 import {
   arxivIdFromUrl,
+  chooseTitle,
   citationLink,
   citesRctWithoutSupport,
   cleanDoi,
-  cleanTitle,
   doiFromText,
   doiFromUrl,
   figureAppears,
@@ -196,7 +196,10 @@ function toPaper(work: Work, n: number | null, asOf: Date): ResearchPaper {
       : parseAuthorField(fields.author),
   )
   const link = citationLink({ url: fields.url, doi: fields.doi, pmid: fields.pmid })
-  const title = cleanTitle(fields.title?.trim() || 'Title unavailable')
+  const title = chooseTitle(fields.title, work.meta.title)
+  const doi = cleanDoi(fields.doi) || doiFromUrl(fields.url)
+  let sourceUrl = stripTrackingUrl(fields.url)
+  if (doi && isAggregatorUrl(sourceUrl)) sourceUrl = `https://doi.org/${doi}`
   const status = paperStatus({
     url: fields.url,
     doi: fields.doi,
@@ -222,14 +225,14 @@ function toPaper(work: Work, n: number | null, asOf: Date): ResearchPaper {
     venue: work.meta.venue?.trim() || null,
     href: link.href,
     hrefLabel: link.label,
-    doi: cleanDoi(fields.doi) || doiFromUrl(fields.url),
+    doi,
     status,
     statusLabel: statusLabel(status),
     citationCount:
       typeof count === 'number' && Number.isFinite(count) ? formatCitationCount(count, asOf) : null,
     excerpt,
     excerptKind: excerpt ? work.excerpt.kind : null,
-    sourceUrl: stripTrackingUrl(fields.url),
+    sourceUrl,
   }
 }
 
@@ -400,6 +403,17 @@ function classifySide(
   }
 }
 
+function supportBlob(work: Work): string {
+  if (work.meta.abstract?.trim()) return work.meta.abstract
+  return [work.excerpt.text, work.fields.summary, ...(work.fields.highlights ?? [])].filter(Boolean).join('\n')
+}
+
+function citationSupportsSentence(work: Work, plain: string): boolean {
+  const blob = supportBlob(work)
+  if (citesRctWithoutSupport(plain, blob)) return false
+  return quotedFigures(plain).every((figure) => figureAppears(figure, blob))
+}
+
 function showRetrieved(paper: ResearchPaper): boolean {
   if (!paper.title || paper.title === 'Title unavailable') return false
   if (paper.status === 'unverified' && !paper.doi) return false
@@ -518,13 +532,12 @@ export function shapeResearchAnswer(input: {
     const plain = stripMarkers(sentence.text)
     if (!plain) continue
     if (unique.length > 0) {
-      const support = unique.map((work) => [work.meta.abstract, work.excerpt.text, work.fields.text, work.fields.summary].filter(Boolean).join('\n')).join('\n')
-      const missingFigure = quotedFigures(plain).some((figure) => !figureAppears(figure, support))
-      if (missingFigure || citesRctWithoutSupport(plain, support)) {
+      const supporting = unique.filter((work) => citationSupportsSentence(work, plain))
+      if (supporting.length === 0) {
         keptSentences.push({ text: plain, keys: [], reason: 'dropped-citation' })
         continue
       }
-      keptSentences.push({ text: plain, keys: unique.map((work) => work.key), reason: null })
+      keptSentences.push({ text: plain, keys: supporting.map((work) => work.key), reason: null })
       continue
     }
     const sawRetracted = blocks.includes('retracted')

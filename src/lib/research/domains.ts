@@ -31,8 +31,8 @@ export const PREPRINT_DOMAINS = ['arxiv.org', 'biorxiv.org', 'medrxiv.org', 'ssr
 
 export const TRIAL_DOMAINS = ['clinicaltrials.gov', 'who.int'] as const
 
-/** Publisher mirrors. Resolve them to a DOI, PMID, or arXiv id, or drop them. */
-export const MIRROR_DOMAINS = ['springermedizin.de', 'malariaworld.org', 'medscape.com'] as const
+/** Publisher mirrors and discovery aggregators. Resolve them to a DOI and link doi.org. */
+export const MIRROR_DOMAINS = ['springermedizin.de', 'malariaworld.org', 'medscape.com', 'discovery.researcher.life', 'researcher.life'] as const
 
 /** Blogs, news summaries, machine translations, and proxy hosts that are not the paper. */
 export const REJECTED_RESULT_DOMAINS = [
@@ -188,6 +188,12 @@ export function isPeerReviewedUrl(raw: string): boolean {
 export function isMirrorUrl(raw: string): boolean {
   const host = hostOf(raw)
   return Boolean(host && hostMatchesList(host, MIRROR_DOMAINS))
+}
+
+export function isAggregatorUrl(raw: string): boolean {
+  const host = hostOf(raw)
+  if (!host) return false
+  return host === 'discovery.researcher.life' || host.endsWith('.researcher.life') || host === 'researcher.life'
 }
 
 /** Press, blogs, news summaries, machine translations, proxy mirrors, PDFs, and registry pages. */
