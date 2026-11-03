@@ -364,7 +364,7 @@ describe('Exa research requests', () => {
         return {
           results: [
             nature,
-            arxiv,
+            { ...arxiv, url: 'https://arxiv.org/abs/2401.00001' },
             { url: RESEARCHGATE, title: 'Gate', text: 'no' },
             { url: REUTERS, title: 'Wire', summary: 'news' },
           ],
@@ -379,10 +379,10 @@ describe('Exa research requests', () => {
     expect(similarBody(NATURE)).not.toHaveProperty('includeDomains')
     expect(result.configured).toBe(true)
     if (!result.configured) return
-    expect(result.papers.map((paper) => paper.sourceUrl)).toEqual([ARXIV_PDF])
+    expect(result.papers.map((paper) => paper.sourceUrl)).toEqual(['https://arxiv.org/abs/2401.00001'])
     expect(result.papers[0]?.excerptKind).toBe('summary')
     expect(result.papers[0]?.statusLabel).toBe('Preprint')
-    expect(result.coverage.map((link) => link.label)).toEqual(['Coverage'])
+    expect(result.coverage).toEqual([])
     expect(result.papers.some((paper) => paper.sourceUrl === NATURE)).toBe(false)
   })
 })

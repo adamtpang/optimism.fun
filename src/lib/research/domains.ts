@@ -34,6 +34,13 @@ export const TRIAL_DOMAINS = ['clinicaltrials.gov', 'who.int'] as const
 /** Publisher mirrors. Resolve them to a DOI, PMID, or arXiv id, or drop them. */
 export const MIRROR_DOMAINS = ['springermedizin.de', 'malariaworld.org', 'medscape.com'] as const
 
+/** Blogs, news summaries, machine translations, and proxy hosts that are not the paper. */
+export const REJECTED_RESULT_DOMAINS = [
+  'diabetologia-journal.org',
+  'diabetesonthenet.com',
+  'shamra-academia.com',
+] as const
+
 /**
  * News and press-release hosts. They may be shown as Coverage links.
  * They are never evidence. Press-release aggregators the research lead
@@ -181,6 +188,22 @@ export function isPeerReviewedUrl(raw: string): boolean {
 export function isMirrorUrl(raw: string): boolean {
   const host = hostOf(raw)
   return Boolean(host && hostMatchesList(host, MIRROR_DOMAINS))
+}
+
+/** Press, blogs, news summaries, machine translations, proxy mirrors, PDFs, and registry pages. */
+export function isRejectedResultUrl(raw: string): boolean {
+  const host = hostOf(raw)
+  if (!host) return true
+  if (hostMatchesList(host, REJECTED_RESULT_DOMAINS)) return true
+  if (host.includes('springerlink')) return true
+  try {
+    const path = new URL(raw).pathname.toLowerCase()
+    if (path.includes('/blog') || path.includes('/blogs') || path.includes('/news')) return true
+    if (path.endsWith('.pdf') || path.includes('/pdf/') || path.includes('/pdf')) return true
+  } catch {
+    return true
+  }
+  return false
 }
 
 /** Nature news DOIs and Science magazine news pages are not research articles. */

@@ -159,6 +159,83 @@ export function plainExcerpt(text: string): string {
   return text.replace(/\u2014/g, '-')
 }
 
+/** Rebuild an OpenAlex abstract from its inverted index. */
+export function abstractFromInvertedIndex(index: unknown): string | null {
+  if (!index || typeof index !== 'object') return null
+  const placed: { at: number; word: string }[] = []
+  for (const [word, positions] of Object.entries(index as Record<string, unknown>)) {
+    if (!Array.isArray(positions)) continue
+    for (const position of positions) {
+      if (typeof position === 'number') placed.push({ at: position, word })
+    }
+  }
+  if (placed.length === 0) return null
+  placed.sort((a, b) => a.at - b.at)
+  return placed.map((item) => item.word).join(' ')
+}
+
+export function plainAbstract(value: unknown): string | null {
+  if (typeof value !== 'string') return null
+  const text = value.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
+  return text || null
+}
+
+function figureBody(raw: string): { body: string; percent: boolean; sample: boolean } {
+  const percent = /%|percent/i.test(raw)
+  const sample = /^\s*n\s*=/i.test(raw)
+  let body = raw.toLowerCase().replace(/,/g, '').replace(/\s+/g, '')
+  body = body.replace(/^n=/, '').replace(/%$/, '').replace(/percent$/, '')
+  if (body.endsWith('.0')) body = body.slice(0, -2)
+  return { body, percent, sample }
+}
+
+/** Numbers, percents, and n= values stated in a sentence. */
+export function quotedFigures(sentence: string): string[] {
+  const patterns = [
+    /\bn\s*=\s*\d{1,3}(?:,\d{3})+(?:\.\d+)?/gi,
+    /\bn\s*=\s*\d+(?:\.\d+)?/gi,
+    /\b\d{1,3}(?:,\d{3})+(?:\.\d+)?%/g,
+    /\b\d+(?:\.\d+)?%/g,
+    /\b\d{1,3}(?:,\d{3})+(?:\.\d+)?\b/g,
+    /\b\d+(?:\.\d+)?\b/g,
+  ]
+  const spans: { start: number; end: number; text: string }[] = []
+  for (const pattern of patterns) {
+    for (const match of sentence.matchAll(pattern)) {
+      if (match.index == null) continue
+      spans.push({ start: match.index, end: match.index + match[0].length, text: match[0] })
+    }
+  }
+  const kept = spans.filter(
+    (span) =>
+      !spans.some(
+        (other) =>
+          other !== span &&
+          other.start <= span.start &&
+          other.end >= span.end &&
+          other.end - other.start > span.end - span.start,
+      ),
+  )
+  return [...new Set(kept.map((span) => span.text))]
+}
+
+export function figureAppears(figure: string, text: string): boolean {
+  const wanted = figureBody(figure)
+  if (!wanted.body) return true
+  const hay = text.replace(/,/g, '')
+  const token = wanted.body.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const number = new RegExp(`(?:^|[^\\d.])${token}(?:\\.0+)?(?=$|[^\\d])`, 'i')
+  if (!number.test(hay)) return false
+  if (!wanted.percent) return true
+  return new RegExp(`${token}(?:\\.0+)?\\s*(?:%|percent)`, 'i').test(hay)
+}
+
+export function citesRctWithoutSupport(sentence: string, support: string): boolean {
+  const callsRct = /\brcts?\b|\brandomi[sz]ed controlled trials?\b/i.test(sentence)
+  if (!callsRct) return false
+  return !/\brcts?\b|\brandomi[sz]ed\b/i.test(support)
+}
+
 export function arxivIdFromUrl(raw: string | null | undefined): string | null {
   if (!raw) return null
   const modern = raw.match(/arxiv\.org\/(?:abs|pdf|html)\/(\d{4}\.\d{4,5})(?:v\d+)?/i)

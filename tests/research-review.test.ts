@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { ANSWER_SYSTEM, askResearch, readSupportChecks } from '@/lib/research/ask'
+import { ANSWER_SYSTEM, askResearch, readSupportChecks, similarResearch } from '@/lib/research/ask'
 import { isNewsRecord } from '@/lib/research/domains'
-import { readCrossref, readNcbiIdconv, resolvePaperMetadata } from '@/lib/research/metadata'
+import { readCrossref, readNcbiIdconv, readOpenAlex, resolvePaperMetadata } from '@/lib/research/metadata'
 import {
   citationLink,
   cleanDoi,
@@ -364,6 +364,129 @@ describe('review fixtures', () => {
     expect(meta.doi).toBe('10.1016/j.cmet.2018.04.010')
     expect(meta.venue).toBe('Cell Metabolism')
     expect(paperStatus({ url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5990470/', ...meta })).toBe('peer-reviewed')
+  })
+
+  it('renumbers cited sources from 1 with no gaps', () => {
+    const papers: SourceFields[] = Array.from({ length: 8 }, (_, index) => ({
+      url: `https://doi.org/10.1000/item${index + 1}`,
+      title: `Study ${index + 1}`,
+      text: `Result from study ${index + 1}.`,
+      doi: `10.1000/item${index + 1}`,
+    }))
+    const shaped = shapeResearchAnswer({
+      retrieved: papers,
+      numberedSources: papers,
+      answer: 'Result from study 1 [1]. Result from study 8 [8].',
+    })
+    expect(shaped.citations.map((paper) => paper.n)).toEqual([1, 2])
+    expect(shaped.citations.map((paper) => paper.title)).toEqual(['Study 1', 'Study 8'])
+    expect(shaped.sentences.map((sentence) => sentence.cites)).toEqual([[1], [2]])
+    expect(shaped.sentences.map((sentence) => sentence.text).join(' ')).not.toContain('[8]')
+  })
+
+  it('drops a sentence whose number is not in the excerpt or abstract', () => {
+    const doi = '10.1016/j.tube.2024.1'
+    const url = 'https://doi.org/10.1016/j.tube.2024.1'
+    const missing = shapeResearchAnswer({
+      retrieved: [{ url, title: 'Tuberculosis trial', text: 'The trial measured sputum conversion.', doi }],
+      answer: 'The trial enrolled 3,573 people [1]. The rate was 54.0% [1].',
+    })
+    expect(missing.sentences).toEqual([])
+
+    const kept = shapeResearchAnswer({
+      retrieved: [{ url, title: 'Tuberculosis trial', text: 'Short page text.', doi }],
+      answer: 'The program reached 4,800 children [1].',
+      metaByKey: {
+        [url]: {
+          doi,
+          abstract: 'The program reached 4,800 children in the district.',
+          retractionChecked: true,
+          retracted: false,
+          journal: true,
+          crossrefType: 'journal-article',
+        },
+      },
+    })
+    expect(kept.sentences).toHaveLength(1)
+    expect(kept.sentences[0]?.text).toContain('4,800')
+    expect(kept.citations[0]?.excerpt).toContain('4,800')
+  })
+
+  it('does not treat a pooled study as an RCT unless the cited text says so', () => {
+    const url = 'https://doi.org/10.1016/j.meta.2024.1'
+    const dropped = shapeResearchAnswer({
+      retrieved: [{ url, title: 'A meta-analysis', text: 'A meta-analysis of 8 studies found no effect on fasting glucose.', doi: '10.1016/j.meta.2024.1' }],
+      answer: 'Eight RCTs found no effect on fasting glucose [1].',
+    })
+    expect(dropped.sentences).toEqual([])
+    const kept = shapeResearchAnswer({
+      retrieved: [{ url, title: 'A meta-analysis', text: 'This meta-analysis pooled 8 randomized controlled trials.', doi: '10.1016/j.meta.2024.1' }],
+      answer: 'A meta-analysis of 8 RCTs found no effect [1].',
+    })
+    expect(kept.sentences).toHaveLength(1)
+  })
+
+  it('drops unresolved, untitled, and PDF items from the uncited source list', () => {
+    const shaped = shapeResearchAnswer({
+      retrieved: [
+        { url: 'https://www.sciencedirect.com/science/article/pii/S0000000000000001', title: 'Unresolved ScienceDirect page', text: 'A page with no DOI.' },
+        { url: 'https://www.nature.com/articles/s41586-020-2649-2.pdf', title: 'Nature PDF', text: 'PDF landing page.', doi: '10.1038/s41586-020-2649-2' },
+        { url: 'https://example.edu/unknown', title: '', text: 'Mystery text.' },
+        { url: 'https://doi.org/10.1000/keep1', title: 'A real trial', text: 'Adults were enrolled.', doi: '10.1000/keep1' },
+      ],
+      answer: null,
+      metaByKey: {
+        'https://example.edu/unknown': { retractionChecked: false },
+      },
+    })
+    expect(shaped.retrieved.map((paper) => paper.title)).toEqual(['A real trial'])
+  })
+
+  it('keeps similar papers only when they resolve, and excludes the input paper', async () => {
+    process.env.EXA_API_KEY = 'test-key-value'
+    const seed = 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10943166/'
+    const result = await similarResearch(seed, {
+      resolve: async (fields) => {
+        if (fields.url === seed) {
+          return {
+            doi: '10.1007/s11154-023-09853-x',
+            title: 'Circadian alignment of food intake and glycaemic control by time-restricted eating: A systematic review and meta-analysis',
+            retractionChecked: true,
+            retracted: false,
+            journal: true,
+          }
+        }
+        if (fields.url.includes('10.1002/oby.23620')) {
+          return { doi: '10.1002/oby.23620', retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article' }
+        }
+        return { retractionChecked: true, retracted: false }
+      },
+      exaPost: async () => ({
+        results: [
+          { url: 'https://link.springer.com/article/10.1007/s11154-023-09853-x', title: 'Circadian alignment of food intake and glycaemic control by time-restricted eating: A systematic review and meta-analysis', text: 'The same review.', doi: '10.1007/s11154-023-09853-x' },
+          { url: 'https://www.diabetologia-journal.org/blog/fasting', title: 'Blog post', text: 'A blog.' },
+          { url: 'https://diabetesonthenet.com/diabetes-primary-care/fasting-news', title: 'News summary', text: 'A news summary.' },
+          { url: 'https://shamra-academia.com/papers/1', title: 'Translated copy', text: 'Machine translation.' },
+          { url: 'https://springerlink.example.de/content/abc', title: 'Proxy mirror', text: 'A proxy.' },
+          { url: 'https://www.nature.com/articles/s41586-020-2649-2.pdf', title: 'PDF', text: 'A pdf.', doi: '10.1038/s41586-020-2649-2' },
+          { url: 'https://www.sciencedirect.com/science/article/pii/S123', title: 'No DOI yet', text: 'Unresolved publisher page.' },
+          { url: 'https://onlinelibrary.wiley.com/doi/10.1002/oby.23620', title: 'A different trial', text: 'Another trial.', doi: '10.1002/oby.23620' },
+        ],
+      }),
+    })
+    delete process.env.EXA_API_KEY
+    expect(result.configured).toBe(true)
+    if (!result.configured) return
+    expect(result.papers.map((paper) => paper.doi)).toEqual(['10.1002/oby.23620'])
+  })
+
+  it('reads an OpenAlex inverted abstract', () => {
+    const meta = readOpenAlex({
+      type: 'article',
+      is_retracted: false,
+      abstract_inverted_index: { The: [0], program: [1], reached: [2], '4800': [3], children: [4] },
+    })
+    expect(meta.abstract).toBe('The program reached 4800 children')
   })
 })
 

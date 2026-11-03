@@ -1,9 +1,10 @@
 import { excludeDomains, PRIORITY_QUERY_HINT } from '@/lib/research/domains'
 import { resolvePaperMetadata } from '@/lib/research/metadata'
-import { isExcludedUrl, isMirrorUrl } from '@/lib/research/domains'
-import { normalizeTitle, validateQuestion, workKey } from '@/lib/research/papers'
+import { isCoverageUrl, isExcludedUrl, isMirrorUrl, isRejectedResultUrl } from '@/lib/research/domains'
+import { arxivIdFromUrl, isPdfUrl, normalizeTitle, normalizeUrl, pmidFromUrl, validateQuestion, workKey } from '@/lib/research/papers'
 import {
   readSource,
+  renumberCitations,
   shapeResearchAnswer,
   type CoverageLink,
   type PaperMeta,
@@ -35,6 +36,10 @@ export const ANSWER_SYSTEM = [
   'sentences[].urls lists only the URLs that support that claim.',
   'The bracket number in a claim is the number in the source list below. [1] is the first source in that list.',
   'Cite a source only when its excerpt supports the sentence.',
+  'Every number, percent, and sample size in a sentence must appear in the cited excerpt or abstract.',
+  'Summarize every relevant retrieved study, including both positive and null results. Do not report only the studies that found no effect. If an early time-restricted feeding trial reported a benefit and it was retrieved, include that result.',
+  'Do not call a pooled study, meta-analysis, or systematic review an RCT unless the cited text itself calls it a randomized controlled trial or an RCT.',
+  'When the cited text gives the number of studies or the sample size in a meta-analysis, state that count.',
   'State the population in every finding: sex, condition, and sample size when the source gives them.',
   'Label a subgroup, cumulative, or secondary result as such. Do not present it as the overall finding.',
   'When only one meta-analysis is cited, call it a meta-analysis.',
@@ -258,11 +263,11 @@ async function verifyShaped(
     const supported = new Map(checks.map((check) => [check.n, check.supported]))
     const sentences = shaped.sentences.filter((_, index) => supported.get(index + 1) === true)
     const used = new Set(sentences.flatMap((sentence) => sentence.cites))
-    return {
+    return renumberCitations({
       ...shaped,
       sentences,
       citations: shaped.citations.filter((paper) => paper.n != null && used.has(paper.n)),
-    }
+    })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'The abstract check did not finish, so those claims are not shown.'
     return { ...shaped, sentences: [], citations: [], error: redactSecrets(message) }
@@ -350,6 +355,40 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
   }
 }
 
+function sameAsSeed(
+  paper: { url: string; title?: string | null; doi?: string | null },
+  seedUrl: string,
+  seed: PaperMeta,
+): boolean {
+  if (normalizeUrl(paper.url) === normalizeUrl(seedUrl)) return true
+  const doi = (paper.doi || '').toLowerCase()
+  const seedDoi = (seed.doi || '').toLowerCase()
+  if (doi && seedDoi && doi === seedDoi) return true
+  const seedTitle = normalizeTitle(seed.title || '')
+  if (seedTitle.length >= 24 && paper.title && normalizeTitle(paper.title) === seedTitle) return true
+  return false
+}
+
+function keptSimilar(paper: SourceFields, seedUrl: string, seed: PaperMeta): boolean {
+  if (sameAsSeed(paper, seedUrl, seed)) return false
+  if (isExcludedUrl(paper.url) || isCoverageUrl(paper.url) || isRejectedResultUrl(paper.url)) return false
+  if (isMirrorUrl(paper.url) && !resolvablePaper(paper)) return false
+  if (/sciencedirect\.com/i.test(paper.url) && !resolvablePaper(paper)) return false
+  if (isPdfUrl(paper.url)) return false
+  return resolvablePaper(paper)
+}
+
+function keptSimilarView(paper: ResearchPaper, seedUrl: string, seed: PaperMeta): boolean {
+  if (sameAsSeed({ url: paper.sourceUrl, title: paper.title, doi: paper.doi }, seedUrl, seed)) return false
+  if (paper.title === 'Title unavailable' || paper.status === 'unverified') return false
+  const href = paper.href || ''
+  const identified = Boolean(paper.doi || pmidFromUrl(paper.sourceUrl) || pmidFromUrl(href) || arxivIdFromUrl(paper.sourceUrl) || arxivIdFromUrl(href))
+  if (!identified) return false
+  if (isPdfUrl(paper.sourceUrl) || isRejectedResultUrl(paper.sourceUrl)) return false
+  if (/sciencedirect\.com/i.test(paper.sourceUrl) && !paper.doi) return false
+  return true
+}
+
 export async function similarResearch(url: string, partial?: Partial<Deps>): Promise<SimilarResponse> {
   if (!isExaConfigured()) return { configured: false }
   const deps = depsFrom(partial)
@@ -367,16 +406,18 @@ export async function similarResearch(url: string, partial?: Partial<Deps>): Pro
       return true
     }).slice(0, SIMILAR_RESULTS)
     const metaByKey = await metaMap(found, deps.resolve)
+    const withIds = applyMeta(found, metaByKey).filter((paper) => keptSimilar(paper, url, seedMeta))
     const shaped = shapeResearchAnswer({
-      retrieved: applyMeta(found, metaByKey),
+      retrieved: withIds,
       answer: null,
       metaByKey,
       now: deps.now,
     })
+    const papers = shaped.retrieved.filter((paper) => keptSimilarView(paper, url, seedMeta))
     return {
       configured: true,
       url,
-      papers: shaped.retrieved,
+      papers,
       coverage: shaped.coverage,
       retracted: shaped.retracted,
     }

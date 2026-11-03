@@ -1,11 +1,13 @@
 import { openAlexContact } from '@/lib/sources/openalex'
 import {
+  abstractFromInvertedIndex,
   arxivIdFromUrl,
   cleanDoi,
   doiFromExcerpt,
   doiFromText,
   doiFromUrl,
   normalizeTitle,
+  plainAbstract,
   pmcidFromUrl,
   pmidFromUrl,
   sciencedirectPii,
@@ -75,6 +77,7 @@ export function readOpenAlex(payload: unknown): PaperMeta {
     title: typeof row.display_name === 'string' ? row.display_name : null,
     retracted: typeof row.is_retracted === 'boolean' ? row.is_retracted : null,
     citationCount: count,
+    abstract: abstractFromInvertedIndex(row.abstract_inverted_index),
     openAlexType,
     journal: openAlexType === 'article' || openAlexType === 'review',
     recordOk: true,
@@ -158,6 +161,7 @@ export function readCrossref(payload: unknown): PaperMeta {
     crossrefType,
     articleType: articleTypeOf(message),
     journal: crossrefType === 'journal-article',
+    abstract: plainAbstract(message.abstract),
     recordOk: true,
   }
 }
@@ -213,6 +217,7 @@ export function mergePaperMeta(openAlex: PaperMeta, crossref: PaperMeta, scholar
     corrected: crossref.corrected === true ? true : null,
     concern: crossref.concern === true ? true : null,
     citationCount: typeof openAlex.citationCount === 'number' ? openAlex.citationCount : null,
+    abstract: first(crossref.abstract, openAlex.abstract),
     crossrefType: crossref.crossrefType ?? null,
     openAlexType: openAlex.openAlexType ?? null,
     articleType: crossref.articleType ?? null,
