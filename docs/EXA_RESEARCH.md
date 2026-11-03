@@ -30,7 +30,8 @@ OpenAlex, Crossref, and Semantic Scholar are metadata resolvers only. They are n
 - If the retraction check times out, the paper is Unverified and is not cited. Retraction is read from OpenAlex `is_retracted` and from Crossref `update-to`, `updated-by`, and relation. An expression of concern is tagged Concern.
 - A DOI can be read from the URL (Nature article ids, Lancet PII, a DOI path) or from a header DOI in the excerpt. PMC and PMID use the NCBI ID converter. A title lookup against OpenAlex or Crossref is used only when the normalized titles match. No new key.
 - springermedizin.de, malariaworld.org, and Medscape are mirrors. They are kept only when a DOI, PMID, or arXiv id resolves, and the link is then doi.org or PubMed, not the mirror.
-- Answer citations that were not in the search are kept only when they carry a DOI, PMID, or arXiv id. `[1]` maps to source 1 in the prompt list.
+- `[1]` is the first source a reader sees. Cited sources are renumbered 1..n in the order they appear in the answer.
+- A sentence is dropped when it states a number, percent, or sample size that is not in the cited excerpt or abstract. The abstract comes from OpenAlex or Crossref when one is available. A pooled study is not called an RCT unless the cited text says so.
 - A citation count is shown only from OpenAlex, with the lookup date, for example `cited 412 times (OpenAlex, Nov 3, 2026)`.
 
 ## What can support a sentence
