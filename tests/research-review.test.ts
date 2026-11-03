@@ -79,6 +79,23 @@ describe('review fixtures', () => {
     expect(doiFromUrl('https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(97)11096-0/fulltext')).toBe(
       '10.1016/S0140-6736(97)11096-0',
     )
+    const sciencedirect = await resolvePaperMetadata(
+      { url: 'https://www.sciencedirect.com/science/article/pii/S014067361832261X', title: 'A Lancet article', text: 'Trial text.' },
+      {
+        timeoutMs: 1000,
+        fetchImpl: async (url) => {
+          if (url.includes('alternative-id:S014067361832261X')) {
+            return json({ message: { items: [{ DOI: '10.1016/S0140-6736(18)32261-X', type: 'journal-article' }] } })
+          }
+          if (url.includes('api.crossref.org/works/10.1016')) {
+            return json({ message: { DOI: '10.1016/S0140-6736(18)32261-X', type: 'journal-article', 'container-title': ['The Lancet'] } })
+          }
+          if (url.includes('api.openalex.org')) return json({ type: 'article', is_retracted: false })
+          return json({})
+        },
+      },
+    )
+    expect(sciencedirect.doi).toBe('10.1016/S0140-6736(18)32261-X')
     expect(citationLink({
       url: 'https://www.nature.com/articles/s41591-023-02287-7?code=abc&error=cookies_not_supported',
     }).href).toBe('https://doi.org/10.1038/s41591-023-02287-7')
