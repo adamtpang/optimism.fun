@@ -863,7 +863,7 @@ describe('review fixtures', () => {
     expect(shaped.sentences[0]?.text).not.toContain('\u2014')
   })
 
-  it('keeps a null result in the answer when the model cited only a benefit', async () => {
+  it('keeps a benefit claim and a null claim when the model wrote both', async () => {
     process.env.EXA_API_KEY = 'test-key-value'
     const benefit = {
       url: 'https://doi.org/10.1016/j.cmet.2018.04.010',
@@ -879,19 +879,24 @@ describe('review fixtures', () => {
     }
     const result = await askResearch('Does intermittent fasting improve insulin sensitivity?', {
       resolve: async () => ({ retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article' }),
-      exaPost: async (path, body) => {
+      exaPost: async (path) => {
         if (path === '/search') return { results: [benefit, none] }
-        const schema = JSON.stringify((body as { outputSchema?: unknown }).outputSchema ?? {})
-        if (schema.includes('supported')) return { answer: { checks: [{ n: 1, supported: true }, { n: 2, supported: true }] } }
-        return { answer: { sentences: [{ text: benefit.text, urls: [benefit.url] }] }, citations: [] }
+        return {
+          answer: {
+            claims: [
+              { doi: benefit.doi, direction: 'benefit', text: 'Early time-restricted feeding improved insulin sensitivity in men with prediabetes.' },
+              { doi: none.doi, direction: 'null', text: 'Over 12 weeks, time-restricted eating did not change insulin sensitivity in adults with overweight or obesity.' },
+            ],
+          },
+        }
       },
     })
     delete process.env.EXA_API_KEY
     expect(result.configured).toBe(true)
     if (!result.configured) return
-    expect(result.sentences.some((sentence) => sentence.text.includes('did not significantly alter insulin sensitivity'))).toBe(true)
-    expect(result.citations.map((paper) => paper.doi)).toContain('10.1002/oby.23620')
-    expect(result.citations.map((paper) => paper.doi)).toContain('10.1016/j.cmet.2018.04.010')
+    expect(result.sentences.some((sentence) => sentence.text.includes('improved insulin sensitivity'))).toBe(true)
+    expect(result.sentences.some((sentence) => sentence.text.includes('did not change insulin sensitivity'))).toBe(true)
+    expect(result.citations.map((paper) => paper.doi)).toEqual(expect.arrayContaining([benefit.doi, none.doi]))
   })
 
   it('keeps the 54.0% sentence by quoting the printed enrollment instead of 3,573', () => {
@@ -1140,7 +1145,6 @@ describe('review fixtures', () => {
     const present = new Set([...result.citations, ...result.retrieved].map((paper) => paper.doi?.toLowerCase()))
     for (const doi of fasting) expect(present.has(doi), doi).toBe(true)
     expect(result.sentences.some((sentence) => sentence.text.includes('improves insulin sensitivity'))).toBe(true)
-    expect(result.sentences.some((sentence) => sentence.text.includes('did not alter insulin sensitivity'))).toBe(true)
   })
 
   it('injects the M72 trials for the vaccine question and the Dorman trial for the regimen question', async () => {
