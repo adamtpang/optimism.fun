@@ -38,6 +38,9 @@ export default function Footer() {
               <Link href="/discoveries" className="inline-flex items-center h-11 text-neutral-800 hover:text-primary">
                 discoveries
               </Link>
+              <Link href="/research" className="inline-flex items-center h-11 text-neutral-800 hover:text-primary">
+                research
+              </Link>
             </div>
           </div>
           <div>

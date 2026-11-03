@@ -31,6 +31,49 @@ export function isExaConfigured(): boolean {
   return Boolean(process.env.EXA_API_KEY)
 }
 
+export class ExaRequestError extends Error {
+  readonly status: number
+  constructor(status: number, message: string) {
+    super(message)
+    this.name = 'ExaRequestError'
+    this.status = status
+  }
+}
+
+/**
+ * POST to api.exa.ai with the same EXA_API_KEY and x-api-key header as the
+ * agent client above. The research demo uses /search, /answer, and
+ * /findSimilar. Errors name the path and status only. The key is never
+ * included in the message.
+ */
+export async function exaPost(path: string, body: unknown, timeoutMs: number): Promise<unknown> {
+  const key = process.env.EXA_API_KEY
+  if (!key) throw new ExaRequestError(0, 'Exa is not configured.')
+  const route = path.startsWith('/') ? path : `/${path}`
+  let res: Response
+  try {
+    res = await fetch(`https://api.exa.ai${route}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'x-api-key': key },
+      body: JSON.stringify(body),
+      cache: 'no-store',
+      signal: AbortSignal.timeout(timeoutMs),
+    })
+  } catch (err) {
+    const name = err instanceof Error ? err.name : ''
+    if (name === 'TimeoutError' || name === 'AbortError') {
+      throw new ExaRequestError(0, `Exa ${route} timed out.`)
+    }
+    throw new ExaRequestError(0, `Exa ${route} failed.`)
+  }
+  if (!res.ok) throw new ExaRequestError(res.status, `Exa ${route} failed (HTTP ${res.status}).`)
+  try {
+    return await res.json()
+  } catch {
+    throw new ExaRequestError(res.status, `Exa ${route} returned unreadable JSON.`)
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Agent run plumbing
 // ---------------------------------------------------------------------------

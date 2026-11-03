@@ -409,3 +409,21 @@ no new severity value was stored.
 - Client init stays in `src/app/providers.tsx`. It reads `NEXT_PUBLIC_POSTHOG_KEY` and optional `NEXT_PUBLIC_POSTHOG_HOST`. An empty or non-URL host uses the same-origin `/ingest` proxy in `next.config.mjs`. No key means no init.
 - Pageviews use `capture_pageview: 'history_change'` (one on load, then path changes only) and `capture_pageleave: true`. Session recording stays enabled. `session_recording.maskAllInputs` is true.
 - Names are in `.env.example` and `.env.local.example`. The privacy page states the input masking. Ranks were not changed.
+
+## Exa research demo (2026-11-03)
+
+- `/research` asks a question and shows a cited answer. `POST /api/research/ask` searches Exa with category `research paper`, then calls `/answer`. `POST /api/research/similar` calls `/findSimilar`.
+- Same `EXA_API_KEY` and `x-api-key` client as the agent crons (`src/lib/sources/exa.ts`). No `exa-js` dependency and no new key. Missing key returns `{configured:false}`.
+- A sentence is a finding only when Exa retrieved that paper's text, highlights, or summary. Excluded domains, news, and retracted papers cannot support a claim. Domain lists live in `src/lib/research/domains.ts`.
+- OpenAlex, Crossref, and Semantic Scholar resolve DOI, venue, citation count, and retraction only. They are not cited as the source of a claim. Docs: `docs/EXA_RESEARCH.md`.
+- Ranks and scores were not changed. Page copy still needs Adam's OK before merge.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

@@ -10,6 +10,7 @@ const NAV_TABS = [
   { name: 'Problems', href: '/' },
   { name: 'Where', href: '/where' },
   { name: 'Discoveries', href: '/discoveries' },
+  { name: 'Research', href: '/research' },
   { name: 'Capital', href: '/command#capital' },
   { name: 'Talent', href: '/command#talent' },
   { name: 'Markets', href: '/command#markets' },

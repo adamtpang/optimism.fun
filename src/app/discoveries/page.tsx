@@ -82,6 +82,8 @@ export default async function DiscoveriesPage({
               <a href="/api/discoveries" className="text-primary hover:underline">JSON</a>
               {' · '}
               <a href="/api/discoveries/csv" className="text-primary hover:underline">CSV</a>
+              {' · '}
+              <Link href="/research" className="text-primary hover:underline">Ask a research question</Link>
             </p>
           </div>
         </section>
