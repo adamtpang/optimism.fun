@@ -1,7 +1,8 @@
 import { excludeDomains, PRIORITY_QUERY_HINT } from '@/lib/research/domains'
 import { resolvePaperMetadata } from '@/lib/research/metadata'
 import { isCoverageUrl, isExcludedUrl, isMirrorUrl, isRejectedResultUrl } from '@/lib/research/domains'
-import { arxivIdFromUrl, isPdfUrl, normalizeTitle, normalizeUrl, pmidFromUrl, studyDirection, validateQuestion, workKey } from '@/lib/research/papers'
+import { arxivIdFromUrl, cleanDoi, doiFromUrl, isPdfUrl, normalizeTitle, normalizeUrl, pmidFromUrl, studyDirection, validateQuestion, workKey } from '@/lib/research/papers'
+import { pinsForQuestion } from '@/lib/research/pins'
 import {
   readSource,
   renumberCitations,
@@ -19,6 +20,7 @@ export const ANSWER_TIMEOUT_MS = 28_000
 export const SIMILAR_TIMEOUT_MS = 20_000
 export const SEARCH_RESULTS = 10
 export const SIMILAR_RESULTS = 8
+export const SIMILAR_CANDIDATES = 25
 
 const CONTENTS = {
   text: { maxCharacters: 4000 },
@@ -41,6 +43,8 @@ export const ANSWER_SYSTEM = [
   'Do not call a pooled study, meta-analysis, or systematic review an RCT unless the cited text itself calls it a randomized controlled trial or an RCT.',
   'When the cited text gives the number of studies or the sample size in a meta-analysis, state that count.',
   'State the population in every finding: sex, condition, and sample size when the source gives them.',
+  'Name the study, its population, and the outcome in each sentence, and cite that study.',
+  'Write 3 to 5 supported sentences when the sources allow it. Do not stop at one vague sentence.',
   'Label a subgroup, cumulative, or secondary result as such. Do not present it as the overall finding.',
   'When only one meta-analysis is cited, call it a meta-analysis.',
   'Name the outcome that was measured, such as clamp, HOMA-IR, OGTT, fasting glucose, or HbA1c, instead of saying only insulin sensitivity.',
@@ -84,7 +88,13 @@ export type AskResponse =
       configured: true
       question: string
       error?: string
+      status?: 'no-answer'
     } & ShapedResearch)
+
+export function researchHttpStatus(result: { configured: boolean; error?: string }): number {
+  if (!result.configured || !result.error || result.error === UNVERIFIED_ANSWER) return 200
+  return 502
+}
 
 export type SimilarResponse =
   | { configured: false }
@@ -132,7 +142,7 @@ export function similarBody(url: string): Record<string, unknown> {
   return {
     url,
     category: 'research paper',
-    numResults: SIMILAR_RESULTS,
+    numResults: SIMILAR_CANDIDATES,
     excludeDomains: excludeDomains(),
     contents: CONTENTS,
   }
@@ -241,27 +251,6 @@ function restoreSources(shaped: ShapedResearch & { error?: string }, message: st
   return { ...shaped, sentences: [], citations: [], retrieved, error: shaped.error || message }
 }
 
-function citesBothSides(shaped: ShapedResearch): boolean {
-  const pool = [...shaped.citations, ...shaped.retrieved]
-  const directions = pool.map((paper) => studyDirection(paper.excerpt || ''))
-  if (!directions.includes('benefit') || !directions.includes('no-effect')) return true
-  const cited = shaped.citations.map((paper) => studyDirection(paper.excerpt || ''))
-  return cited.includes('benefit') && cited.includes('no-effect')
-}
-
-function oneSidedFallback(shaped: ShapedResearch): ShapedResearch & { error?: string } {
-  const restored = restoreSources(shaped, UNVERIFIED_ANSWER)
-  const cited = new Set(shaped.citations.map((paper) => paper.doi || paper.sourceUrl))
-  restored.retrieved = restored.retrieved.map((paper) => {
-    const direction = studyDirection(paper.excerpt || '')
-    const wasCited = cited.has(paper.doi || paper.sourceUrl)
-    if (!wasCited && direction === 'benefit') return { ...paper, dropReason: 'Reports a benefit and was not cited.' }
-    if (!wasCited && direction === 'no-effect') return { ...paper, dropReason: 'Reports no effect and was not cited.' }
-    return { ...paper, dropReason: 'The answer did not cite both sides of the disagreement.' }
-  })
-  return restored
-}
-
 function resolvablePaper(paper: { url: string; doi?: string | null; pmid?: string | null }): boolean {
   return workKey(paper).startsWith('doi:') || workKey(paper).startsWith('pmid:') || workKey(paper).startsWith('arxiv:')
 }
@@ -321,12 +310,12 @@ async function verifyShaped(
 }
 
 export function answerQuery(question: string, papers: SourceFields[], metaByKey: Record<string, PaperMeta> = {}): string {
-  const notes = papers.slice(0, SEARCH_RESULTS).map((paper) => {
+  const notes = papers.map((paper) => {
     const meta = metaByKey[paper.url] ?? metaByKey[workKey(paper)] ?? {}
     return studyDirection(meta.abstract || paper.summary || paper.text || '')
   })
   const bothSides = notes.includes('benefit') && notes.includes('no-effect')
-  const lines = papers.slice(0, SEARCH_RESULTS).map((paper, index) => {
+  const lines = papers.map((paper, index) => {
     const meta = metaByKey[paper.url] ?? metaByKey[workKey(paper)] ?? {}
     const excerpt = (meta.abstract || paper.summary || paper.highlights?.join('\n') || paper.text || '').slice(0, 1200)
     const direction = notes[index]
@@ -364,13 +353,44 @@ export function parsePaperUrl(raw: unknown): { ok: true; url: string } | { ok: f
   return { ok: true, url: url.toString() }
 }
 
+function knownDoi(paper: SourceFields): string | null {
+  return (cleanDoi(paper.doi) || doiFromUrl(paper.url) || '').toLowerCase() || null
+}
+
+/** DOI lookup for pins search missed. No abstract means the pin is not added. */
+async function injectMissingPins(question: string, found: SourceFields[], resolve: MetaResolver): Promise<SourceFields[]> {
+  const present = new Set(found.map(knownDoi).filter((doi): doi is string => Boolean(doi)))
+  const missing = pinsForQuestion(question).filter((doi) => !present.has(doi))
+  const loaded = await Promise.all(
+    missing.map(async (doi) => {
+      const url = `https://doi.org/${doi}`
+      const meta = await resolve({ url, doi })
+      const abstract = meta.abstract?.trim()
+      if (!abstract) return null
+      const resolvedDoi = (cleanDoi(meta.doi) || doi).toLowerCase()
+      const paper: SourceFields = {
+        url,
+        doi: resolvedDoi,
+        pmid: meta.pmid ?? null,
+        title: meta.title ?? null,
+        author: meta.authors && meta.authors.length > 0 ? meta.authors.slice(0, 3).join(', ') : null,
+        publishedDate: meta.year ?? null,
+        text: abstract,
+      }
+      return paper
+    }),
+  )
+  const pins = loaded.filter((paper): paper is SourceFields => Boolean(paper))
+  return [...pins, ...found]
+}
+
 export async function askResearch(question: string, partial?: Partial<Deps>): Promise<AskResponse> {
   if (!isExaConfigured()) return { configured: false }
   const deps = depsFrom(partial)
   let found: SourceFields[] = []
   try {
     const searched = await deps.exaPost('/search', searchBody(question), SEARCH_TIMEOUT_MS)
-    found = readResults(searched).slice(0, SEARCH_RESULTS)
+    found = await injectMissingPins(question, readResults(searched).slice(0, SEARCH_RESULTS), deps.resolve)
   } catch (err) {
     const message = err instanceof ExaRequestError ? err.message : err instanceof Error ? err.message : 'Exa request failed.'
     return { configured: true, question, error: redactSecrets(message), ...emptyShape() }
@@ -403,10 +423,13 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
     })
     const checked = await verifyShaped(question, shaped, deps.exaPost)
     if (checked.sentences.length === 0) {
-      return { configured: true, question, ...restoreSources(checked, UNVERIFIED_ANSWER) }
-    }
-    if (!citesBothSides(checked)) {
-      return { configured: true, question, ...oneSidedFallback(checked) }
+      const restored = restoreSources(checked, UNVERIFIED_ANSWER)
+      return {
+        configured: true,
+        question,
+        ...(restored.error === UNVERIFIED_ANSWER ? { status: 'no-answer' as const } : {}),
+        ...restored,
+      }
     }
     return { configured: true, question, ...checked }
   } catch (err) {
@@ -465,9 +488,9 @@ export async function similarResearch(url: string, partial?: Partial<Deps>): Pro
       if (sameUrl || sameDoi || sameTitle) return false
       if (isMirrorUrl(paper.url) && !resolvablePaper(paper)) return false
       return true
-    }).slice(0, SIMILAR_RESULTS)
+    })
     const metaByKey = await metaMap(found, deps.resolve)
-    const withIds = applyMeta(found, metaByKey).filter((paper) => keptSimilar(paper, url, seedMeta))
+    const withIds = applyMeta(found, metaByKey).filter((paper) => keptSimilar(paper, url, seedMeta)).slice(0, SIMILAR_RESULTS)
     const shaped = shapeResearchAnswer({
       retrieved: withIds,
       answer: null,

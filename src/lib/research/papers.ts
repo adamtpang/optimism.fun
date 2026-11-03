@@ -64,16 +64,18 @@ export function isPreprintDoi(doi: string | null | undefined): boolean {
   return PREPRINT_DOI_PREFIXES.some((prefix) => lower.startsWith(prefix))
 }
 
-/** Header DOI only. A DOI deep in the reference list is not this paper. */
+/** A DOI printed on the page. Reference lists after a References heading are ignored. */
 export function doiFromExcerpt(text: string | null | undefined): string | null {
   if (!text) return null
-  const head = text.slice(0, 3000)
+  const head = text.slice(0, 4000)
   const link = head.match(/https?:\/\/(?:dx\.)?doi\.org\/(10\.\d{4,9}\/[^\s?#]+)/i)
   if (link) return cleanDoi(link[1])
-  const early = text.slice(0, 800)
-  const label = early.match(/\bdoi:\s*(10\.\d{4,9}\/[^\s?#]+)/i)
+  const label = head.match(/\bdoi:\s*(10\.\d{4,9}\/[^\s?#]+)/i)
   if (label) return cleanDoi(label[1])
-  return null
+  const refs = head.search(/\breferences\b|\bbibliography\b/i)
+  const zone = refs > 200 ? head.slice(0, refs) : head.slice(0, 1500)
+  const bare = zone.match(/\b(10\.\d{4,9}\/[^\s?#]+)/i)
+  return bare ? cleanDoi(bare[1]) : null
 }
 
 export function pmcidFromUrl(raw: string | null | undefined): string | null {
@@ -136,10 +138,20 @@ export function stripTrackingUrl(raw: string): string {
 
 export function cleanTitle(title: string): string {
   let text = title.replace(/\s+/g, ' ').trim()
+  text = text.replace(/<\s*\/?\s*(?:sub|sup|i|em|b|strong|span)\b[^>]*>/gi, '')
   text = text.replace(/\s*(?:\.{3}|…)+\s*$/g, '')
   text = text.replace(/^Frontiers\s*\|\s*/i, '')
   text = text.replace(/\s*\|\s*springermedizin\.de\s*$/i, '')
   text = text.replace(/\s+-\s+(?:PubMed|PMC)\s*$/i, '')
+  const journalTail = text.match(/^(.*?)\s+-\s+([^-]+)$/)
+  if (
+    journalTail &&
+    journalTail[1].trim().length > 20 &&
+    journalTail[2].trim().length <= 70 &&
+    /\b(journal|lancet|medicine|cardiology|metabolism|obesity|diabetes|nature|science|nejm)\b/i.test(journalTail[2])
+  ) {
+    text = journalTail[1].trim()
+  }
   const parts = text.split(/\s+\|\s+/)
   while (parts.length > 1 && siteSuffix(parts[parts.length - 1] ?? '')) parts.pop()
   const cleaned = parts.join(' | ').trim()
@@ -162,13 +174,34 @@ export function chooseTitle(scraped: string | null | undefined, catalog: string 
 
 export type StudyDirection = 'benefit' | 'no-effect' | 'unclear'
 
+/** A reported p-value under 0.05, or a "p < 0.05" statement. P = 0.80 does not count. */
+function hasSignificantP(sample: string): boolean {
+  for (const match of sample.matchAll(/\bp\s*([=<])\s*(0?\.\d+)/g)) {
+    const value = Number(match[2])
+    if (!Number.isFinite(value)) continue
+    if (match[1] === '<' && value <= 0.05) return true
+    if (match[1] === '=' && value < 0.05) return true
+  }
+  return false
+}
+
+/**
+ * 'no-effect' is only a null on the primary outcome.
+ * A statistically significant result is a benefit even when the effect is modest.
+ * "Adverse events were similar" is a safety comparison, not a null primary.
+ */
 export function studyDirection(text: string): StudyDirection {
   const sample = text.toLowerCase()
-  const benefit = /\b(improv(?:e|es|ed|ement)?|benefit|beneficial|reduc(?:e|ed|tion)|decreas(?:e|ed))\b/.test(sample)
-  const none = /\b(did not|didn't|no significant|not significant|unchanged|no effect|no difference|were similar|was similar)\b/.test(sample)
-  if (benefit && none) return 'unclear'
-  if (benefit) return 'benefit'
-  if (none) return 'no-effect'
+  const significantEfficacy =
+    hasSignificantP(sample) && /\befficac\w*\b[^.]{0,200}\d+(?:\.\d+)?\s*%|\d+(?:\.\d+)?\s*%[^.]{0,80}\befficac\w*\b/.test(sample)
+  const benefitWord = /\b(improv(?:e|es|ed|ement)?|benefit|beneficial|reduc(?:e|ed|tion)|decreas(?:e|ed)|protect(?:ion|ed)?)\b/.test(sample)
+  const nullPrimary =
+    /\b(did not|didn't|no significant|not significant|unchanged|no effect|no difference|not different|failed to)\b[^.]{0,160}\b(primary outcome|insulin sensitivity|glucose|homa-?ir|hba1c|fasting insulin|vaccine efficacy)\b/.test(sample) ||
+    /\b(primary outcome|insulin sensitivity|glucose|homa-?ir|hba1c|fasting insulin|vaccine efficacy)\b[^.]{0,160}\b(did not|didn't|no significant|not significant|unchanged|no effect|no difference|not different|failed to)\b/.test(sample)
+  if (significantEfficacy) return 'benefit'
+  if (benefitWord && nullPrimary) return 'unclear'
+  if (benefitWord) return 'benefit'
+  if (nullPrimary) return 'no-effect'
   return 'unclear'
 }
 

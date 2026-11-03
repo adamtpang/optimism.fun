@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, type FormEvent } from 'react'
-import type { AskResponse, SimilarResponse } from '@/lib/research/ask'
+import { UNVERIFIED_ANSWER, type AskResponse, type SimilarResponse } from '@/lib/research/ask'
 import type { ResearchPaper } from '@/lib/research/shape'
 
 const STATUS_CLASS: Record<ResearchPaper['status'], string> = {
@@ -145,7 +145,7 @@ export default function ResearchDesk({ configured }: { configured: boolean }) {
       return
     }
     setAnswer(data)
-    if (data.configured && data.error) setAskError(data.error)
+    if (data.configured && data.error && data.error !== UNVERIFIED_ANSWER) setAskError(data.error)
   }
 
   async function findSimilar(url: string) {
@@ -219,7 +219,11 @@ export default function ResearchDesk({ configured }: { configured: boolean }) {
       ) : null}
 
       {live && live.sentences.length === 0 && !askError ? (
-        <p className="text-body text-ink-400">No cited answer. Sentences without a retrieved source are not shown as findings.</p>
+        <p className="border border-hair bg-ink-900 px-4 py-3 text-body text-ink-300" role="status">
+          {live.error === UNVERIFIED_ANSWER
+            ? live.error
+            : 'No cited answer. Sentences without a retrieved source are not shown as findings.'}
+        </p>
       ) : null}
 
       {live && live.citations.length > 0 ? (
@@ -236,7 +240,11 @@ export default function ResearchDesk({ configured }: { configured: boolean }) {
       {live && live.retrieved.length > 0 ? (
         <section aria-label="Retrieved papers" className="space-y-4">
           <h2 className="font-serif text-2xl text-ink-100">Retrieved, not cited</h2>
-          <p className="text-small text-ink-400">Exa returned text for these papers. They do not support the answer above.</p>
+          <p className="text-small text-ink-400">
+            {live.sentences.length === 0
+              ? 'Each paper lists why it is not in the answer.'
+              : 'Exa returned text for these papers. They do not support the answer above.'}
+          </p>
           <div className="space-y-4">
             {live.retrieved.map((paper) => (
               <PaperCard key={paper.sourceUrl} paper={paper} onRelated={findSimilar} />

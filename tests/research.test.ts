@@ -373,7 +373,7 @@ describe('Exa research requests', () => {
     })
     expect(calls[0].path).toBe('/findSimilar')
     expect(calls[0].body.category).toBe('research paper')
-    expect(calls[0].body.numResults).toBe(8)
+    expect(calls[0].body.numResults).toBe(25)
     expect(calls[0].body).not.toHaveProperty('includeDomains')
     expect(searchBody('heat').category).toBe('research paper')
     expect(similarBody(NATURE)).not.toHaveProperty('includeDomains')

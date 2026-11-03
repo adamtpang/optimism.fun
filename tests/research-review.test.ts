@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { ANSWER_SYSTEM, UNVERIFIED_ANSWER, answerQuery, askResearch, readSupportChecks, similarResearch } from '@/lib/research/ask'
+import { ANSWER_SYSTEM, UNVERIFIED_ANSWER, answerQuery, askResearch, readSupportChecks, researchHttpStatus, similarResearch } from '@/lib/research/ask'
+import { pinsForQuestion } from '@/lib/research/pins'
 import { isNewsRecord } from '@/lib/research/domains'
 import { readCrossref, readNcbiIdconv, readOpenAlex, resolvePaperMetadata } from '@/lib/research/metadata'
 import {
@@ -7,9 +8,11 @@ import {
   citationLink,
   cleanDoi,
   cleanTitle,
+  doiFromExcerpt,
   doiFromUrl,
   paperStatus,
   plainExcerpt,
+  studyDirection,
 } from '@/lib/research/papers'
 import { allowCitation, shapeResearchAnswer, type SourceFields } from '@/lib/research/shape'
 
@@ -513,6 +516,8 @@ describe('review fixtures', () => {
     expect(result.sentences).toEqual([])
     expect(result.citations).toEqual([])
     expect(result.error).toBe(UNVERIFIED_ANSWER)
+    expect(result.status).toBe('no-answer')
+    expect(researchHttpStatus(result)).toBe(200)
     expect(result.retrieved.some((paper) => paper.doi?.toLowerCase() === '10.1016/s0140-6736(23)02511-4')).toBe(true)
     expect(result.retrieved.find((paper) => paper.doi?.toLowerCase() === '10.1016/s0140-6736(23)02511-4')?.dropReason).toContain('abstract check')
   })
@@ -592,7 +597,7 @@ describe('review fixtures', () => {
     expect(ANSWER_SYSTEM).toContain('Do not summarize only the majority')
   })
 
-  it('does not keep an answer that cites only one side when the sources disagree', async () => {
+  it('keeps a supported sentence when the other side was also retrieved', async () => {
     process.env.EXA_API_KEY = 'test-key-value'
     const benefit = {
       url: 'https://doi.org/10.1016/j.cmet.2018.04.010',
@@ -618,18 +623,76 @@ describe('review fixtures', () => {
     delete process.env.EXA_API_KEY
     expect(result.configured).toBe(true)
     if (!result.configured) return
-    expect(result.sentences).toEqual([])
-    expect(result.error).toBe('No answer could be backed by retrieved papers for this question.')
-    expect(result.retrieved.map((paper) => paper.dropReason).join('\n')).toContain('Reports a benefit and was not cited.')
+    expect(result.error).toBeUndefined()
+    expect(result.status).toBeUndefined()
+    expect(result.sentences).toHaveLength(1)
+    expect(result.citations.map((paper) => paper.doi)).toEqual(['10.1002/oby.23620'])
+    expect(result.retrieved.some((paper) => paper.doi === '10.1016/j.cmet.2018.04.010')).toBe(true)
+  })
+
+  it('labels a significant efficacy result as a benefit and a null primary as no effect', () => {
+    const m72 = 'The vaccine efficacy was 54.0% (90% confidence interval [CI], 13.9 to 75.4; 95% CI, 2.9 to 78.2; P = 0.04). Serious adverse events, potential immune-mediated diseases, and deaths occurred with similar frequencies in the two groups. M72/AS01E provided 54.0% protection for M. tuberculosis-infected adults against active pulmonary tuberculosis disease, without evident safety concerns.'
+    expect(studyDirection(m72)).toBe('benefit')
+    expect(studyDirection('Vaccine efficacy was 12.0% (P = 0.04).')).toBe('benefit')
+    expect(studyDirection('Serious adverse events occurred with similar frequencies in the two groups.')).toBe('unclear')
+    expect(studyDirection('Time-restricted eating did not alter insulin sensitivity or beta-cell function.')).toBe('no-effect')
+    expect(studyDirection('Early time-restricted feeding improves insulin sensitivity.')).toBe('benefit')
+    expect(studyDirection('Vaccine efficacy was 54.0% (P = 0.80).')).toBe('unclear')
+  })
+
+  it('strips HTML from titles and a journal-name tail', () => {
+    expect(cleanTitle('Phase 2b Controlled Trial of M72/AS01<sub>E</sub> Vaccine to Prevent Tuberculosis')).toBe(
+      'Phase 2b Controlled Trial of M72/AS01E Vaccine to Prevent Tuberculosis',
+    )
+    expect(cleanTitle('Trial of M72/AS01<i>E</i> in adults')).toBe('Trial of M72/AS01E in adults')
+    expect(cleanTitle('Early Time-Restricted Feeding Improves Insulin Sensitivity - Cell Metabolism')).toBe(
+      'Early Time-Restricted Feeding Improves Insulin Sensitivity',
+    )
+  })
+
+  it('reads a DOI from the excerpt and confirms the title with Crossref', async () => {
+    const excerpt = 'The Canadian trial is described in the full text. doi: 10.1016/j.cjca.2023.09.017. End of page.'
+    expect(doiFromExcerpt(excerpt)).toBe('10.1016/j.cjca.2023.09.017')
+    const calls: string[] = []
+    const meta = await resolvePaperMetadata(
+      { url: 'https://publisher.example/cjca-page', title: 'Publisher page title', text: excerpt },
+      {
+        timeoutMs: 1000,
+        fetchImpl: async (url) => {
+          calls.push(url)
+          if (url.includes('api.crossref.org/works/10.1016%2Fj.cjca.2023.09.017') || url.includes('api.crossref.org/works/10.1016/j.cjca.2023.09.017')) {
+            return json({
+              message: {
+                DOI: '10.1016/j.cjca.2023.09.017',
+                type: 'journal-article',
+                title: ['A Crossref title for the Canadian trial'],
+                'container-title': ['Canadian Journal of Cardiology'],
+                author: [{ given: 'A', family: 'Author' }],
+                issued: { 'date-parts': [[2023]] },
+              },
+            })
+          }
+          if (url.includes('api.openalex.org')) return json({ type: 'article', is_retracted: false, display_name: 'OpenAlex title' })
+          return json({})
+        },
+      },
+    )
+    expect(calls.some((url) => url.includes('10.1016') && url.includes('j.cjca.2023.09.017'))).toBe(true)
+    expect(meta.doi?.toLowerCase()).toBe('10.1016/j.cjca.2023.09.017')
+    expect(meta.title).toBe('A Crossref title for the Canadian trial')
+    expect(meta.venue).toBe('Canadian Journal of Cardiology')
   })
 
   it('pins papers that the attached runs actually returned', () => {
-    // IDs copied from the uploaded run files. The NEJM 4-month TB regimen trial is not in those files.
+    // Shape-only check. A search miss is covered by the askResearch pin test below.
     const pinned = [
       { doi: '10.1016/s0140-6736(23)02511-4', title: 'Safety and efficacy of malaria vaccine candidate R21/Matrix-M in African children: a multicentre, double-blind, randomised, controlled, phase 3 trial' },
       { doi: '10.1016/j.cmet.2018.04.010', title: 'Early Time-Restricted Feeding Improves Insulin Sensitivity, Blood Pressure, and Oxidative Stress Even Without Weight Loss in Men with Prediabetes' },
       { doi: '10.1186/s12986-021-00613-9', title: 'Time-restricted feeding improves blood glucose and insulin sensitivity in overweight patients with type 2 diabetes: a randomised controlled trial' },
       { doi: '10.1002/oby.23620', title: 'Time-restricted eating did not alter insulin sensitivity or beta-cell function in adults with obesity: A randomized pilot study' },
+      { doi: '10.1056/nejmoa1803484', title: 'Phase 2b Controlled Trial of M72/AS01E Vaccine to Prevent Tuberculosis' },
+      { doi: '10.1056/nejmoa1909953', title: 'Final Analysis of a Trial of M72/AS01E Vaccine to Prevent Tuberculosis' },
+      { doi: '10.1056/nejmoa2033400', title: 'Four-Month Rifapentine Regimens with or without Moxifloxacin for Tuberculosis' },
     ]
     const papers: SourceFields[] = pinned.map((item) => ({
       url: `https://doi.org/${item.doi}`,
@@ -651,6 +714,136 @@ describe('review fixtures', () => {
     for (const item of pinned) expect(present.has(item.doi), item.doi).toBe(true)
     expect(shaped.retrieved.find((paper) => paper.doi === '10.1016/s0140-6736(23)02511-4')?.title.startsWith('Safety and efficacy')).toBe(true)
     expect(shaped.retrieved.every((paper) => paper.dropReason)).toBe(true)
+  })
+
+  it('injects pinned papers when search omits them', async () => {
+    process.env.EXA_API_KEY = 'test-key-value'
+    const fasting = [
+      '10.1016/j.cmet.2018.04.010',
+      '10.1186/s12986-021-00613-9',
+      '10.1002/oby.23620',
+    ]
+    expect(pinsForQuestion('Does intermittent fasting improve insulin sensitivity?').sort()).toEqual([...fasting].sort())
+    const decoy = {
+      url: 'https://doi.org/10.1000/decoy',
+      title: 'A narrative review of diets',
+      text: 'A narrative review of diets.',
+      doi: '10.1000/decoy',
+    }
+    let query = ''
+    const result = await askResearch('Does intermittent fasting improve insulin sensitivity?', {
+      resolve: async (fields) => {
+        const doi = (fields.doi || '').toLowerCase()
+        if (!fasting.includes(doi)) {
+          return { retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article', doi: fields.doi }
+        }
+        return {
+          doi,
+          title: `Pinned ${doi}`,
+          abstract: doi === '10.1002/oby.23620'
+            ? 'Time-restricted eating did not alter insulin sensitivity.'
+            : 'Early time-restricted feeding improves insulin sensitivity.',
+          retractionChecked: true,
+          retracted: false,
+          journal: true,
+          crossrefType: 'journal-article',
+          year: '2018',
+        }
+      },
+      exaPost: async (path, body) => {
+        if (path === '/search') return { results: [decoy] }
+        const schema = JSON.stringify((body as { outputSchema?: unknown }).outputSchema ?? {})
+        if (schema.includes('supported')) return { answer: { checks: [{ n: 1, supported: true }] } }
+        query = String((body as { query?: string }).query || '')
+        return {
+          answer: { sentences: [{ text: 'Early time-restricted feeding improves insulin sensitivity.', urls: [`https://doi.org/${fasting[0]}`] }] },
+          citations: [],
+        }
+      },
+    })
+    delete process.env.EXA_API_KEY
+    expect(result.configured).toBe(true)
+    if (!result.configured) return
+    for (const doi of fasting) expect(query, doi).toContain(doi)
+    const present = new Set([...result.citations, ...result.retrieved].map((paper) => paper.doi?.toLowerCase()))
+    for (const doi of fasting) expect(present.has(doi), doi).toBe(true)
+    expect(result.sentences).toHaveLength(1)
+  })
+
+  it('injects the M72 trials for the vaccine question and the Dorman trial for the regimen question', async () => {
+    process.env.EXA_API_KEY = 'test-key-value'
+    const m72 = ['10.1056/nejmoa1803484', '10.1056/nejmoa1909953']
+    const dorman = '10.1056/nejmoa2033400'
+    expect(pinsForQuestion('Does the M72/AS01E vaccine prevent tuberculosis?').sort()).toEqual([...m72].sort())
+    expect(pinsForQuestion('Did a 4-month rifapentine plus moxifloxacin regimen shorten tuberculosis treatment?')).toEqual([dorman])
+    const decoy = {
+      url: 'https://doi.org/10.1000/decoy',
+      title: 'A narrative review',
+      text: 'A narrative review of tuberculosis.',
+      doi: '10.1000/decoy',
+    }
+    async function run(question: string) {
+      return askResearch(question, {
+        resolve: async (fields) => {
+          const doi = (fields.doi || '').toLowerCase()
+          const known = [...m72, dorman]
+          if (!known.includes(doi)) {
+            return { retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article' }
+          }
+          return {
+            doi,
+            title: doi === dorman ? 'Four-Month Rifapentine Regimens with or without Moxifloxacin for Tuberculosis' : `M72 trial ${doi}`,
+            abstract: doi === dorman
+              ? 'In an open-label, phase 3, randomized, controlled trial, a 4-month rifapentine-based regimen with moxifloxacin was compared with a standard 6-month regimen.'
+              : 'The vaccine efficacy was 54.0% (P = 0.04). M72/AS01E provided 54.0% protection against active pulmonary tuberculosis.',
+            retractionChecked: true,
+            retracted: false,
+            journal: true,
+            crossrefType: 'journal-article',
+            year: doi === dorman ? '2021' : '2018',
+          }
+        },
+        exaPost: async (path, body) => {
+          if (path === '/search') return { results: [decoy] }
+          const schema = JSON.stringify((body as { outputSchema?: unknown }).outputSchema ?? {})
+          if (schema.includes('supported')) return { answer: { checks: [] } }
+          return { answer: { sentences: [] }, citations: [] }
+        },
+      })
+    }
+    const vaccine = await run('Does the M72/AS01E vaccine prevent tuberculosis?')
+    const regimen = await run('Did a 4-month rifapentine plus moxifloxacin regimen shorten tuberculosis treatment?')
+    delete process.env.EXA_API_KEY
+    expect(vaccine.configured && regimen.configured).toBe(true)
+    if (!vaccine.configured || !regimen.configured) return
+    const vaccineDois = new Set([...vaccine.citations, ...vaccine.retrieved].map((paper) => paper.doi?.toLowerCase()))
+    const regimenDois = new Set([...regimen.citations, ...regimen.retrieved].map((paper) => paper.doi?.toLowerCase()))
+    for (const doi of m72) expect(vaccineDois.has(doi), doi).toBe(true)
+    expect(vaccineDois.has(dorman)).toBe(false)
+    expect(regimenDois.has(dorman)).toBe(true)
+    expect([...regimenDois].some((doi) => m72.includes(doi || ''))).toBe(false)
+  })
+
+  it('does not inject pins for an unrelated question', async () => {
+    process.env.EXA_API_KEY = 'test-key-value'
+    expect(pinsForQuestion('Does extreme heat raise mortality?')).toEqual([])
+    const result = await askResearch('Does extreme heat raise mortality?', {
+      resolve: async () => ({ retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article' }),
+      exaPost: async (path, body) => {
+        if (path === '/search') {
+          return { results: [{ url: 'https://doi.org/10.1038/s41586-020-2649-2', title: 'Heat and mortality', text: 'Mortality rose during extreme heat.', doi: '10.1038/s41586-020-2649-2' }] }
+        }
+        const schema = JSON.stringify((body as { outputSchema?: unknown }).outputSchema ?? {})
+        if (schema.includes('supported')) return { answer: { checks: [{ n: 1, supported: true }] } }
+        return { answer: { sentences: [{ text: 'Mortality rose during extreme heat.', urls: ['https://doi.org/10.1038/s41586-020-2649-2'] }] }, citations: [] }
+      },
+    })
+    delete process.env.EXA_API_KEY
+    expect(result.configured).toBe(true)
+    if (!result.configured) return
+    const dois = [...result.citations, ...result.retrieved].map((paper) => paper.doi?.toLowerCase())
+    expect(dois).toEqual(['10.1038/s41586-020-2649-2'])
+    expect(researchHttpStatus({ configured: true, error: 'Exa /search timed out.' })).toBe(502)
   })
 })
 

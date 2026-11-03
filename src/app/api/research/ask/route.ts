@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { askResearch, validateQuestion } from '@/lib/research/ask'
+import { askResearch, researchHttpStatus, validateQuestion } from '@/lib/research/ask'
 import { researchClientIp, takeResearchSlot } from '@/lib/research/limit'
 import { isExaConfigured } from '@/lib/sources/exa'
 
@@ -30,6 +30,5 @@ export async function POST(req: Request) {
   }
 
   const result = await askResearch(parsed.question)
-  const status = result.configured && result.error ? 502 : 200
-  return NextResponse.json(result, { status })
+  return NextResponse.json(result, { status: researchHttpStatus(result) })
 }

@@ -14,8 +14,8 @@ Do not print the key. Errors name the path and HTTP status only.
 
 | Route | Exa | Notes |
 | --- | --- | --- |
-| `POST /api/research/ask` | `POST /search`, then `POST /answer` twice | Search uses `category: "research paper"`, `type: "auto"`, `numResults: 10`, and contents `text`, `highlights`, and `summary`. The first answer uses model `exa` and the numbered source list from that search. The second answer checks each sentence against the cited excerpt and drops a sentence that fails. |
-| `POST /api/research/similar` | `POST /findSimilar` | Same category and contents, `numResults: 8`. The input paper and copies with the same DOI or normalized title are removed. |
+| `POST /api/research/ask` | `POST /search`, then `POST /answer` twice | Search uses `category: "research paper"`, `type: "auto"`, `numResults: 10`, and contents `text`, `highlights`, and `summary`. Pinned DOIs that search missed are added by Crossref or OpenAlex lookup when the question matches and the lookup returns an abstract. The first answer uses model `exa` and that candidate list. The second answer checks each sentence against the cited excerpt and drops a sentence that fails. If nothing survives, the response is HTTP 200 with `status: "no-answer"` and the sentence "No answer could be backed by retrieved papers for this question." An upstream Exa failure stays HTTP 502. |
+| `POST /api/research/similar` | `POST /findSimilar` | Same category and contents. The request asks for 25 candidates. The input paper and copies with the same DOI or normalized title are removed, then up to 8 clean DOI, PMID, or arXiv results are returned. |
 
 Neither request sends `includeDomains`. Both send `excludeDomains` from `src/lib/research/domains.ts`.
 
@@ -32,6 +32,9 @@ OpenAlex, Crossref, and Semantic Scholar are metadata resolvers only. They are n
 - springermedizin.de, malariaworld.org, and Medscape are mirrors. They are kept only when a DOI, PMID, or arXiv id resolves, and the link is then doi.org or PubMed, not the mirror.
 - `[1]` is the first source a reader sees. Cited sources are renumbered 1..n in the order they appear in the answer.
 - A sentence is dropped when it states a number, percent, or sample size that is not in the cited excerpt or abstract. The abstract comes from OpenAlex or Crossref when one is available. A pooled study is not called an RCT unless the cited text says so.
+- A paper is labeled no effect only when the text reports a null on its primary outcome. A statistically significant efficacy result stays a benefit when the effect is modest. Safety wording such as "adverse events were similar" is not a null primary.
+- When retrieved papers disagree, the prompt tells the model to cite both sides, with the study, population, and outcome. The no-answer fallback is used only when no sentence survives the support check.
+- Pinned DOIs live in `src/lib/research/pins.ts`. The fasting pins are Sutton 2018 `10.1016/j.cmet.2018.04.010`, Che 2021 `10.1186/s12986-021-00613-9`, and Bantle 2022 `10.1002/oby.23620`. The R21 pin is `10.1016/s0140-6736(23)02511-4`. The M72 pins are `10.1056/nejmoa1803484` and `10.1056/nejmoa1909953`. The 4-month rifapentine regimen pin is Dorman 2021 `10.1056/nejmoa2033400`, confirmed on Crossref as a New England Journal of Medicine journal article issued 2021-05-06, not retracted. CI calls `askResearch` with a search response that omits these DOIs and fails if they are absent from the candidate set.
 - A citation count is shown only from OpenAlex, with the lookup date, for example `cited 412 times (OpenAlex, Nov 3, 2026)`.
 
 ## What can support a sentence
