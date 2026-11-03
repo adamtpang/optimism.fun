@@ -22,6 +22,7 @@ import {
   repairOpening,
   retrievedExcerpt,
   claimOverlap,
+  isNonAnswer,
   sentenceFitsSupport,
   statusLabel,
   stripTrackingUrl,
@@ -549,6 +550,10 @@ export function shapeResearchAnswer(input: {
     const unique = [...new Map(citedWorks.map((work) => [work.key, work])).values()]
     const plain = stripMarkers(sentence.text)
     if (!plain) continue
+    if (isNonAnswer(plain)) {
+      keptSentences.push({ text: plain, keys: [], reason: 'dropped-citation' })
+      continue
+    }
     const hadAttempt = sentence.urls.length > 0 || sentence.markers.length > 0
     const sawRetracted = blocks.includes('retracted')
     const onlyRetracted = sawRetracted && blocks.every((block) => block === 'retracted')

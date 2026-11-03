@@ -337,7 +337,33 @@ export function figureAppears(figure: string, text: string): boolean {
   return new RegExp(`(?:^|[^\\d.])${token}(?:\\.0+)?\\s*(?:%|percent)`, 'i').test(hay)
 }
 
-/** Replace a headcount that is exactly the sum of two nearby counts the abstract prints. */
+function thousands(value: number): string {
+  return value.toLocaleString('en-US')
+}
+
+function armRole(support: string, raw: string): 'vaccine' | 'placebo' | null {
+  const re = new RegExp(`\\b${raw}\\b`, 'g')
+  let role: 'vaccine' | 'placebo' | null = null
+  for (const match of support.matchAll(re)) {
+    const forward = support.slice((match.index ?? 0) + raw.length, (match.index ?? 0) + raw.length + 70)
+    const vaccineAt = forward.search(/\b(?:vaccine|M72|AS01E|AS01)\b/i)
+    const placeboAt = forward.search(/\bplacebo\b/i)
+    if (vaccineAt < 0 && placeboAt < 0) continue
+    if (placeboAt >= 0 && (vaccineAt < 0 || placeboAt < vaccineAt)) role = 'placebo'
+    else role = 'vaccine'
+  }
+  return role
+}
+
+/** A model refusal, not a finding. */
+export function isNonAnswer(text: string): boolean {
+  return /\b(no information|not enough information|none of the (?:provided )?sources|sources do not|do not (?:contain|mention|address|provide)|cannot (?:answer|determine)|no (?:evidence|data) (?:in|from) the (?:provided )?sources)\b/i.test(text)
+}
+
+/**
+ * When a headcount is the sum of two printed arm counts, spell the total with those arms.
+ * Otherwise remove the count and keep the noun.
+ */
 export function rewriteDerivedTotals(sentence: string, support: string): string {
   let next = sentence
   const printed = [...support.matchAll(/\b\d{2,}\b/g)].map((match) => ({
@@ -351,33 +377,105 @@ export function rewriteDerivedTotals(sentence: string, support: string): string 
     if (wanted.percent || wanted.sample || !/^\d+$/.test(wanted.body)) continue
     const target = Number(wanted.body)
     if (target < 20) continue
-    let pair: { raw: string; index: number }[] | null = null
+    let pair: { raw: string; value: number; index: number }[] | null = null
     for (let i = 0; i < printed.length; i += 1) {
       for (let j = i + 1; j < printed.length; j += 1) {
         if (printed[j].index - printed[i].index > 90) break
         if (printed[i].value + printed[j].value === target) pair = [printed[i], printed[j]]
       }
     }
+    const escaped = figure.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    const clause = new RegExp(`\\b${escaped}\\s+((?:HIV-negative\\s+)?(?:adults|participants|people|children))\\b`, 'i')
     if (!pair) continue
-    next = next.replace(figure, `${pair[0].raw} plus ${pair[1].raw}`)
+    const first = armRole(support, pair[0].raw)
+    const second = armRole(support, pair[1].raw)
+    const vaccine = first === 'vaccine' ? pair[0] : second === 'vaccine' ? pair[1] : null
+    const placebo = first === 'placebo' ? pair[0] : second === 'placebo' ? pair[1] : null
+    if (vaccine && placebo && vaccine.raw !== placebo.raw) {
+      const rendered = `${thousands(target)} adults (${thousands(vaccine.value)} vaccine, ${thousands(placebo.value)} placebo)`
+      next = clause.test(next) ? next.replace(clause, rendered) : next.replace(figure, rendered)
+      continue
+    }
+    next = clause.test(next) ? next.replace(clause, '$1') : next.replace(new RegExp(`\\b${escaped}\\b`), '')
   }
-  return next
+  return next.replace(/\s+/g, ' ').replace(/\s+([,.;:])/g, '$1').trim()
 }
 
-const CLAIM_ANCHORS = [/\bprediabetes\b/i, /\bearly time-restricted\b|\betRF\b/i]
+const CLAIM_ANCHORS = [
+  /\bprediabetes\b/i,
+  /\bearly time-restricted\b|\betRF\b/i,
+  /\btype 2 diabetes\b/i,
+  /\boverweight\b/i,
+  /\bobesity\b/i,
+  /\bhepatic\b/i,
+  /\bperipheral\b/i,
+  /\bwhole-body\b|\bwhole body\b/i,
+]
 
 function anchorsMatch(sentence: string, support: string): boolean {
   return CLAIM_ANCHORS.every((pattern) => !pattern.test(sentence) || pattern.test(support))
+}
+
+function durationPhrases(text: string): string[] {
+  const found: string[] = []
+  for (const match of text.matchAll(/\b(\d+(?:\.\d+)?)\s*-?\s*(day|week|month|year|hour)s?\b/gi)) {
+    found.push(`${match[1].replace(/\.0+$/, '')} ${match[2].toLowerCase()}`)
+  }
+  return found
+}
+
+const DURATION_WORDS: Record<string, string> = {
+  '1': 'one',
+  '2': 'two',
+  '3': 'three',
+  '4': 'four',
+  '5': 'five',
+  '6': 'six',
+  '8': 'eight',
+  '12': 'twelve',
+}
+
+function supportHasDuration(support: string, phrase: string): boolean {
+  const [count, unit] = phrase.split(' ')
+  const word = DURATION_WORDS[count]
+  const forms = [count, word].filter(Boolean).join('|')
+  return new RegExp(`\\b(?:${forms})\\s*-?\\s*${unit}s?\\b`, 'i').test(support)
+}
+
+function durationsMatch(sentence: string, support: string): boolean {
+  return durationPhrases(sentence).every((phrase) => supportHasDuration(support, phrase))
 }
 
 /**
  * Drop a sample-size digit the abstract does not print when the population word is there.
  * Returns null when some other figure is still missing.
  */
+function explainedSum(figure: string, support: string): boolean {
+  const wanted = figureBody(figure)
+  if (wanted.percent || wanted.sample || !/^\d+$/.test(wanted.body)) return false
+  const target = Number(wanted.body)
+  if (target < 20) return false
+  const printed = [...support.matchAll(/\b\d{2,}\b/g)].map((match) => ({
+    value: Number(match[0]),
+    index: match.index ?? 0,
+  }))
+  for (let i = 0; i < printed.length; i += 1) {
+    for (let j = i + 1; j < printed.length; j += 1) {
+      if (printed[j].index - printed[i].index > 90) break
+      if (printed[i].value + printed[j].value === target) return true
+    }
+  }
+  return false
+}
+
+function figureAccounted(figure: string, support: string): boolean {
+  return figureAppears(figure, support) || explainedSum(figure, support)
+}
+
 export function stripUnprintedCounts(sentence: string, support: string): string | null {
   let next = sentence
   for (const figure of quotedFigures(next)) {
-    if (figureAppears(figure, support)) continue
+    if (figureAccounted(figure, support)) continue
     const wanted = figureBody(figure)
     if (wanted.percent || wanted.sample || !/^\d+$/.test(wanted.body)) return null
     const count = new RegExp(`\\b${wanted.body}\\s+(men|women|adults|participants|patients|children|people)\\b`, 'i')
@@ -408,11 +506,11 @@ export function claimOverlap(sentence: string, support: string): boolean {
 }
 
 export function sentenceFitsSupport(sentence: string, support: string): string | null {
-  if (!support.trim() || !anchorsMatch(sentence, support)) return null
+  if (!support.trim() || isNonAnswer(sentence) || !anchorsMatch(sentence, support) || !durationsMatch(sentence, support)) return null
   if (citesRctWithoutSupport(sentence, support)) return null
   const rewritten = stripUnprintedCounts(rewriteDerivedTotals(sentence, support), support)
   if (!rewritten) return null
-  if (!quotedFigures(rewritten).every((figure) => figureAppears(figure, support))) return null
+  if (!quotedFigures(rewritten).every((figure) => figureAccounted(figure, support))) return null
   return rewritten
 }
 

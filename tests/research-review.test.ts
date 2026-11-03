@@ -923,9 +923,102 @@ describe('review fixtures', () => {
       },
     })
     expect(shaped.citations.map((paper) => paper.doi)).toEqual(['10.1056/nejmoa1803484'])
-    expect(shaped.sentences[0]?.text).toContain('1786 plus 1787')
+    expect(shaped.sentences[0]?.text).toContain('3,573 adults (1,786 vaccine, 1,787 placebo)')
     expect(shaped.sentences[0]?.text).toContain('54.0%')
-    expect(shaped.sentences[0]?.text).not.toContain('3,573')
+    expect(shaped.sentences[0]?.text).toContain('2.3 years')
+    expect(shaped.sentences[0]?.text).toContain('18 to 50')
+    expect(shaped.sentences[0]?.text).not.toContain('plus')
+  })
+
+  it('drops a summed headcount when the abstract does not label the arms', () => {
+    const pin = {
+      url: 'https://doi.org/10.1000/arms',
+      title: 'A trial',
+      text: 'Page.',
+      doi: '10.1000/arms',
+    }
+    const abstract = 'The trial enrolled 100 participants and 50 participants. Efficacy was 54.0% after 2.3 years in adults 18 to 50 years of age.'
+    const shaped = shapeResearchAnswer({
+      retrieved: [pin],
+      numberedSources: [pin],
+      answer: { sentences: [{ text: 'The trial of 150 adults aged 18 to 50 years reported 54.0% efficacy after 2.3 years.', urls: [pin.url] }] },
+      metaByKey: {
+        [pin.url]: { doi: pin.doi, title: pin.title, abstract, retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article' },
+      },
+    })
+    expect(shaped.sentences[0]?.text).not.toContain('150')
+    expect(shaped.sentences[0]?.text).toContain('54.0%')
+    expect(shaped.sentences[0]?.text).toContain('adults')
+  })
+
+  it('keeps the 3-week diabetes sentence on Andriessen alone, for one cite and for two', () => {
+    const bantle = {
+      url: 'https://doi.org/10.1002/oby.23620',
+      title: 'Time-restricted eating pilot',
+      text: 'Page.',
+      doi: '10.1002/oby.23620',
+    }
+    const andriessen = {
+      url: 'https://doi.org/10.1007/s00125-022-05752-z',
+      title: 'Three weeks of time-restricted eating',
+      text: 'Page.',
+      doi: '10.1007/s00125-022-05752-z',
+    }
+    const bantleAbstract = '12 weeks of time-restricted eating in adults with overweight or obesity. Participants were 17 women and 3 men. Time-restricted eating did not significantly alter insulin sensitivity. Whether this helps type 2 diabetes warrants further study.'
+    const andriessenAbstract = 'Fourteen adults with type 2 diabetes completed a 3 week time-restricted eating regimen. Peripheral and hepatic insulin sensitivity remained unaffected.'
+    const sentence = 'A randomized crossover trial showed 3 weeks of time-restricted eating did not affect peripheral or hepatic insulin sensitivity in adults with type 2 diabetes.'
+    const metaByKey = {
+      [bantle.url]: { doi: bantle.doi, title: bantle.title, abstract: bantleAbstract, retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article' },
+      [andriessen.url]: { doi: andriessen.doi, title: andriessen.title, abstract: andriessenAbstract, retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article' },
+    }
+    const single = shapeResearchAnswer({
+      retrieved: [bantle, andriessen],
+      numberedSources: [bantle, andriessen],
+      answer: { sentences: [{ text: sentence, urls: [bantle.url] }] },
+      metaByKey,
+    })
+    const both = shapeResearchAnswer({
+      retrieved: [bantle, andriessen],
+      numberedSources: [bantle, andriessen],
+      answer: { sentences: [{ text: sentence, urls: [andriessen.url, bantle.url] }] },
+      metaByKey,
+    })
+    expect(single.citations.map((paper) => paper.doi)).toEqual(['10.1007/s00125-022-05752-z'])
+    expect(both.citations.map((paper) => paper.doi)).toEqual(['10.1007/s00125-022-05752-z'])
+    expect(both.sentences[0]?.cites).toEqual([1])
+  })
+
+  it('returns no-answer when the model says the sources have no information', async () => {
+    process.env.EXA_API_KEY = 'test-key-value'
+    const paper = {
+      url: 'https://doi.org/10.1038/s41581-025-00990-x',
+      title: 'Kidney stone disease',
+      text: 'Nephrolithiasis is the most common kidney condition.',
+      doi: '10.1038/s41581-025-00990-x',
+    }
+    const result = await askResearch('Does wearing blue socks on Tuesdays reduce the risk of kidney stones in left-handed adults?', {
+      resolve: async () => ({ retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article', doi: paper.doi }),
+      exaPost: async (path) => {
+        if (path === '/search') return { results: [paper] }
+        return {
+          answer: {
+            sentences: [{
+              text: 'There is no information in the provided sources to suggest that wearing blue socks on Tuesdays has any effect on the risk of kidney stones.',
+              urls: [paper.url],
+            }],
+          },
+          citations: [],
+        }
+      },
+    })
+    delete process.env.EXA_API_KEY
+    expect(result.configured).toBe(true)
+    if (!result.configured) return
+    expect(result.status).toBe('no-answer')
+    expect(result.error).toBe(UNVERIFIED_ANSWER)
+    expect(result.citations).toEqual([])
+    expect(result.sentences).toEqual([])
+    expect(researchHttpStatus(result)).toBe(200)
   })
 
   it('cites the pinned abstract for a 54.0% sentence that was attached to another page', () => {

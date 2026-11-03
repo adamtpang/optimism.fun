@@ -1,7 +1,7 @@
 import { excludeDomains, PRIORITY_QUERY_HINT } from '@/lib/research/domains'
 import { resolvePaperMetadata } from '@/lib/research/metadata'
 import { isCoverageUrl, isExcludedUrl, isMirrorUrl, isRejectedResultUrl } from '@/lib/research/domains'
-import { arxivIdFromUrl, cleanDoi, doiFromUrl, isPdfUrl, normalizeTitle, normalizeUrl, nullFindingSentence, plainSentence, pmidFromUrl, repairOpening, studyDirection, validateQuestion, workKey } from '@/lib/research/papers'
+import { arxivIdFromUrl, cleanDoi, doiFromUrl, isNonAnswer, isPdfUrl, normalizeTitle, normalizeUrl, nullFindingSentence, plainSentence, pmidFromUrl, repairOpening, studyDirection, validateQuestion, workKey } from '@/lib/research/papers'
 import { pinsForQuestion } from '@/lib/research/pins'
 import {
   readSource,
@@ -397,6 +397,18 @@ async function injectMissingPins(question: string, found: SourceFields[], resolv
   return [...pins, ...found]
 }
 
+function dropNonAnswers(shaped: ShapedResearch): ShapedResearch {
+  const sentences = shaped.sentences.filter((sentence) => !isNonAnswer(sentence.text))
+  if (sentences.length === shaped.sentences.length) return shaped
+  if (sentences.length === 0) return { ...shaped, sentences: [], citations: [] }
+  const used = new Set(sentences.flatMap((sentence) => sentence.cites))
+  return renumberCitations({
+    ...shaped,
+    sentences,
+    citations: shaped.citations.filter((paper) => paper.n != null && used.has(paper.n)),
+  })
+}
+
 /** When the model cites only benefits, keep a null sentence copied from a retrieved abstract. */
 function addMissingNulls(shaped: ShapedResearch): ShapedResearch {
   const hasBenefit = [...shaped.citations, ...shaped.sentences].some((item) =>
@@ -468,7 +480,7 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
       metaByKey,
       now: deps.now,
     })
-    const checked = await verifyShaped(question, shaped, deps.exaPost)
+    const checked = dropNonAnswers(await verifyShaped(question, shaped, deps.exaPost))
     if (checked.sentences.length === 0) {
       const restored = restoreSources(checked, UNVERIFIED_ANSWER)
       return {
