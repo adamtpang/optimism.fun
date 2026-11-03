@@ -98,6 +98,7 @@ function PaperCard({
           {paper.excerpt}
         </p>
       ) : null}
+      {paper.dropReason ? <p className="mt-3 text-small text-ink-400">{paper.dropReason}</p> : null}
       <button
         type="button"
         onClick={() => onRelated(paper.sourceUrl)}

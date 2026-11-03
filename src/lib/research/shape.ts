@@ -122,6 +122,8 @@ export type ResearchPaper = {
   excerpt: string | null
   excerptKind: 'summary' | 'highlights' | 'text' | null
   sourceUrl: string
+  /** Why this retrieved paper is not in the answer. */
+  dropReason?: string | null
 }
 
 export type CitedSentence = { text: string; cites: number[] }
@@ -490,6 +492,7 @@ export function shapeResearchAnswer(input: {
 
   type Kept = { text: string; keys: string[]; reason: UncitedSentence['reason'] | null }
   const keptSentences: Kept[] = []
+  const dropReasons = new Map<string, string>()
 
   for (const sentence of sentencesIn) {
     const citedWorks: Work[] = []
@@ -533,6 +536,17 @@ export function shapeResearchAnswer(input: {
     if (!plain) continue
     if (unique.length > 0) {
       const supporting = unique.filter((work) => citationSupportsSentence(work, plain))
+      for (const work of unique) {
+        if (supporting.some((item) => item.key === work.key)) continue
+        const blob = supportBlob(work)
+        const missing = quotedFigures(plain).some((figure) => !figureAppears(figure, blob))
+        dropReasons.set(
+          work.key,
+          missing
+            ? 'A stated number was not printed in the excerpt or abstract.'
+            : 'This paper did not support the sentence.',
+        )
+      }
       if (supporting.length === 0) {
         keptSentences.push({ text: plain, keys: [], reason: 'dropped-citation' })
         continue
@@ -580,7 +594,10 @@ export function shapeResearchAnswer(input: {
   const used = new Set(appearance)
   const retrievedPapers = [...works.values()]
     .filter((work) => !used.has(work.key))
-    .map((work) => toPaper(work, null, asOf))
+    .map((work) => ({
+      ...toPaper(work, null, asOf),
+      dropReason: dropReasons.get(work.key) ?? 'Not cited.',
+    }))
     .filter(showRetrieved)
 
   return {

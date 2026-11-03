@@ -153,18 +153,11 @@ function siteSuffix(segment: string): boolean {
   return /\b(plos|springer|wiley|nature|pubmed|pmc|elsevier|lancet|oxford|frontiers|sciencedirect|nejm|bmj|endocrine|medicine|journal|researcher|discovery)\b/i.test(text) && text.length <= 80
 }
 
-/** Prefer the catalog title when the scraped title is cut off or shorter. */
+/** Display the catalog title. The page title is only a fallback. */
 export function chooseTitle(scraped: string | null | undefined, catalog: string | null | undefined): string {
-  const fromPage = cleanTitle(scraped || '')
   const fromCatalog = cleanTitle(catalog || '')
-  if (!fromPage) return fromCatalog || 'Title unavailable'
-  if (!fromCatalog) return fromPage
-  const pageWasCut = /\.{3}|…/.test(scraped || '')
-  const catalogLonger = fromCatalog.length > fromPage.length + 8
-  if (!pageWasCut && !catalogLonger) return fromPage
-  const probe = fromPage.slice(0, 24).toLowerCase()
-  if (probe.length >= 12 && fromCatalog.toLowerCase().includes(probe)) return fromCatalog
-  return fromPage
+  if (fromCatalog) return fromCatalog
+  return cleanTitle(scraped || '') || 'Title unavailable'
 }
 
 export type StudyDirection = 'benefit' | 'no-effect' | 'unclear'

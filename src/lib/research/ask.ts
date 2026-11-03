@@ -45,6 +45,8 @@ export const ANSWER_SYSTEM = [
   'When only one meta-analysis is cited, call it a meta-analysis.',
   'Name the outcome that was measured, such as clamp, HOMA-IR, OGTT, fasting glucose, or HbA1c, instead of saying only insulin sensitivity.',
   'Keep the source population wording. If the source says overweight or obesity, do not narrow it to obesity.',
+  'If a total is not printed in the source, do not state a computed total. Quote the printed counts, such as 17 plus 3 participants.',
+  'When the retrieved sources disagree, say that they disagree and cite both sides. Do not summarize only the majority.',
   'If the question is about intermittent fasting in general and the sources only study time-restricted eating, say that the evidence is from time-restricted eating.',
   'If a sentence has no supporting source, omit it.',
   'Do not cite news, press releases, ResearchGate, Academia.edu, Wikipedia, or other excluded domains as evidence.',
@@ -218,21 +220,49 @@ export function readSupportChecks(payload: unknown): { n: number; supported: boo
   return out
 }
 
-export const UNVERIFIED_ANSWER = "We couldn't verify a sourced answer for this question."
+export const UNVERIFIED_ANSWER = 'No answer could be backed by retrieved papers for this question.'
 
 function restoreSources(shaped: ShapedResearch & { error?: string }, message: string): ShapedResearch & { error?: string } {
   const seen = new Set<string>()
+  const citedKeys = new Set(shaped.citations.map((paper) => `${paper.doi || ''}|${paper.sourceUrl}`))
   const retrieved: ResearchPaper[] = []
-  for (const paper of [...shaped.retrieved, ...shaped.citations]) {
+  for (const paper of [...shaped.citations, ...shaped.retrieved]) {
     const key = `${paper.doi || ''}|${paper.sourceUrl}`
     if (seen.has(key)) continue
     seen.add(key)
-    retrieved.push({ ...paper, n: null })
+    retrieved.push({
+      ...paper,
+      n: null,
+      dropReason: citedKeys.has(key)
+        ? 'The abstract check did not support the sentence that cited this paper.'
+        : paper.dropReason || 'Not cited.',
+    })
   }
   return { ...shaped, sentences: [], citations: [], retrieved, error: shaped.error || message }
 }
 
-function resolvablePaper(paper: { url: string; doi?: string | null; pmid?: string | null; text?: string | null; summary?: string | null }): boolean {
+function citesBothSides(shaped: ShapedResearch): boolean {
+  const pool = [...shaped.citations, ...shaped.retrieved]
+  const directions = pool.map((paper) => studyDirection(paper.excerpt || ''))
+  if (!directions.includes('benefit') || !directions.includes('no-effect')) return true
+  const cited = shaped.citations.map((paper) => studyDirection(paper.excerpt || ''))
+  return cited.includes('benefit') && cited.includes('no-effect')
+}
+
+function oneSidedFallback(shaped: ShapedResearch): ShapedResearch & { error?: string } {
+  const restored = restoreSources(shaped, UNVERIFIED_ANSWER)
+  const cited = new Set(shaped.citations.map((paper) => paper.doi || paper.sourceUrl))
+  restored.retrieved = restored.retrieved.map((paper) => {
+    const direction = studyDirection(paper.excerpt || '')
+    const wasCited = cited.has(paper.doi || paper.sourceUrl)
+    if (!wasCited && direction === 'benefit') return { ...paper, dropReason: 'Reports a benefit and was not cited.' }
+    if (!wasCited && direction === 'no-effect') return { ...paper, dropReason: 'Reports no effect and was not cited.' }
+    return { ...paper, dropReason: 'The answer did not cite both sides of the disagreement.' }
+  })
+  return restored
+}
+
+function resolvablePaper(paper: { url: string; doi?: string | null; pmid?: string | null }): boolean {
   return workKey(paper).startsWith('doi:') || workKey(paper).startsWith('pmid:') || workKey(paper).startsWith('arxiv:')
 }
 
@@ -308,7 +338,7 @@ export function answerQuery(question: string, papers: SourceFields[], metaByKey:
     '',
     'Use only these retrieved sources, and only when the excerpt supports the claim. Copy the source URL into sentences[].urls.',
     bothSides
-      ? 'The retrieved studies include both a reported benefit and a reported no effect. Cite at least one of each. Do not answer from the null studies only. Include positive early time-restricted feeding trials when they are in this list.'
+      ? 'The retrieved studies disagree. Say that they disagree and cite both sides. Do not summarize only the majority. Cite at least one reported benefit and one reported no effect, including a positive early time-restricted feeding trial when it is in this list.'
       : '',
     '',
     lines.join('\n\n'),
@@ -374,6 +404,9 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
     const checked = await verifyShaped(question, shaped, deps.exaPost)
     if (checked.sentences.length === 0) {
       return { configured: true, question, ...restoreSources(checked, UNVERIFIED_ANSWER) }
+    }
+    if (!citesBothSides(checked)) {
+      return { configured: true, question, ...oneSidedFallback(checked) }
     }
     return { configured: true, question, ...checked }
   } catch (err) {

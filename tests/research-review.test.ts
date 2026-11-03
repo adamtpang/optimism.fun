@@ -514,6 +514,7 @@ describe('review fixtures', () => {
     expect(result.citations).toEqual([])
     expect(result.error).toBe(UNVERIFIED_ANSWER)
     expect(result.retrieved.some((paper) => paper.doi?.toLowerCase() === '10.1016/s0140-6736(23)02511-4')).toBe(true)
+    expect(result.retrieved.find((paper) => paper.doi?.toLowerCase() === '10.1016/s0140-6736(23)02511-4')?.dropReason).toContain('abstract check')
   })
 
   it('rejects a derived headcount and keeps a literal one', () => {
@@ -583,10 +584,73 @@ describe('review fixtures', () => {
         { url: 'https://doi.org/10.1002/oby.23620', title: 'Time-restricted eating pilot', text: 'Time-restricted eating did not change insulin sensitivity.' },
       ],
     )
-    expect(query).toContain('Cite at least one of each')
+    expect(query).toContain('Say that they disagree')
     expect(query).toContain('Reports a benefit.')
     expect(query).toContain('Reports no effect.')
     expect(ANSWER_SYSTEM).toContain('overweight or obesity')
+    expect(ANSWER_SYSTEM).toContain('17 plus 3 participants')
+    expect(ANSWER_SYSTEM).toContain('Do not summarize only the majority')
+  })
+
+  it('does not keep an answer that cites only one side when the sources disagree', async () => {
+    process.env.EXA_API_KEY = 'test-key-value'
+    const benefit = {
+      url: 'https://doi.org/10.1016/j.cmet.2018.04.010',
+      title: 'Early time-restricted feeding',
+      text: 'Early time-restricted feeding improves insulin sensitivity in men with prediabetes.',
+      doi: '10.1016/j.cmet.2018.04.010',
+    }
+    const none = {
+      url: 'https://doi.org/10.1002/oby.23620',
+      title: 'Time-restricted eating pilot',
+      text: 'Time-restricted eating did not change insulin sensitivity.',
+      doi: '10.1002/oby.23620',
+    }
+    const result = await askResearch('Does intermittent fasting improve insulin sensitivity?', {
+      resolve: async () => ({ retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article' }),
+      exaPost: async (path, body) => {
+        if (path === '/search') return { results: [benefit, none] }
+        const schema = JSON.stringify((body as { outputSchema?: unknown }).outputSchema ?? {})
+        if (schema.includes('supported')) return { answer: { checks: [{ n: 1, supported: true }] } }
+        return { answer: { sentences: [{ text: 'Time-restricted eating did not change insulin sensitivity.', urls: [none.url] }] }, citations: [] }
+      },
+    })
+    delete process.env.EXA_API_KEY
+    expect(result.configured).toBe(true)
+    if (!result.configured) return
+    expect(result.sentences).toEqual([])
+    expect(result.error).toBe('No answer could be backed by retrieved papers for this question.')
+    expect(result.retrieved.map((paper) => paper.dropReason).join('\n')).toContain('Reports a benefit and was not cited.')
+  })
+
+  it('pins papers that the attached runs actually returned', () => {
+    // IDs copied from the uploaded run files. The NEJM 4-month TB regimen trial is not in those files.
+    const pinned = [
+      { doi: '10.1016/s0140-6736(23)02511-4', title: 'Safety and efficacy of malaria vaccine candidate R21/Matrix-M in African children: a multicentre, double-blind, randomised, controlled, phase 3 trial' },
+      { doi: '10.1016/j.cmet.2018.04.010', title: 'Early Time-Restricted Feeding Improves Insulin Sensitivity, Blood Pressure, and Oxidative Stress Even Without Weight Loss in Men with Prediabetes' },
+      { doi: '10.1186/s12986-021-00613-9', title: 'Time-restricted feeding improves blood glucose and insulin sensitivity in overweight patients with type 2 diabetes: a randomised controlled trial' },
+      { doi: '10.1002/oby.23620', title: 'Time-restricted eating did not alter insulin sensitivity or beta-cell function in adults with obesity: A randomized pilot study' },
+    ]
+    const papers: SourceFields[] = pinned.map((item) => ({
+      url: `https://doi.org/${item.doi}`,
+      title: `${item.title} | Publisher page`,
+      text: 'The trial reported its primary outcome in the abstract.',
+      doi: item.doi,
+    }))
+    const metaByKey = Object.fromEntries(papers.map((paper) => [paper.url, {
+      doi: paper.doi,
+      title: paper.title?.replace(/ \| Publisher page$/, ''),
+      retractionChecked: true,
+      retracted: false,
+      journal: true,
+      crossrefType: 'journal-article',
+      abstract: 'The trial reported its primary outcome in the abstract.',
+    }]))
+    const shaped = shapeResearchAnswer({ retrieved: papers, answer: null, metaByKey })
+    const present = new Set([...shaped.retrieved, ...shaped.citations].map((paper) => paper.doi?.toLowerCase()))
+    for (const item of pinned) expect(present.has(item.doi), item.doi).toBe(true)
+    expect(shaped.retrieved.find((paper) => paper.doi === '10.1016/s0140-6736(23)02511-4')?.title.startsWith('Safety and efficacy')).toBe(true)
+    expect(shaped.retrieved.every((paper) => paper.dropReason)).toBe(true)
   })
 })
 
