@@ -2,7 +2,7 @@ import { excludeDomains, PRIORITY_QUERY_HINT } from '@/lib/research/domains'
 import { resolvePaperMetadata } from '@/lib/research/metadata'
 import { isCoverageUrl, isExcludedUrl, isMirrorUrl, isRejectedResultUrl } from '@/lib/research/domains'
 import { arxivIdFromUrl, cleanDoi, doiFromUrl, isNonAnswer, isPdfUrl, normalizeTitle, normalizeUrl, plainSentence, pmidFromUrl, repairOpening, studyDirection, validateQuestion, workKey } from '@/lib/research/papers'
-import { claimNeedsRepair, dedupeSources, groundClaims, polishClaim, readPaperClaims, unsupportedNumbers, type PaperClaim } from '@/lib/research/claims'
+import { claimNeedsRepair, dedupeSources, groundClaims, paragraphFromClaims, polishClaim, questionIsGrounded, readPaperClaims, studyRank, unsupportedNumbers, type PaperClaim } from '@/lib/research/claims'
 import { pinsForQuestion } from '@/lib/research/pins'
 import {
   readSource,
@@ -441,8 +441,10 @@ function claimsQuery(question: string, papers: SourceFields[], metaByKey: Record
   return [
     `Question: ${question}`,
     '',
-    'For each paper, write at most two claims in your own words using only that paper\'s title and abstract.',
+    'Write one or two claims for every paper listed, including null trials and phase 3 trials. Do not stop after the first paper.',
+    'Use only that paper\'s title and abstract, in your own words.',
     'Tag each claim with that paper\'s DOI and label it benefit, null, or mixed.',
+    'When the abstract prints a sample size or a primary effect, a percent, efficacy, or noninferiority result, include that figure.',
     'Do not copy an abstract sentence. Do not include p-values, bullets, or citations of other studies.',
     'Every number you include must be printed in that abstract. Do not invent a range.',
     'If a number is not printed, omit it instead of guessing.',
@@ -480,6 +482,7 @@ async function repairClaims(
       stream: false,
       text: false,
       model: 'exa',
+      temperature: 0,
       systemPrompt: 'Return JSON matching the schema. One rewritten claim per DOI.',
       outputSchema: CLAIMS_SCHEMA,
     },
@@ -488,7 +491,38 @@ async function repairClaims(
   return readPaperClaims(payload) ?? []
 }
 
+async function verifyClaims(
+  claims: PaperClaim[],
+  papers: { doi: string; abstract: string }[],
+  exaPost: ExaPoster,
+): Promise<PaperClaim[]> {
+  if (!claims.length) return claims
+  const abstracts = new Map(papers.map((paper) => [paper.doi, paper.abstract]))
+  const lines = claims.map((claim, index) => {
+    const abstract = (abstracts.get(claim.doi) || '').slice(0, 1800)
+    return `Claim ${index + 1}\nDOI: ${claim.doi}\nClaim: ${claim.text}\nAbstract: ${abstract}`
+  })
+  const payload = await exaPost(
+    '/answer',
+    {
+      query: `supported is true only when the abstract states the outcome, population, and intervention named in the claim. If the claim names a measurement the abstract does not, supported is false.\n\n${lines.join('\n\n')}`,
+      stream: false,
+      text: false,
+      model: 'exa',
+      temperature: 0,
+      systemPrompt: 'Return JSON. Each check is a strict yes or no.',
+      outputSchema: CHECK_SCHEMA,
+    },
+    ANSWER_TIMEOUT_MS,
+  )
+  const checks = readSupportChecks(payload)
+  if (!checks) return claims
+  const rejected = new Set(checks.filter((check) => check.supported === false).map((check) => check.n))
+  return claims.filter((_, index) => !rejected.has(index + 1))
+}
+
 function assembleClaims(
+  question: string,
   papers: SourceFields[],
   claims: PaperClaim[],
   metaByKey: Record<string, PaperMeta>,
@@ -496,9 +530,14 @@ function assembleClaims(
   restatements: { doi: string; text: string }[] = [],
 ): ShapedResearch {
   const grounded = groundClaims(
-    papers.map((paper) => ({ doi: paperDoi(paper, metaByKey), abstract: paperAbstract(paper, metaByKey) })).filter((paper) => paper.doi),
+    papers.map((paper) => ({
+      doi: paperDoi(paper, metaByKey),
+      abstract: paperAbstract(paper, metaByKey),
+      title: (metaByKey[paper.url] ?? metaByKey[workKey(paper)] ?? {}).title || paper.title || '',
+    })).filter((paper) => paper.doi),
     claims,
     restatements,
+    question,
   )
   const base = shapeResearchAnswer({ retrieved: papers, answer: null, metaByKey, now })
   const byDoi = new Map(base.retrieved.filter((paper) => paper.doi).map((paper) => [paper.doi!.toLowerCase(), paper]))
@@ -506,10 +545,13 @@ function assembleClaims(
   const sentences = []
   for (const claim of grounded) {
     const paper = byDoi.get(claim.doi)
-    if (!paper) continue
-    if (!chosen.includes(paper)) chosen.push(paper)
-    const n = chosen.indexOf(paper) + 1
-    sentences.push({ text: `${claim.text} [${n}]`, cites: [n] })
+    if (!paper || chosen.includes(paper)) continue
+    chosen.push(paper)
+  }
+  const paragraph = paragraphFromClaims(grounded)
+  if (paragraph) {
+    const cites = [...new Set(paragraph.match(/\[(\d+)\]/g)?.map((token) => Number(token.slice(1, -1))) ?? [])]
+    sentences.push({ text: paragraph, cites })
   }
   const used = new Set(chosen.map((paper) => paper.doi?.toLowerCase()))
   return renumberCitations({
@@ -536,6 +578,21 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
   try {
     const foundMeta = await metaMap(found, deps.resolve)
     const papers = dedupeSources(applyMeta(found, foundMeta))
+    const briefs = papers
+      .map((paper) => ({ doi: paperDoi(paper, foundMeta), abstract: paperAbstract(paper, foundMeta), title: (foundMeta[paper.url] ?? foundMeta[workKey(paper)] ?? {}).title || paper.title || '' }))
+      .filter((paper) => paper.doi)
+    if (!questionIsGrounded(question, briefs.map((paper) => `${paper.title}\n${paper.abstract}`))) {
+      const empty = shapeResearchAnswer({ retrieved: papers, answer: null, metaByKey: foundMeta, now: deps.now })
+      return {
+        configured: true,
+        question,
+        status: 'no-answer',
+        error: UNVERIFIED_ANSWER,
+        ...empty,
+        sentences: [],
+        citations: [],
+      }
+    }
     const answered = await deps.exaPost(
       '/answer',
       {
@@ -543,6 +600,7 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
         stream: false,
         text: true,
         model: 'exa',
+        temperature: 0,
         systemPrompt: 'You write one paper\'s claims at a time, in your own words, from that paper\'s abstract only. Return JSON matching the schema.',
         outputSchema: CLAIMS_SCHEMA,
       },
@@ -550,11 +608,29 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
     )
     const claims = readPaperClaims(answered)
     if (claims) {
-      const briefs = papers
-        .map((paper) => ({ doi: paperDoi(paper, foundMeta), abstract: paperAbstract(paper, foundMeta) }))
-        .filter((paper) => paper.doi && paper.abstract)
-      const restatements = await repairClaims(claims, briefs, deps.exaPost).catch(() => [])
-      const shaped = assembleClaims(papers, claims, foundMeta, deps.now, restatements)
+      const covered = new Set(claims.map((claim) => claim.doi))
+      const missing = briefs.filter((paper) => studyRank(paper.title, paper.abstract) < 2 && paper.abstract && !covered.has(paper.doi))
+      let allClaims = claims
+      if (missing.length) {
+        const again = await deps.exaPost(
+          '/answer',
+          {
+            query: claimsQuery(question, papers.filter((paper) => missing.some((item) => item.doi === paperDoi(paper, foundMeta))), foundMeta),
+            stream: false,
+            text: false,
+            model: 'exa',
+            temperature: 0,
+            systemPrompt: 'Write one claim for every DOI. These primary trials were skipped. Return JSON matching the schema.',
+            outputSchema: CLAIMS_SCHEMA,
+          },
+          ANSWER_TIMEOUT_MS,
+        ).catch(() => null)
+        const extra = again ? readPaperClaims(again) : null
+        if (extra?.length) allClaims = [...claims, ...extra]
+      }
+      const verified = await verifyClaims(allClaims, briefs, deps.exaPost).catch(() => allClaims)
+      const restatements = await repairClaims(verified, briefs, deps.exaPost).catch(() => [])
+      const shaped = assembleClaims(question, papers, verified, foundMeta, deps.now, restatements)
       if (shaped.sentences.length === 0) {
         const restored = restoreSources(shaped, UNVERIFIED_ANSWER)
         return {

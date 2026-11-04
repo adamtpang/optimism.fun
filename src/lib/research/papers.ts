@@ -51,7 +51,7 @@ export function cleanDoi(raw: string | null | undefined): string | null {
   doi = doi.replace(/\.pdf$/i, '')
   doi = doi.replace(/v\d+$/i, '')
   doi = doi.replace(/[).,;]+$/g, '')
-  return doi || null
+  return doi ? doi.toLowerCase() : null
 }
 
 export function doiFromText(raw: string | null | undefined): string | null {

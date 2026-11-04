@@ -100,7 +100,7 @@ describe('review fixtures', () => {
         },
       },
     )
-    expect(sciencedirect.doi).toBe('10.1016/S0140-6736(18)32261-X')
+    expect(sciencedirect.doi).toBe('10.1016/s0140-6736(18)32261-x')
     expect(citationLink({
       url: 'https://www.nature.com/articles/s41591-023-02287-7?code=abc&error=cookies_not_supported',
     }).href).toBe('https://doi.org/10.1038/s41591-023-02287-7')
@@ -175,7 +175,7 @@ describe('review fixtures', () => {
   it('reads Crossref updated-by retractions and expressions of concern', () => {
     const retracted = readCrossref(WAKEFIELD)
     expect(retracted.retracted).toBe(true)
-    expect(retracted.doi).toBe('10.1016/S0140-6736(97)11096-0')
+    expect(retracted.doi).toBe('10.1016/s0140-6736(97)11096-0')
     expect(paperStatus({
       url: 'https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(97)11096-0/fulltext',
       ...retracted,
@@ -603,13 +603,13 @@ describe('review fixtures', () => {
     const benefit = {
       url: 'https://doi.org/10.1016/j.cmet.2018.04.010',
       title: 'Early time-restricted feeding',
-      text: 'Early time-restricted feeding improves insulin sensitivity in men with prediabetes.',
+      text: 'Intermittent fasting as early time-restricted feeding improves insulin sensitivity in men with prediabetes.',
       doi: '10.1016/j.cmet.2018.04.010',
     }
     const none = {
       url: 'https://doi.org/10.1002/oby.23620',
       title: 'Time-restricted eating pilot',
-      text: 'Time-restricted eating did not change insulin sensitivity.',
+      text: 'Intermittent fasting as time-restricted eating did not change insulin sensitivity.',
       doi: '10.1002/oby.23620',
     }
     const result = await askResearch('Does intermittent fasting improve insulin sensitivity?', {
@@ -868,13 +868,13 @@ describe('review fixtures', () => {
     const benefit = {
       url: 'https://doi.org/10.1016/j.cmet.2018.04.010',
       title: 'Early time-restricted feeding',
-      text: 'Early time-restricted feeding improves insulin sensitivity in men with prediabetes.',
+      text: 'Intermittent fasting as early time-restricted feeding improves insulin sensitivity in men with prediabetes.',
       doi: '10.1016/j.cmet.2018.04.010',
     }
     const none = {
       url: 'https://doi.org/10.1002/oby.23620',
       title: 'Time-restricted eating pilot',
-      text: 'In adults with overweight or obesity, time-restricted eating did not significantly alter insulin sensitivity over 12 weeks.',
+      text: 'Intermittent fasting as time-restricted eating in adults with overweight or obesity did not significantly alter insulin sensitivity over 12 weeks.',
       doi: '10.1002/oby.23620',
     }
     const result = await askResearch('Does intermittent fasting improve insulin sensitivity?', {
@@ -1118,8 +1118,8 @@ describe('review fixtures', () => {
           doi,
           title: `Pinned ${doi}`,
           abstract: doi === '10.1002/oby.23620'
-            ? 'Time-restricted eating did not alter insulin sensitivity.'
-            : 'Early time-restricted feeding improves insulin sensitivity.',
+            ? 'Intermittent fasting as time-restricted eating did not alter insulin sensitivity.'
+            : 'Intermittent fasting with early time-restricted feeding improves insulin sensitivity.',
           retractionChecked: true,
           retracted: false,
           journal: true,

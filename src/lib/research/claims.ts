@@ -156,7 +156,72 @@ export function dedupeSources(papers: SourceFields[]): SourceFields[] {
   return rows.filter((_, index) => keep[index]).map((row) => row.paper)
 }
 
-export function chooseBalancedClaims(claims: PaperClaim[]): PaperClaim[] {
+const GENERIC_TERMS = new Set([
+  'does', 'what', 'when', 'where', 'which', 'with', 'from', 'that', 'this', 'have', 'been', 'were',
+  'will', 'into', 'over', 'under', 'than', 'then', 'them', 'they', 'their', 'there', 'such', 'only',
+  'also', 'more', 'most', 'many', 'some', 'well', 'work', 'works', 'improve', 'improves', 'improved',
+  'reduce', 'reduces', 'reduced', 'reduction', 'effect', 'effects', 'effective', 'efficacy', 'risk',
+  'risks', 'adult', 'adults', 'people', 'trial', 'study', 'studies', 'standard', 'versus', 'against',
+  'prevent', 'prevents', 'treatment', 'regimen', 'based', 'using', 'compared', 'comparison', 'month',
+  'months', 'year', 'years', 'week', 'weeks', 'pulmonary', 'question', 'about', 'among', 'between',
+  'within', 'without', 'clinical', 'patients', 'persons', 'human', 'humans', 'older', 'raise',
+  'raises', 'raised', 'change', 'changed', 'affect', 'affected', 'remain', 'remained', 'found',
+  'showed', 'shown', 'reported', 'significant', 'significantly', 'respectively', 'after', 'before',
+  'during', 'their', 'these', 'those', 'other', 'results', 'result', 'group', 'groups', 'control',
+  'participants', 'participant', 'received', 'following', 'primary', 'secondary', 'analysis',
+  'recorded', 'average', 'highest', 'lower', 'higher',
+])
+
+/** Salient words in a question. An unmatched one, such as socks, blocks generation. */
+export function questionTerms(question: string): string[] {
+  return question
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, ' ')
+    .split(/[\s-]+/)
+    .filter((word) => word.length >= 4 && !GENERIC_TERMS.has(word))
+}
+
+export function questionIsGrounded(question: string, abstracts: string[]): boolean {
+  const terms = questionTerms(question)
+  if (terms.length === 0) return true
+  const hay = abstracts.join('\n').toLowerCase().replace(/[^a-z0-9]/g, '')
+  return terms.every((term) => hay.includes(term.replace(/[^a-z0-9]/g, '')))
+}
+
+export function contentTerms(text: string): string[] {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, ' ')
+    .split(/[\s-]+/)
+    .filter((word) => word.length >= 6 && !GENERIC_TERMS.has(word))
+}
+
+/** Outcome, population, and intervention words in the claim must be printed in the abstract. */
+export function missingContentTerms(claim: string, abstract: string): string[] {
+  const hay = abstract.toLowerCase()
+  return contentTerms(claim).filter((term) => !hay.includes(term))
+}
+
+export function claimOffTopic(question: string, claim: string): boolean {
+  if (!question.trim()) return false
+  const terms = questionTerms(question)
+  if (!terms.length) return false
+  const hay = claim.toLowerCase().replace(/[^a-z0-9]/g, '')
+  return !terms.some((term) => hay.includes(term.replace(/[^a-z0-9]/g, '')))
+}
+
+/** 0 is a primary trial, 3 is a review or commentary. */
+export function studyRank(title: string, abstract: string): number {
+  const head = `${title}\n${abstract.slice(0, 700)}`.toLowerCase()
+  const review = /\b(systematic review|meta-analysis|narrative review|commentary|editorial|prospects)\b/.test(head)
+  const primary = /\bphase\s*3\b|\bphase\s*2b\b|\brandomi[sz]ed controlled\b|\bdouble-blind\b|\bplacebo-controlled\b|\brandomi[sz]ed\b/.test(head)
+  if (primary && !review) return 0
+  if (primary) return 1
+  if (review) return 3
+  return 2
+}
+
+export function chooseBalancedClaims(claims: PaperClaim[], rankOf: (doi: string) => number = () => 2): PaperClaim[] {
   const perPaper = new Map<string, PaperClaim[]>()
   const limited: PaperClaim[] = []
   for (const claim of claims) {
@@ -166,17 +231,60 @@ export function chooseBalancedClaims(claims: PaperClaim[]): PaperClaim[] {
     perPaper.set(claim.doi, used)
     limited.push(claim)
   }
-  const benefit = limited.filter((claim) => claim.direction === 'benefit')
-  const nulls = limited.filter((claim) => claim.direction === 'null')
-  const mixed = limited.filter((claim) => claim.direction === 'mixed')
+  const sorted = [...limited].sort((a, b) => rankOf(a.doi) - rankOf(b.doi))
   const picked: PaperClaim[] = []
-  if (benefit[0]) picked.push(benefit[0])
-  if (nulls[0]) picked.push(nulls[0])
-  for (const claim of [...benefit.slice(1), ...nulls.slice(1), ...mixed]) {
-    if (picked.length >= 5) break
-    if (!picked.includes(claim)) picked.push(claim)
+  const has = (direction: ClaimDirection) => picked.some((claim) => claim.direction === direction)
+  const papers = () => new Set(picked.map((claim) => claim.doi))
+  const nullsExist = sorted.some((claim) => claim.direction === 'null')
+  const benefitsExist = sorted.some((claim) => claim.direction === 'benefit')
+  for (const claim of sorted) {
+    const needSide = (benefitsExist && !has('benefit') && claim.direction === 'benefit')
+      || (nullsExist && !has('null') && claim.direction === 'null')
+    const needPaper = papers().size < 3 && !papers().has(claim.doi)
+    if (needSide || needPaper) picked.push(claim)
+  }
+  for (const claim of sorted) {
+    if (picked.includes(claim) || picked.length >= 5) continue
+    if (rankOf(claim.doi) >= 3 && papers().size >= 3 && (!benefitsExist || has('benefit')) && (!nullsExist || has('null'))) continue
+    picked.push(claim)
   }
   return picked
+}
+
+export function mergeRepeatedClaims<T extends PaperClaim>(claims: T[]): T[] {
+  const words = (text: string) => new Set(text.toLowerCase().replace(/[^a-z ]/g, ' ').split(/\s+/).filter((word) => word.length > 4))
+  const kept: T[] = []
+  for (const claim of claims) {
+    const mine = words(claim.text)
+    const repeat = kept.some((earlier) => {
+      const theirs = words(earlier.text)
+      if (mine.size < 4 || theirs.size < 4) return false
+      let shared = 0
+      for (const word of mine) if (theirs.has(word)) shared += 1
+      return shared / Math.min(mine.size, theirs.size) >= 0.7
+    })
+    if (!repeat) kept.push(claim)
+  }
+  return kept
+}
+
+/** One paragraph. The opening sentence uses only the selected claim labels and wording. */
+export function paragraphFromClaims(claims: PaperClaim[]): string {
+  if (claims.length === 0) return ''
+  const order: string[] = []
+  for (const claim of claims) if (!order.includes(claim.doi)) order.push(claim.doi)
+  const marker = (doi: string) => `[${order.indexOf(doi) + 1}]`
+  const benefit = claims.find((claim) => claim.direction === 'benefit')
+  const nulls = claims.find((claim) => claim.direction === 'null')
+  const opening = benefit && nulls
+    ? 'The retrieved studies disagree.'
+    : benefit
+      ? 'The retrieved studies report a benefit.'
+      : nulls
+        ? 'The retrieved studies report no effect.'
+        : 'The retrieved studies report mixed results.'
+  const body = claims.map((claim) => `${claim.text.replace(/\.$/, '')} ${marker(claim.doi)}.`).join(' ')
+  return `${opening} ${body}`
 }
 
 export type GroundedClaim = PaperClaim & { abstract: string }
@@ -192,9 +300,10 @@ export function claimNeedsRepair(claim: PaperClaim, abstract: string): boolean {
 }
 
 export function groundClaims(
-  papers: { doi: string; abstract: string }[],
+  papers: { doi: string; abstract: string; title?: string }[],
   claims: PaperClaim[],
   restatements: { doi: string; text: string }[] = [],
+  question = '',
 ): GroundedClaim[] {
   const abstracts = new Map(papers.map((paper) => [paper.doi.toLowerCase(), paper.abstract]))
   const accepted: GroundedClaim[] = []
@@ -210,12 +319,17 @@ export function groundClaims(
       text = polishClaim(repaired ? rewriteDerivedTotals(repaired.text, abstract) : stripTokens(text, bad))
     }
     if (!text || isNonAnswer(text) || describesOtherStudies(text) || isVerbatimAbstract(text, abstract)) continue
-    if (!claimBelongsToAbstract(text, abstract)) continue
+    if (!claimBelongsToAbstract(text, abstract) || claimOffTopic(question, text)) continue
+    if (missingContentTerms(text, abstract).length) continue
     if (unsupportedNumbers(text, abstract).length) text = stripTokens(text, unsupportedNumbers(text, abstract))
     if (text.split(/\s+/).length < 6) continue
     accepted.push({ ...claim, text, abstract })
   }
-  return chooseBalancedClaims(accepted).map((claim) => {
+  const rankOf = (doi: string) => {
+    const paper = papers.find((item) => item.doi.toLowerCase() === doi)
+    return paper ? studyRank(paper.title || '', paper.abstract) : 2
+  }
+  return mergeRepeatedClaims(chooseBalancedClaims(accepted, rankOf)).map((claim) => {
     const full = accepted.find((item) => item.doi === claim.doi && item.text === claim.text && item.direction === claim.direction)
     return full ?? { ...claim, abstract: abstracts.get(claim.doi) || '' }
   })
