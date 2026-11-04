@@ -27,7 +27,7 @@ export type OpenAlexResult = {
 
 const BASE = 'https://api.openalex.org/works'
 
-function contact(): string {
+export function openAlexContact(): string {
   return process.env.OPENALEX_CONTACT ?? 'adamtpang@gmail.com'
 }
 
@@ -62,7 +62,7 @@ async function fetchOpenAlexCountNow(
   const filter = `title_and_abstract.search:${search},from_publication_date:${fromDate}`
   const url =
     `${BASE}?filter=${encodeURIComponent(filter)}` +
-    `&per_page=1&mailto=${encodeURIComponent(contact())}`
+    `&per_page=1&mailto=${encodeURIComponent(openAlexContact())}`
 
   try {
     const res = await fetch(url, {
