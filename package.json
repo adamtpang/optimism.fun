@@ -56,5 +56,11 @@
     "tailwindcss": "^3.4.16",
     "typescript": "^5.7.0",
     "vitest": "^3.2.7"
+  },
+  "overrides": {
+    "browserslist": "4.28.7",
+    "dompurify": "3.4.17",
+    "source-map-js": "1.2.2",
+    "tinypool": "2.1.2"
   }
 }
