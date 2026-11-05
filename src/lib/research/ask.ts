@@ -1,8 +1,8 @@
 import { excludeDomains, PRIORITY_QUERY_HINT } from '@/lib/research/domains'
 import { fetchRegistryAbstract, resolvePaperMetadata } from '@/lib/research/metadata'
 import { isCoverageUrl, isExcludedUrl, isMirrorUrl, isRejectedResultUrl } from '@/lib/research/domains'
-import { arxivIdFromUrl, cleanDoi, doiFromUrl, isNonAnswer, isPdfUrl, normalizeTitle, normalizeUrl, plainSentence, pmidFromUrl, repairOpening, studyDirection, validateQuestion, workKey } from '@/lib/research/papers'
-import { chooseBalancedClaims, claimNeedsRepair, dedupeSources, groundClaims, paragraphFromClaims, polishClaim, questionIsGrounded, readPaperClaims, studyRank, unsupportedNumbers, type PaperClaim } from '@/lib/research/claims'
+import { arxivIdFromUrl, cleanDoi, doiFromUrl, isGuidanceRecord, isNonAnswer, isPdfUrl, normalizeTitle, normalizeUrl, plainSentence, pmidFromUrl, repairOpening, studyDirection, validateQuestion, workKey } from '@/lib/research/papers'
+import { chooseBalancedClaims, claimNeedsRepair, dedupeSources, groundClaims, mergeRepeatedClaims, paragraphFromClaims, polishClaim, questionIsGrounded, readPaperClaims, studyRank, unsupportedNumbers, type PaperClaim } from '@/lib/research/claims'
 import { citeName, readExtracts, renderExtractSentence, supportText, verifyExtract, type PaperExtract } from '@/lib/research/extract'
 import { pinsForQuestion } from '@/lib/research/pins'
 import {
@@ -85,6 +85,13 @@ const ANSWER_SCHEMA = {
 export type ExaPoster = (path: string, body: unknown, timeoutMs: number) => Promise<unknown>
 export type MetaResolver = (fields: SourceFields) => Promise<PaperMeta>
 
+export type PaperDecision = {
+  doi: string | null
+  title: string
+  status: 'kept' | 'rejected'
+  reason: string
+}
+
 export type AskResponse =
   | { configured: false }
   | ({
@@ -92,7 +99,25 @@ export type AskResponse =
       question: string
       error?: string
       status?: 'no-answer'
+      debug?: PaperDecision[]
     } & ShapedResearch)
+
+export function includeResearchDebug(url: string): boolean {
+  if (process.env.VERCEL_ENV === 'preview') return true
+  try {
+    return new URL(url).searchParams.get('debug') === '1'
+  } catch {
+    return false
+  }
+}
+
+function withDebug(question: string, shaped: ShapedResearch, extra: { error?: string; status?: 'no-answer' } = {}): AskResponse {
+  const debug: PaperDecision[] = [
+    ...shaped.citations.map((paper) => ({ doi: paper.doi, title: paper.title, status: 'kept' as const, reason: 'Kept.' })),
+    ...shaped.retrieved.map((paper) => ({ doi: paper.doi, title: paper.title, status: 'rejected' as const, reason: paper.dropReason || 'Not cited.' })),
+  ]
+  return { configured: true, question, ...extra, ...shaped, debug }
+}
 
 export function researchHttpStatus(result: { configured: boolean; error?: string }): number {
   if (!result.configured || !result.error || result.error === UNVERIFIED_ANSWER) return 200
@@ -667,7 +692,16 @@ function assembleExtracts(
     const source = byDoi.get(doi)
     return source ? studyRank(source.title, source.abstract) : 2
   }
-  const chosen = chooseBalancedClaims(claims, rankOf)
+  const balanced = chooseBalancedClaims(claims, rankOf)
+  const primaryRetrieved = [...byDoi.values()].some((source) => studyRank(source.title, source.abstract) < 2)
+  const chosen = primaryRetrieved && balanced.every((claim) => isGuidanceRecord({ url: byDoi.get(claim.doi)?.paper.url, doi: claim.doi, title: byDoi.get(claim.doi)?.title }))
+    ? []
+    : balanced
+  if (chosen.length === 0) {
+    for (const claim of balanced) {
+      reasons.set(claim.doi, 'Guidance was not cited alone because a primary trial was retrieved.')
+    }
+  }
   for (const claim of claims) {
     if (!chosen.includes(claim) && reasons.get(claim.doi) === 'Kept.') {
       reasons.set(claim.doi, 'Not selected. A primary trial or the other side of the evidence was kept instead.')
@@ -677,15 +711,35 @@ function assembleExtracts(
   for (const paper of base.citations) {
     if (paper.doi) cards.set(paper.doi.toLowerCase(), paper)
   }
-  const ordered: typeof base.retrieved = []
+  const body = mergeRepeatedClaims(chosen).slice(0, 4)
   for (const claim of chosen) {
+    if (!body.includes(claim)) reasons.set(claim.doi, 'Merged with an earlier finding.')
+  }
+  const ordered: typeof base.retrieved = []
+  for (const claim of body) {
     const card = cards.get(claim.doi)
     if (card && !ordered.includes(card)) ordered.push(card)
   }
-  const sentences = chosen.map((claim) => {
-    const n = ordered.findIndex((paper) => paper.doi?.toLowerCase() === claim.doi) + 1
-    return { text: `${claim.text} [${n}].`, cites: [n] }
-  })
+  const marker = (doi: string) => ordered.findIndex((paper) => paper.doi?.toLowerCase() === doi) + 1
+  const benefit = body.some((claim) => claim.direction === 'benefit')
+  const nulls = body.some((claim) => claim.direction === 'null')
+  const opening = body.length === 0
+    ? ''
+    : benefit && nulls
+      ? 'The retrieved studies disagree.'
+      : benefit
+        ? 'The retrieved studies report a benefit.'
+        : nulls
+          ? 'The retrieved studies report no effect.'
+          : 'The retrieved studies report mixed results.'
+  const openingCites = [...new Set(body.map((claim) => marker(claim.doi)))]
+  const sentences = opening
+    ? [{ text: `${opening} ${openingCites.map((n) => `[${n}]`).join('')}`, cites: openingCites }]
+    : []
+  for (const claim of body) {
+    const n = marker(claim.doi)
+    sentences.push({ text: `${claim.text} [${n}].`, cites: [n] })
+  }
   const used = new Set(ordered.map((paper) => paper.doi?.toLowerCase()))
   return renumberCitations({
     ...base,
@@ -763,15 +817,7 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
       .filter((paper) => paper.doi)
     if (!questionIsGrounded(question, briefs.map((paper) => `${paper.title}\n${paper.abstract}`))) {
       const empty = shapeResearchAnswer({ retrieved: papers, answer: null, metaByKey: foundMeta, now: deps.now })
-      return {
-        configured: true,
-        question,
-        status: 'no-answer',
-        error: UNVERIFIED_ANSWER,
-        ...empty,
-        sentences: [],
-        citations: [],
-      }
+      return withDebug(question, { ...empty, sentences: [], citations: [] }, { status: 'no-answer', error: UNVERIFIED_ANSWER })
     }
     const answered = await deps.exaPost(
       '/answer',
@@ -810,9 +856,9 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
       const shaped = assembleExtracts(papers, extracts, foundMeta, deps.now)
       if (shaped.sentences.length === 0) {
         const restored = restoreSources(shaped, UNVERIFIED_ANSWER)
-        return { configured: true, question, status: 'no-answer', ...restored }
+        return withDebug(question, restored, { status: 'no-answer', error: restored.error })
       }
-      return { configured: true, question, ...shaped }
+      return withDebug(question, shaped)
     }
     const claims = readPaperClaims(answered)
     if (claims) {
@@ -841,14 +887,9 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
       const shaped = assembleClaims(question, papers, verified, foundMeta, deps.now, restatements)
       if (shaped.sentences.length === 0) {
         const restored = restoreSources(shaped, UNVERIFIED_ANSWER)
-        return {
-          configured: true,
-          question,
-          status: 'no-answer',
-          ...restored,
-        }
+        return withDebug(question, restored, { status: 'no-answer', error: restored.error })
       }
-      return { configured: true, question, ...shaped }
+      return withDebug(question, shaped)
     }
     const answer = readAnswer(answered)
     const novel = answer.citations.filter((citation) => !foundMeta[citation.url] && !foundMeta[workKey(citation)])
@@ -865,14 +906,9 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
     const checked = dropNonAnswers(await verifyShaped(question, shaped, deps.exaPost))
     if (checked.sentences.length === 0) {
       const restored = restoreSources(checked, UNVERIFIED_ANSWER)
-      return {
-        configured: true,
-        question,
-        ...(restored.error === UNVERIFIED_ANSWER ? { status: 'no-answer' as const } : {}),
-        ...restored,
-      }
+      return withDebug(question, restored, restored.error === UNVERIFIED_ANSWER ? { status: 'no-answer', error: restored.error } : { error: restored.error })
     }
-    return { configured: true, question, ...checked }
+    return withDebug(question, checked)
   } catch (err) {
     const message = err instanceof ExaRequestError ? err.message : err instanceof Error ? err.message : 'Exa request failed.'
     const shaped = shapeResearchAnswer({ retrieved: found, answer: null, now: deps.now })

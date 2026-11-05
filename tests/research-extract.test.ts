@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { askResearch } from '@/lib/research/ask'
+import { askResearch, includeResearchDebug } from '@/lib/research/ask'
 import { fetchRegistryAbstract } from '@/lib/research/metadata'
+import { paperStatus, statusLabel } from '@/lib/research/papers'
 import { citeName, renderExtractSentence, spanInAbstract, supportText, verifyExtract, type PaperExtract } from '@/lib/research/extract'
 
 const SUTTON = 'Intermittent fasting (IF) improves cardiometabolic health. Men with prediabetes were randomized to early time-restricted feeding (eTRF) for 5 weeks. eTRF improved insulin sensitivity.'
@@ -143,6 +144,165 @@ describe('structured extracts', () => {
     expect(result.citations.map((item) => item.doi)).toContain(paper.doi)
     expect(result.sentences.map((sentence) => sentence.text).join(' ')).toContain('Dorman 2021')
     expect(result.sentences.map((sentence) => sentence.text).join(' ')).toContain('2,516')
+  })
+})
+
+describe('answer length', () => {
+  it('writes three to five sentences and names the paper', async () => {
+    process.env.EXA_API_KEY = 'test-key-value'
+    const rows = [
+      {
+        doi: '10.1016/j.cmet.2018.04.010',
+        title: 'Early time-restricted feeding randomized trial',
+        author: 'Elizabeth Sutton',
+        year: '2018',
+        abstract: 'Intermittent fasting as early time-restricted feeding improved insulin sensitivity in men with prediabetes over 5 weeks.',
+        direction: 'benefit' as const,
+        intervention: 'early time-restricted feeding',
+        outcome: 'improved insulin sensitivity',
+        population: 'men with prediabetes',
+      },
+      {
+        doi: '10.1007/s00125-022-05752-z',
+        title: 'Three weeks of time-restricted eating randomized trial',
+        author: 'Charlotte Andriessen',
+        year: '2022',
+        abstract: 'Intermittent fasting as time-restricted eating did not change insulin sensitivity in adults with type 2 diabetes.',
+        direction: 'null' as const,
+        intervention: 'time-restricted eating',
+        outcome: 'did not change insulin sensitivity',
+        population: 'adults with type 2 diabetes',
+      },
+      {
+        doi: '10.1002/oby.23620',
+        title: 'Time-restricted eating randomized pilot',
+        author: 'Anne Bantle',
+        year: '2023',
+        abstract: 'Intermittent fasting as time-restricted eating did not significantly alter insulin sensitivity in adults with overweight or obesity over 12 weeks.',
+        direction: 'null' as const,
+        intervention: 'time-restricted eating',
+        outcome: 'did not significantly alter insulin sensitivity',
+        population: 'adults with overweight or obesity',
+      },
+    ]
+    const result = await askResearch('Does intermittent fasting improve insulin sensitivity in adults?', {
+      resolve: async (fields) => {
+        const row = rows.find((item) => item.doi === fields.doi)
+        return {
+          doi: row?.doi,
+          title: row?.title,
+          authors: row ? [row.author] : null,
+          year: row?.year,
+          abstract: row?.abstract,
+          retractionChecked: true,
+          retracted: false,
+          journal: true,
+          crossrefType: 'journal-article',
+        }
+      },
+      exaPost: async (path) => {
+        if (path === '/search') {
+          return { results: rows.map((row) => ({ url: `https://doi.org/${row.doi}`, doi: row.doi, title: row.title, text: 'Page.' })) }
+        }
+        return {
+          answer: {
+            extracts: rows.map((row) => ({
+              doi: row.doi,
+              effect_direction: row.direction,
+              population: field(row.population),
+              intervention: field(row.intervention),
+              outcome: field(row.outcome),
+              key_numbers: [],
+              n: null,
+            })),
+          },
+        }
+      },
+    })
+    delete process.env.EXA_API_KEY
+    expect(result.configured).toBe(true)
+    if (!result.configured) return
+    expect(result.sentences.length).toBeGreaterThanOrEqual(3)
+    expect(result.sentences.length).toBeLessThanOrEqual(5)
+    const text = result.sentences.map((sentence) => sentence.text).join(' ')
+    expect(text).toContain('Sutton 2018')
+    expect(text).toContain('Andriessen 2022')
+    expect(text).not.toMatch(/The study noted/i)
+    expect(text.startsWith('The retrieved studies disagree.')).toBe(true)
+  })
+})
+
+describe('labels and debug', () => {
+  it('labels MMWR as guidance and a JES supplement as a meeting abstract', () => {
+    const shared = { retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article' }
+    expect(paperStatus({ url: 'https://doi.org/10.15585/mmwr.mm7108a1', doi: '10.15585/mmwr.mm7108a1', title: 'Interim Guidance', ...shared })).toBe('guidance')
+    expect(statusLabel('guidance')).toBe('Guidance')
+    expect(paperStatus({ url: 'https://doi.org/10.1210/jendso/bvac150.018', doi: '10.1210/jendso/bvac150.018', ...shared })).toBe('meeting-abstract')
+    expect(statusLabel('meeting-abstract')).toBe('Meeting abstract')
+  })
+
+  it('does not cite guidance alone when a primary trial was retrieved', async () => {
+    process.env.EXA_API_KEY = 'test-key-value'
+    const dorman = {
+      url: 'https://doi.org/10.1056/nejmoa2033400',
+      doi: '10.1056/nejmoa2033400',
+      title: 'Four-Month Rifapentine Regimens with or without Moxifloxacin for Tuberculosis',
+      text: 'Short page.',
+    }
+    const mmwr = {
+      url: 'https://doi.org/10.15585/mmwr.mm7108a1',
+      doi: '10.15585/mmwr.mm7108a1',
+      title: 'Interim Guidance: 4-Month Rifapentine-Moxifloxacin Regimen',
+      text: 'Short page.',
+    }
+    const result = await askResearch('Is a 4-month rifapentine regimen effective for tuberculosis?', {
+      resolve: async (fields) => fields.doi === dorman.doi
+        ? {
+            doi: dorman.doi,
+            title: dorman.title,
+            authors: ['Susan E. Dorman'],
+            year: '2021',
+            abstract: 'In a randomized trial, a 4-month rifapentine regimen with moxifloxacin was noninferior.',
+            retractionChecked: true,
+            retracted: false,
+            journal: true,
+            crossrefType: 'journal-article',
+          }
+        : {
+            doi: mmwr.doi,
+            title: mmwr.title,
+            abstract: 'CDC interim guidance says a 4-month rifapentine regimen is as effective as the 6-month regimen.',
+            venue: 'MMWR',
+            retractionChecked: true,
+            retracted: false,
+            journal: true,
+            crossrefType: 'journal-article',
+          },
+      exaPost: async (path) => {
+        if (path === '/search') return { results: [mmwr, dorman] }
+        return {
+          answer: {
+            extracts: [{
+              doi: mmwr.doi,
+              effect_direction: 'benefit',
+              intervention: field('4-month rifapentine regimen'),
+              outcome: field('as effective as the 6-month regimen'),
+              key_numbers: [],
+              n: null,
+            }],
+          },
+        }
+      },
+    })
+    delete process.env.EXA_API_KEY
+    expect(result.configured).toBe(true)
+    if (!result.configured) return
+    expect(result.citations).toEqual([])
+    expect(result.status).toBe('no-answer')
+    expect(result.retrieved.find((paper) => paper.doi === mmwr.doi)?.statusLabel).toBe('Guidance')
+    expect(result.debug?.find((row) => row.doi === mmwr.doi)?.reason).toContain('Guidance')
+    expect(includeResearchDebug('https://preview.example/api/research/ask?debug=1')).toBe(true)
+    expect(includeResearchDebug('https://preview.example/api/research/ask')).toBe(false)
   })
 })
 
