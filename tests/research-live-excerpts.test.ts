@@ -55,24 +55,9 @@ describe('live excerpts from the failing rechecks', () => {
         if (path === '/search') return { results: [mmwr, dorman] }
         return {
           answer: {
-            extracts: [
-              {
-                doi: dorman.doi,
-                effect_direction: 'benefit',
-                population: field('2516 participants', 'Among 2516 participants'),
-                intervention: field('4-month rifapentine regimen with moxifloxacin'),
-                outcome: field('was noninferior'),
-                n: field('2,516', 'Among 2516 participants'),
-                key_numbers: [],
-              },
-              {
-                doi: mmwr.doi,
-                effect_direction: 'benefit',
-                intervention: field('4-month regimen containing rifapentine and moxifloxacin'),
-                outcome: field('as effective as the standard 6-month regimen'),
-                key_numbers: [],
-                n: null,
-              },
+            sentences: [
+              { text: 'Dorman 2021 found that the rifapentine regimen with moxifloxacin was noninferior among 2516 participants.', paper_id: dorman.doi, numbers: ['2516'] },
+              { text: 'CDC guidance described the rifapentine regimen as effective for tuberculosis treatment.', paper_id: mmwr.doi, numbers: [] },
             ],
           },
         }
@@ -84,7 +69,7 @@ describe('live excerpts from the failing rechecks', () => {
     const text = result.sentences.map((sentence) => sentence.text).join(' ')
     expect(result.citations.map((paper) => paper.doi)).toContain(dorman.doi)
     expect(result.citations.map((paper) => paper.doi)).not.toEqual([mmwr.doi])
-    expect(text).toContain('2,516')
+    expect(text).toMatch(/2516|2,516/)
     expect(text.toLowerCase()).toContain('noninferior')
     expect(text).toContain('Dorman 2021')
     expect(result.citations.find((paper) => paper.doi === mmwr.doi)?.statusLabel === 'Guidance' || !result.citations.some((paper) => paper.doi === mmwr.doi)).toBe(true)
