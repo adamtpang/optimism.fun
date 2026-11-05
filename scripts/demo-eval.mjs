@@ -25,8 +25,12 @@ const questions = [
         ['at least 3 papers', new Set(dois).size >= 3],
         ['no postprandial', !/postprandial/i.test(text)],
         ['no clothing', !/clothing/i.test(text)],
-      ], data)
+      ].concat(sharedChecks(data)), data)
     },
+    variants: [
+      'Does time-restricted eating improve insulin sensitivity in adults?',
+      'Does early time-restricted feeding improve insulin sensitivity?',
+    ],
   },
   {
     name: 'm72',
@@ -42,8 +46,12 @@ const questions = [
         ['final analysis cited', dois.includes('10.1056/nejmoa1909953')],
         ['peer-reviewed label', !phase2b || phase2b.statusLabel === 'Peer-reviewed'],
         ['lowercase doi', !phase2b || phase2b.doi === phase2b.doi.toLowerCase()],
-      ], data)
+      ].concat(sharedChecks(data)), data)
     },
+    variants: [
+      'Does M72/AS01 prevent tuberculosis?',
+      'How well does the M72/AS01E tuberculosis vaccine work?',
+    ],
   },
   {
     name: 'tb4month',
@@ -56,8 +64,13 @@ const questions = [
         ['2516', /2,?516/.test(text)],
         ['noninferior', /noninferior/i.test(text)],
         ['not guidance alone', dois.some((doi) => doi !== '10.15585/mmwr.mm7108a1')],
-      ], data)
+        ['2516 only on Dorman', dormanOwns(data, '10.1056/nejmoa2033400', /2,?516/)],
+      ].concat(sharedChecks(data, 'noninferior')), data)
     },
+    variants: [
+      'Is the 4-month rifapentine-moxifloxacin regimen noninferior for tuberculosis?',
+      'Does a 4-month rifapentine regimen match standard tuberculosis treatment?',
+    ],
   },
   {
     name: 'r21',
@@ -71,8 +84,13 @@ const questions = [
         ['68%', /68%/.test(text)],
         ['no 78-79 range', !/78\s*[-\u2013]\s*79%/.test(text)],
         ['no cross-protection', !/cross-protection/i.test(text)],
-      ], data)
+      ].concat(sharedChecks(data)), data)
     },
+    variants: [
+      'Does the R21/Matrix-M malaria vaccine work?',
+      'How effective is R21/Matrix-M against malaria?',
+      'What is the efficacy of the R21 malaria vaccine?',
+    ],
   },
   {
     name: 'noanswer',
@@ -96,16 +114,44 @@ function figureInExcerpt(figure, excerpt) {
   if (/^\d{4}$/.test(bare) && year >= 1990 && year <= 2030) return true
   const hay = excerpt.replace(/,/g, '').toLowerCase()
   if (figure.endsWith('%')) return hay.includes(`${bare}%`) || hay.includes(`${bare} percent`)
-  if (hay.includes(bare)) return true
-  const target = Number(bare)
-  if (!Number.isFinite(target)) return false
-  const nums = [...hay.matchAll(/\d{2,}/g)].map((match) => Number(match[0]))
-  for (let i = 0; i < nums.length; i += 1) {
-    for (let j = i + 1; j < nums.length; j += 1) {
-      if (nums[i] + nums[j] === target) return true
-    }
+  return hay.includes(bare)
+}
+
+function wordsOf(text) {
+  return text.toLowerCase().replace(/[^a-z0-9%]+/g, ' ').split(/\s+/).filter(Boolean)
+}
+
+function copiedRun(sentence, excerpt) {
+  const left = wordsOf(sentence)
+  const hay = wordsOf(excerpt).join(' ')
+  for (let i = 0; i + 12 <= left.length; i += 1) {
+    if (hay.includes(left.slice(i, i + 12).join(' '))) return true
   }
   return false
+}
+
+function sharedChecks(data, direction) {
+  const sentences = data.sentences || []
+  const text = sentences.map((sentence) => sentence.text).join(' ')
+  const copied = sentences.some((sentence) => (sentence.cites || []).some((n) => {
+    const paper = (data.citations || []).find((item) => item.n === n)
+    return paper && copiedRun(sentence.text, paper.excerpt || '')
+  }))
+  const rows = [
+    ['3 to 5 sentences', sentences.length >= 3 && sentences.length <= 5],
+    ['no copied abstract run', !copied],
+    ['each sentence names a year', sentences.every((sentence) => /\b(19|20)\d{2}\b/.test(sentence.text))],
+  ]
+  if (direction) rows.push([direction, new RegExp(direction, 'i').test(text)])
+  return rows
+}
+
+function dormanOwns(data, doi, pattern) {
+  const paper = (data.citations || []).find((item) => (item.doi || '').toLowerCase() === doi)
+  if (!paper) return false
+  const own = (data.sentences || []).filter((sentence) => sentence.cites.includes(paper.n)).map((sentence) => sentence.text).join(' ')
+  const rest = (data.sentences || []).filter((sentence) => !sentence.cites.includes(paper.n)).map((sentence) => sentence.text).join(' ')
+  return pattern.test(own) && !pattern.test(rest)
 }
 
 function numberFailures(data) {
@@ -148,25 +194,30 @@ async function ask(question) {
 }
 
 let failed = 0
+const jobs = []
 for (const item of questions) {
-  for (let run = 1; run <= runs; run += 1) {
-    let result
-    try {
-      result = await ask(item.question)
-    } catch (err) {
-      console.log(`${item.name} run ${run}: FAIL request ${err instanceof Error ? err.message : err}`)
-      failed += 1
-      continue
-    }
-    const checks = item.check(result.data)
-    const bad = checks.filter(([, ok]) => !ok).map(([name]) => name)
-    if (result.http !== 200 || bad.length) {
-      failed += 1
-      const rejected = (result.data.debug || []).filter((row) => row.status === 'rejected').map((row) => `${row.doi || row.title}: ${row.reason}`).slice(0, 6)
-      console.log(`${item.name} run ${run}: FAIL http ${result.http}${bad.length ? ` ${bad.join(', ')}` : ''}${rejected.length ? ` | ${rejected.join(' | ')}` : ''}`)
-    } else {
-      console.log(`${item.name} run ${run}: PASS`)
-    }
+  for (let run = 1; run <= runs; run += 1) jobs.push({ ...item, label: `${item.name} run ${run}` })
+  for (const [index, variant] of (item.variants || []).entries()) {
+    jobs.push({ ...item, question: variant, label: `${item.name} variant ${index + 1}` })
+  }
+}
+for (const item of jobs) {
+  let result
+  try {
+    result = await ask(item.question)
+  } catch (err) {
+    console.log(`${item.label}: FAIL request ${err instanceof Error ? err.message : err}`)
+    failed += 1
+    continue
+  }
+  const checks = item.check(result.data)
+  const bad = checks.filter(([, ok]) => !ok).map(([name]) => name)
+  if (result.http !== 200 || bad.length) {
+    failed += 1
+    const rejected = (result.data.debug || []).filter((row) => row.status === 'rejected').map((row) => `${row.doi || row.title}: ${row.reason}`).slice(0, 4)
+    console.log(`${item.label}: FAIL http ${result.http}${bad.length ? ` ${bad.join(', ')}` : ''}${rejected.length ? ` | ${rejected.join(' | ')}` : ''}`)
+  } else {
+    console.log(`${item.label}: PASS`)
   }
 }
 process.exit(failed ? 1 : 0)

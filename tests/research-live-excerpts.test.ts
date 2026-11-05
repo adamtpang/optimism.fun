@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { askResearch } from '@/lib/research/ask'
 import { questionIsGrounded } from '@/lib/research/claims'
-import { supportText, verifyExtract, type PaperExtract } from '@/lib/research/extract'
+import { renderExtractSentence, spanInAbstract, supportText, verifyExtract, type PaperExtract } from '@/lib/research/extract'
 
 // Openings recorded from live /api/research/ask excerpts for these DOIs.
 // The c998ba8 review did not include response bodies. These are the excerpts
@@ -129,5 +129,63 @@ describe('live excerpts from the failing rechecks', () => {
     expect(final.keyNumbers).toEqual(expect.arrayContaining(['49.7%', '54.0%']))
     expect(r21.rejectReason).toBeNull()
     expect(r21.keyNumbers).toEqual(expect.arrayContaining(['75%', '68%', '4878']))
+  })
+})
+
+describe('3ff297c debug cases', () => {
+  it('keeps Dorman when the span uses a unicode dash and says noninferior', () => {
+    const abstract = 'Among 2516 participants, a 4-month rifapentine regimen with moxifloxacin was noninferior to the 6-month control.'
+    const extract: PaperExtract = {
+      doi: '10.1056/nejmoa2033400',
+      effect_direction: 'null',
+      population: field('2516 participants'),
+      intervention: field('4\u2011month rifapentine regimen with moxifloxacin', '4\u2011month rifapentine regimen with moxifloxacin'),
+      comparator: null,
+      outcome: field('was non-inferior', 'was non-inferior'),
+      key_numbers: [field('2,516', 'Among 2516 participants')],
+      n: null,
+    }
+    expect(spanInAbstract(extract.intervention!.evidence_span, abstract)).toBe(true)
+    const verified = verifyExtract(extract, abstract)
+    expect(verified.rejectReason).toBeNull()
+    expect(verified.direction).toBe('noninferior')
+    const sentence = renderExtractSentence(verified, 'Dorman 2021', abstract)
+    expect(sentence).toMatch(/noninferior/i)
+    expect(sentence).toMatch(/2516|2,516/)
+  })
+
+  it('keeps Andriessen when the span hyphenates time-restricted differently', () => {
+    const abstract = 'In adults with type 2 diabetes, time-restricted eating did not change hepatic and peripheral insulin sensitivity.'
+    const extract: PaperExtract = {
+      doi: '10.1007/s00125-022-05752-z',
+      effect_direction: 'null',
+      population: field('adults with type 2 diabetes'),
+      intervention: field('time\u2010restricted eating', 'time\u2010restricted eating'),
+      comparator: null,
+      outcome: field('did not change hepatic and peripheral insulin sensitivity'),
+      key_numbers: [],
+      n: null,
+    }
+    const verified = verifyExtract(extract, abstract)
+    expect(verified.rejectReason).toBeNull()
+    expect(verified.direction).toBe('no-difference')
+  })
+
+  it('does not turn 13 and 26 case counts into 39 adults', () => {
+    const abstract = '13 participants in the vaccine group and 26 in the placebo group developed tuberculosis. Efficacy was 54.0%.'
+    const extract: PaperExtract = {
+      doi: '10.1056/nejmoa1909953',
+      effect_direction: 'benefit',
+      population: null,
+      intervention: field('vaccine'),
+      comparator: field('placebo'),
+      outcome: field('Efficacy was 54.0%'),
+      key_numbers: [field('13', '13 participants'), field('26', '26 in the placebo'), field('39 adults', '39 adults')],
+      n: null,
+    }
+    const sentence = renderExtractSentence(verifyExtract(extract, abstract), 'Tait 2019', abstract)
+    expect(sentence).not.toContain('39')
+    expect(sentence).toContain('54.0%')
+    expect(sentence.match(/\[1\]/g) || []).toHaveLength(0)
   })
 })
