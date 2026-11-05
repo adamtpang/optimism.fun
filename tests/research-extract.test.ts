@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { askResearch, includeResearchDebug } from '@/lib/research/ask'
+import { askResearch, includeResearchDebug, researchHttpStatus } from '@/lib/research/ask'
+import { ExaRequestError } from '@/lib/sources/exa'
 import { fetchRegistryAbstract } from '@/lib/research/metadata'
 import { paperStatus, statusLabel } from '@/lib/research/papers'
 import { citeName, renderExtractSentence, spanInAbstract, spanMatch, supportText, verifyExtract, type PaperExtract } from '@/lib/research/extract'
@@ -272,7 +273,8 @@ describe('answer length', () => {
     expect(text).toContain('Sutton 2018')
     expect(text).toContain('Andriessen 2022')
     expect(text).not.toMatch(/The study noted/i)
-    expect(text.startsWith('The retrieved studies disagree.')).toBe(true)
+    expect(text).not.toMatch(/reported a benefit in/i)
+    expect(result.sentences.every((sentence) => /\b(19|20)\d{2}\b/.test(sentence.text))).toBe(true)
   })
 })
 
@@ -341,13 +343,62 @@ describe('labels and debug', () => {
     delete process.env.EXA_API_KEY
     expect(result.configured).toBe(true)
     if (!result.configured) return
-    expect(result.citations).toEqual([])
-    expect(result.status).toBe('no-answer')
-    expect(result.retrieved.find((paper) => paper.doi === mmwr.doi)?.statusLabel).toBe('Guidance')
-    expect(result.debug?.find((row) => row.doi === mmwr.doi)?.reason).toContain('Guidance')
+    const dois = result.citations.map((paper) => paper.doi)
+    expect(dois).toContain(dorman.doi)
+    expect(dois).not.toEqual([mmwr.doi])
+    const guidance = result.citations.find((paper) => paper.doi === mmwr.doi) || result.retrieved.find((paper) => paper.doi === mmwr.doi)
+    expect(guidance?.statusLabel).toBe('Guidance')
+    expect(result.sentences.map((sentence) => sentence.text).join(' ')).toMatch(/noninferior/i)
     expect(includeResearchDebug('https://preview.example/api/research/ask?debug=1')).toBe(true)
     expect(includeResearchDebug('https://preview.example/api/research/ask')).toBe(false)
   })
+})
+
+describe('R21 wordings', () => {
+  const abstract = 'The phase 3 trial of the R21/Matrix-M malaria vaccine enrolled 4878 children. Vaccine efficacy was 75% at seasonal sites.'
+  const paper = {
+    url: 'https://doi.org/10.1016/s0140-6736(23)02511-4',
+    doi: '10.1016/s0140-6736(23)02511-4',
+    title: 'Safety and efficacy of malaria vaccine candidate R21/Matrix-M in a phase 3 randomised controlled trial',
+    text: 'Short page.',
+  }
+  for (const question of [
+    'Does the R21/Matrix-M malaria vaccine work?',
+    'How well does the R21 malaria vaccine work?',
+    'How effective is R21/Matrix-M against malaria?',
+  ]) {
+    it(`cites the phase 3 trial for "${question}"`, async () => {
+      process.env.EXA_API_KEY = 'test-key-value'
+      const result = await askResearch(question, {
+        resolve: async () => ({
+          doi: paper.doi,
+          title: paper.title,
+          authors: ['Mehreen S. Datoo'],
+          year: '2024',
+          abstract,
+          retractionChecked: true,
+          retracted: false,
+          journal: true,
+          crossrefType: 'journal-article',
+        }),
+        exaPost: async (path) => {
+          if (path === '/search') return { results: [paper] }
+          if (question.startsWith('How effective')) throw new ExaRequestError(0, 'Exa /answer timed out.')
+          return { answer: { extracts: [] } }
+        },
+      })
+      delete process.env.EXA_API_KEY
+      expect(result.configured).toBe(true)
+      if (!result.configured) return
+      expect(researchHttpStatus(result)).toBe(200)
+      expect(result.status).not.toBe('no-answer')
+      const text = result.sentences.map((sentence) => sentence.text).join(' ')
+      expect(result.citations.map((item) => item.doi)).toContain(paper.doi)
+      expect(text).toMatch(/4,?878|4878/)
+      expect(text).toContain('75%')
+      expect(text).toContain('2024')
+    })
+  }
 })
 
 describe('registry abstracts', () => {
