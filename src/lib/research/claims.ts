@@ -204,9 +204,20 @@ function compactText(value: string): string {
   return value.toLowerCase().replace(/[^a-z0-9]/g, '')
 }
 
+function activeGroups(question: string) {
+  return SYNONYM_GROUPS.filter((group) => group.test(question))
+}
+
+/** A paper is about the question's intervention when its title or abstract hits that synonym group. */
+export function matchesIntervention(question: string, text: string): boolean {
+  const active = activeGroups(question)
+  if (!active.length) return questionIsGrounded(question, [text])
+  return active.every((group) => group.test(text))
+}
+
 export function questionIsGrounded(question: string, abstracts: string[]): boolean {
   const hay = abstracts.join('\n')
-  const active = SYNONYM_GROUPS.filter((group) => group.test(question))
+  const active = activeGroups(question)
   if (active.length) {
     if (!active.every((group) => group.test(hay))) return false
     const covered = new Set(active.flatMap((group) => group.covers))
