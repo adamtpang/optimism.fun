@@ -30,18 +30,18 @@ export type VerifiedExtract = {
   rejectReason: string | null
 }
 
-/** The abstract the model is shown. A registry abstract beats a short page excerpt. */
+/** The paper's own abstract. Page text is only a fallback, so a highlight cannot lend another paper's numbers. */
 export function supportText(
   paper: { text?: string | null; summary?: string | null; highlights?: string[] | null },
   meta: { abstract?: string | null },
 ): string {
   const registry = (meta.abstract || '').trim()
+  if (registry.length >= 40) return registry.slice(0, SUPPORT_LIMIT)
   const page = [paper.text, paper.summary, ...(paper.highlights ?? [])]
     .map((part) => (part || '').trim())
     .filter(Boolean)
     .sort((a, b) => b.length - a.length)[0] || ''
-  const chosen = page.length > registry.length ? page : registry
-  return chosen.slice(0, SUPPORT_LIMIT)
+  return (page || registry).slice(0, SUPPORT_LIMIT)
 }
 
 /** Case, dashes, quotes, whitespace, hyphenation, and the percent sign. */
@@ -228,7 +228,12 @@ const NAME_PARTICLES = new Set(['van', 'von', 'de', 'der', 'den', 'da', 'di', 'd
 
 export function citeName(author: string | string[] | null | undefined, year: string | null | undefined): string {
   const raw = Array.isArray(author) ? author.find((name) => name.trim()) || '' : author || ''
-  const parts = raw.trim().split(/\s+/).filter(Boolean)
+  const parts = raw
+    .replace(/[\u2010-\u2015\u2212]/g, '-')
+    .replace(/\s+et\s+al\.?.*$/i, '')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
   const surname: string[] = []
   if (parts.length) {
     surname.unshift(parts[parts.length - 1].replace(/[^A-Za-z'’.-]/g, ''))
@@ -238,7 +243,7 @@ export function citeName(author: string | string[] | null | undefined, year: str
       surname.unshift(parts[i].replace(/[^A-Za-z'’.-]/g, ''))
     }
   }
-  const name = surname.filter(Boolean).join(' ')
+  const name = /^(?:al|et)$/i.test(surname.filter(Boolean).join(' ')) ? '' : surname.filter(Boolean).join(' ')
   const match = year?.match(/\d{4}/)
   const printed = match ? match[0] : ''
   if (name && printed) return `${name} ${printed}`

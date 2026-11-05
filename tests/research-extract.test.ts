@@ -139,6 +139,8 @@ describe('structured extracts', () => {
     expect(sentence).toContain('54.0%')
     expect(citeName(['Van Der Meeren'], '2018')).toBe('Van Der Meeren 2018')
     expect(citeName(['Susan E. Dorman'], '2021')).toBe('Dorman 2021')
+    expect(citeName('Zhila Semnani-Azad et al.', '2021')).toBe('Semnani-Azad 2021')
+    expect(citeName('Zhila Semnani\u2010Azad et al.', '2021')).toBe('Semnani-Azad 2021')
   })
 
   it('asks from the full abstract and cites the verified span', async () => {

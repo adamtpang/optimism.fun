@@ -53,30 +53,44 @@ export function contentWords(text) {
     .map((token) => token.toLowerCase())
 }
 
+/** Every word, including short words, numbers, and units. Eight of these in a row is a copy. */
+export function copyWords(text) {
+  return String(text || '')
+    .toLowerCase()
+    .replace(/[\u2010-\u2015\u2212]/g, '-')
+    .replace(/(\d),(?=\d)/g, '$1')
+    .split(/[^a-z0-9.%-]+/)
+    .filter(Boolean)
+}
+
 const NAME_PARTICLES = new Set(['van', 'der', 'de', 'da', 'di', 'la', 'le', 'von', 'den', 'ten', 'ter', 'du'])
 
-/** Surname of the first author, keeping particles such as Van Der. */
+/** Surname of the first author, keeping particles such as Van Der. "et al." is not a surname. */
 export function firstSurname(authors) {
   const first = String(authors || '')
-    .split(/\s+et al\b/i)[0]
+    .replace(/[\u2010-\u2015\u2212]/g, '-')
+    .replace(/\s+et\s+al\.?.*$/i, '')
     .split(/\s+and\s+/i)[0]
     .split(',')[0]
     .trim()
   const parts = first.split(/\s+/).filter(Boolean)
   if (!parts.length) return ''
-  const surname = [parts[parts.length - 1].replace(/[^A-Za-z'’.-]/g, '')]
+  const clean = (token) => token.replace(/[^A-Za-z'’.-]/g, '')
+  const surname = [clean(parts[parts.length - 1])]
   for (let i = parts.length - 2; i >= 0; i -= 1) {
     const token = parts[i].replace(/\./g, '').toLowerCase()
     if (!NAME_PARTICLES.has(token)) break
-    surname.unshift(parts[i].replace(/[^A-Za-z'’.-]/g, ''))
+    surname.unshift(clean(parts[i]))
   }
-  return surname.filter(Boolean).join(' ')
+  const name = surname.filter(Boolean).join(' ')
+  if (!name || /^(?:al|et)$/i.test(name)) return ''
+  return name
 }
 
 /** The sentence has to name that surname and that publication year. */
 export function attributionMismatch(sentence, authors, year) {
   const problems = []
-  const body = String(sentence || '')
+  const body = String(sentence || '').replace(/[\u2010-\u2015\u2212]/g, '-')
   const surname = firstSurname(authors)
   if (surname) {
     const escaped = surname.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -99,10 +113,10 @@ export function directionConflict(sentence, abstract) {
   return null
 }
 
-/** 8 content words in a row. Numbers, units, and proper nouns are not counted. */
+/** 8 words in a row, counted the way a reader counts them. */
 export function copiedContentRun(sentence, abstract, run = 8) {
-  const left = contentWords(sentence)
-  const hay = contentWords(abstract).join(' ')
+  const left = copyWords(sentence)
+  const hay = copyWords(abstract).join(' ')
   if (left.length < run) return { copied: false, span: '' }
   for (let i = 0; i + run <= left.length; i += 1) {
     const span = left.slice(i, i + run).join(' ')

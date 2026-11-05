@@ -255,10 +255,12 @@ export function claimOffTopic(question: string, claim: string): boolean {
   return !active.some((group) => group.test(claim))
 }
 
-/** 0 is a primary trial, 3 is a review or commentary. */
+/** 0 is a primary trial, 3 is a review, 4 is an editorial or commentary. */
 export function studyRank(title: string, abstract: string): number {
+  const opening = `${title}\n${abstract.slice(0, 240)}`.toLowerCase()
+  if (/\b(editorial|commentary|perspective|viewpoint)\b/.test(opening)) return 4
   const head = `${title}\n${abstract.slice(0, 700)}`.toLowerCase()
-  const review = /\b(systematic review|meta-analysis|narrative review|commentary|editorial|prospects)\b/.test(head)
+  const review = /\b(systematic review|meta-analysis|narrative review|prospects)\b/.test(head)
   const primary = /\bphase\s*3\b|\bphase\s*2b\b|\brandomi[sz]ed controlled\b|\bdouble-blind\b|\bplacebo-controlled\b|\brandomi[sz]ed\b/.test(head)
   if (primary && !review) return 0
   if (primary) return 1
