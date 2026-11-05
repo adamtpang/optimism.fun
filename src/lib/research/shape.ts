@@ -218,6 +218,7 @@ function toPaper(work: Work, n: number | null, asOf: Date): ResearchPaper {
     openAlexType: work.meta.openAlexType,
     retractionChecked: work.meta.retractionChecked,
     articleType: work.meta.articleType,
+    venue: work.meta.venue,
   })
   const year = work.meta.year ?? yearFromDate(fields.publishedDate)
   const count = work.meta.citationCount

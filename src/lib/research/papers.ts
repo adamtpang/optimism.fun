@@ -673,6 +673,8 @@ export type PaperStatus =
   | 'concern'
   | 'unverified'
   | 'unknown'
+  | 'guidance'
+  | 'meeting-abstract'
 
 export function statusLabel(status: PaperStatus): string {
   if (status === 'peer-reviewed') return 'Peer-reviewed'
@@ -681,7 +683,35 @@ export function statusLabel(status: PaperStatus): string {
   if (status === 'retracted') return 'Retracted'
   if (status === 'concern') return 'Concern'
   if (status === 'unverified') return 'Unverified'
+  if (status === 'guidance') return 'Guidance'
+  if (status === 'meeting-abstract') return 'Meeting abstract'
   return 'Status unknown'
+}
+
+export function isGuidanceRecord(input: {
+  url?: string | null
+  doi?: string | null
+  title?: string | null
+  venue?: string | null
+}): boolean {
+  const doi = (cleanDoi(input.doi) || doiFromUrl(input.url || '') || '').toLowerCase()
+  if (doi.startsWith('10.15585/mmwr')) return true
+  const blob = `${input.url || ''} ${input.title || ''} ${input.venue || ''}`
+  return /\bmmwr\b|morbidity and mortality weekly report|\binterim guidance\b/i.test(blob)
+}
+
+export function isMeetingAbstract(input: {
+  url?: string | null
+  doi?: string | null
+  title?: string | null
+  crossrefType?: string | null
+  articleType?: string | null
+}): boolean {
+  if (input.crossrefType === 'proceedings-article') return true
+  if (input.articleType && /abstract/i.test(input.articleType)) return true
+  const doi = (cleanDoi(input.doi) || doiFromUrl(input.url || '') || '').toLowerCase()
+  if (/^10\.1210\/jendso\/[a-z0-9]+\.\d+$/.test(doi)) return true
+  return /\bmeeting abstracts?\b/i.test(input.title || '')
 }
 
 /**
@@ -700,6 +730,7 @@ export function paperStatus(input: {
   openAlexType?: string | null
   retractionChecked?: boolean | null
   articleType?: string | null
+  venue?: string | null
 }): PaperStatus {
   if (input.retractionChecked === false) return 'unverified'
   if (input.retracted === true) return 'retracted'
@@ -711,6 +742,8 @@ export function paperStatus(input: {
   if (isPreprintDoi(doi) || isPreprintUrl(input.url) || input.openAlexType === 'preprint' || input.crossrefType === 'posted-content') {
     return 'preprint'
   }
+  if (isGuidanceRecord(input)) return 'guidance'
+  if (isMeetingAbstract(input)) return 'meeting-abstract'
   const journal =
     input.journal === true ||
     input.crossrefType === 'journal-article' ||
