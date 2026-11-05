@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { copiedContentRun, numberMatches } from '../src/lib/research/text-checks.mjs'
+import { attributionMismatch, copiedContentRun, directionConflict, numberMatches } from '../src/lib/research/text-checks.mjs'
 // Run the demo questions against a preview and print pass or fail.
 // Usage: node scripts/demo-eval.mjs https://preview.example [runs]
 // Optional auth, never committed: RESEARCH_DEMO_COOKIE, or
@@ -19,17 +19,6 @@ const questions = [
   {
     name: 'fasting',
     question: 'Does intermittent fasting improve insulin sensitivity in adults?',
-    check(data) {
-      const dois = (data.citations || []).map((paper) => (paper.doi || '').toLowerCase())
-      const text = (data.sentences || []).map((sentence) => sentence.text).join(' ')
-      return withNumbers([
-        ['sutton cited', dois.includes('10.1016/j.cmet.2018.04.010')],
-        ['andriessen cited', dois.includes('10.1007/s00125-022-05752-z')],
-        ['at least 3 papers', new Set(dois).size >= 3],
-        ['no postprandial', !/postprandial/i.test(text)],
-        ['no clothing', !/clothing/i.test(text)],
-      ].concat(sharedChecks(data)), data)
-    },
     variants: [
       'Does time-restricted eating improve insulin sensitivity in adults?',
       'Does early time-restricted feeding improve insulin sensitivity?',
@@ -38,19 +27,6 @@ const questions = [
   {
     name: 'm72',
     question: 'Does the M72/AS01E vaccine prevent tuberculosis?',
-    check(data) {
-      const dois = (data.citations || []).map((paper) => (paper.doi || '').toLowerCase())
-      const text = (data.sentences || []).map((sentence) => sentence.text).join(' ')
-      const phase2b = (data.citations || []).find((paper) => (paper.doi || '').toLowerCase() === '10.1056/nejmoa1803484')
-      return withNumbers([
-        ['54.0%', text.includes('54.0%')],
-        ['49.7%', text.includes('49.7%')],
-        ['phase 2b cited', dois.includes('10.1056/nejmoa1803484')],
-        ['final analysis cited', dois.includes('10.1056/nejmoa1909953')],
-        ['peer-reviewed label', !phase2b || phase2b.statusLabel === 'Peer-reviewed'],
-        ['lowercase doi', !phase2b || phase2b.doi === phase2b.doi.toLowerCase()],
-      ].concat(sharedChecks(data)), data)
-    },
     variants: [
       'Does M72/AS01 prevent tuberculosis?',
       'How well does the M72/AS01E tuberculosis vaccine work?',
@@ -59,17 +35,6 @@ const questions = [
   {
     name: 'tb4month',
     question: 'Is a 4-month rifapentine-based regimen as effective as the standard 6-month regimen for drug-susceptible pulmonary tuberculosis?',
-    check(data) {
-      const dois = (data.citations || []).map((paper) => (paper.doi || '').toLowerCase())
-      const text = (data.sentences || []).map((sentence) => sentence.text).join(' ')
-      return withNumbers([
-        ['dorman cited', dois.includes('10.1056/nejmoa2033400')],
-        ['2516', /2,?516/.test(text)],
-        ['noninferior', /noninferior/i.test(text)],
-        ['not guidance alone', dois.some((doi) => doi !== '10.15585/mmwr.mm7108a1')],
-        ['2516 only on Dorman', dormanOwns(data, '10.1056/nejmoa2033400', /2,?516/)],
-      ].concat(sharedChecks(data, 'noninferior')), data)
-    },
     variants: [
       'Is the 4-month rifapentine-moxifloxacin regimen noninferior for tuberculosis?',
       'Does a 4-month rifapentine regimen match standard tuberculosis treatment?',
@@ -78,19 +43,6 @@ const questions = [
   {
     name: 'r21',
     question: 'How well does the R21 malaria vaccine work?',
-    check(data) {
-      const dois = (data.citations || []).map((paper) => (paper.doi || '').toLowerCase())
-      const text = (data.sentences || []).map((sentence) => sentence.text).join(' ')
-      return withNumbers([
-        ['phase 3 cited', dois.includes('10.1016/s0140-6736(23)02511-4')],
-        ['4878 and 75%', /4,?878/.test(text) && /75%/.test(text)],
-        ['68%', /68%/.test(text)],
-        ['no 78-79 range', !/78\s*[-\u2013]\s*79%/.test(text)],
-        ['no cross-protection', !/cross-protection/i.test(text)],
-        ['efficacy', /efficacy/i.test(text)],
-        ['not no difference', !/no difference/i.test(text)],
-      ].concat(sharedChecks(data)), data)
-    },
     variants: [
       'Does the R21/Matrix-M malaria vaccine work?',
       'How effective is R21/Matrix-M against malaria?',
@@ -100,21 +52,13 @@ const questions = [
   {
     name: 'noanswer',
     question: 'Does wearing blue socks on Tuesdays reduce the risk of kidney stones in left-handed adults?',
-    check(data) {
-      return [
-        ['status no-answer', data.status === 'no-answer'],
-        ['zero citations', (data.citations || []).length === 0],
-      ]
-    },
   },
 ]
 
+const GENERIC = new Set('does what when where which with from that this have been were will into over under than then them they their there such only also more most many some well work works improve improves improved reduce reduces reduced effect effects effective efficacy risk risks adult adults people trial study studies standard versus against prevent prevents treatment regimen based using compared month months year years week weeks about among between within without clinical patients human humans older raise raises change changed found showed shown reported significant significantly after before during these those other results result group groups control participants received primary secondary analysis'.split(' '))
+
 function figures(text) {
   return text.match(/\d[\d,]*(?:\.\d+)?%?/g) || []
-}
-
-function figureInExcerpt(figure, excerpt) {
-  return numberMatches(figure, excerpt)
 }
 
 function wordsOf(text) {
@@ -125,12 +69,23 @@ function copiedRun(sentence, excerpt) {
   return copiedContentRun(sentence, excerpt, 8).copied
 }
 
-function truncatedWord(sentence, excerpt) {
-  const abs = wordsOf(excerpt).filter((word) => word.length >= 4)
-  return wordsOf(sentence).some((word) => word.length >= 4 && word.length <= 8 && !abs.includes(word) && abs.some((full) => full.startsWith(word) && full.length >= word.length + 3))
+function paperList(data) {
+  const rows = data.citations || []
+  if (!rows.length) return 'papers: none'
+  return `papers: ${rows.map((paper) => `${paper.authors || 'Authors unavailable'} ${paper.year || 'year unavailable'} ${paper.doi || paper.title || 'untitled'}`).join('; ')}`
 }
 
-function sharedChecks(data, direction) {
+function relevantTrials(question, data) {
+  const terms = question.toLowerCase().split(/[^a-z0-9]+/).filter((word) => word.length >= 4 && !GENERIC.has(word))
+  return (data.citations || []).filter((paper) => {
+    const text = `${paper.title || ''} ${paper.excerpt || ''}`
+    if (!/randomi[sz]ed|phase\s*3|phase\s*iii|phase\s*2|non-?inferior|meta-analysis|systematic review|\brct\b/i.test(text)) return false
+    const hay = text.toLowerCase()
+    return terms.some((term) => hay.includes(term))
+  })
+}
+
+function coreChecks(data, question) {
   const sentences = data.sentences || []
   const text = sentences.map((sentence) => sentence.text).join(' ')
   const copied = sentences.some((sentence) => (sentence.cites || []).some((n) => {
@@ -139,44 +94,48 @@ function sharedChecks(data, direction) {
   }))
   const normalized = sentences.map((sentence) => wordsOf(sentence.text).join(' '))
   const duplicate = normalized.some((key, index) => normalized.indexOf(key) !== index)
-  const emptyParens = /\(\s*\)|\(\s*[,.]/.test(text)
-  const meta = /not explicitly stated|\bsnippet\b/i.test(text)
-  const truncated = sentences.some((sentence) => (sentence.cites || []).some((n) => {
-    const paper = (data.citations || []).find((item) => item.n === n)
-    return paper && truncatedWord(sentence.text, paper.excerpt || '')
-  }))
   const uncited = sentences.some((sentence) => {
     const cites = sentence.cites || []
     if (!cites.length) return true
     return cites.some((n) => !(data.citations || []).some((paper) => paper.n === n))
   })
+  const attribution = []
+  for (const sentence of sentences) {
+    for (const n of sentence.cites || []) {
+      const paper = (data.citations || []).find((item) => item.n === n)
+      if (!paper) continue
+      attribution.push(...attributionMismatch(sentence.text, paper.authors, paper.year).map((problem) => `${paper.doi || paper.title}: ${problem}`))
+    }
+  }
+  const direction = sentences.some((sentence) => (sentence.cites || []).some((n) => {
+    const paper = (data.citations || []).find((item) => item.n === n)
+    return paper && directionConflict(sentence.text, paper.excerpt || '')
+  }))
   const filler = sentences.some((sentence) => {
     const body = sentence.text || ''
     const hasNumber = /\d/.test(body.replace(/\[\d+\]/g, ''))
-    const finding = /non-?inferior|efficacy|no difference|no effect|did not|improved|reduced|benefit|as effective|superior|unaffected|sensitivity|unchanged/i.test(body)
+    const finding = /non-?inferior|efficacy|no difference|no effect|did not|improved|reduced|benefit|as effective|superior|unaffected|sensitivity|unchanged|better|worse/i.test(body)
     return !hasNumber && !finding
   })
-  const rows = [
-    ['3 to 5 sentences', sentences.length >= 3 && sentences.length <= 5],
+  const notes = /not explicitly stated|\bsnippet\b|as an ai|model note|unspecified number|not stated|not reported/i.test(text)
+  const missing = numberFailures(data)
+  const trials = relevantTrials(question, data)
+  return [
+    ['answer exists', sentences.length > 0 && data.status !== 'no-answer'],
+    ['2 to 5 sentences', sentences.length >= 2 && sentences.length <= 5],
+    ['uncited sentence', !uncited],
+    [`author and year${attribution.length ? `: ${attribution.join('; ')}` : ''}`, attribution.length === 0 && sentences.length > 0],
+    [`numbers in cited abstracts${missing.length ? `: ${missing.join('; ')}` : ''}`, missing.length === 0],
     ['no copied abstract run', !copied],
     ['duplicate sentence', !duplicate],
-    ['empty parentheses', !emptyParens],
-    ['meta note', !meta],
-    ['truncated word', !truncated],
-    ['uncited sentence', !uncited],
+    ['empty parentheses', !/\(\s*\)|\(\s*[,.]/.test(text)],
+    ['meta note', !notes],
+    ['em dash', !/[\u2014]/.test(text)],
     ['filler sentence', !filler],
-    ['each sentence names a year', sentences.every((sentence) => /\b(19|20)\d{2}\b/.test(sentence.text))],
+    ['direction contradicts the abstract', !direction],
+    [`cites a relevant trial${trials.length ? `: ${trials.map((paper) => paper.doi || paper.title).join(', ')}` : ''}`, trials.length > 0],
+    [paperList(data), true],
   ]
-  if (direction) rows.push([direction, new RegExp(direction, 'i').test(text)])
-  return rows
-}
-
-function dormanOwns(data, doi, pattern) {
-  const paper = (data.citations || []).find((item) => (item.doi || '').toLowerCase() === doi)
-  if (!paper) return false
-  const own = (data.sentences || []).filter((sentence) => sentence.cites.includes(paper.n)).map((sentence) => sentence.text).join(' ')
-  const rest = (data.sentences || []).filter((sentence) => !sentence.cites.includes(paper.n)).map((sentence) => sentence.text).join(' ')
-  return pattern.test(own) && !pattern.test(rest)
 }
 
 function numberFailures(data) {
@@ -192,16 +151,11 @@ function numberFailures(data) {
       const excerpt = paper.excerpt || ''
       for (const figure of figures(body)) {
         if (figure === String(paper.year || '')) continue
-        if (!figureInExcerpt(figure, excerpt)) failures.push(`${paper.doi || paper.title} missing ${figure}`)
+        if (!numberMatches(figure, excerpt)) failures.push(`${paper.doi || paper.title} missing ${figure}`)
       }
     }
   }
   return failures
-}
-
-function withNumbers(rows, data) {
-  const missing = numberFailures(data)
-  return [...rows, [`numbers in cited abstracts${missing.length ? `: ${missing.join('; ')}` : ''}`, missing.length === 0]]
 }
 
 async function judgeSentences(data) {
@@ -236,13 +190,14 @@ async function ask(question) {
   if (process.env.RESEARCH_DEMO_COOKIE) headers.cookie = process.env.RESEARCH_DEMO_COOKIE
   const bypass = process.env.RESEARCH_BYPASS_TOKEN || process.env.VERCEL_AUTOMATION_BYPASS_SECRET
   if (bypass) headers['x-vercel-protection-bypass'] = bypass
+  const started = Date.now()
   const response = await fetch(`${base}/api/research/ask?debug=1`, {
     method: 'POST',
     headers,
     body: JSON.stringify({ question }),
   })
   const data = await response.json()
-  return { http: response.status, data }
+  return { http: response.status, data, ms: Date.now() - started }
 }
 
 let failed = 0
@@ -262,7 +217,13 @@ for (const item of jobs) {
     failed += 1
     continue
   }
-  const checks = item.check(result.data)
+  const checks = item.name === 'noanswer'
+    ? [
+        ['status no-answer', result.data.status === 'no-answer'],
+        ['zero citations', (result.data.citations || []).length === 0],
+        ['latency under 25s', result.ms < 25_000],
+      ]
+    : [...coreChecks(result.data, item.question), ['latency under 25s', result.ms < 25_000]]
   if (judgeMode && item.name !== 'noanswer') {
     const judged = await judgeSentences(result.data)
     if (judged.some((line) => line.startsWith('judge skipped'))) {
@@ -275,12 +236,13 @@ for (const item of jobs) {
     }
   }
   const bad = checks.filter(([, ok]) => !ok).map(([name]) => name)
+  const papers = item.name === 'noanswer' ? '' : ` | ${paperList(result.data)} | ${result.ms}ms`
   if (result.http !== 200 || bad.length) {
     failed += 1
     const rejected = (result.data.debug || []).filter((row) => row.status === 'rejected').map((row) => `${row.doi || row.title}: ${row.reason}`).slice(0, 4)
-    console.log(`${item.label}: FAIL http ${result.http}${bad.length ? ` ${bad.join(', ')}` : ''}${rejected.length ? ` | ${rejected.join(' | ')}` : ''}`)
+    console.log(`${item.label}: FAIL http ${result.http}${bad.length ? ` ${bad.join(', ')}` : ''}${papers}${rejected.length ? ` | ${rejected.join(' | ')}` : ''}`)
   } else {
-    console.log(`${item.label}: PASS`)
+    console.log(`${item.label}: PASS${papers}`)
   }
 }
 process.exit(failed ? 1 : 0)

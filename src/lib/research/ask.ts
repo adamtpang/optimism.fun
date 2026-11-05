@@ -3,10 +3,9 @@ import { fetchRegistryAbstract, resolvePaperMetadata } from '@/lib/research/meta
 import { isCoverageUrl, isExcludedUrl, isMirrorUrl, isRejectedResultUrl } from '@/lib/research/domains'
 import { arxivIdFromUrl, cleanDoi, doiFromUrl, isGuidanceRecord, isNonAnswer, isPdfUrl, normalizeTitle, normalizeUrl, paperStatus, plainSentence, pmidFromUrl, repairOpening, statusLabel, studyDirection, validateQuestion, workKey } from '@/lib/research/papers'
 import { chooseBalancedClaims, claimNeedsRepair, dedupeSources, groundClaims, paragraphFromClaims, polishClaim, questionIsGrounded, readPaperClaims, studyRank, unsupportedNumbers, type PaperClaim } from '@/lib/research/claims'
-import { citeName, creditFigures, fallbackExtract, readExtracts, renderExtractSentence, supportText, verifyExtract, type PaperExtract } from '@/lib/research/extract'
-import { JUDGE_PROMPT, auditSentences, coversPrimary, enrollmentNumber, headlineTrial, missingFacts, readJudge, readWritten, requiredFacts, selectWritingPapers, withMarker, type WrittenSentence } from '@/lib/research/writing'
+import { citeName, renderExtractSentence, supportText, verifyExtract, type PaperExtract } from '@/lib/research/extract'
+import { JUDGE_PROMPT, attributionOnlyReason, auditSentences, headlineTrial, readJudge, readModelFacts, readWritten, requiredFacts, selectWritingPapers, sentenceProblems, withMarker, type SentenceAttribution, type WrittenSentence } from '@/lib/research/writing'
 import { copiedContentRun } from '@/lib/research/text-checks.mjs'
-import { pinsForQuestion } from '@/lib/research/pins'
 import {
   readSource,
   renumberCitations,
@@ -49,7 +48,7 @@ export const ANSWER_SYSTEM = [
   'When the cited text gives the number of studies or the sample size in a meta-analysis, state that count.',
   'State the population in every finding: sex, condition, and sample size when the source gives them.',
   'Name the study, its population, and the outcome in each sentence, and cite that study.',
-  'Write 3 to 5 supported sentences when the sources allow it. Do not stop at one vague sentence.',
+  'Write 2 to 5 supported sentences when the sources allow it. Do not stop at one vague sentence.',
   'Label a subgroup, cumulative, or secondary result as such. Do not present it as the overall finding.',
   'When only one meta-analysis is cited, call it a meta-analysis.',
   'Name the outcome that was measured, such as clamp, HOMA-IR, OGTT, fasting glucose, or HbA1c, instead of saying only insulin sensitivity.',
@@ -166,12 +165,28 @@ export function normalizeQuestionKey(question: string): string {
 }
 
 export function expandedQueries(question: string): string[] {
-  const extras: string[] = []
-  if (/\br21\b|matrix-m/i.test(question)) extras.push('R21/Matrix-M phase 3 randomised malaria vaccine efficacy Lancet children')
-  if (/\bm72\b|\bas01/i.test(question)) extras.push('M72/AS01E phase 2b tuberculosis vaccine efficacy Van Der Meeren Tait NEJM')
-  if (/rifapentine|moxifloxacin|(?:4|four)[-\s]?month/i.test(question)) extras.push('Four-month rifapentine moxifloxacin noninferior tuberculosis Dorman NEJM randomized')
-  if (/\bfasting\b|time-restricted|insulin sensitivity/i.test(question)) extras.push('early time-restricted feeding insulin sensitivity Sutton Andriessen randomized trial')
-  return [question, ...extras]
+  return [question]
+}
+
+export function keywordPrompt(question: string): string {
+  return [
+    `Question: ${question}`,
+    'Write one short search query of keywords and synonyms for this question.',
+    'Do not include author names, journal names, or DOIs.',
+    'Return JSON {query: string}.',
+  ].join('\n')
+}
+
+export function readKeywordQuery(payload: unknown, question: string): string | null {
+  const answer = payload && typeof payload === 'object' && 'answer' in (payload as object)
+    ? (payload as { answer: unknown }).answer
+    : payload
+  const query = answer && typeof answer === 'object' ? String((answer as { query?: unknown }).query ?? '').replace(/\s+/g, ' ').trim() : ''
+  if (!query || query.length > 180) return null
+  if (query.toLowerCase() === question.toLowerCase()) return null
+  const names = query.match(/\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,3}\b/g) || []
+  if (names.some((name) => !question.includes(name))) return null
+  return query
 }
 
 export function recallRetrieval(question: string, now = Date.now()): SourceFields[] | null {
@@ -426,37 +441,6 @@ export function parsePaperUrl(raw: unknown): { ok: true; url: string } | { ok: f
   return { ok: true, url: url.toString() }
 }
 
-function knownDoi(paper: SourceFields): string | null {
-  return (cleanDoi(paper.doi) || doiFromUrl(paper.url) || '').toLowerCase() || null
-}
-
-/** DOI lookup for pins search missed. No abstract means the pin is not added. */
-async function injectMissingPins(question: string, found: SourceFields[], resolve: MetaResolver): Promise<SourceFields[]> {
-  const present = new Set(found.map(knownDoi).filter((doi): doi is string => Boolean(doi)))
-  const missing = pinsForQuestion(question).filter((doi) => !present.has(doi))
-  const loaded = await Promise.all(
-    missing.map(async (doi) => {
-      const url = `https://doi.org/${doi}`
-      const meta = await resolve({ url, doi })
-      const abstract = meta.abstract?.trim()
-      if (!abstract) return null
-      const resolvedDoi = (cleanDoi(meta.doi) || doi).toLowerCase()
-      const paper: SourceFields = {
-        url,
-        doi: resolvedDoi,
-        pmid: meta.pmid ?? null,
-        title: meta.title ?? null,
-        author: meta.authors && meta.authors.length > 0 ? meta.authors.slice(0, 3).join(', ') : null,
-        publishedDate: meta.year ?? null,
-        text: abstract,
-      }
-      return paper
-    }),
-  )
-  const pins = loaded.filter((paper): paper is SourceFields => Boolean(paper))
-  return [...pins, ...found]
-}
-
 function dropNonAnswers(shaped: ShapedResearch): ShapedResearch {
   const sentences = shaped.sentences.filter((sentence) => !isNonAnswer(sentence.text))
   if (sentences.length === shaped.sentences.length) return shaped
@@ -660,17 +644,15 @@ async function verifyClaims(
 }
 
 async function enrichPrimaryAbstracts(
-  question: string,
   papers: SourceFields[],
   metaByKey: Record<string, PaperMeta>,
 ): Promise<void> {
-  const pins = new Set(pinsForQuestion(question))
   await Promise.all(papers.map(async (paper) => {
     const doi = paperDoi(paper, metaByKey)
     if (!doi) return
     const meta = metaByKey[paper.url] ?? metaByKey[workKey(paper)] ?? {}
     const current = paperAbstract(paper, metaByKey)
-    const primary = studyRank(meta.title || paper.title || '', current) < 2 || pins.has(doi)
+    const primary = studyRank(meta.title || paper.title || '', current) < 2 || /meta-analysis|systematic review/i.test(`${meta.title || paper.title || ''}\n${current}`)
     if (!primary) return
     const full = await fetchRegistryAbstract(doi).catch(() => null)
     if (!full || full.length <= (meta.abstract || '').trim().length) return
@@ -760,7 +742,7 @@ function assembleExtracts(
   for (const claim of body) {
     const n = marker(claim.doi)
     const source = byDoi.get(claim.doi)
-    const text = creditFigures(claim.doi, claim.text, source?.abstract || '')
+    const text = claim.text
     if (text.split(/\s+/).length < 6) continue
     sentences.push({ text: `${text.replace(/\[\d+\]/g, '').trim()} [${n}].`, cites: [n] })
   }
@@ -852,16 +834,45 @@ const JUDGE_SCHEMA = {
   },
 } as const
 
-function writerQuery(question: string, rows: { doi: string; who: string; year: string; label: string; abstract: string }[], feedback = ''): string {
+const KEYWORD_SCHEMA = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['query'],
+  properties: { query: { type: 'string' } },
+} as const
+
+const FACT_SCHEMA = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['facts'],
+  properties: {
+    facts: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['paper_id', 'enrollment', 'effects'],
+        properties: {
+          paper_id: { type: 'string' },
+          enrollment: { type: 'string' },
+          effects: { type: 'array', items: { type: 'string' } },
+        },
+      },
+    },
+  },
+} as const
+
+function writerQuery(question: string, rows: { doi: string; who: string; year: string; label: string; abstract: string; facts: string[] }[], feedback = ''): string {
   const lines = rows.map((row) => {
-    const facts = requiredFacts(row.doi, row.abstract)
-    return `id: ${row.doi}\nauthor: ${row.who}\nyear: ${row.year}\nlabel: ${row.label}${facts.length ? `\nmust state: ${facts.join('; ')}` : ''}\nabstract: ${row.abstract}`
+    return `id: ${row.doi}\nauthor: ${row.who}\nyear: ${row.year}\nlabel: ${row.label}${row.facts.length ? `\nmust state: ${row.facts.join('; ')}` : ''}\nabstract: ${row.abstract}`
   })
   return [
     `Question: ${question}`,
-    'Write 3 to 5 plain-English sentences, one finding per paper.',
-    'Each sentence names the author and year, uses its own words, puts each number only on the paper whose abstract prints it, states the direction exactly as the abstract does, and carries one citation marker.',
-    'The first paper is the primary trial. Its sentence must include that paper and the enrollment number when one is listed.',
+    'Write 2 to 5 plain-English sentences, one finding per paper.',
+    'Each sentence names the first author surname and the publication year exactly as given. A different year is wrong.',
+    'Use your own words. Every number must be printed in that paper\'s abstract. Do not say thousands of participants, or that a count was not stated, when the abstract prints an exact count.',
+    'State the direction exactly as the abstract does.',
+    'The first paper is the primary trial. Its sentence must include the must-state facts when they are listed.',
     'Return strict JSON {sentences:[{text, paper_id, numbers:[]}]}. No notes field and no text outside the JSON.',
     feedback ? `Fix these problems:\n${feedback}` : '',
     lines.join('\n\n'),
@@ -891,24 +902,35 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
     if (cached) {
       found = cached
     } else {
-      const queries = expandedQueries(question)
-      const batches = await Promise.all(queries.map(async (query, index) => {
-        const once = () => deps.exaPost('/search', searchBody(query), budgeted(8_000))
+      const once = (query: string) => deps.exaPost('/search', searchBody(query), budgeted(8_000))
+      const keywordTask = postAnswer({
+        query: keywordPrompt(question),
+        stream: false,
+        text: false,
+        model: 'exa',
+        temperature: 0,
+        systemPrompt: 'Return one keyword query. Do not include author names.',
+        outputSchema: KEYWORD_SCHEMA,
+      }, false).catch(() => null)
+      let primary: unknown
+      try {
+        primary = await once(question)
+      } catch (err) {
+        if (deadline - Date.now() < 2_000) throw err
+        primary = await once(question)
+      }
+      const keyword = readKeywordQuery(await keywordTask, question)
+      let extra: unknown = null
+      if (keyword && deadline - Date.now() > 2_000) {
         try {
-          return await once()
-        } catch (err) {
-          if (index !== 0) return null
-          if (deadline - Date.now() < 2_000) throw err
-          try {
-            return await once()
-          } catch (retryErr) {
-            throw retryErr
-          }
+          extra = await once(keyword)
+        } catch {
+          extra = null
         }
-      }))
+      }
       const merged: SourceFields[] = []
       const seen = new Set<string>()
-      for (const batch of batches) {
+      for (const batch of [primary, extra]) {
         for (const paper of readResults(batch).slice(0, SEARCH_RESULTS)) {
           const key = (paper.doi || paper.url || '').toLowerCase()
           if (!key || seen.has(key)) continue
@@ -916,7 +938,7 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
           merged.push(paper)
         }
       }
-      found = await injectMissingPins(question, merged, deps.resolve)
+      found = merged
       if (!partial?.exaPost) rememberRetrieval(question, found)
     }
   } catch (err) {
@@ -926,7 +948,7 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
   try {
     const foundMeta = await metaMap(found, deps.resolve)
     const papers = dedupeSources(applyMeta(found, foundMeta))
-    if (!partial?.resolve) await enrichPrimaryAbstracts(question, papers, foundMeta)
+    if (!partial?.resolve) await enrichPrimaryAbstracts(papers, foundMeta)
     const briefs = papers
       .map((paper) => ({ doi: paperDoi(paper, foundMeta), abstract: paperAbstract(paper, foundMeta), title: (foundMeta[paper.url] ?? foundMeta[workKey(paper)] ?? {}).title || paper.title || '' }))
       .filter((paper) => paper.doi)
@@ -940,7 +962,7 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
       abstract: paper.abstract,
       rank: studyRank(paper.title, paper.abstract),
     })))
-    const rows = selected.map((paper) => {
+    const drafted = selected.map((paper) => {
       const source = papers.find((item) => paperDoi(item, foundMeta) === paper.doi)
       const meta = source ? (foundMeta[source.url] ?? foundMeta[workKey(source)] ?? {}) : {}
       const label = statusLabel(paperStatus({
@@ -955,13 +977,32 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
         retracted: meta.retracted,
         articleType: meta.articleType,
       }))
-      return {
-        ...paper,
-        who: citeName(meta.authors ?? source?.author, meta.year ?? source?.publishedDate),
-        year: meta.year || source?.publishedDate || '',
-        label,
-      }
+      const who = citeName(meta.authors ?? source?.author, meta.year ?? source?.publishedDate)
+      const year = (meta.year || source?.publishedDate || '').match(/\b(1[89]\d{2}|20\d{2})\b/)?.[1] || ''
+      const author = who.replace(/\s+\d{4}$/, '').replace(/^A retrieved study$/, '').replace(/^A \d{4} study$/, '')
+      return { ...paper, who, year, author, label }
     })
+    const factPayload = drafted.length && deadline - Date.now() > 4_000
+      ? await postAnswer({
+          query: [
+            'For each abstract, extract the enrollment and the main effect numbers.',
+            'Enrollment is the count randomized, enrolled, or who underwent randomization. Do not return the number screened.',
+            'Main effects are the efficacy percents or the noninferiority result printed in the abstract.',
+            'Copy the digits as printed. If a figure is absent, use an empty string or an empty list.',
+            'Return JSON {facts:[{paper_id, enrollment, effects:[]}]}.',
+            drafted.map((row) => `id: ${row.doi}\nabstract: ${row.abstract}`).join('\n\n'),
+          ].join('\n'),
+          stream: false,
+          text: false,
+          model: 'exa',
+          temperature: 0,
+          systemPrompt: 'Extract only numbers printed in each abstract. Return only the JSON object.',
+          outputSchema: FACT_SCHEMA,
+        }, false)
+      : null
+    const proposed = new Map(readModelFacts(factPayload).map((item) => [item.paper_id, [item.enrollment, ...item.effects].filter(Boolean)]))
+    const rows = drafted.map((row) => ({ ...row, facts: requiredFacts(row.abstract, proposed.get(row.doi) || []) }))
+    const people = new Map<string, SentenceAttribution>(rows.map((row) => [row.doi, { author: row.author, year: row.year }]))
     const writerBody = (feedback = '') => ({
       query: writerQuery(question, rows, feedback),
       stream: false,
@@ -985,25 +1026,27 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
     const written = rows.length ? readWritten(answered) : null
     if (written) {
       const abstracts = new Map(rows.map((row) => [row.doi, row.abstract]))
+      const factMap = new Map(rows.map((row) => [row.doi, row.facts]))
       const headline = headlineTrial(question, selected)
       const judgeRows = async (draft: WrittenSentence[]) => {
-        const audited = auditSentences(draft, abstracts, headline || '')
+        const audited = auditSentences(draft, abstracts, headline || '', factMap, people)
         const judged = await Promise.all(audited.ok.map(async (row) => {
-          if (deadline - Date.now() < 1_500) return { row, supported: true, reason: 'judge skipped for time' }
+          if (deadline - Date.now() < 1_500) return { row, supported: true, attribution: false, reason: 'judge skipped for time' }
           const payload = await postAnswer({
             query: `${JUDGE_PROMPT}\n\nAbstract:\n${abstracts.get(row.paper_id) || ''}\n\nSentence:\n${row.text}`,
             stream: false,
             text: false,
             model: 'exa',
             temperature: 0,
-            systemPrompt: 'Return JSON. supported is true only when the abstract fully supports the sentence, including the direction of the effect.',
+            systemPrompt: 'Return JSON. supported is true only when the abstract fully supports the sentence, including the direction of the effect. Do not reject a sentence only because of how it names the author.',
             outputSchema: JUDGE_SCHEMA,
           }, false)
           const judge = readJudge(payload)
-          if (!judge) return { row, supported: true, reason: 'judge did not answer' }
-          return { row, supported: judge.supported, reason: judge.reason }
+          if (!judge) return { row, supported: true, attribution: false, reason: 'judge did not answer' }
+          const attribution = !judge.supported && attributionOnlyReason(judge.reason)
+          return { row, supported: judge.supported, attribution, reason: judge.reason }
         }))
-        const kept = judged.filter((item) => item.supported).map((item) => item.row)
+        const kept = judged.filter((item) => item.supported || item.attribution).map((item) => item.row)
         const failures = [
           ...audited.failures,
           ...judged.filter((item) => !item.supported).map((item) => `${item.row.paper_id}: judge said no (${item.reason})`),
@@ -1012,13 +1055,15 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
       }
       let round = await judgeRows(written)
       let latest = written
-      const keyIds = new Set(selected.filter((paper) => paper.doi === headline || pinsForQuestion(question).includes(paper.doi)).map((paper) => paper.doi))
+      const keyIds = new Set(selected.map((paper) => paper.doi))
       for (let attempt = 0; attempt < 2 && deadline - Date.now() > 2_500; attempt += 1) {
         const failing = latest.filter((row) => keyIds.has(row.paper_id) && round.failures.some((line) => line.startsWith(row.paper_id)))
         const missingHeadline = Boolean(headline) && !latest.some((row) => row.paper_id === headline)
-        if (!failing.length && !missingHeadline && !(selected.length >= 3 && round.kept.length < 3)) break
+        if (!failing.length && !missingHeadline && !(selected.length >= 2 && round.kept.length < 2)) break
         if (missingHeadline && headline) {
-          const repaired = readWritten(await postAnswer(writerBody(`Include a sentence for the primary trial ${headline}. must state: ${requiredFacts(headline, abstracts.get(headline) || '').join('; ')}`)))
+          const facts = factMap.get(headline) || []
+          const person = people.get(headline)
+          const repaired = readWritten(await postAnswer(writerBody(`Include a sentence for the primary trial ${headline}. Name ${person?.author || 'the first author'} and the year ${person?.year || ''}. must state: ${facts.join('; ')}`)))
           if (repaired?.length) {
             latest = repaired
             round = await judgeRows(latest)
@@ -1027,13 +1072,15 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
         }
         const rewritten = await Promise.all(failing.map(async (row) => {
           const abstract = abstracts.get(row.paper_id) || ''
+          const person = people.get(row.paper_id)
           const span = copiedContentRun(row.text, abstract, 8).span
           const payload = await postAnswer({
             query: [
               'Rewrite only this one sentence in your own words.',
               'Return JSON {sentences:[{text, paper_id, numbers:[]}]}.',
               `paper_id: ${row.paper_id}`,
-              `must state: ${requiredFacts(row.paper_id, abstract).join('; ')}`,
+              person?.author ? `Name the author ${person.author} and the year ${person.year}.` : '',
+              `must state: ${(factMap.get(row.paper_id) || []).join('; ')}`,
               span ? `Do not copy this span: "${span}"` : '',
               `Problems: ${round.failures.filter((line) => line.startsWith(row.paper_id)).join(' ')}`,
               `Abstract: ${abstract}`,
@@ -1047,15 +1094,14 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
             outputSchema: WRITER_SCHEMA,
           }, false)
           const next = readWritten(payload)?.find((item) => item.paper_id === row.paper_id) || readWritten(payload)?.[0]
-          return next ? { ...next, paper_id: row.paper_id } : row
+          if (!next) return row
+          const problems = sentenceProblems(next.text, abstract, [...abstracts.values()], person)
+          if (problems.length) return row
+          return { ...next, paper_id: row.paper_id }
         }))
         const byId = new Map(rewritten.map((row) => [row.paper_id, row]))
         latest = latest.map((row) => byId.get(row.paper_id) || row)
         round = await judgeRows(latest)
-      }
-      if (headline && !round.kept.some((row) => row.paper_id === headline)) {
-        const fallback = latest.find((row) => row.paper_id === headline)
-        if (fallback) round = { kept: [fallback, ...round.kept], failures: round.failures }
       }
       const kept = round.kept.slice(0, 5)
       const guidanceOnly = kept.length > 0 && kept.every((row) => isGuidanceRecord({ doi: row.paper_id })) && selected.some((paper) => paper.rank < 2 && !isGuidanceRecord({ doi: paper.doi, title: paper.title }))

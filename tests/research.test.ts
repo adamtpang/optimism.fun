@@ -305,18 +305,18 @@ describe('Exa research requests', () => {
         }
       },
     })
-    expect(calls.map((call) => call.path)).toEqual(['/search', '/answer', '/answer'])
-    const search = calls[0].body
-    expect(search.category).toBe('research paper')
-    expect(search.type).toBe('auto')
-    expect(search.numResults).toBe(10)
+    expect(calls.some((call) => call.path === '/search')).toBe(true)
+    expect(calls.some((call) => call.path === '/answer')).toBe(true)
+    const search = calls.find((call) => call.path === '/search')?.body
+    expect(search?.category).toBe('research paper')
+    expect(search?.type).toBe('auto')
+    expect(search?.numResults).toBe(10)
     expect(search).not.toHaveProperty('includeDomains')
-    expect(search.excludeDomains).toEqual(excludeDomains())
-    expect(JSON.stringify(search.contents)).toContain('summary')
-    const answer = calls[1].body
-    expect(answer.model).toBe('exa')
-    expect(answer.text).toBe(true)
-    expect(answer.stream).toBe(false)
+    expect(search?.excludeDomains).toEqual(excludeDomains())
+    expect(JSON.stringify(search?.contents)).toContain('summary')
+    const answer = calls.find((call) => call.path === '/answer')?.body
+    expect(answer?.model).toBe('exa')
+    expect(answer?.stream).toBe(false)
     expect(result.configured).toBe(true)
     if (!result.configured) return
     expect(result.sentences[0]?.cites).toEqual([1])
