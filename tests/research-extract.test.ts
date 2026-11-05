@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { askResearch, includeResearchDebug } from '@/lib/research/ask'
 import { fetchRegistryAbstract } from '@/lib/research/metadata'
 import { paperStatus, statusLabel } from '@/lib/research/papers'
-import { citeName, renderExtractSentence, spanInAbstract, supportText, verifyExtract, type PaperExtract } from '@/lib/research/extract'
+import { citeName, renderExtractSentence, spanInAbstract, spanMatch, supportText, verifyExtract, type PaperExtract } from '@/lib/research/extract'
 
 const SUTTON = 'Intermittent fasting (IF) improves cardiometabolic health. Men with prediabetes were randomized to early time-restricted feeding (eTRF) for 5 weeks. eTRF improved insulin sensitivity.'
 const DORMAN = 'Among 2516 participants who had undergone randomization, a 4-month rifapentine regimen with moxifloxacin was noninferior to the 6-month control.'
@@ -93,7 +93,51 @@ describe('structured extracts', () => {
     }
     const sentence = renderExtractSentence(verifyExtract(extract, M72), 'Tait 2018', M72)
     expect(sentence).toContain('54.0%')
-    expect(sentence).toContain('3,573 adults (1,786 vaccine, 1,787 placebo)')
+    expect(sentence).toContain('1786')
+    expect(sentence).toContain('1787')
+    expect(sentence).not.toContain('3,573')
+    expect(sentence).not.toContain('39')
+  })
+
+  it('matches a span after dashes, quotes, and hyphenation, and logs the closest miss', () => {
+    const abstract = 'A 4-month rifapentine\u2013moxifloxacin regimen was non-inferior to the 6-month control among 2516 participants.'
+    expect(spanInAbstract('4 month rifapentine-moxifloxacin regimen was noninferior', abstract)).toBe(true)
+    const missed = spanMatch('clothing color changes kidney stone risk completely', abstract)
+    expect(missed.ok).toBe(false)
+    expect(missed.closest.length).toBeGreaterThan(0)
+  })
+
+  it('calls Dorman noninferior and does not invent 39 from case counts', () => {
+    const dorman = 'Among 2516 participants, a 4-month rifapentine regimen with moxifloxacin was noninferior to the 6-month control.'
+    const extract: PaperExtract = {
+      doi: '10.1056/nejmoa2033400',
+      effect_direction: 'null',
+      population: field('2516 participants', 'Among 2516 participants'),
+      intervention: field('4-month rifapentine regimen with moxifloxacin'),
+      comparator: null,
+      outcome: field('was noninferior'),
+      key_numbers: [field('2,516', 'Among 2516 participants')],
+      n: null,
+    }
+    const verified = verifyExtract(extract, dorman)
+    expect(verified.direction).toBe('noninferior')
+    expect(verified.rejectReason).toBeNull()
+    const cases = 'There were 13 cases in the vaccine group and 26 cases in the placebo group. Efficacy was 54.0%.'
+    const invented: PaperExtract = {
+      doi: '10.1056/nejmoa1909953',
+      effect_direction: 'benefit',
+      population: null,
+      intervention: field('vaccine'),
+      comparator: field('placebo'),
+      outcome: field('Efficacy was 54.0%'),
+      key_numbers: [field('13', '13 cases'), field('26', '26 cases'), field('39', '39 adults')],
+      n: null,
+    }
+    const sentence = renderExtractSentence(verifyExtract(invented, cases), 'Tait 2019', cases)
+    expect(sentence).not.toContain('39')
+    expect(sentence).toContain('54.0%')
+    expect(citeName(['Van Der Meeren'], '2018')).toBe('Van Der Meeren 2018')
+    expect(citeName(['Susan E. Dorman'], '2021')).toBe('Dorman 2021')
   })
 
   it('asks from the full abstract and cites the verified span', async () => {

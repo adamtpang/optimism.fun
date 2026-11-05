@@ -684,7 +684,12 @@ function assembleExtracts(
       reasons.set(extract.doi, 'Rejected: the verified fields did not make a sentence.')
       continue
     }
-    claims.push({ doi: extract.doi, direction: verified.direction, text })
+    const balance = verified.direction === 'noninferior' || verified.direction === 'superior' || verified.direction === 'benefit'
+      ? 'benefit'
+      : verified.direction === 'no-difference' || verified.direction === 'harm' || verified.direction === 'null'
+        ? 'null'
+        : 'mixed'
+    claims.push({ doi: extract.doi, direction: balance, text })
     if (verified.droppedFields.length) reasons.set(extract.doi, `Kept. Dropped fields: ${verified.droppedFields.join('; ')}`)
     else reasons.set(extract.doi, 'Kept.')
   }
