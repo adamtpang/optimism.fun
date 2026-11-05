@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
 import { ANSWER_SYSTEM, UNVERIFIED_ANSWER, answerQuery, askResearch, readSupportChecks, researchHttpStatus, similarResearch } from '@/lib/research/ask'
-import { pinsForQuestion } from '@/lib/research/pins'
 import { isNewsRecord } from '@/lib/research/domains'
 import { readCrossref, readEuropePmcAbstract, readNcbiIdconv, readOpenAlex, resolvePaperMetadata } from '@/lib/research/metadata'
 import {
@@ -1060,7 +1059,7 @@ describe('review fixtures', () => {
     expect(shaped.citations.map((paper) => paper.doi)).toEqual(['10.1056/nejmoa1803484'])
   })
 
-  it('pins papers that the attached runs actually returned', () => {
+  it('keeps retrieved trial titles when shaping an answer', () => {
     // Shape-only check. A search miss is covered by the askResearch pin test below.
     const pinned = [
       { doi: '10.1016/s0140-6736(23)02511-4', title: 'Safety and efficacy of malaria vaccine candidate R21/Matrix-M in African children: a multicentre, double-blind, randomised, controlled, phase 3 trial' },
@@ -1093,134 +1092,56 @@ describe('review fixtures', () => {
     expect(shaped.retrieved.every((paper) => paper.dropReason)).toBe(true)
   })
 
-  it('injects pinned papers when search omits them', async () => {
+  it('searches the question and a keyword query without adding papers search missed', async () => {
     process.env.EXA_API_KEY = 'test-key-value'
-    const fasting = [
-      '10.1016/j.cmet.2018.04.010',
-      '10.1007/s00125-022-05752-z',
-      '10.1186/s12986-021-00613-9',
-      '10.1002/oby.23620',
-    ]
-    expect(pinsForQuestion('Does intermittent fasting improve insulin sensitivity?').sort()).toEqual([...fasting].sort())
-    const decoy = {
-      url: 'https://doi.org/10.1000/decoy',
-      title: 'A narrative review of diets',
-      text: 'A narrative review of diets.',
-      doi: '10.1000/decoy',
-    }
-    let query = ''
-    const result = await askResearch('Does intermittent fasting improve insulin sensitivity?', {
-      resolve: async (fields) => {
-        const doi = (fields.doi || '').toLowerCase()
-        if (!fasting.includes(doi)) {
-          return { retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article', doi: fields.doi }
-        }
-        return {
-          doi,
-          title: `Pinned ${doi}`,
-          abstract: doi === '10.1002/oby.23620'
-            ? 'Intermittent fasting as time-restricted eating did not alter insulin sensitivity.'
-            : 'Intermittent fasting with early time-restricted feeding improves insulin sensitivity.',
-          retractionChecked: true,
-          retracted: false,
-          journal: true,
-          crossrefType: 'journal-article',
-          year: '2018',
-        }
-      },
-      exaPost: async (path, body) => {
-        if (path === '/search') return { results: [decoy] }
-        const schema = JSON.stringify((body as { outputSchema?: unknown }).outputSchema ?? {})
-        if (schema.includes('supported')) return { answer: { checks: [{ n: 1, supported: true }] } }
-        query = String((body as { query?: string }).query || '')
-        return {
-          answer: { sentences: [{ text: 'Early time-restricted feeding improves insulin sensitivity.', urls: [`https://doi.org/${fasting[0]}`] }] },
-          citations: [],
-        }
-      },
-    })
-    delete process.env.EXA_API_KEY
-    expect(result.configured).toBe(true)
-    if (!result.configured) return
-    for (const doi of fasting) expect(query, doi).toContain(doi)
-    const present = new Set([...result.citations, ...result.retrieved].map((paper) => paper.doi?.toLowerCase()))
-    for (const doi of fasting) expect(present.has(doi), doi).toBe(true)
-    expect(result.sentences.some((sentence) => sentence.text.includes('improves insulin sensitivity'))).toBe(true)
-  })
-
-  it('injects the M72 trials for the vaccine question and the Dorman trial for the regimen question', async () => {
-    process.env.EXA_API_KEY = 'test-key-value'
-    const m72 = ['10.1056/nejmoa1803484', '10.1056/nejmoa1909953']
-    const dorman = '10.1056/nejmoa2033400'
-    expect(pinsForQuestion('Does the M72/AS01E vaccine prevent tuberculosis?').sort()).toEqual([...m72].sort())
-    expect(pinsForQuestion('Did a 4-month rifapentine plus moxifloxacin regimen shorten tuberculosis treatment?')).toEqual([dorman])
-    const decoy = {
-      url: 'https://doi.org/10.1000/decoy',
-      title: 'A narrative review',
-      text: 'A narrative review of tuberculosis.',
-      doi: '10.1000/decoy',
-    }
-    async function run(question: string) {
-      return askResearch(question, {
-        resolve: async (fields) => {
-          const doi = (fields.doi || '').toLowerCase()
-          const known = [...m72, dorman]
-          if (!known.includes(doi)) {
-            return { retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article' }
-          }
-          return {
-            doi,
-            title: doi === dorman ? 'Four-Month Rifapentine Regimens with or without Moxifloxacin for Tuberculosis' : `M72 trial ${doi}`,
-            abstract: doi === dorman
-              ? 'In an open-label, phase 3, randomized, controlled trial, a 4-month rifapentine-based regimen with moxifloxacin was compared with a standard 6-month regimen.'
-              : 'The vaccine efficacy was 54.0% (P = 0.04). M72/AS01E provided 54.0% protection against active pulmonary tuberculosis.',
-            retractionChecked: true,
-            retracted: false,
-            journal: true,
-            crossrefType: 'journal-article',
-            year: doi === dorman ? '2021' : '2018',
-          }
-        },
-        exaPost: async (path, body) => {
-          if (path === '/search') return { results: [decoy] }
-          const schema = JSON.stringify((body as { outputSchema?: unknown }).outputSchema ?? {})
-          if (schema.includes('supported')) return { answer: { checks: [] } }
-          return { answer: { sentences: [] }, citations: [] }
-        },
-      })
-    }
-    const vaccine = await run('Does the M72/AS01E vaccine prevent tuberculosis?')
-    const regimen = await run('Did a 4-month rifapentine plus moxifloxacin regimen shorten tuberculosis treatment?')
-    delete process.env.EXA_API_KEY
-    expect(vaccine.configured && regimen.configured).toBe(true)
-    if (!vaccine.configured || !regimen.configured) return
-    const vaccineDois = new Set([...vaccine.citations, ...vaccine.retrieved].map((paper) => paper.doi?.toLowerCase()))
-    const regimenDois = new Set([...regimen.citations, ...regimen.retrieved].map((paper) => paper.doi?.toLowerCase()))
-    for (const doi of m72) expect(vaccineDois.has(doi), doi).toBe(true)
-    expect(vaccineDois.has(dorman)).toBe(false)
-    expect(regimenDois.has(dorman)).toBe(true)
-    expect([...regimenDois].some((doi) => m72.includes(doi || ''))).toBe(false)
-  })
-
-  it('does not inject pins for an unrelated question', async () => {
-    process.env.EXA_API_KEY = 'test-key-value'
-    expect(pinsForQuestion('Does extreme heat raise mortality?')).toEqual([])
+    const queries: string[] = []
     const result = await askResearch('Does extreme heat raise mortality?', {
-      resolve: async () => ({ retractionChecked: true, retracted: false, journal: true, crossrefType: 'journal-article' }),
+      resolve: async (fields) => ({
+        doi: fields.doi,
+        title: fields.title || 'Heat and mortality',
+        authors: ['Ada Lovelace'],
+        year: '2024',
+        abstract: String(fields.text || 'Mortality was worse during extreme heat.'),
+        retractionChecked: true,
+        retracted: false,
+        journal: true,
+        crossrefType: 'journal-article',
+      }),
       exaPost: async (path, body) => {
-        if (path === '/search') {
-          return { results: [{ url: 'https://doi.org/10.1038/s41586-020-2649-2', title: 'Heat and mortality', text: 'Mortality rose during extreme heat.', doi: '10.1038/s41586-020-2649-2' }] }
-        }
         const schema = JSON.stringify((body as { outputSchema?: unknown }).outputSchema ?? {})
+        if (path === '/search') {
+          const query = String((body as { query?: string }).query || '')
+          queries.push(query)
+          if (query.includes('heatwave deaths')) {
+            return { results: [{ url: 'https://doi.org/10.1000/heat2', doi: '10.1000/heat2', title: 'Heatwave mortality randomized trial', text: 'A randomized trial found mortality was worse during extreme heat.' }] }
+          }
+          return { results: [{ url: 'https://doi.org/10.1000/heat1', doi: '10.1000/heat1', title: 'Extreme heat and mortality', text: 'Mortality was worse during extreme heat.' }] }
+        }
+        if (schema.includes('"query"') && !schema.includes('sentences') && !schema.includes('facts')) {
+          return { answer: { query: 'heatwave deaths randomized trial' } }
+        }
+        if (schema.includes('enrollment')) return { answer: { facts: [] } }
+        if (schema.includes('supported') && schema.includes('reason')) {
+          return { answer: { supported: true, reason: 'The abstract supports the sentence.' } }
+        }
         if (schema.includes('supported')) return { answer: { checks: [{ n: 1, supported: true }] } }
-        return { answer: { sentences: [{ text: 'Mortality rose during extreme heat.', urls: ['https://doi.org/10.1038/s41586-020-2649-2'] }] }, citations: [] }
+        return {
+          answer: {
+            sentences: [
+              { text: 'Lovelace 2024 found that mortality was worse during extreme heat.', paper_id: '10.1000/heat1', numbers: [] },
+              { text: 'Lovelace 2024 found that a randomized trial recorded mortality that was worse during extreme heat.', paper_id: '10.1000/heat2', numbers: [] },
+            ],
+          },
+        }
       },
     })
     delete process.env.EXA_API_KEY
     expect(result.configured).toBe(true)
     if (!result.configured) return
+    expect(queries.some((query) => query.toLowerCase().includes('extreme heat'))).toBe(true)
+    expect(queries.some((query) => query.includes('heatwave deaths'))).toBe(true)
     const dois = [...result.citations, ...result.retrieved].map((paper) => paper.doi?.toLowerCase())
-    expect(dois).toEqual(['10.1038/s41586-020-2649-2'])
+    expect(new Set(dois)).toEqual(new Set(['10.1000/heat1', '10.1000/heat2']))
     expect(researchHttpStatus({ configured: true, error: 'Exa /search timed out.' })).toBe(502)
   })
 })

@@ -20,7 +20,7 @@ const DURATION_WORDS: Record<string, string> = {
   '12': 'twelve',
 }
 
-/** Commas, spaces, percent words, and dashes, so 2,516 and 2516 compare equal. */
+/** Commas, spaces, percent words, and dashes, so 1,000 and 1000 compare equal. */
 export function normalizeNumericText(text: string): string {
   return text
     .toLowerCase()

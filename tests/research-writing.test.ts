@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { matchesIntervention } from '@/lib/research/claims'
 import {
+  attributionOnlyReason,
   auditSentences,
   coversPrimary,
   enrollmentNumber,
@@ -15,7 +16,7 @@ import {
   sentenceProblems,
   truncatedTokens,
 } from '@/lib/research/writing'
-import { clearRetrievalCache, expandedQueries, recallRetrieval, rememberRetrieval } from '@/lib/research/ask'
+import { clearRetrievalCache, expandedQueries, keywordPrompt, readKeywordQuery, recallRetrieval, rememberRetrieval } from '@/lib/research/ask'
 import { numberMatches } from '@/lib/research/text-checks.mjs'
 import { isJournalArticleDoi, paperStatus } from '@/lib/research/papers'
 
@@ -49,6 +50,30 @@ describe('838d2f4 sentence checks', () => {
     expect(sentenceProblems('Bantle 2023 enrolled 20 adults.', BANTLE, [BANTLE]).join(' ')).toContain('20')
   })
 
+  it('ranks a phase 3 trial ahead of a commentary and a meta-analysis', () => {
+    const question = 'How well does this malaria vaccine work?'
+    const phase3 = {
+      doi: '10.1000/phase3',
+      title: 'A phase 3 randomized controlled trial of a malaria vaccine',
+      abstract: 'The randomized controlled malaria vaccine trial enrolled 200 children. Efficacy was 70%.',
+      rank: 0,
+    }
+    const meta = {
+      doi: '10.1000/meta',
+      title: 'A systematic review and meta-analysis of the malaria vaccine',
+      abstract: 'This meta-analysis pooled malaria vaccine trials.',
+      rank: 3,
+    }
+    const note = {
+      doi: '10.1000/note',
+      title: 'Commentary on the malaria vaccine',
+      abstract: 'This commentary discusses the malaria vaccine.',
+      rank: 3,
+    }
+    expect(headlineTrial(question, [note, meta, phase3])).toBe(phase3.doi)
+    expect(selectWritingPapers(question, [note, meta, phase3]).map((paper) => paper.doi)).toEqual([phase3.doi, meta.doi])
+  })
+
   it('keeps a supported Dorman sentence and selects the Lancet paper for every R21 wording', () => {
     const fine = 'Dorman 2021 found that the 4-month rifapentine regimen with moxifloxacin was noninferior among 2516 participants.'
     expect(sentenceProblems(fine, DORMAN, [DORMAN])).toEqual([])
@@ -80,7 +105,7 @@ describe('838d2f4 sentence checks', () => {
 
   it('demo-eval flags the same writing failures and can call the judge', () => {
     const source = readFileSync('scripts/demo-eval.mjs', 'utf8')
-    for (const phrase of ['--judge', 'empty parentheses', 'meta note', 'duplicate sentence', 'truncated word', 'not no difference', 'EXA_API_KEY']) {
+    for (const phrase of ['--judge', 'empty parentheses', 'meta note', 'duplicate sentence', '2 to 5 sentences', 'author and year', 'direction contradicts the abstract', 'latency under 25s', 'cites a relevant trial', 'EXA_API_KEY']) {
       expect(source).toContain(phrase)
     }
   })
@@ -112,8 +137,13 @@ describe('838d2f4 sentence checks', () => {
     rememberRetrieval('Is a 4-month rifapentine regimen noninferior?', [paper], 1_000)
     expect(recallRetrieval('  is a 4-month rifapentine regimen noninferior? ', 1_000 + 1000)?.[0].doi).toBe(paper.doi)
     expect(recallRetrieval('Is a 4-month rifapentine regimen noninferior?', 1_000 + 11 * 60 * 1000)).toBeNull()
-    expect(expandedQueries('Does the M72/AS01E vaccine prevent tuberculosis?').length).toBeGreaterThan(1)
+    expect(expandedQueries('Does the M72/AS01E vaccine prevent tuberculosis?')).toEqual(['Does the M72/AS01E vaccine prevent tuberculosis?'])
     expect(expandedQueries('Does extreme heat raise mortality?')).toEqual(['Does extreme heat raise mortality?'])
+    const prompt = keywordPrompt('Does extreme heat raise mortality?')
+    expect(prompt).toContain('Does extreme heat raise mortality?')
+    expect(prompt.toLowerCase()).toContain('do not include author names')
+    expect(readKeywordQuery({ answer: { query: 'heatwave mortality randomized trial' } }, 'Does extreme heat raise mortality?')).toBe('heatwave mortality randomized trial')
+    expect(readKeywordQuery({ answer: { query: 'Ada Lovelace heat mortality' } }, 'Does extreme heat raise mortality?')).toBeNull()
     clearRetrievalCache()
   })
 
@@ -126,10 +156,15 @@ describe('838d2f4 sentence checks', () => {
     expect(numberMatches('54%', meeren)).toBe(true)
     expect(numberMatches('54.0%', 'Efficacy was 54 % in adults.')).toBe(true)
     expect(sentenceProblems('Datoo 2021 reported 77% and 74% efficacy among 450 participants.', datoo2021, [datoo2021])).not.toContain('number 77% is not in this abstract')
-    const r21 = 'A phase 3 trial enrolling over 4800 children was done. The trial enrolled 4,878 children. Seasonal efficacy was 75% and standard efficacy was 68%.'
+    const r21 = 'Investigators screened 5477 children. A phase 3 trial enrolling over 4800 children was done. The trial enrolled 4,878 children. Seasonal efficacy was 75% and standard efficacy was 68%.'
     expect(enrollmentNumber(r21)).toBe('4,878')
-    expect(requiredFacts('10.1016/s0140-6736(23)02511-4', r21)).toEqual(expect.arrayContaining(['4,878', '75%', '68%']))
-    expect(missingFacts('In a phase 3 trial enrolling over 4800 children, Datoo 2024 observed high protective efficacy.', requiredFacts('10.1016/s0140-6736(23)02511-4', r21)).length).toBeGreaterThan(0)
+    expect(requiredFacts(r21, ['75%', '68%', '99%', '5477'])).toEqual(['4,878', '75%', '68%'])
+    expect(missingFacts('In a phase 3 trial enrolling over 4800 children, Datoo 2024 observed high protective efficacy.', requiredFacts(r21, ['75%', '68%'])).length).toBeGreaterThan(0)
+    expect(sentenceProblems('Datoo and colleagues (2024) reported 75% efficacy.', r21, [r21], { author: 'Datoo', year: '2023' }).join(' ')).toContain('year mismatch')
+    expect(sentenceProblems('In a phase 3 study with thousands of young participants, efficacy was high.', r21, [r21]).join(' ')).toContain('vague sample size')
+    expect(sentenceProblems('The study did not include 90 participants and improved the outcome.', 'The trial improved the measured outcome.', ['The trial improved the measured outcome.']).join(' ')).toContain('90')
+    expect(attributionOnlyReason('it does not attribute these findings to Tait (2019)')).toBe(true)
+    expect(attributionOnlyReason('the abstract does not support 90% efficacy')).toBe(false)
     expect(paperStatus({
       url: 'https://doi.org/10.1016/S0140-6736(23)02511-4',
       doi: '10.1016/S0140-6736(23)02511-4',

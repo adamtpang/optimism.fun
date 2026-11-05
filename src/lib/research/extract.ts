@@ -308,47 +308,6 @@ export function renderExtractSentence(row: VerifiedExtract, who: string, abstrac
   return safeSentence(who, row, abstract)
 }
 
-const DORMAN_DOI = '10.1056/nejmoa2033400'
-const R21_DOI = '10.1016/s0140-6736(23)02511-4'
-
-function phraseIn(abstract: string, pattern: RegExp): string | null {
-  const match = abstract.match(pattern)
-  return match ? match[0] : null
-}
-
-/** A field whose span is copied from the abstract, used when the model skipped the paper. */
-export function fallbackExtract(doi: string, abstract: string): PaperExtract | null {
-  const intervention = phraseIn(abstract, /R21\/Matrix-?\s*M|M72\/AS01\s*E|early time-restricted feeding|time-restricted eating|time-restricted feeding|4-month rifapentine[^.]{0,48}|rifapentine[^.]{0,48}moxifloxacin/i)
-  if (!intervention) return null
-  const outcome = phraseIn(abstract, /non-?inferior|insulin sensitivity|75\s*%|54\.0\s*%|49\.7\s*%/i) || intervention
-  const sample = phraseIn(abstract, /\b(?:2,?516|4,?878|1,?786|1,?787)\b/)
-  return {
-    doi,
-    effect_direction: directionFromAbstract(abstract),
-    population: null,
-    intervention: { text: intervention, evidence_span: intervention },
-    comparator: null,
-    outcome: { text: outcome, evidence_span: outcome },
-    key_numbers: sample ? [{ text: sample, evidence_span: sample }] : [],
-    n: sample ? { text: sample, evidence_span: sample } : null,
-  }
-}
-
-export function creditFigures(doi: string, text: string, abstract: string): string {
-  let next = doi === DORMAN_DOI ? text : text.replace(/\b2,?516\b/g, '')
-  const add = (token: string) => {
-    const printed = abstract.includes(token) ? token : token.replace(/,/g, '')
-    if (!numberPrinted(printed, abstract) || next.includes(printed) || next.replace(/,/g, '').includes(printed.replace(/,/g, ''))) return
-    next += ` ${printed}`
-  }
-  if (doi === DORMAN_DOI) add(abstract.includes('2,516') ? '2,516' : '2516')
-  if (doi === R21_DOI) {
-    add(abstract.includes('4,878') ? '4,878' : '4878')
-    if (numberPrinted('75%', abstract)) add('75%')
-  }
-  return next.replace(/\s+/g, ' ').replace(/\s+([,.;:])/g, '$1').trim()
-}
-
 export function readProse(payload: unknown): { doi: string; text: string }[] | null {
   const answer = payload && typeof payload === 'object' && 'answer' in (payload as object)
     ? (payload as { answer: unknown }).answer
