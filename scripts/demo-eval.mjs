@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 // Run the demo questions against a preview and print pass or fail.
 // Usage: node scripts/demo-eval.mjs https://preview.example [runs]
+// Optional auth, never committed: RESEARCH_DEMO_COOKIE, or
+// RESEARCH_BYPASS_TOKEN / VERCEL_AUTOMATION_BYPASS_SECRET.
 // The Answer API has no seed field, so this repeats the live call instead.
 
 const base = (process.argv[2] || '').replace(/\/$/, '')
@@ -17,14 +19,18 @@ const questions = [
     check(data) {
       const dois = (data.citations || []).map((paper) => (paper.doi || '').toLowerCase())
       const text = (data.sentences || []).map((sentence) => sentence.text).join(' ')
-      return [
+      return withNumbers([
         ['sutton cited', dois.includes('10.1016/j.cmet.2018.04.010')],
         ['andriessen cited', dois.includes('10.1007/s00125-022-05752-z')],
         ['at least 3 papers', new Set(dois).size >= 3],
         ['no postprandial', !/postprandial/i.test(text)],
         ['no clothing', !/clothing/i.test(text)],
-      ]
+      ].concat(sharedChecks(data)), data)
     },
+    variants: [
+      'Does time-restricted eating improve insulin sensitivity in adults?',
+      'Does early time-restricted feeding improve insulin sensitivity?',
+    ],
   },
   {
     name: 'm72',
@@ -33,15 +39,19 @@ const questions = [
       const dois = (data.citations || []).map((paper) => (paper.doi || '').toLowerCase())
       const text = (data.sentences || []).map((sentence) => sentence.text).join(' ')
       const phase2b = (data.citations || []).find((paper) => (paper.doi || '').toLowerCase() === '10.1056/nejmoa1803484')
-      return [
+      return withNumbers([
         ['54.0%', text.includes('54.0%')],
         ['49.7%', text.includes('49.7%')],
         ['phase 2b cited', dois.includes('10.1056/nejmoa1803484')],
         ['final analysis cited', dois.includes('10.1056/nejmoa1909953')],
         ['peer-reviewed label', !phase2b || phase2b.statusLabel === 'Peer-reviewed'],
         ['lowercase doi', !phase2b || phase2b.doi === phase2b.doi.toLowerCase()],
-      ]
+      ].concat(sharedChecks(data)), data)
     },
+    variants: [
+      'Does M72/AS01 prevent tuberculosis?',
+      'How well does the M72/AS01E tuberculosis vaccine work?',
+    ],
   },
   {
     name: 'tb4month',
@@ -49,12 +59,18 @@ const questions = [
     check(data) {
       const dois = (data.citations || []).map((paper) => (paper.doi || '').toLowerCase())
       const text = (data.sentences || []).map((sentence) => sentence.text).join(' ')
-      return [
+      return withNumbers([
         ['dorman cited', dois.includes('10.1056/nejmoa2033400')],
         ['2516', /2,?516/.test(text)],
         ['noninferior', /noninferior/i.test(text)],
-      ]
+        ['not guidance alone', dois.some((doi) => doi !== '10.15585/mmwr.mm7108a1')],
+        ['2516 only on Dorman', dormanOwns(data, '10.1056/nejmoa2033400', /2,?516/)],
+      ].concat(sharedChecks(data, 'noninferior')), data)
     },
+    variants: [
+      'Is the 4-month rifapentine-moxifloxacin regimen noninferior for tuberculosis?',
+      'Does a 4-month rifapentine regimen match standard tuberculosis treatment?',
+    ],
   },
   {
     name: 'r21',
@@ -62,14 +78,19 @@ const questions = [
     check(data) {
       const dois = (data.citations || []).map((paper) => (paper.doi || '').toLowerCase())
       const text = (data.sentences || []).map((sentence) => sentence.text).join(' ')
-      return [
+      return withNumbers([
         ['phase 3 cited', dois.includes('10.1016/s0140-6736(23)02511-4')],
         ['4878 or 75%', /4,?878/.test(text) && /75%/.test(text)],
         ['68%', /68%/.test(text)],
         ['no 78-79 range', !/78\s*[-\u2013]\s*79%/.test(text)],
         ['no cross-protection', !/cross-protection/i.test(text)],
-      ]
+      ].concat(sharedChecks(data)), data)
     },
+    variants: [
+      'Does the R21/Matrix-M malaria vaccine work?',
+      'How effective is R21/Matrix-M against malaria?',
+      'What is the efficacy of the R21 malaria vaccine?',
+    ],
   },
   {
     name: 'noanswer',
@@ -83,10 +104,89 @@ const questions = [
   },
 ]
 
+function figures(text) {
+  return text.match(/\d[\d,]*(?:\.\d+)?%?/g) || []
+}
+
+function figureInExcerpt(figure, excerpt) {
+  const bare = figure.replace(/,/g, '').replace(/%$/, '')
+  const year = Number(bare)
+  if (/^\d{4}$/.test(bare) && year >= 1990 && year <= 2030) return true
+  const hay = excerpt.replace(/,/g, '').toLowerCase()
+  if (figure.endsWith('%')) return hay.includes(`${bare}%`) || hay.includes(`${bare} percent`)
+  return hay.includes(bare)
+}
+
+function wordsOf(text) {
+  return text.toLowerCase().replace(/[^a-z0-9%]+/g, ' ').split(/\s+/).filter(Boolean)
+}
+
+function copiedRun(sentence, excerpt) {
+  const left = wordsOf(sentence)
+  const hay = wordsOf(excerpt).join(' ')
+  for (let i = 0; i + 12 <= left.length; i += 1) {
+    if (hay.includes(left.slice(i, i + 12).join(' '))) return true
+  }
+  return false
+}
+
+function sharedChecks(data, direction) {
+  const sentences = data.sentences || []
+  const text = sentences.map((sentence) => sentence.text).join(' ')
+  const copied = sentences.some((sentence) => (sentence.cites || []).some((n) => {
+    const paper = (data.citations || []).find((item) => item.n === n)
+    return paper && copiedRun(sentence.text, paper.excerpt || '')
+  }))
+  const rows = [
+    ['3 to 5 sentences', sentences.length >= 3 && sentences.length <= 5],
+    ['no copied abstract run', !copied],
+    ['each sentence names a year', sentences.every((sentence) => /\b(19|20)\d{2}\b/.test(sentence.text))],
+  ]
+  if (direction) rows.push([direction, new RegExp(direction, 'i').test(text)])
+  return rows
+}
+
+function dormanOwns(data, doi, pattern) {
+  const paper = (data.citations || []).find((item) => (item.doi || '').toLowerCase() === doi)
+  if (!paper) return false
+  const own = (data.sentences || []).filter((sentence) => sentence.cites.includes(paper.n)).map((sentence) => sentence.text).join(' ')
+  const rest = (data.sentences || []).filter((sentence) => !sentence.cites.includes(paper.n)).map((sentence) => sentence.text).join(' ')
+  return pattern.test(own) && !pattern.test(rest)
+}
+
+function numberFailures(data) {
+  const failures = []
+  for (const sentence of data.sentences || []) {
+    const body = String(sentence.text || '').replace(/\[\d+\]/g, ' ')
+    for (const n of sentence.cites || []) {
+      const paper = (data.citations || []).find((item) => item.n === n)
+      if (!paper) {
+        failures.push(`citation ${n} missing`)
+        continue
+      }
+      const excerpt = paper.excerpt || ''
+      for (const figure of figures(body)) {
+        if (figure === String(paper.year || '')) continue
+        if (!figureInExcerpt(figure, excerpt)) failures.push(`${paper.doi || paper.title} missing ${figure}`)
+      }
+    }
+  }
+  return failures
+}
+
+function withNumbers(rows, data) {
+  const missing = numberFailures(data)
+  return [...rows, [`numbers in cited abstracts${missing.length ? `: ${missing.join('; ')}` : ''}`, missing.length === 0]]
+}
+
 async function ask(question) {
-  const response = await fetch(`${base}/api/research/ask`, {
+  const headers = { 'content-type': 'application/json' }
+  if (process.env.RESEARCH_DEMO_COOKIE) headers.cookie = process.env.RESEARCH_DEMO_COOKIE
+  const bypass = process.env.RESEARCH_BYPASS_TOKEN || process.env.VERCEL_AUTOMATION_BYPASS_SECRET
+  if (bypass) headers['x-vercel-protection-bypass'] = bypass
+  const response = await fetch(`${base}/api/research/ask?debug=1`, {
     method: 'POST',
-    headers: { 'content-type': 'application/json' },
+    headers,
     body: JSON.stringify({ question }),
   })
   const data = await response.json()
@@ -94,24 +194,30 @@ async function ask(question) {
 }
 
 let failed = 0
+const jobs = []
 for (const item of questions) {
-  for (let run = 1; run <= runs; run += 1) {
-    let result
-    try {
-      result = await ask(item.question)
-    } catch (err) {
-      console.log(`${item.name} run ${run}: FAIL request ${err instanceof Error ? err.message : err}`)
-      failed += 1
-      continue
-    }
-    const checks = item.check(result.data)
-    const bad = checks.filter(([, ok]) => !ok).map(([name]) => name)
-    if (result.http !== 200 || bad.length) {
-      failed += 1
-      console.log(`${item.name} run ${run}: FAIL http ${result.http}${bad.length ? ` ${bad.join(', ')}` : ''}`)
-    } else {
-      console.log(`${item.name} run ${run}: PASS`)
-    }
+  for (let run = 1; run <= runs; run += 1) jobs.push({ ...item, label: `${item.name} run ${run}` })
+  for (const [index, variant] of (item.variants || []).entries()) {
+    jobs.push({ ...item, question: variant, label: `${item.name} variant ${index + 1}` })
+  }
+}
+for (const item of jobs) {
+  let result
+  try {
+    result = await ask(item.question)
+  } catch (err) {
+    console.log(`${item.label}: FAIL request ${err instanceof Error ? err.message : err}`)
+    failed += 1
+    continue
+  }
+  const checks = item.check(result.data)
+  const bad = checks.filter(([, ok]) => !ok).map(([name]) => name)
+  if (result.http !== 200 || bad.length) {
+    failed += 1
+    const rejected = (result.data.debug || []).filter((row) => row.status === 'rejected').map((row) => `${row.doi || row.title}: ${row.reason}`).slice(0, 4)
+    console.log(`${item.label}: FAIL http ${result.http}${bad.length ? ` ${bad.join(', ')}` : ''}${rejected.length ? ` | ${rejected.join(' | ')}` : ''}`)
+  } else {
+    console.log(`${item.label}: PASS`)
   }
 }
 process.exit(failed ? 1 : 0)

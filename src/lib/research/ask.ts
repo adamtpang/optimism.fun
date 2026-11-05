@@ -1,8 +1,9 @@
 import { excludeDomains, PRIORITY_QUERY_HINT } from '@/lib/research/domains'
-import { resolvePaperMetadata } from '@/lib/research/metadata'
+import { fetchRegistryAbstract, resolvePaperMetadata } from '@/lib/research/metadata'
 import { isCoverageUrl, isExcludedUrl, isMirrorUrl, isRejectedResultUrl } from '@/lib/research/domains'
-import { arxivIdFromUrl, cleanDoi, doiFromUrl, isNonAnswer, isPdfUrl, normalizeTitle, normalizeUrl, plainSentence, pmidFromUrl, repairOpening, studyDirection, validateQuestion, workKey } from '@/lib/research/papers'
-import { claimNeedsRepair, dedupeSources, groundClaims, paragraphFromClaims, polishClaim, questionIsGrounded, readPaperClaims, studyRank, unsupportedNumbers, type PaperClaim } from '@/lib/research/claims'
+import { arxivIdFromUrl, cleanDoi, doiFromUrl, isGuidanceRecord, isNonAnswer, isPdfUrl, normalizeTitle, normalizeUrl, plainSentence, pmidFromUrl, repairOpening, studyDirection, validateQuestion, workKey } from '@/lib/research/papers'
+import { chooseBalancedClaims, claimNeedsRepair, dedupeSources, groundClaims, paragraphFromClaims, polishClaim, questionIsGrounded, readPaperClaims, studyRank, unsupportedNumbers, type PaperClaim } from '@/lib/research/claims'
+import { citeName, creditFigures, fallbackExtract, proseProblems, readExtracts, readProse, renderExtractSentence, supportText, verifyExtract, type PaperExtract } from '@/lib/research/extract'
 import { pinsForQuestion } from '@/lib/research/pins'
 import {
   readSource,
@@ -17,7 +18,8 @@ import {
 import { ExaRequestError, exaPost, isExaConfigured } from '@/lib/sources/exa'
 
 export const SEARCH_TIMEOUT_MS = 20_000
-export const ANSWER_TIMEOUT_MS = 28_000
+export const ANSWER_TIMEOUT_MS = 8_000
+export const RESEARCH_BUDGET_MS = 24_000
 export const SIMILAR_TIMEOUT_MS = 20_000
 export const SEARCH_RESULTS = 10
 export const SIMILAR_RESULTS = 8
@@ -84,6 +86,13 @@ const ANSWER_SCHEMA = {
 export type ExaPoster = (path: string, body: unknown, timeoutMs: number) => Promise<unknown>
 export type MetaResolver = (fields: SourceFields) => Promise<PaperMeta>
 
+export type PaperDecision = {
+  doi: string | null
+  title: string
+  status: 'kept' | 'rejected'
+  reason: string
+}
+
 export type AskResponse =
   | { configured: false }
   | ({
@@ -91,7 +100,25 @@ export type AskResponse =
       question: string
       error?: string
       status?: 'no-answer'
+      debug?: PaperDecision[]
     } & ShapedResearch)
+
+export function includeResearchDebug(url: string): boolean {
+  if (process.env.VERCEL_ENV === 'preview') return true
+  try {
+    return new URL(url).searchParams.get('debug') === '1'
+  } catch {
+    return false
+  }
+}
+
+function withDebug(question: string, shaped: ShapedResearch, extra: { error?: string; status?: 'no-answer' } = {}): AskResponse {
+  const debug: PaperDecision[] = [
+    ...shaped.citations.map((paper) => ({ doi: paper.doi, title: paper.title, status: 'kept' as const, reason: 'Kept.' })),
+    ...shaped.retrieved.map((paper) => ({ doi: paper.doi, title: paper.title, status: 'rejected' as const, reason: paper.dropReason || 'Not cited.' })),
+  ]
+  return { configured: true, question, ...extra, ...shaped, debug }
+}
 
 export function researchHttpStatus(result: { configured: boolean; error?: string }): number {
   if (!result.configured || !result.error || result.error === UNVERIFIED_ANSWER) return 200
@@ -431,11 +458,90 @@ const CLAIMS_SCHEMA = {
   },
 } as const
 
+const EXTRACT_SCHEMA = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['extracts'],
+  properties: {
+    extracts: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['doi', 'intervention', 'outcome', 'effect_direction'],
+        properties: {
+          doi: { type: 'string' },
+          effect_direction: { type: 'string', enum: ['benefit', 'null', 'mixed', 'noninferior', 'superior', 'no-difference', 'harm'] },
+          population: {
+            type: 'object',
+            additionalProperties: false,
+            required: ['text', 'evidence_span'],
+            properties: { text: { type: 'string' }, evidence_span: { type: 'string' } },
+          },
+          intervention: {
+            type: 'object',
+            additionalProperties: false,
+            required: ['text', 'evidence_span'],
+            properties: { text: { type: 'string' }, evidence_span: { type: 'string' } },
+          },
+          comparator: {
+            type: 'object',
+            additionalProperties: false,
+            required: ['text', 'evidence_span'],
+            properties: { text: { type: 'string' }, evidence_span: { type: 'string' } },
+          },
+          outcome: {
+            type: 'object',
+            additionalProperties: false,
+            required: ['text', 'evidence_span'],
+            properties: { text: { type: 'string' }, evidence_span: { type: 'string' } },
+          },
+          n: {
+            type: 'object',
+            additionalProperties: false,
+            required: ['text', 'evidence_span'],
+            properties: { text: { type: 'string' }, evidence_span: { type: 'string' } },
+          },
+          key_numbers: {
+            type: 'array',
+            items: {
+              type: 'object',
+              additionalProperties: false,
+              required: ['text', 'evidence_span'],
+              properties: { text: { type: 'string' }, evidence_span: { type: 'string' } },
+            },
+          },
+        },
+      },
+    },
+  },
+} as const
+
+function extractQuery(question: string, papers: SourceFields[], metaByKey: Record<string, PaperMeta>): string {
+  const lines = papers.map((paper) => {
+    const meta = metaByKey[paper.url] ?? metaByKey[workKey(paper)] ?? {}
+    const doi = paperDoi(paper, metaByKey)
+    return `DOI: ${doi}\nTitle: ${meta.title || paper.title || 'Untitled'}\nAbstract: ${paperAbstract(paper, metaByKey)}`
+  })
+  return [
+    `Question: ${question}`,
+    '',
+    'For every paper below, fill population, intervention, comparator, outcome, effect_direction, key_numbers, and n.',
+    'evidence_span must be copied verbatim from that paper\'s abstract. Use a short phrase, not the whole abstract.',
+    'text is a short label. Every number in text must appear inside its evidence_span.',
+    'Include the printed sample size and the primary effect when the abstract prints them.',
+    'effect_direction is benefit, null, mixed, noninferior, superior, no-difference, or harm, and it must match a word in the abstract.',
+    'Do not use a paper to answer a different intervention.',
+    '',
+    lines.join('\n\n'),
+  ].join('\n')
+}
+
 function claimsQuery(question: string, papers: SourceFields[], metaByKey: Record<string, PaperMeta>): string {
   const lines = papers.map((paper) => {
     const meta = metaByKey[paper.url] ?? metaByKey[workKey(paper)] ?? {}
     const doi = (cleanDoi(meta.doi) || cleanDoi(paper.doi) || doiFromUrl(paper.url) || '').toLowerCase()
-    const abstract = (meta.abstract || paper.text || paper.summary || '').slice(0, 2500)
+    const abstract = paperAbstract(paper, metaByKey)
     return `DOI: ${doi}\nTitle: ${meta.title || paper.title || 'Untitled'}\nAbstract: ${abstract}`
   })
   return [
@@ -455,7 +561,7 @@ function claimsQuery(question: string, papers: SourceFields[], metaByKey: Record
 
 function paperAbstract(paper: SourceFields, metaByKey: Record<string, PaperMeta>): string {
   const meta = metaByKey[paper.url] ?? metaByKey[workKey(paper)] ?? {}
-  return meta.abstract || paper.text || paper.summary || ''
+  return supportText(paper, meta)
 }
 
 function paperDoi(paper: SourceFields, metaByKey: Record<string, PaperMeta>): string {
@@ -499,7 +605,7 @@ async function verifyClaims(
   if (!claims.length) return claims
   const abstracts = new Map(papers.map((paper) => [paper.doi, paper.abstract]))
   const lines = claims.map((claim, index) => {
-    const abstract = (abstracts.get(claim.doi) || '').slice(0, 1800)
+    const abstract = abstracts.get(claim.doi) || ''
     return `Claim ${index + 1}\nDOI: ${claim.doi}\nClaim: ${claim.text}\nAbstract: ${abstract}`
   })
   const payload = await exaPost(
@@ -519,6 +625,125 @@ async function verifyClaims(
   if (!checks) return claims
   const rejected = new Set(checks.filter((check) => check.supported === false).map((check) => check.n))
   return claims.filter((_, index) => !rejected.has(index + 1))
+}
+
+async function enrichPrimaryAbstracts(
+  question: string,
+  papers: SourceFields[],
+  metaByKey: Record<string, PaperMeta>,
+): Promise<void> {
+  const pins = new Set(pinsForQuestion(question))
+  await Promise.all(papers.map(async (paper) => {
+    const doi = paperDoi(paper, metaByKey)
+    if (!doi) return
+    const meta = metaByKey[paper.url] ?? metaByKey[workKey(paper)] ?? {}
+    const current = paperAbstract(paper, metaByKey)
+    const primary = studyRank(meta.title || paper.title || '', current) < 2 || pins.has(doi)
+    if (!primary) return
+    const full = await fetchRegistryAbstract(doi).catch(() => null)
+    if (!full || full.length <= (meta.abstract || '').trim().length) return
+    const slot = metaByKey[paper.url] ?? metaByKey[workKey(paper)]
+    if (slot) slot.abstract = full
+    else metaByKey[paper.url] = { abstract: full, doi }
+  }))
+}
+
+function assembleExtracts(
+  papers: SourceFields[],
+  extracts: PaperExtract[],
+  metaByKey: Record<string, PaperMeta>,
+  now: Date,
+): ShapedResearch {
+  const base = shapeResearchAnswer({ retrieved: papers, answer: null, metaByKey, now })
+  const byDoi = new Map<string, { paper: SourceFields; abstract: string; title: string; who: string }>()
+  for (const paper of papers) {
+    const doi = paperDoi(paper, metaByKey)
+    if (!doi || byDoi.has(doi)) continue
+    const meta = metaByKey[paper.url] ?? metaByKey[workKey(paper)] ?? {}
+    byDoi.set(doi, {
+      paper,
+      abstract: paperAbstract(paper, metaByKey),
+      title: meta.title || paper.title || '',
+      who: citeName(meta.authors ?? paper.author, meta.year ?? paper.publishedDate),
+    })
+  }
+  const reasons = new Map<string, string>()
+  const claims: PaperClaim[] = []
+  for (const extract of extracts) {
+    const source = byDoi.get(extract.doi)
+    if (!source) {
+      reasons.set(extract.doi, 'Rejected: DOI was not in the retrieved set.')
+      continue
+    }
+    const verified = verifyExtract(extract, source.abstract)
+    if (verified.rejectReason) {
+      reasons.set(extract.doi, verified.droppedFields.length ? `${verified.rejectReason} ${verified.droppedFields.join('; ')}` : verified.rejectReason)
+      continue
+    }
+    const text = renderExtractSentence(verified, source.who, source.abstract)
+    if (text.split(/\s+/).length < 6) {
+      reasons.set(extract.doi, 'Rejected: the verified fields did not make a sentence.')
+      continue
+    }
+    const balance = verified.direction === 'noninferior' || verified.direction === 'superior' || verified.direction === 'benefit'
+      ? 'benefit'
+      : verified.direction === 'no-difference' || verified.direction === 'harm' || verified.direction === 'null'
+        ? 'null'
+        : 'mixed'
+    claims.push({ doi: extract.doi, direction: balance, text })
+    if (verified.droppedFields.length) reasons.set(extract.doi, `Kept. Dropped fields: ${verified.droppedFields.join('; ')}`)
+    else reasons.set(extract.doi, 'Kept.')
+  }
+  const rankOf = (doi: string) => {
+    const source = byDoi.get(doi)
+    return source ? studyRank(source.title, source.abstract) : 2
+  }
+  const balanced = chooseBalancedClaims(claims, rankOf)
+  const primaryRetrieved = [...byDoi.values()].some((source) => studyRank(source.title, source.abstract) < 2)
+  const chosen = primaryRetrieved && balanced.every((claim) => isGuidanceRecord({ url: byDoi.get(claim.doi)?.paper.url, doi: claim.doi, title: byDoi.get(claim.doi)?.title }))
+    ? []
+    : balanced
+  if (chosen.length === 0) {
+    for (const claim of balanced) {
+      reasons.set(claim.doi, 'Guidance was not cited alone because a primary trial was retrieved.')
+    }
+  }
+  for (const claim of claims) {
+    if (!chosen.includes(claim) && reasons.get(claim.doi) === 'Kept.') {
+      reasons.set(claim.doi, 'Not selected. A primary trial or the other side of the evidence was kept instead.')
+    }
+  }
+  const cards = new Map(base.retrieved.filter((paper) => paper.doi).map((paper) => [paper.doi!.toLowerCase(), paper]))
+  for (const paper of base.citations) {
+    if (paper.doi) cards.set(paper.doi.toLowerCase(), paper)
+  }
+  const body = chosen.slice(0, 5)
+  const ordered: typeof base.retrieved = []
+  for (const claim of body) {
+    const card = cards.get(claim.doi)
+    if (card && !ordered.includes(card)) ordered.push(card)
+  }
+  const marker = (doi: string) => ordered.findIndex((paper) => paper.doi?.toLowerCase() === doi) + 1
+  const sentences: { text: string; cites: number[] }[] = []
+  for (const claim of body) {
+    const n = marker(claim.doi)
+    const source = byDoi.get(claim.doi)
+    const text = creditFigures(claim.doi, claim.text, source?.abstract || '')
+    if (text.split(/\s+/).length < 6) continue
+    sentences.push({ text: `${text.replace(/\[\d+\]/g, '').trim()} [${n}].`, cites: [n] })
+  }
+  const used = new Set(ordered.map((paper) => paper.doi?.toLowerCase()))
+  return renumberCitations({
+    ...base,
+    sentences,
+    citations: ordered.map((paper, index) => ({ ...paper, n: index + 1, dropReason: null })),
+    retrieved: base.retrieved
+      .filter((paper) => !used.has(paper.doi?.toLowerCase()))
+      .map((paper) => ({
+        ...paper,
+        dropReason: reasons.get((paper.doi || '').toLowerCase()) || paper.dropReason || 'Not cited.',
+      })),
+  })
 }
 
 function assembleClaims(
@@ -564,12 +789,111 @@ function assembleClaims(
   })
 }
 
+const PROSE_SCHEMA = {
+  type: 'object',
+  additionalProperties: false,
+  required: ['sentences'],
+  properties: {
+    sentences: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['doi', 'text'],
+        properties: { doi: { type: 'string' }, text: { type: 'string' } },
+      },
+    },
+  },
+} as const
+
+function proseQuery(question: string, lines: string[]): string {
+  return [
+    `Question: ${question}`,
+    '',
+    'Write one natural sentence per paper, 3 to 5 sentences in total.',
+    'Name the author and year in every sentence.',
+    'Use only the fields and numbers listed. Do not add a total that is not printed.',
+    'Do not copy 12 or more consecutive words from an abstract.',
+    '',
+    lines.join('\n\n'),
+  ].join('\n')
+}
+
+async function rewriteProse(
+  question: string,
+  shaped: ShapedResearch,
+  papers: SourceFields[],
+  metaByKey: Record<string, PaperMeta>,
+  postAnswer: (body: Record<string, unknown>) => Promise<unknown>,
+  deadline: number,
+): Promise<ShapedResearch> {
+  if (shaped.sentences.length === 0 || deadline - Date.now() < 6_000) return shaped
+  const lines = shaped.citations.map((paper) => {
+    const source = papers.find((item) => paperDoi(item, metaByKey) === (paper.doi || '').toLowerCase())
+    const abstract = source ? paperAbstract(source, metaByKey) : paper.excerpt || ''
+    const sentence = shaped.sentences.find((row) => paper.n != null && row.cites.includes(paper.n))
+    return `DOI: ${paper.doi}\nAuthor year: ${paper.authors} ${paper.year || ''}\nFields: ${sentence?.text || ''}\nAbstract: ${abstract.slice(0, 900)}`
+  })
+  const ask = (extra: string) => postAnswer({
+    query: `${proseQuery(question, lines)}\n${extra}`,
+    stream: false,
+    text: false,
+    model: 'exa',
+    temperature: 0,
+    systemPrompt: 'Write natural sentences from the allowed fields only. Return JSON matching the schema.',
+    outputSchema: PROSE_SCHEMA,
+  })
+  const apply = (payload: unknown): ShapedResearch | null => {
+    const drafted = readProse(payload)
+    if (!drafted) return null
+    let changed = false
+    const sentences = shaped.sentences.map((sentence) => {
+      const paper = shaped.citations.find((item) => item.n != null && sentence.cites.includes(item.n))
+      if (!paper?.doi) return sentence
+      const draft = drafted.find((row) => row.doi === paper.doi?.toLowerCase())
+      if (!draft) return sentence
+      const source = papers.find((item) => paperDoi(item, metaByKey) === paper.doi?.toLowerCase())
+      const abstract = source ? paperAbstract(source, metaByKey) : paper.excerpt || ''
+      if (proseProblems(draft.text, abstract).length) return sentence
+      if (paper.year && !draft.text.includes(paper.year)) return sentence
+      changed = true
+      const text = creditFigures(paper.doi, draft.text, abstract)
+      return { text: `${text.replace(/\[\d+\]/g, '').trim()} [${paper.n}].`, cites: sentence.cites }
+    })
+    return changed ? { ...shaped, sentences } : null
+  }
+  const first = apply(await ask(''))
+  if (!first) return shaped
+  if (deadline - Date.now() < 5_000) return first
+  const problems = first.sentences.flatMap((sentence) => {
+    const paper = first.citations.find((item) => item.n != null && sentence.cites.includes(item.n))
+    const source = papers.find((item) => paperDoi(item, metaByKey) === (paper?.doi || '').toLowerCase())
+    return proseProblems(sentence.text, source ? paperAbstract(source, metaByKey) : '')
+  })
+  if (!problems.length) return first
+  return apply(await ask(`Rewrite. Problems: ${problems.join('; ')}`)) || first
+}
+
 export async function askResearch(question: string, partial?: Partial<Deps>): Promise<AskResponse> {
   if (!isExaConfigured()) return { configured: false }
   const deps = depsFrom(partial)
+  const deadline = Date.now() + RESEARCH_BUDGET_MS
+  const budgeted = (preferred: number) => Math.max(800, Math.min(preferred, deadline - Date.now() - 400))
+  const postAnswer = async (body: Record<string, unknown>) => {
+    try {
+      return await deps.exaPost('/answer', body, budgeted(ANSWER_TIMEOUT_MS))
+    } catch {
+      if (deadline - Date.now() < 6_000) return null
+      try {
+        return await deps.exaPost('/answer', body, budgeted(ANSWER_TIMEOUT_MS))
+      } catch {
+        return null
+      }
+    }
+  }
   let found: SourceFields[] = []
   try {
-    const searched = await deps.exaPost('/search', searchBody(question), SEARCH_TIMEOUT_MS)
+    const searched = await deps.exaPost('/search', searchBody(question), budgeted(10_000))
     found = await injectMissingPins(question, readResults(searched).slice(0, SEARCH_RESULTS), deps.resolve)
   } catch (err) {
     const message = err instanceof ExaRequestError ? err.message : err instanceof Error ? err.message : 'Exa request failed.'
@@ -578,34 +902,60 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
   try {
     const foundMeta = await metaMap(found, deps.resolve)
     const papers = dedupeSources(applyMeta(found, foundMeta))
+    if (!partial?.resolve) await enrichPrimaryAbstracts(question, papers, foundMeta)
     const briefs = papers
       .map((paper) => ({ doi: paperDoi(paper, foundMeta), abstract: paperAbstract(paper, foundMeta), title: (foundMeta[paper.url] ?? foundMeta[workKey(paper)] ?? {}).title || paper.title || '' }))
       .filter((paper) => paper.doi)
     if (!questionIsGrounded(question, briefs.map((paper) => `${paper.title}\n${paper.abstract}`))) {
       const empty = shapeResearchAnswer({ retrieved: papers, answer: null, metaByKey: foundMeta, now: deps.now })
-      return {
-        configured: true,
-        question,
-        status: 'no-answer',
-        error: UNVERIFIED_ANSWER,
-        ...empty,
-        sentences: [],
-        citations: [],
-      }
+      return withDebug(question, { ...empty, sentences: [], citations: [] }, { status: 'no-answer', error: UNVERIFIED_ANSWER })
     }
-    const answered = await deps.exaPost(
-      '/answer',
-      {
-        query: claimsQuery(question, papers, foundMeta),
-        stream: false,
-        text: true,
-        model: 'exa',
-        temperature: 0,
-        systemPrompt: 'You write one paper\'s claims at a time, in your own words, from that paper\'s abstract only. Return JSON matching the schema.',
-        outputSchema: CLAIMS_SCHEMA,
-      },
-      ANSWER_TIMEOUT_MS,
-    )
+    const answered = await postAnswer({
+      query: extractQuery(question, papers, foundMeta),
+      stream: false,
+      text: true,
+      model: 'exa',
+      temperature: 0,
+      systemPrompt: 'You extract fields from one paper abstract at a time. evidence_span is copied verbatim from that abstract. Return JSON matching the schema.',
+      outputSchema: EXTRACT_SCHEMA,
+    })
+    const parsedExtracts = readExtracts(answered)
+    if (answered == null || parsedExtracts) {
+    let extracts = parsedExtracts || []
+      const covered = new Set(extracts.map((row) => row.doi))
+      const missing = briefs.filter((paper) => studyRank(paper.title, paper.abstract) < 2 && paper.abstract && !covered.has(paper.doi))
+      if (missing.length && deadline - Date.now() > 6_000) {
+        const again = await postAnswer({
+          query: extractQuery(question, papers.filter((paper) => missing.some((item) => item.doi === paperDoi(paper, foundMeta))), foundMeta),
+          stream: false,
+          text: false,
+          model: 'exa',
+          temperature: 0,
+          systemPrompt: 'These primary trials were skipped. Extract every DOI. evidence_span is copied verbatim. Return JSON matching the schema.',
+          outputSchema: EXTRACT_SCHEMA,
+        })
+        const extra = again ? readExtracts(again) : null
+        if (extra?.length) extracts = [...extracts, ...extra]
+      }
+      for (const paper of papers) {
+        const doi = paperDoi(paper, foundMeta)
+        if (!doi || extracts.some((row) => row.doi === doi)) continue
+        const abstract = paperAbstract(paper, foundMeta)
+        const title = (foundMeta[paper.url] ?? foundMeta[workKey(paper)] ?? {}).title || paper.title || ''
+        const pinned = pinsForQuestion(question).includes(doi)
+        if (!pinned && studyRank(title, abstract) >= 2) continue
+        if (!questionIsGrounded(question, [`${title}\n${abstract}`])) continue
+        const local = fallbackExtract(doi, abstract)
+        if (local) extracts.push(local)
+      }
+      let shaped = assembleExtracts(papers, extracts, foundMeta, deps.now)
+      shaped = await rewriteProse(question, shaped, papers, foundMeta, postAnswer, deadline)
+      if (shaped.sentences.length === 0) {
+        const restored = restoreSources(shaped, UNVERIFIED_ANSWER)
+        return withDebug(question, restored, { status: 'no-answer', error: restored.error })
+      }
+      return withDebug(question, shaped)
+    }
     const claims = readPaperClaims(answered)
     if (claims) {
       const covered = new Set(claims.map((claim) => claim.doi))
@@ -633,14 +983,9 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
       const shaped = assembleClaims(question, papers, verified, foundMeta, deps.now, restatements)
       if (shaped.sentences.length === 0) {
         const restored = restoreSources(shaped, UNVERIFIED_ANSWER)
-        return {
-          configured: true,
-          question,
-          status: 'no-answer',
-          ...restored,
-        }
+        return withDebug(question, restored, { status: 'no-answer', error: restored.error })
       }
-      return { configured: true, question, ...shaped }
+      return withDebug(question, shaped)
     }
     const answer = readAnswer(answered)
     const novel = answer.citations.filter((citation) => !foundMeta[citation.url] && !foundMeta[workKey(citation)])
@@ -657,14 +1002,9 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
     const checked = dropNonAnswers(await verifyShaped(question, shaped, deps.exaPost))
     if (checked.sentences.length === 0) {
       const restored = restoreSources(checked, UNVERIFIED_ANSWER)
-      return {
-        configured: true,
-        question,
-        ...(restored.error === UNVERIFIED_ANSWER ? { status: 'no-answer' as const } : {}),
-        ...restored,
-      }
+      return withDebug(question, restored, restored.error === UNVERIFIED_ANSWER ? { status: 'no-answer', error: restored.error } : { error: restored.error })
     }
-    return { configured: true, question, ...checked }
+    return withDebug(question, checked)
   } catch (err) {
     const message = err instanceof ExaRequestError ? err.message : err instanceof Error ? err.message : 'Exa request failed.'
     const shaped = shapeResearchAnswer({ retrieved: found, answer: null, now: deps.now })

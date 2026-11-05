@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { askResearch, researchHttpStatus, validateQuestion } from '@/lib/research/ask'
+import { askResearch, includeResearchDebug, researchHttpStatus, validateQuestion } from '@/lib/research/ask'
 import { researchClientIp, takeResearchSlot } from '@/lib/research/limit'
 import { isExaConfigured } from '@/lib/sources/exa'
 
@@ -30,5 +30,6 @@ export async function POST(req: Request) {
   }
 
   const result = await askResearch(parsed.question)
+  if (result.configured && !includeResearchDebug(req.url)) delete result.debug
   return NextResponse.json(result, { status: researchHttpStatus(result) })
 }

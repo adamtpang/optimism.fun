@@ -361,6 +361,28 @@ async function lookupDoi(
   return { doi, pmid }
 }
 
+/** Europe PMC or Crossref abstract for one DOI. The longer text wins. */
+export async function fetchRegistryAbstract(
+  doi: string,
+  opts: { fetchImpl?: FetchLike; timeoutMs?: number } = {},
+): Promise<string | null> {
+  const clean = cleanDoi(doi)
+  if (!clean) return null
+  const fetchImpl = opts.fetchImpl ?? fetch
+  const timeoutMs = opts.timeoutMs ?? 8_000
+  const mailto = encodeURIComponent(contact())
+  const [crossrefPayload, europePayload] = await Promise.all([
+    getJson(fetchImpl, `https://api.crossref.org/works/${encodeURIComponent(clean)}?mailto=${mailto}`, timeoutMs),
+    getJson(
+      fetchImpl,
+      `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:${encodeURIComponent(clean)}&format=json&resultType=core&pageSize=1`,
+      timeoutMs,
+    ),
+  ])
+  const crossref = crossrefPayload ? readCrossref(crossrefPayload).abstract : null
+  return longerText(crossref, readEuropePmcAbstract(europePayload))
+}
+
 export async function resolvePaperMetadata(
   fields: SourceFields,
   opts: { fetchImpl?: FetchLike; timeoutMs?: number } = {},

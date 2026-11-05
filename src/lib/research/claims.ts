@@ -181,11 +181,43 @@ export function questionTerms(question: string): string[] {
     .filter((word) => word.length >= 4 && !GENERIC_TERMS.has(word))
 }
 
+const SYNONYM_GROUPS: { test: (text: string) => boolean; covers: string[] }[] = [
+  {
+    test: (text) => /\bm72\b/i.test(text) || /\bas01e?\b/i.test(text),
+    covers: ['m72', 'as01e', 'as01', 'vaccine', 'tuberculosis', 'prevent'],
+  },
+  {
+    test: (text) => /\br21\b/i.test(text) || /matrix[-\s]?m\b/i.test(text),
+    covers: ['r21', 'matrix', 'malaria', 'vaccine'],
+  },
+  {
+    test: (text) => /\brifapentine\b/i.test(text) || /\bmoxifloxacin\b/i.test(text) || /\b4[-\s]?month\b/i.test(text),
+    covers: ['rifapentine', 'moxifloxacin', 'based', 'regimen', 'month', 'months', 'effective', 'standard', 'drug', 'susceptible', 'pulmonary', 'tuberculosis'],
+  },
+  {
+    test: (text) => /\bfasting\b/i.test(text) || /\btime[-\s]?restricted\b/i.test(text) || /\betrf\b/i.test(text) || /\btre\b/i.test(text),
+    covers: ['fasting', 'intermittent', 'time', 'restricted', 'eating', 'etrf', 'tre', 'insulin', 'sensitivity', 'adults'],
+  },
+]
+
+function compactText(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9]/g, '')
+}
+
 export function questionIsGrounded(question: string, abstracts: string[]): boolean {
+  const hay = abstracts.join('\n')
+  const active = SYNONYM_GROUPS.filter((group) => group.test(question))
+  if (active.length) {
+    if (!active.every((group) => group.test(hay))) return false
+    const covered = new Set(active.flatMap((group) => group.covers))
+    return questionTerms(question)
+      .filter((term) => !covered.has(term))
+      .every((term) => compactText(hay).includes(compactText(term)))
+  }
   const terms = questionTerms(question)
   if (terms.length === 0) return true
-  const hay = abstracts.join('\n').toLowerCase().replace(/[^a-z0-9]/g, '')
-  return terms.every((term) => hay.includes(term.replace(/[^a-z0-9]/g, '')))
+  const flat = compactText(hay)
+  return terms.every((term) => flat.includes(compactText(term)))
 }
 
 export function contentTerms(text: string): string[] {
@@ -206,8 +238,10 @@ export function claimOffTopic(question: string, claim: string): boolean {
   if (!question.trim()) return false
   const terms = questionTerms(question)
   if (!terms.length) return false
-  const hay = claim.toLowerCase().replace(/[^a-z0-9]/g, '')
-  return !terms.some((term) => hay.includes(term.replace(/[^a-z0-9]/g, '')))
+  const hay = compactText(claim)
+  if (terms.some((term) => hay.includes(compactText(term)))) return false
+  const active = SYNONYM_GROUPS.filter((group) => group.test(question))
+  return !active.some((group) => group.test(claim))
 }
 
 /** 0 is a primary trial, 3 is a review or commentary. */

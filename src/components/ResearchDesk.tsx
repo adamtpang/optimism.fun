@@ -12,6 +12,8 @@ const STATUS_CLASS: Record<ResearchPaper['status'], string> = {
   concern: 'text-terminal-rose border-terminal-rose/70',
   unverified: 'text-ink-400 border-hair',
   unknown: 'text-ink-400 border-hair',
+  guidance: 'text-ink-400 border-hair',
+  'meeting-abstract': 'text-ink-400 border-hair',
 }
 
 function CitationLine({ paper, struck = false }: { paper: ResearchPaper; struck?: boolean }) {

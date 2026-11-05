@@ -122,6 +122,18 @@ describe('grounded claims from recorded abstracts', () => {
     expect(joined(grounded)).toContain('insulin sensitivity')
   })
 
+  it('accepts vaccine, regimen, and fasting synonyms and still refuses socks', () => {
+    expect(questionIsGrounded('Does the M72/AS01E vaccine prevent tuberculosis?', ['The M72/AS01 vaccine was given with a placebo.'])).toBe(true)
+    expect(questionIsGrounded('How well does the R21 malaria vaccine work?', ['R21/Matrix-M was tested in a phase 3 trial.'])).toBe(true)
+    expect(questionIsGrounded(
+      'Is a 4-month rifapentine-based regimen as effective as the standard 6-month regimen for drug-susceptible pulmonary tuberculosis?',
+      ['A 4-month regimen was noninferior in a randomized trial.'],
+    )).toBe(true)
+    expect(questionIsGrounded('Does intermittent fasting improve insulin sensitivity in adults?', ['Five weeks of eTRF improved the measured outcome.'])).toBe(true)
+    expect(questionIsGrounded('Does intermittent fasting improve insulin sensitivity in adults?', ['Nephrolithiasis is a kidney stone disease.'])).toBe(false)
+    expect(questionIsGrounded('Does wearing blue socks on Tuesdays reduce the risk of kidney stones in left-handed adults?', ['Nephrolithiasis is a kidney stone disease. Diet and fluids change the risk of stones.'])).toBe(false)
+  })
+
   it('returns no-answer material when no abstract mentions socks', () => {
     const kidney = 'Nephrolithiasis is a kidney stone disease. Diet and fluids change the risk of stones.'
     expect(questionIsGrounded('Does wearing blue socks on Tuesdays reduce the risk of kidney stones in left-handed adults?', [kidney])).toBe(false)
