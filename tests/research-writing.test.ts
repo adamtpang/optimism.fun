@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { matchesIntervention } from '@/lib/research/claims'
 import {
@@ -64,6 +65,13 @@ describe('838d2f4 sentence checks', () => {
       expect(selected.map((paper) => paper.doi)).not.toContain(review.doi)
       expect(coversPrimary(question, selected, [{ paper_id: lancet.doi }])).toBe(true)
       expect(coversPrimary(question, selected, [])).toBe(false)
+    }
+  })
+
+  it('demo-eval flags the same writing failures and can call the judge', () => {
+    const source = readFileSync('scripts/demo-eval.mjs', 'utf8')
+    for (const phrase of ['--judge', 'empty parentheses', 'meta note', 'duplicate sentence', 'truncated word', 'not no difference', 'EXA_API_KEY']) {
+      expect(source).toContain(phrase)
     }
   })
 
