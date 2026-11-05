@@ -40,7 +40,7 @@ export function supportText(
     .map((part) => (part || '').trim())
     .filter(Boolean)
     .sort((a, b) => b.length - a.length)[0] || ''
-  const chosen = registry.length >= 400 ? registry : page.length > registry.length ? page : registry
+  const chosen = page.length > registry.length ? page : registry
   return chosen.slice(0, SUPPORT_LIMIT)
 }
 

@@ -10,10 +10,14 @@ import {
   readWritten,
   sameNumber,
   selectWritingPapers,
+  missingFacts,
+  requiredFacts,
   sentenceProblems,
   truncatedTokens,
 } from '@/lib/research/writing'
 import { clearRetrievalCache, expandedQueries, recallRetrieval, rememberRetrieval } from '@/lib/research/ask'
+import { numberMatches } from '@/lib/research/text-checks.mjs'
+import { isJournalArticleDoi, paperStatus } from '@/lib/research/papers'
 
 const DORMAN = 'Among 2516 participants who had undergone randomization, a 4-month rifapentine regimen with moxifloxacin was noninferior to the 6-month control for drug-susceptible pulmonary tuberculosis.'
 const TAIT = 'A total of 1786 participants received M72/AS01E and 1787 received placebo. The vaccine efficacy was 54.0%.'
@@ -32,7 +36,7 @@ describe('838d2f4 sentence checks', () => {
   it('rejects a leaked note, an 8-word copy, a duplicate, and a backwards direction', () => {
     expect(sentenceProblems('Sutton 2018 found that n is not explicitly stated in the snippet.', CHE, [CHE])).toContain('meta note')
     const copied = 'Among 2516 participants who had undergone randomization, a 4-month rifapentine regimen was used.'
-    expect(sentenceProblems(copied, DORMAN, [DORMAN])).toContain('copied abstract wording')
+    expect(sentenceProblems(copied, DORMAN, [DORMAN]).join(' ')).toContain('copied abstract wording')
     const rows = [
       { text: 'Dorman 2021 found the 4-month rifapentine regimen was noninferior among 2516 participants.', paper_id: '10.1056/nejmoa2033400' },
       { text: 'Dorman 2021 found the 4-month rifapentine regimen was noninferior among 2516 participants.', paper_id: '10.1056/nejmoa2033400' },
@@ -111,6 +115,34 @@ describe('838d2f4 sentence checks', () => {
     expect(expandedQueries('Does the M72/AS01E vaccine prevent tuberculosis?').length).toBeGreaterThan(1)
     expect(expandedQueries('Does extreme heat raise mortality?')).toEqual(['Does extreme heat raise mortality?'])
     clearRetrievalCache()
+  })
+
+  it('accepts the Datoo and Tait numbers that the abstracts print', () => {
+    const datoo2021 = 'Vaccine efficacy was 77\u2009% (95% CI 71\u201380) and 74 % in 450 participants followed for one year.'
+    const datoo2022 = 'The booster was given to 409 children. Efficacy remained high.'
+    const meeren = 'The vaccine efficacy was 54.0% (90% CI, 13.9 to 75.4) after a mean of 2.3 years.'
+    for (const token of ['77%', '74%', '450']) expect(numberMatches(token, datoo2021)).toBe(true)
+    expect(numberMatches('409', datoo2022)).toBe(true)
+    expect(numberMatches('54%', meeren)).toBe(true)
+    expect(numberMatches('54.0%', 'Efficacy was 54 % in adults.')).toBe(true)
+    expect(sentenceProblems('Datoo 2021 reported 77% and 74% efficacy among 450 participants.', datoo2021, [datoo2021])).not.toContain('number 77% is not in this abstract')
+    const r21 = 'A phase 3 trial enrolling over 4800 children was done. The trial enrolled 4,878 children. Seasonal efficacy was 75% and standard efficacy was 68%.'
+    expect(enrollmentNumber(r21)).toBe('4,878')
+    expect(requiredFacts('10.1016/s0140-6736(23)02511-4', r21)).toEqual(expect.arrayContaining(['4,878', '75%', '68%']))
+    expect(missingFacts('In a phase 3 trial enrolling over 4800 children, Datoo 2024 observed high protective efficacy.', requiredFacts('10.1016/s0140-6736(23)02511-4', r21)).length).toBeGreaterThan(0)
+    expect(paperStatus({
+      url: 'https://doi.org/10.1016/S0140-6736(23)02511-4',
+      doi: '10.1016/S0140-6736(23)02511-4',
+      openAlexType: 'preprint',
+      retractionChecked: false,
+    })).toBe('peer-reviewed')
+    expect(paperStatus({
+      url: 'https://doi.org/10.1016/j.cmet.2018.04.010',
+      doi: '10.1016/j.cmet.2018.04.010',
+      retractionChecked: false,
+    })).toBe('peer-reviewed')
+    expect(isJournalArticleDoi('10.2139/ssrn.1')).toBe(false)
+    expect(sentenceProblems('Sutton 2018 enrolled an unspecified number of participants.', 'Eight men with prediabetes were studied. eTRF improved insulin sensitivity.', ['Eight men with prediabetes were studied. eTRF improved insulin sensitivity.']).join(' ')).toMatch(/unspecified|meta note/)
   })
 
   it('reads writer JSON and ignores the old url sentence shape', () => {

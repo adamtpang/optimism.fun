@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { copiedContentRun, numberMatches } from '../src/lib/research/text-checks.mjs'
 // Run the demo questions against a preview and print pass or fail.
 // Usage: node scripts/demo-eval.mjs https://preview.example [runs]
 // Optional auth, never committed: RESEARCH_DEMO_COOKIE, or
@@ -113,12 +114,7 @@ function figures(text) {
 }
 
 function figureInExcerpt(figure, excerpt) {
-  const bare = figure.replace(/,/g, '').replace(/%$/, '')
-  const year = Number(bare)
-  if (/^\d{4}$/.test(bare) && year >= 1990 && year <= 2030) return true
-  const hay = excerpt.replace(/,/g, '').toLowerCase()
-  if (figure.endsWith('%')) return hay.includes(`${bare}%`) || hay.includes(`${bare} percent`)
-  return hay.includes(bare)
+  return numberMatches(figure, excerpt)
 }
 
 function wordsOf(text) {
@@ -126,12 +122,7 @@ function wordsOf(text) {
 }
 
 function copiedRun(sentence, excerpt) {
-  const left = wordsOf(sentence)
-  const hay = wordsOf(excerpt).join(' ')
-  for (let i = 0; i + 8 <= left.length; i += 1) {
-    if (hay.includes(left.slice(i, i + 8).join(' '))) return true
-  }
-  return false
+  return copiedContentRun(sentence, excerpt, 8).copied
 }
 
 function truncatedWord(sentence, excerpt) {

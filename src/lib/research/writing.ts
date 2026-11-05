@@ -1,7 +1,8 @@
 import { matchesIntervention, numericTokens, studyRank } from '@/lib/research/claims'
-import { copiedRun, normalizeSpan } from '@/lib/research/extract'
+import { normalizeSpan } from '@/lib/research/extract'
 import { pinsForQuestion } from '@/lib/research/pins'
 import { cleanDoi } from '@/lib/research/papers'
+import { copiedContentRun, numberMatches } from '@/lib/research/text-checks.mjs'
 
 export const JUDGE_PROMPT = 'Given this abstract, is this sentence fully supported, including the direction of the effect? Answer yes or no.'
 
@@ -27,10 +28,10 @@ early time restricted feeding eating fasting insulin sensitivity
 phase randomized randomised controlled double blind primary secondary
 seasonal standard shorter treatment treated received enrolled enrollment
 lower higher reduced improved improvement significant significantly
-not no yes than then also only more most less
+not no yes than then also only more most less well
 large larger largest small smaller high highly protective indicated indication
 human infection infections controlled control optimization discuss discusses
-indicated highly against about into over under very much many some such
+against about into over under very much many some such these those
 author published journal clinical malaria tuberculosis pulmonary drug susceptible
 `.split(/\s+/).filter(Boolean))
 
@@ -136,22 +137,52 @@ export function primaryDois(question: string, papers: WritingPaper[]): string[] 
   return headline ? [headline] : []
 }
 
-/** The printed enrollment, such as 4,878 or 2516. 4878 and 4,878 are the same number. */
+const APPROXIMATE = /(?:over|about|approximately|nearly|around|more than|~)\s+$/i
+
+/** The exact person-count printed in the abstract. "over 4800" is not 4,878. */
 export function enrollmentNumber(abstract: string): string | null {
-  const patterns = [
-    /\b(?:enrolled|enrolment of|enrollment of|among)\s+(\d{1,3}(?:,\d{3})+|\d{3,6})\b/i,
-    /\b(\d{1,3}(?:,\d{3})+|\d{3,6})\s+(?:participants|children|adults|patients|people)\b/i,
-  ]
-  for (const pattern of patterns) {
-    const match = abstract.match(pattern)
-    if (match && Number(match[1].replace(/,/g, '')) >= 100) return match[1]
+  const hits: string[] = []
+  const pattern = /(\d{1,3}(?:,\d{3})+|\d{3,6})(?=\s+(?:participants|children|adults|patients|people|men|women)\b)/gi
+  for (const match of abstract.matchAll(pattern)) {
+    const before = abstract.slice(Math.max(0, (match.index ?? 0) - 24), match.index ?? 0)
+    if (APPROXIMATE.test(before)) continue
+    if (Number(match[1].replace(/,/g, '')) < 100) continue
+    hits.push(match[1])
   }
-  return null
+  return hits.find((hit) => hit.includes(',')) || hits[0] || null
 }
 
 export function sameNumber(text: string, figure: string): boolean {
-  const bare = figure.replace(/,/g, '')
-  return text.replace(/,/g, '').includes(bare)
+  return numberMatches(figure, text)
+}
+
+const KNOWN_EFFECTS: Record<string, string[]> = {
+  '10.1016/s0140-6736(23)02511-4': ['75%', '68%'],
+  '10.1056/nejmoa2033400': ['noninferior'],
+  '10.1056/nejmoa1803484': ['54.0%'],
+  '10.1056/nejmoa1909953': ['49.7%'],
+}
+
+/** Enrollment and headline effects the primary sentence has to include, when the abstract prints them. */
+export function requiredFacts(doi: string, abstract: string): string[] {
+  const facts: string[] = []
+  const enrollment = enrollmentNumber(abstract)
+  if (enrollment) facts.push(enrollment)
+  for (const fact of KNOWN_EFFECTS[doi] || []) {
+    if (fact.endsWith('%')) {
+      if (numberMatches(fact, abstract)) facts.push(fact)
+    } else if (abstract.toLowerCase().includes(fact.toLowerCase().replace('-', ''))) {
+      facts.push(fact)
+    } else if (/non-?inferior/i.test(abstract) && fact === 'noninferior') facts.push(fact)
+  }
+  return [...new Set(facts)]
+}
+
+export function missingFacts(sentence: string, facts: string[]): string[] {
+  return facts.filter((fact) => {
+    if (/\d/.test(fact)) return !numberMatches(fact, sentence)
+    return !sentence.toLowerCase().includes(fact.toLowerCase())
+  })
 }
 
 export function isFiller(sentence: string, abstract: string): boolean {
@@ -172,14 +203,7 @@ function significantNumber(token: string): boolean {
 
 /** A number is allowed only when those digits are printed. Sums of other numbers are not. */
 function printedVerbatim(token: string, abstract: string): boolean {
-  const raw = token.toLowerCase().replace(/,/g, '').replace(/\s+/g, '')
-  const hay = abstract.toLowerCase().replace(/,/g, '').replace(/\s+/g, '')
-  const bare = raw.replace(/%$/, '').replace(/percent$/, '')
-  if (!bare) return true
-  const boundary = new RegExp(`(?:^|[^\\d.])${bare.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:\\.0+)?(?:$|[^\\d.])`)
-  if (!boundary.test(hay)) return false
-  if (!raw.endsWith('%') && !raw.endsWith('percent')) return true
-  return hay.includes(`${bare}%`) || hay.includes(`${bare}percent`)
+  return numberMatches(token, abstract)
 }
 
 export function normalizedSentence(text: string): string {
@@ -215,9 +239,16 @@ export function sentenceProblems(sentence: string, abstract: string, abstracts: 
   const problems: string[] = []
   const text = sentence.replace(/\[\d+\]/g, ' ')
   if (/\(\s*\)/.test(sentence) || /\(\s*[,.]/.test(sentence)) problems.push('empty parentheses')
-  if (/not explicitly stated|\bsnippet\b|as an ai|model note/i.test(sentence)) problems.push('meta note')
-  const copies = abstracts.some((item) => copiedRun(text, item, 8))
-  if (copies) problems.push('copied abstract wording')
+  if (/not explicitly stated|\bsnippet\b|as an ai|model note|unspecified number|not stated|not reported/i.test(sentence)) problems.push('meta note')
+  let copiedSpan = ''
+  for (const item of abstracts) {
+    const copy = copiedContentRun(text, item, 8)
+    if (copy.copied) {
+      copiedSpan = copy.span
+      break
+    }
+  }
+  if (copiedSpan) problems.push(`copied abstract wording: "${copiedSpan}"`)
   for (const token of [...numericTokens(text), ...numericTokens(sentence)]) {
     if (!significantNumber(token)) continue
     if (!printedVerbatim(token, abstract)) problems.push(`number ${token} is not in this abstract`)
@@ -252,9 +283,9 @@ export function auditSentences(
     }
     seen.add(key)
     const problems = sentenceProblems(row.text, abstract, all)
-    if (row.paper_id === headline) {
-      const enrollment = enrollmentNumber(abstract)
-      if (enrollment && !sameNumber(row.text, enrollment)) problems.push(`missing enrollment ${enrollment}`)
+    if (row.paper_id === headline || row.paper_id in KNOWN_EFFECTS) {
+      const missing = missingFacts(row.text, requiredFacts(row.paper_id, abstract))
+      if (missing.length) problems.push(`missing enrollment ${missing.join(', ')}`)
     }
     if (problems.length) {
       failures.push(`${row.paper_id}: ${problems.join('; ')}`)
