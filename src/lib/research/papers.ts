@@ -341,6 +341,32 @@ function thousands(value: number): string {
   return value.toLocaleString('en-US')
 }
 
+/** When the abstract prints a vaccine arm and a placebo arm, spell their sum. */
+export function printedArmTotal(support: string): { text: string; vaccine: string; placebo: string } | null {
+  const printed = [...support.matchAll(/\b\d{2,}\b/g)].map((match) => ({
+    raw: match[0],
+    value: Number(match[0]),
+    index: match.index ?? 0,
+  }))
+  for (let i = 0; i < printed.length; i += 1) {
+    for (let j = i + 1; j < printed.length; j += 1) {
+      if (printed[j].index - printed[i].index > 90) break
+      const first = armRole(support, printed[i].raw)
+      const second = armRole(support, printed[j].raw)
+      const vaccine = first === 'vaccine' ? printed[i] : second === 'vaccine' ? printed[j] : null
+      const placebo = first === 'placebo' ? printed[i] : second === 'placebo' ? printed[j] : null
+      if (!vaccine || !placebo || vaccine.raw === placebo.raw) continue
+      const target = vaccine.value + placebo.value
+      return {
+        text: `${thousands(target)} adults (${thousands(vaccine.value)} vaccine, ${thousands(placebo.value)} placebo)`,
+        vaccine: vaccine.raw,
+        placebo: placebo.raw,
+      }
+    }
+  }
+  return null
+}
+
 function armRole(support: string, raw: string): 'vaccine' | 'placebo' | null {
   const re = new RegExp(`\\b${raw}\\b`, 'g')
   let role: 'vaccine' | 'placebo' | null = null
