@@ -1,0 +1,152 @@
+import { readFileSync } from 'node:fs'
+import { describe, expect, it } from 'vitest'
+import { matchesIntervention } from '@/lib/research/claims'
+import {
+  auditSentences,
+  coversPrimary,
+  enrollmentNumber,
+  headlineTrial,
+  isFiller,
+  readWritten,
+  sameNumber,
+  selectWritingPapers,
+  missingFacts,
+  requiredFacts,
+  sentenceProblems,
+  truncatedTokens,
+} from '@/lib/research/writing'
+import { clearRetrievalCache, expandedQueries, recallRetrieval, rememberRetrieval } from '@/lib/research/ask'
+import { numberMatches } from '@/lib/research/text-checks.mjs'
+import { isJournalArticleDoi, paperStatus } from '@/lib/research/papers'
+
+const DORMAN = 'Among 2516 participants who had undergone randomization, a 4-month rifapentine regimen with moxifloxacin was noninferior to the 6-month control for drug-susceptible pulmonary tuberculosis.'
+const TAIT = 'A total of 1786 participants received M72/AS01E and 1787 received placebo. The vaccine efficacy was 54.0%.'
+const DATOO = 'The phase 3 trial of R21/Matrix-M enrolled 4878 children. Vaccine efficacy was 75% at seasonal sites and 68% at standard sites.'
+const CHE = 'Time-restricted feeding improved insulin sensitivity and HOMA-IR in overweight patients with type 2 diabetes.'
+const CDC = 'A 4-month regimen containing rifapentine and moxifloxacin was as effective as the standard 6-month regimen. CDC recommends the 4-month regimen.'
+const BANTLE = 'Participants were 17 women and 3 men. Time-restricted eating did not significantly alter insulin sensitivity.'
+
+describe('838d2f4 sentence checks', () => {
+  it('rejects a total credited to the wrong paper, empty parentheses, and a truncated word', () => {
+    expect(sentenceProblems('Van Der Meeren 2018 enrolled 3,573 adults.', TAIT, [TAIT])).toContain('number 3,573 is not in this abstract')
+    expect(sentenceProblems('Kurbatova 2025 found the regimen was noninferior for noninferior ().', DORMAN, [DORMAN])).toContain('empty parentheses')
+    expect(sentenceProblems('Chang 2025 described drug-susceptible pulmo in the regimen.', DORMAN, [DORMAN]).join(' ')).toContain('pulmo')
+  })
+
+  it('rejects a leaked note, an 8-word copy, a duplicate, and a backwards direction', () => {
+    expect(sentenceProblems('Sutton 2018 found that n is not explicitly stated in the snippet.', CHE, [CHE])).toContain('meta note')
+    const copied = 'Among 2516 participants who had undergone randomization, a 4-month rifapentine regimen was used.'
+    expect(sentenceProblems(copied, DORMAN, [DORMAN]).join(' ')).toContain('copied abstract wording')
+    const rows = [
+      { text: 'Dorman 2021 found the 4-month rifapentine regimen was noninferior among 2516 participants.', paper_id: '10.1056/nejmoa2033400' },
+      { text: 'Dorman 2021 found the 4-month rifapentine regimen was noninferior among 2516 participants.', paper_id: '10.1056/nejmoa2033400' },
+    ]
+    const audited = auditSentences(rows, new Map([[rows[0].paper_id, DORMAN]]))
+    expect(audited.failures.join(' ')).toContain('duplicate')
+    expect(sentenceProblems('Datoo 2024 showed no difference in malaria.', DATOO, [DATOO])).toContain('direction contradicts the abstract')
+    expect(sentenceProblems('The CDC had mixed results for the rifapentine regimen.', CDC, [CDC])).toContain('direction contradicts the abstract')
+    expect(sentenceProblems('Che 2021 showed no difference in insulin sensitivity.', CHE, [CHE])).toContain('direction contradicts the abstract')
+    expect(sentenceProblems('Bantle 2023 enrolled 20 adults.', BANTLE, [BANTLE]).join(' ')).toContain('20')
+  })
+
+  it('keeps a supported Dorman sentence and selects the Lancet paper for every R21 wording', () => {
+    const fine = 'Dorman 2021 found that the 4-month rifapentine regimen with moxifloxacin was noninferior among 2516 participants.'
+    expect(sentenceProblems(fine, DORMAN, [DORMAN])).toEqual([])
+    const lancet = {
+      doi: '10.1016/s0140-6736(23)02511-4',
+      title: 'Safety and efficacy of R21/Matrix-M in a phase 3 randomised trial',
+      abstract: DATOO,
+      rank: 0,
+    }
+    const review = {
+      doi: '10.1371/journal.pmed.1004515',
+      title: 'Roll out and prospects of the malaria vaccine',
+      abstract: 'This commentary reviews prospects.',
+      rank: 3,
+    }
+    for (const question of [
+      'Does the R21/Matrix-M malaria vaccine work?',
+      'How well does the R21 malaria vaccine work?',
+      'How effective is R21/Matrix-M against malaria?',
+    ]) {
+      expect(matchesIntervention(question, `${lancet.title}\n${lancet.abstract}`)).toBe(true)
+      const selected = selectWritingPapers(question, [review, lancet])
+      expect(selected.map((paper) => paper.doi)).toContain(lancet.doi)
+      expect(selected.map((paper) => paper.doi)).not.toContain(review.doi)
+      expect(coversPrimary(question, selected, [{ paper_id: lancet.doi }])).toBe(true)
+      expect(coversPrimary(question, selected, [])).toBe(false)
+    }
+  })
+
+  it('demo-eval flags the same writing failures and can call the judge', () => {
+    const source = readFileSync('scripts/demo-eval.mjs', 'utf8')
+    for (const phrase of ['--judge', 'empty parentheses', 'meta note', 'duplicate sentence', 'truncated word', 'not no difference', 'EXA_API_KEY']) {
+      expect(source).toContain(phrase)
+    }
+  })
+
+  it('accepts the word large, requires 4878 on the R21 trial, and rejects filler', () => {
+    const lancet = 'The phase 3 trial of R21/Matrix-M enrolled 4878 children. Vaccine efficacy was 75% in a large seasonal cohort.'
+    expect(truncatedTokens('Datoo 2024 found a large protective effect.', lancet)).toEqual([])
+    expect(enrollmentNumber(lancet)).toBe('4878')
+    expect(sameNumber('enrolled 4,878 children', '4878')).toBe(true)
+    const papers = [
+      { doi: '10.1016/s0140-6736(23)02511-4', title: 'R21/Matrix-M phase 3 trial', abstract: lancet, rank: 0 },
+      { doi: '10.1371/journal.pmed.1004515', title: 'Commentary on vaccines', abstract: 'A commentary.', rank: 3 },
+    ]
+    expect(headlineTrial('Does the R21/Matrix-M malaria vaccine work?', papers)).toBe(papers[0].doi)
+    const audited = auditSentences(
+      [{ text: 'Datoo 2024 found that R21/Matrix-M had 75% efficacy.', paper_id: papers[0].doi }],
+      new Map([[papers[0].doi, lancet]]),
+      papers[0].doi,
+    )
+    expect(audited.failures.join(' ')).toContain('missing enrollment')
+    expect(isFiller('Dale 2025 discuss the optimization of the M72/AS01E vaccine phase 3 trial.', 'A later paper discusses the phase 3 trial.')).toBe(true)
+    expect(sentenceProblems('A retrieved study indicated the vaccine was discussed [5].', lancet, [lancet]).join(' ')).toContain('no finding')
+  })
+
+  it('reuses a cached retrieval for the same question', () => {
+    clearRetrievalCache()
+    const paper = { url: 'https://doi.org/10.1056/nejmoa2033400', doi: '10.1056/nejmoa2033400', title: 'Dorman' }
+    expect(recallRetrieval('Is a 4-month rifapentine regimen noninferior?')).toBeNull()
+    rememberRetrieval('Is a 4-month rifapentine regimen noninferior?', [paper], 1_000)
+    expect(recallRetrieval('  is a 4-month rifapentine regimen noninferior? ', 1_000 + 1000)?.[0].doi).toBe(paper.doi)
+    expect(recallRetrieval('Is a 4-month rifapentine regimen noninferior?', 1_000 + 11 * 60 * 1000)).toBeNull()
+    expect(expandedQueries('Does the M72/AS01E vaccine prevent tuberculosis?').length).toBeGreaterThan(1)
+    expect(expandedQueries('Does extreme heat raise mortality?')).toEqual(['Does extreme heat raise mortality?'])
+    clearRetrievalCache()
+  })
+
+  it('accepts the Datoo and Tait numbers that the abstracts print', () => {
+    const datoo2021 = 'Vaccine efficacy was 77\u2009% (95% CI 71\u201380) and 74 % in 450 participants followed for one year.'
+    const datoo2022 = 'The booster was given to 409 children. Efficacy remained high.'
+    const meeren = 'The vaccine efficacy was 54.0% (90% CI, 13.9 to 75.4) after a mean of 2.3 years.'
+    for (const token of ['77%', '74%', '450']) expect(numberMatches(token, datoo2021)).toBe(true)
+    expect(numberMatches('409', datoo2022)).toBe(true)
+    expect(numberMatches('54%', meeren)).toBe(true)
+    expect(numberMatches('54.0%', 'Efficacy was 54 % in adults.')).toBe(true)
+    expect(sentenceProblems('Datoo 2021 reported 77% and 74% efficacy among 450 participants.', datoo2021, [datoo2021])).not.toContain('number 77% is not in this abstract')
+    const r21 = 'A phase 3 trial enrolling over 4800 children was done. The trial enrolled 4,878 children. Seasonal efficacy was 75% and standard efficacy was 68%.'
+    expect(enrollmentNumber(r21)).toBe('4,878')
+    expect(requiredFacts('10.1016/s0140-6736(23)02511-4', r21)).toEqual(expect.arrayContaining(['4,878', '75%', '68%']))
+    expect(missingFacts('In a phase 3 trial enrolling over 4800 children, Datoo 2024 observed high protective efficacy.', requiredFacts('10.1016/s0140-6736(23)02511-4', r21)).length).toBeGreaterThan(0)
+    expect(paperStatus({
+      url: 'https://doi.org/10.1016/S0140-6736(23)02511-4',
+      doi: '10.1016/S0140-6736(23)02511-4',
+      openAlexType: 'preprint',
+      retractionChecked: false,
+    })).toBe('peer-reviewed')
+    expect(paperStatus({
+      url: 'https://doi.org/10.1016/j.cmet.2018.04.010',
+      doi: '10.1016/j.cmet.2018.04.010',
+      retractionChecked: false,
+    })).toBe('peer-reviewed')
+    expect(isJournalArticleDoi('10.2139/ssrn.1')).toBe(false)
+    expect(sentenceProblems('Sutton 2018 enrolled an unspecified number of participants.', 'Eight men with prediabetes were studied. eTRF improved insulin sensitivity.', ['Eight men with prediabetes were studied. eTRF improved insulin sensitivity.']).join(' ')).toMatch(/unspecified|meta note/)
+  })
+
+  it('reads writer JSON and ignores the old url sentence shape', () => {
+    expect(readWritten({ answer: { sentences: [{ text: 'Dorman 2021 found the regimen was noninferior.', paper_id: '10.1056/NEJMoa2033400', numbers: ['2516'] }] } })?.[0].paper_id).toBe('10.1056/nejmoa2033400')
+    expect(readWritten({ answer: { sentences: [{ text: 'A claim.', urls: ['https://doi.org/10.1000/x'] }] } })).toBeNull()
+  })
+})

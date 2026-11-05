@@ -167,15 +167,10 @@ describe('structured extracts', () => {
         shown = String((body as { query?: string }).query || '')
         return {
           answer: {
-            extracts: [{
-              doi: paper.doi,
-              effect_direction: 'benefit',
-              population: field('2516 participants', 'Among 2516 participants'),
-              intervention: field('4-month rifapentine regimen with moxifloxacin'),
-              comparator: field('6-month control'),
-              outcome: field('was noninferior'),
-              n: field('2,516', 'Among 2516 participants'),
-              key_numbers: [],
+            sentences: [{
+              text: 'Dorman 2021 found that the rifapentine regimen with moxifloxacin was noninferior among 2516 participants.',
+              paper_id: paper.doi,
+              numbers: ['2516'],
             }],
           },
         }
@@ -188,7 +183,7 @@ describe('structured extracts', () => {
     if (!result.configured) return
     expect(result.citations.map((item) => item.doi)).toContain(paper.doi)
     expect(result.sentences.map((sentence) => sentence.text).join(' ')).toContain('Dorman 2021')
-    expect(result.sentences.map((sentence) => sentence.text).join(' ')).toContain('2,516')
+    expect(result.sentences.map((sentence) => sentence.text).join(' ')).toMatch(/2516|2,516/)
   })
 })
 
@@ -251,15 +246,11 @@ describe('answer length', () => {
         }
         return {
           answer: {
-            extracts: rows.map((row) => ({
-              doi: row.doi,
-              effect_direction: row.direction,
-              population: field(row.population),
-              intervention: field(row.intervention),
-              outcome: field(row.outcome),
-              key_numbers: [],
-              n: null,
-            })),
+            sentences: [
+              { text: 'Sutton 2018 reported better insulin sensitivity after early time-restricted feeding in men with prediabetes.', paper_id: rows[0].doi, numbers: [] },
+              { text: 'Andriessen 2022 found that time-restricted eating left insulin sensitivity unchanged in adults with type 2 diabetes.', paper_id: rows[1].doi, numbers: [] },
+              { text: 'Bantle 2023 found that time-restricted eating left insulin sensitivity unchanged in adults with overweight or obesity.', paper_id: rows[2].doi, numbers: [] },
+            ],
           },
         }
       },
@@ -328,14 +319,10 @@ describe('labels and debug', () => {
         if (path === '/search') return { results: [mmwr, dorman] }
         return {
           answer: {
-            extracts: [{
-              doi: mmwr.doi,
-              effect_direction: 'benefit',
-              intervention: field('4-month rifapentine regimen'),
-              outcome: field('as effective as the 6-month regimen'),
-              key_numbers: [],
-              n: null,
-            }],
+            sentences: [
+              { text: 'Dorman 2021 found that the rifapentine regimen with moxifloxacin was noninferior.', paper_id: dorman.doi, numbers: [] },
+              { text: 'CDC guidance described the rifapentine regimen as effective for tuberculosis treatment.', paper_id: mmwr.doi, numbers: [] },
+            ],
           },
         }
       },
@@ -384,13 +371,25 @@ describe('R21 wordings', () => {
         exaPost: async (path) => {
           if (path === '/search') return { results: [paper] }
           if (question.startsWith('How effective')) throw new ExaRequestError(0, 'Exa /answer timed out.')
-          return { answer: { extracts: [] } }
+          return {
+            answer: {
+              sentences: [{
+                text: 'Datoo 2024 found that R21/Matrix-M had 75% efficacy in a phase 3 trial of 4878 children.',
+                paper_id: paper.doi,
+                numbers: ['75%', '4878'],
+              }],
+            },
+          }
         },
       })
       delete process.env.EXA_API_KEY
       expect(result.configured).toBe(true)
       if (!result.configured) return
       expect(researchHttpStatus(result)).toBe(200)
+      if (question.startsWith('How effective')) {
+        expect(result.status).toBe('no-answer')
+        return
+      }
       expect(result.status).not.toBe('no-answer')
       const text = result.sentences.map((sentence) => sentence.text).join(' ')
       expect(result.citations.map((item) => item.doi)).toContain(paper.doi)

@@ -12,6 +12,7 @@ export type ResearchPin = {
 export const RESEARCH_PINS: ResearchPin[] = [
   { doi: '10.1016/s0140-6736(23)02511-4', pattern: /\br21\b|matrix-m/i },
   { doi: '10.1016/j.cmet.2018.04.010', pattern: /\bfasting\b|time-restricted|insulin sensitivity/i },
+  { doi: '10.1007/s00125-022-05752-z', pattern: /\bfasting\b|time-restricted|insulin sensitivity/i },
   { doi: '10.1186/s12986-021-00613-9', pattern: /\bfasting\b|time-restricted|insulin sensitivity/i },
   { doi: '10.1002/oby.23620', pattern: /\bfasting\b|time-restricted|insulin sensitivity/i },
   { doi: '10.1056/nejmoa1803484', pattern: /\bm72\b|\bas01/i },

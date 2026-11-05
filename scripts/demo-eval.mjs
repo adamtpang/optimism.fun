@@ -1,12 +1,15 @@
 #!/usr/bin/env node
+import { copiedContentRun, numberMatches } from '../src/lib/research/text-checks.mjs'
 // Run the demo questions against a preview and print pass or fail.
 // Usage: node scripts/demo-eval.mjs https://preview.example [runs]
 // Optional auth, never committed: RESEARCH_DEMO_COOKIE, or
 // RESEARCH_BYPASS_TOKEN / VERCEL_AUTOMATION_BYPASS_SECRET.
 // The Answer API has no seed field, so this repeats the live call instead.
 
-const base = (process.argv[2] || '').replace(/\/$/, '')
-const runs = Number(process.argv[3] || 3)
+const judgeMode = process.argv.includes('--judge')
+const args = process.argv.slice(2).filter((arg) => arg !== '--judge')
+const base = (args[0] || '').replace(/\/$/, '')
+const runs = Number(args[1] || 3)
 if (!base.startsWith('http')) {
   console.error('Usage: node scripts/demo-eval.mjs <base-url> [runs]')
   process.exit(1)
@@ -80,10 +83,12 @@ const questions = [
       const text = (data.sentences || []).map((sentence) => sentence.text).join(' ')
       return withNumbers([
         ['phase 3 cited', dois.includes('10.1016/s0140-6736(23)02511-4')],
-        ['4878 or 75%', /4,?878/.test(text) && /75%/.test(text)],
+        ['4878 and 75%', /4,?878/.test(text) && /75%/.test(text)],
         ['68%', /68%/.test(text)],
         ['no 78-79 range', !/78\s*[-\u2013]\s*79%/.test(text)],
         ['no cross-protection', !/cross-protection/i.test(text)],
+        ['efficacy', /efficacy/i.test(text)],
+        ['not no difference', !/no difference/i.test(text)],
       ].concat(sharedChecks(data)), data)
     },
     variants: [
@@ -109,12 +114,7 @@ function figures(text) {
 }
 
 function figureInExcerpt(figure, excerpt) {
-  const bare = figure.replace(/,/g, '').replace(/%$/, '')
-  const year = Number(bare)
-  if (/^\d{4}$/.test(bare) && year >= 1990 && year <= 2030) return true
-  const hay = excerpt.replace(/,/g, '').toLowerCase()
-  if (figure.endsWith('%')) return hay.includes(`${bare}%`) || hay.includes(`${bare} percent`)
-  return hay.includes(bare)
+  return numberMatches(figure, excerpt)
 }
 
 function wordsOf(text) {
@@ -122,12 +122,12 @@ function wordsOf(text) {
 }
 
 function copiedRun(sentence, excerpt) {
-  const left = wordsOf(sentence)
-  const hay = wordsOf(excerpt).join(' ')
-  for (let i = 0; i + 12 <= left.length; i += 1) {
-    if (hay.includes(left.slice(i, i + 12).join(' '))) return true
-  }
-  return false
+  return copiedContentRun(sentence, excerpt, 8).copied
+}
+
+function truncatedWord(sentence, excerpt) {
+  const abs = wordsOf(excerpt).filter((word) => word.length >= 4)
+  return wordsOf(sentence).some((word) => word.length >= 4 && word.length <= 8 && !abs.includes(word) && abs.some((full) => full.startsWith(word) && full.length >= word.length + 3))
 }
 
 function sharedChecks(data, direction) {
@@ -137,9 +137,34 @@ function sharedChecks(data, direction) {
     const paper = (data.citations || []).find((item) => item.n === n)
     return paper && copiedRun(sentence.text, paper.excerpt || '')
   }))
+  const normalized = sentences.map((sentence) => wordsOf(sentence.text).join(' '))
+  const duplicate = normalized.some((key, index) => normalized.indexOf(key) !== index)
+  const emptyParens = /\(\s*\)|\(\s*[,.]/.test(text)
+  const meta = /not explicitly stated|\bsnippet\b/i.test(text)
+  const truncated = sentences.some((sentence) => (sentence.cites || []).some((n) => {
+    const paper = (data.citations || []).find((item) => item.n === n)
+    return paper && truncatedWord(sentence.text, paper.excerpt || '')
+  }))
+  const uncited = sentences.some((sentence) => {
+    const cites = sentence.cites || []
+    if (!cites.length) return true
+    return cites.some((n) => !(data.citations || []).some((paper) => paper.n === n))
+  })
+  const filler = sentences.some((sentence) => {
+    const body = sentence.text || ''
+    const hasNumber = /\d/.test(body.replace(/\[\d+\]/g, ''))
+    const finding = /non-?inferior|efficacy|no difference|no effect|did not|improved|reduced|benefit|as effective|superior|unaffected|sensitivity|unchanged/i.test(body)
+    return !hasNumber && !finding
+  })
   const rows = [
     ['3 to 5 sentences', sentences.length >= 3 && sentences.length <= 5],
     ['no copied abstract run', !copied],
+    ['duplicate sentence', !duplicate],
+    ['empty parentheses', !emptyParens],
+    ['meta note', !meta],
+    ['truncated word', !truncated],
+    ['uncited sentence', !uncited],
+    ['filler sentence', !filler],
     ['each sentence names a year', sentences.every((sentence) => /\b(19|20)\d{2}\b/.test(sentence.text))],
   ]
   if (direction) rows.push([direction, new RegExp(direction, 'i').test(text)])
@@ -179,6 +204,33 @@ function withNumbers(rows, data) {
   return [...rows, [`numbers in cited abstracts${missing.length ? `: ${missing.join('; ')}` : ''}`, missing.length === 0]]
 }
 
+async function judgeSentences(data) {
+  const key = process.env.EXA_API_KEY
+  if (!key) return ['judge skipped, EXA_API_KEY is unset']
+  const failures = []
+  for (const sentence of data.sentences || []) {
+    for (const n of sentence.cites || []) {
+      const paper = (data.citations || []).find((item) => item.n === n)
+      if (!paper) continue
+      const response = await fetch('https://api.exa.ai/answer', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-api-key': key },
+        body: JSON.stringify({
+          query: `Given this abstract, is this sentence fully supported, including the direction of the effect? Answer yes or no.\n\nAbstract:\n${paper.excerpt || ''}\n\nSentence:\n${sentence.text}`,
+          stream: false,
+          text: false,
+          model: 'exa',
+          temperature: 0,
+        }),
+      })
+      const payload = await response.json()
+      const answer = String(payload.answer || payload.text || '').toLowerCase()
+      if (answer.startsWith('no')) failures.push(`${paper.doi || paper.title} judge said no`)
+    }
+  }
+  return failures
+}
+
 async function ask(question) {
   const headers = { 'content-type': 'application/json' }
   if (process.env.RESEARCH_DEMO_COOKIE) headers.cookie = process.env.RESEARCH_DEMO_COOKIE
@@ -211,6 +263,17 @@ for (const item of jobs) {
     continue
   }
   const checks = item.check(result.data)
+  if (judgeMode && item.name !== 'noanswer') {
+    const judged = await judgeSentences(result.data)
+    if (judged.some((line) => line.startsWith('judge skipped'))) {
+      if (!globalThis.__judgeNoted) {
+        console.log(judged[0])
+        globalThis.__judgeNoted = true
+      }
+    } else if (judged.length) {
+      checks.push([judged.join('; '), false])
+    }
+  }
   const bad = checks.filter(([, ok]) => !ok).map(([name]) => name)
   if (result.http !== 200 || bad.length) {
     failed += 1

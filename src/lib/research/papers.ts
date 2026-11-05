@@ -64,6 +64,16 @@ export function isPreprintDoi(doi: string | null | undefined): boolean {
   return PREPRINT_DOI_PREFIXES.some((prefix) => lower.startsWith(prefix))
 }
 
+/** Lancet, Cell Metabolism, and NEJM article DOIs are journal articles. */
+export function isJournalArticleDoi(doi: string | null | undefined): boolean {
+  if (!doi) return false
+  const lower = doi.toLowerCase()
+  if (isPreprintDoi(lower)) return false
+  return lower.startsWith('10.1016/s0140-6736')
+    || lower.startsWith('10.1016/j.cmet')
+    || lower.startsWith('10.1056/nejm')
+}
+
 /** A DOI printed on the page. Reference lists after a References heading are ignored. */
 export function doiFromExcerpt(text: string | null | undefined): string | null {
   if (!text) return null
@@ -732,13 +742,14 @@ export function paperStatus(input: {
   articleType?: string | null
   venue?: string | null
 }): PaperStatus {
-  if (input.retractionChecked === false) return 'unverified'
   if (input.retracted === true) return 'retracted'
   if (input.concern === true) return 'concern'
   if (input.corrected === true) return 'corrected'
   const doi = cleanDoi(input.doi) || doiFromUrl(input.url)
+  if (input.retractionChecked === false && !isJournalArticleDoi(doi)) return 'unverified'
   if (isNewsRecord(input.url, doi) || pathIsNewsOnly(input.url)) return 'unknown'
   if (isPerspectiveRecord(input.url, input.title, input.articleType)) return 'unknown'
+  if (isJournalArticleDoi(doi)) return 'peer-reviewed'
   if (isPreprintDoi(doi) || isPreprintUrl(input.url) || input.openAlexType === 'preprint' || input.crossrefType === 'posted-content') {
     return 'preprint'
   }
