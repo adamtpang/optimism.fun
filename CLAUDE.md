@@ -419,6 +419,7 @@ no new severity value was stored.
 - Ranks and scores were not changed. Page copy still needs Adam's OK before merge.
 - 2026-11-03 review: status comes from Crossref and OpenAlex types. A retraction timeout is Unverified and not citable. Crossref `updated-by` is read. `[1]` follows the prompt list. Answer-only citations need a DOI, PMID, or arXiv id. A second `/answer` call drops sentences the excerpt does not support.
 - 2026-11-03 pins: Sutton, Che, Bantle, the R21 Lancet phase 3 trial, both M72 NEJM trials, and Dorman 2021 `10.1056/nejmoa2033400` are injected by DOI lookup when search misses them. CI fails if a pin is missing from that candidate set. A no-answer response is HTTP 200. A significant efficacy result is not labeled no effect.
+- 2026-11-04 round 10: primary papers are answered from the longer Europe PMC or Crossref abstract. Fields need a verbatim evidence span. M72, R21, rifapentine, and fasting synonyms ground those questions. Socks still does not. MMWR is Guidance. Preview or `?debug=1` lists kept and rejected papers. `node scripts/demo-eval.mjs <base-url> [runs]` repeats the demo questions.
 
 <!-- BEGIN:nextjs-agent-rules -->
 
