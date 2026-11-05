@@ -82,7 +82,7 @@ const questions = [
       const text = (data.sentences || []).map((sentence) => sentence.text).join(' ')
       return withNumbers([
         ['phase 3 cited', dois.includes('10.1016/s0140-6736(23)02511-4')],
-        ['4878 or 75%', /4,?878/.test(text) && /75%/.test(text)],
+        ['4878 and 75%', /4,?878/.test(text) && /75%/.test(text)],
         ['68%', /68%/.test(text)],
         ['no 78-79 range', !/78\s*[-\u2013]\s*79%/.test(text)],
         ['no cross-protection', !/cross-protection/i.test(text)],
@@ -154,6 +154,17 @@ function sharedChecks(data, direction) {
     const paper = (data.citations || []).find((item) => item.n === n)
     return paper && truncatedWord(sentence.text, paper.excerpt || '')
   }))
+  const uncited = sentences.some((sentence) => {
+    const cites = sentence.cites || []
+    if (!cites.length) return true
+    return cites.some((n) => !(data.citations || []).some((paper) => paper.n === n))
+  })
+  const filler = sentences.some((sentence) => {
+    const body = sentence.text || ''
+    const hasNumber = /\d/.test(body.replace(/\[\d+\]/g, ''))
+    const finding = /non-?inferior|efficacy|no difference|no effect|did not|improved|reduced|benefit|as effective|superior|unaffected|sensitivity|unchanged/i.test(body)
+    return !hasNumber && !finding
+  })
   const rows = [
     ['3 to 5 sentences', sentences.length >= 3 && sentences.length <= 5],
     ['no copied abstract run', !copied],
@@ -161,6 +172,8 @@ function sharedChecks(data, direction) {
     ['empty parentheses', !emptyParens],
     ['meta note', !meta],
     ['truncated word', !truncated],
+    ['uncited sentence', !uncited],
+    ['filler sentence', !filler],
     ['each sentence names a year', sentences.every((sentence) => /\b(19|20)\d{2}\b/.test(sentence.text))],
   ]
   if (direction) rows.push([direction, new RegExp(direction, 'i').test(text)])

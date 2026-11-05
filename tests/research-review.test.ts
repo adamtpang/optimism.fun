@@ -1097,6 +1097,7 @@ describe('review fixtures', () => {
     process.env.EXA_API_KEY = 'test-key-value'
     const fasting = [
       '10.1016/j.cmet.2018.04.010',
+      '10.1007/s00125-022-05752-z',
       '10.1186/s12986-021-00613-9',
       '10.1002/oby.23620',
     ]

@@ -4,10 +4,16 @@ import { matchesIntervention } from '@/lib/research/claims'
 import {
   auditSentences,
   coversPrimary,
+  enrollmentNumber,
+  headlineTrial,
+  isFiller,
   readWritten,
+  sameNumber,
   selectWritingPapers,
   sentenceProblems,
+  truncatedTokens,
 } from '@/lib/research/writing'
+import { clearRetrievalCache, expandedQueries, recallRetrieval, rememberRetrieval } from '@/lib/research/ask'
 
 const DORMAN = 'Among 2516 participants who had undergone randomization, a 4-month rifapentine regimen with moxifloxacin was noninferior to the 6-month control for drug-susceptible pulmonary tuberculosis.'
 const TAIT = 'A total of 1786 participants received M72/AS01E and 1787 received placebo. The vaccine efficacy was 54.0%.'
@@ -73,6 +79,38 @@ describe('838d2f4 sentence checks', () => {
     for (const phrase of ['--judge', 'empty parentheses', 'meta note', 'duplicate sentence', 'truncated word', 'not no difference', 'EXA_API_KEY']) {
       expect(source).toContain(phrase)
     }
+  })
+
+  it('accepts the word large, requires 4878 on the R21 trial, and rejects filler', () => {
+    const lancet = 'The phase 3 trial of R21/Matrix-M enrolled 4878 children. Vaccine efficacy was 75% in a large seasonal cohort.'
+    expect(truncatedTokens('Datoo 2024 found a large protective effect.', lancet)).toEqual([])
+    expect(enrollmentNumber(lancet)).toBe('4878')
+    expect(sameNumber('enrolled 4,878 children', '4878')).toBe(true)
+    const papers = [
+      { doi: '10.1016/s0140-6736(23)02511-4', title: 'R21/Matrix-M phase 3 trial', abstract: lancet, rank: 0 },
+      { doi: '10.1371/journal.pmed.1004515', title: 'Commentary on vaccines', abstract: 'A commentary.', rank: 3 },
+    ]
+    expect(headlineTrial('Does the R21/Matrix-M malaria vaccine work?', papers)).toBe(papers[0].doi)
+    const audited = auditSentences(
+      [{ text: 'Datoo 2024 found that R21/Matrix-M had 75% efficacy.', paper_id: papers[0].doi }],
+      new Map([[papers[0].doi, lancet]]),
+      papers[0].doi,
+    )
+    expect(audited.failures.join(' ')).toContain('missing enrollment')
+    expect(isFiller('Dale 2025 discuss the optimization of the M72/AS01E vaccine phase 3 trial.', 'A later paper discusses the phase 3 trial.')).toBe(true)
+    expect(sentenceProblems('A retrieved study indicated the vaccine was discussed [5].', lancet, [lancet]).join(' ')).toContain('no finding')
+  })
+
+  it('reuses a cached retrieval for the same question', () => {
+    clearRetrievalCache()
+    const paper = { url: 'https://doi.org/10.1056/nejmoa2033400', doi: '10.1056/nejmoa2033400', title: 'Dorman' }
+    expect(recallRetrieval('Is a 4-month rifapentine regimen noninferior?')).toBeNull()
+    rememberRetrieval('Is a 4-month rifapentine regimen noninferior?', [paper], 1_000)
+    expect(recallRetrieval('  is a 4-month rifapentine regimen noninferior? ', 1_000 + 1000)?.[0].doi).toBe(paper.doi)
+    expect(recallRetrieval('Is a 4-month rifapentine regimen noninferior?', 1_000 + 11 * 60 * 1000)).toBeNull()
+    expect(expandedQueries('Does the M72/AS01E vaccine prevent tuberculosis?').length).toBeGreaterThan(1)
+    expect(expandedQueries('Does extreme heat raise mortality?')).toEqual(['Does extreme heat raise mortality?'])
+    clearRetrievalCache()
   })
 
   it('reads writer JSON and ignores the old url sentence shape', () => {

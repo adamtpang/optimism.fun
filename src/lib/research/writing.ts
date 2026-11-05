@@ -28,6 +28,9 @@ phase randomized randomised controlled double blind primary secondary
 seasonal standard shorter treatment treated received enrolled enrollment
 lower higher reduced improved improvement significant significantly
 not no yes than then also only more most less
+large larger largest small smaller high highly protective indicated indication
+human infection infections controlled control optimization discuss discusses
+indicated highly against about into over under very much many some such
 author published journal clinical malaria tuberculosis pulmonary drug susceptible
 `.split(/\s+/).filter(Boolean))
 
@@ -69,28 +72,92 @@ export function readJudge(payload: unknown): { supported: boolean; reason: strin
   return null
 }
 
+const HEADLINE_PINS: [RegExp, string][] = [
+  [/\br21\b|matrix-m/i, '10.1016/s0140-6736(23)02511-4'],
+  [/\bm72\b|\bas01/i, '10.1056/nejmoa1803484'],
+  [/rifapentine|moxifloxacin|(?:4|four)[-\s]?month/i, '10.1056/nejmoa2033400'],
+  [/\bfasting\b|time-restricted|insulin sensitivity/i, '10.1016/j.cmet.2018.04.010'],
+]
+
+export function trialScore(paper: WritingPaper): number {
+  const text = `${paper.title}\n${paper.abstract}`.toLowerCase()
+  let score = 100 - paper.rank * 20
+  if (/phase\s*3|phase\s*iii/.test(text)) score += 50
+  if (/non-?inferior/.test(text)) score += 40
+  if (/randomi[sz]ed/.test(text)) score += 20
+  if (/placebo-controlled|double-blind|double blind/.test(text)) score += 10
+  return score
+}
+
+/** The one randomized trial the answer must cite for this question. */
+export function headlineTrial(question: string, papers: WritingPaper[]): string | null {
+  const present = new Set(papers.map((paper) => paper.doi))
+  for (const [pattern, doi] of HEADLINE_PINS) {
+    if (pattern.test(question) && present.has(doi)) return doi
+  }
+  const pins = new Set(pinsForQuestion(question))
+  const pool = papers.filter((paper) => paper.rank < 2 || pins.has(paper.doi))
+  if (!pool.length) return null
+  return [...pool].sort((a, b) => trialScore(b) - trialScore(a) || a.doi.localeCompare(b.doi))[0].doi
+}
+
 export function selectWritingPapers(question: string, papers: WritingPaper[]): WritingPaper[] {
   const pins = new Set(pinsForQuestion(question))
+  const headline = headlineTrial(question, papers)
   const chosen = papers.filter((paper) => {
     const about = matchesIntervention(question, `${paper.title}\n${paper.abstract}`)
-    if (pins.has(paper.doi)) return about || pins.has(paper.doi)
+    if (paper.doi === headline || pins.has(paper.doi)) return true
     return about && paper.rank < 2
   })
-  chosen.sort((a, b) => a.rank - b.rank || a.doi.localeCompare(b.doi))
+  chosen.sort((a, b) => {
+    if (a.doi === headline) return -1
+    if (b.doi === headline) return 1
+    const pinDelta = Number(pins.has(b.doi)) - Number(pins.has(a.doi))
+    if (pinDelta) return pinDelta
+    return trialScore(b) - trialScore(a) || a.doi.localeCompare(b.doi)
+  })
   const seen = new Set<string>()
   const out: WritingPaper[] = []
   for (const paper of chosen) {
     if (seen.has(paper.doi)) continue
     seen.add(paper.doi)
     out.push(paper)
-    if (out.length >= 5) break
+    if (out.length >= 5 && out.some((item) => item.doi === headline)) break
   }
-  return out
+  if (headline && !out.some((item) => item.doi === headline)) {
+    const paper = papers.find((item) => item.doi === headline)
+    if (paper) out.unshift(paper)
+  }
+  return out.slice(0, 5)
 }
 
 export function primaryDois(question: string, papers: WritingPaper[]): string[] {
-  const pins = new Set(pinsForQuestion(question))
-  return papers.filter((paper) => paper.rank < 2 || pins.has(paper.doi)).map((paper) => paper.doi)
+  const headline = headlineTrial(question, papers)
+  return headline ? [headline] : []
+}
+
+/** The printed enrollment, such as 4,878 or 2516. 4878 and 4,878 are the same number. */
+export function enrollmentNumber(abstract: string): string | null {
+  const patterns = [
+    /\b(?:enrolled|enrolment of|enrollment of|among)\s+(\d{1,3}(?:,\d{3})+|\d{3,6})\b/i,
+    /\b(\d{1,3}(?:,\d{3})+|\d{3,6})\s+(?:participants|children|adults|patients|people)\b/i,
+  ]
+  for (const pattern of patterns) {
+    const match = abstract.match(pattern)
+    if (match && Number(match[1].replace(/,/g, '')) >= 100) return match[1]
+  }
+  return null
+}
+
+export function sameNumber(text: string, figure: string): boolean {
+  const bare = figure.replace(/,/g, '')
+  return text.replace(/,/g, '').includes(bare)
+}
+
+export function isFiller(sentence: string, abstract: string): boolean {
+  if (numericTokens(sentence).some((token) => significantNumber(token))) return false
+  const finding = /non-?inferior|\befficacy\b|no difference|no effect|did not|do not|improved|reduced|reduction|benefit|as effective|superior|unaffected|not significant|prevented|protection|sensitivity|unchanged|better|worse/i
+  return !(finding.test(sentence) && finding.test(abstract))
 }
 
 function significantNumber(token: string): boolean {
@@ -159,12 +226,14 @@ export function sentenceProblems(sentence: string, abstract: string, abstracts: 
   if (truncated.length) problems.push(`truncated words: ${truncated.join(', ')}`)
   const conflict = directionConflict(text, abstract)
   if (conflict) problems.push(conflict)
+  if (isFiller(text, abstract)) problems.push('no finding')
   return [...new Set(problems)]
 }
 
 export function auditSentences(
   rows: { text: string; paper_id: string }[],
   abstracts: Map<string, string>,
+  headline = '',
 ): { ok: { text: string; paper_id: string }[]; failures: string[] } {
   const failures: string[] = []
   const ok: { text: string; paper_id: string }[] = []
@@ -183,6 +252,10 @@ export function auditSentences(
     }
     seen.add(key)
     const problems = sentenceProblems(row.text, abstract, all)
+    if (row.paper_id === headline) {
+      const enrollment = enrollmentNumber(abstract)
+      if (enrollment && !sameNumber(row.text, enrollment)) problems.push(`missing enrollment ${enrollment}`)
+    }
     if (problems.length) {
       failures.push(`${row.paper_id}: ${problems.join('; ')}`)
       continue

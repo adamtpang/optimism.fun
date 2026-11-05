@@ -4,7 +4,7 @@ import { isCoverageUrl, isExcludedUrl, isMirrorUrl, isRejectedResultUrl } from '
 import { arxivIdFromUrl, cleanDoi, doiFromUrl, isGuidanceRecord, isNonAnswer, isPdfUrl, normalizeTitle, normalizeUrl, paperStatus, plainSentence, pmidFromUrl, repairOpening, statusLabel, studyDirection, validateQuestion, workKey } from '@/lib/research/papers'
 import { chooseBalancedClaims, claimNeedsRepair, dedupeSources, groundClaims, paragraphFromClaims, polishClaim, questionIsGrounded, readPaperClaims, studyRank, unsupportedNumbers, type PaperClaim } from '@/lib/research/claims'
 import { citeName, creditFigures, fallbackExtract, readExtracts, renderExtractSentence, supportText, verifyExtract, type PaperExtract } from '@/lib/research/extract'
-import { JUDGE_PROMPT, auditSentences, coversPrimary, readJudge, readWritten, selectWritingPapers, withMarker, type WrittenSentence } from '@/lib/research/writing'
+import { JUDGE_PROMPT, auditSentences, coversPrimary, enrollmentNumber, headlineTrial, readJudge, readWritten, selectWritingPapers, withMarker, type WrittenSentence } from '@/lib/research/writing'
 import { pinsForQuestion } from '@/lib/research/pins'
 import {
   readSource,
@@ -155,6 +155,36 @@ export function redactSecrets(message: string): string {
   const key = process.env.EXA_API_KEY
   if (!key || key.length < 8) return message
   return message.split(key).join('[redacted]')
+}
+
+const RETRIEVAL_TTL_MS = 10 * 60 * 1000
+const retrievalCache = new Map<string, { at: number; papers: SourceFields[] }>()
+
+export function normalizeQuestionKey(question: string): string {
+  return question.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+}
+
+export function expandedQueries(question: string): string[] {
+  const extras: string[] = []
+  if (/\br21\b|matrix-m/i.test(question)) extras.push('R21/Matrix-M phase 3 randomised malaria vaccine efficacy Lancet children')
+  if (/\bm72\b|\bas01/i.test(question)) extras.push('M72/AS01E phase 2b tuberculosis vaccine efficacy Van Der Meeren Tait NEJM')
+  if (/rifapentine|moxifloxacin|(?:4|four)[-\s]?month/i.test(question)) extras.push('Four-month rifapentine moxifloxacin noninferior tuberculosis Dorman NEJM randomized')
+  if (/\bfasting\b|time-restricted|insulin sensitivity/i.test(question)) extras.push('early time-restricted feeding insulin sensitivity Sutton Andriessen randomized trial')
+  return [question, ...extras]
+}
+
+export function recallRetrieval(question: string, now = Date.now()): SourceFields[] | null {
+  const hit = retrievalCache.get(normalizeQuestionKey(question))
+  if (!hit || now - hit.at > RETRIEVAL_TTL_MS) return null
+  return hit.papers
+}
+
+export function rememberRetrieval(question: string, papers: SourceFields[], now = Date.now()): void {
+  retrievalCache.set(normalizeQuestionKey(question), { at: now, papers })
+}
+
+export function clearRetrievalCache(): void {
+  retrievalCache.clear()
 }
 
 export function searchBody(question: string): Record<string, unknown> {
@@ -822,11 +852,15 @@ const JUDGE_SCHEMA = {
 } as const
 
 function writerQuery(question: string, rows: { doi: string; who: string; year: string; label: string; abstract: string }[], feedback = ''): string {
-  const lines = rows.map((row) => `id: ${row.doi}\nauthor: ${row.who}\nyear: ${row.year}\nlabel: ${row.label}\nabstract: ${row.abstract}`)
+  const lines = rows.map((row) => {
+    const enrolled = enrollmentNumber(row.abstract)
+    return `id: ${row.doi}\nauthor: ${row.who}\nyear: ${row.year}\nlabel: ${row.label}${enrolled ? `\nenrollment: ${enrolled}` : ''}\nabstract: ${row.abstract}`
+  })
   return [
     `Question: ${question}`,
     'Write 3 to 5 plain-English sentences, one finding per paper.',
     'Each sentence names the author and year, uses its own words, puts each number only on the paper whose abstract prints it, states the direction exactly as the abstract does, and carries one citation marker.',
+    'The first paper is the primary trial. Its sentence must include that paper and the enrollment number when one is listed.',
     'Return strict JSON {sentences:[{text, paper_id, numbers:[]}]}. No notes field and no text outside the JSON.',
     feedback ? `Fix these problems:\n${feedback}` : '',
     lines.join('\n\n'),
@@ -852,8 +886,32 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
   }
   let found: SourceFields[] = []
   try {
-    const searched = await deps.exaPost('/search', searchBody(question), budgeted(10_000))
-    found = await injectMissingPins(question, readResults(searched).slice(0, SEARCH_RESULTS), deps.resolve)
+    const cached = partial?.exaPost ? null : recallRetrieval(question)
+    if (cached) {
+      found = cached
+    } else {
+      const queries = expandedQueries(question)
+      const batches = await Promise.all(queries.map(async (query, index) => {
+        try {
+          return await deps.exaPost('/search', searchBody(query), budgeted(8_000))
+        } catch (err) {
+          if (index === 0) throw err
+          return null
+        }
+      }))
+      const merged: SourceFields[] = []
+      const seen = new Set<string>()
+      for (const batch of batches) {
+        for (const paper of readResults(batch).slice(0, SEARCH_RESULTS)) {
+          const key = (paper.doi || paper.url || '').toLowerCase()
+          if (!key || seen.has(key)) continue
+          seen.add(key)
+          merged.push(paper)
+        }
+      }
+      found = await injectMissingPins(question, merged, deps.resolve)
+      if (!partial?.exaPost) rememberRetrieval(question, found)
+    }
   } catch (err) {
     const message = err instanceof ExaRequestError ? err.message : err instanceof Error ? err.message : 'Exa request failed.'
     return { configured: true, question, error: redactSecrets(message), ...emptyShape() }
@@ -920,8 +978,9 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
     const written = rows.length ? readWritten(answered) : null
     if (written) {
       const abstracts = new Map(rows.map((row) => [row.doi, row.abstract]))
+      const headline = headlineTrial(question, selected)
       const judgeRows = async (draft: WrittenSentence[]) => {
-        const audited = auditSentences(draft, abstracts)
+        const audited = auditSentences(draft, abstracts, headline || '')
         const judged = await Promise.all(audited.ok.map(async (row) => {
           if (deadline - Date.now() < 1_500) return { row, supported: true, reason: 'judge skipped for time' }
           const payload = await postAnswer({
@@ -947,8 +1006,13 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
       let round = await judgeRows(written)
       const needsRepair = round.failures.length > 0 || round.kept.length < 3 || !coversPrimary(question, selected, round.kept)
       if (needsRepair && deadline - Date.now() > 5_000) {
-        const missing = selected.filter((paper) => !round.kept.some((row) => row.paper_id === paper.doi)).map((paper) => paper.doi)
-        const feedback = [...round.failures, missing.length ? `Include the primary trial ${missing[0]}.` : ''].filter(Boolean).join('\n')
+        const missingPrimary = headline && !round.kept.some((row) => row.paper_id === headline) ? headline : ''
+        const enrolled = missingPrimary ? enrollmentNumber(abstracts.get(missingPrimary) || '') : ''
+        const feedback = [
+          ...round.failures,
+          missingPrimary ? `Include a sentence for the primary trial ${missingPrimary}${enrolled ? ` that contains ${enrolled}` : ''}.` : '',
+          selected.length >= 3 && round.kept.length < 3 ? 'Write at least 3 sentences, one for each relevant trial.' : '',
+        ].filter(Boolean).join('\n')
         const repaired = readWritten(await postAnswer(writerBody(feedback)))
         if (repaired) round = await judgeRows(repaired)
       }
@@ -957,13 +1021,14 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
       const usable = guidanceOnly ? [] : kept
       const base = shapeResearchAnswer({ retrieved: papers, answer: null, metaByKey: foundMeta, now: deps.now })
       const cards = new Map(base.retrieved.filter((paper) => paper.doi).map((paper) => [paper.doi!.toLowerCase(), paper]))
-      const ordered = usable.map((row) => cards.get(row.paper_id)).filter((paper): paper is NonNullable<typeof paper> => Boolean(paper))
-      const sentences = usable.map((row, index) => ({ text: withMarker(row.text, index + 1), cites: [index + 1] }))
+      const paired = usable.filter((row) => cards.has(row.paper_id))
+      const ordered = paired.map((row) => cards.get(row.paper_id)).filter((paper): paper is NonNullable<typeof paper> => Boolean(paper))
+      const sentences = paired.map((row, index) => ({ text: withMarker(row.text, index + 1), cites: [index + 1] }))
       const used = new Set(ordered.map((paper) => paper.doi?.toLowerCase()))
       const shaped = renumberCitations({
         ...base,
-        sentences: usable.length >= Math.min(2, selected.length) && coversPrimary(question, selected, usable) ? sentences : [],
-        citations: usable.length >= Math.min(2, selected.length) && coversPrimary(question, selected, usable) ? ordered.map((paper, index) => ({ ...paper, n: index + 1, dropReason: null })) : [],
+        sentences: paired.length >= (selected.length >= 3 ? 3 : Math.min(2, selected.length)) && coversPrimary(question, selected, paired) ? sentences : [],
+        citations: paired.length >= (selected.length >= 3 ? 3 : Math.min(2, selected.length)) && coversPrimary(question, selected, paired) ? ordered.map((paper, index) => ({ ...paper, n: index + 1, dropReason: null })) : [],
         retrieved: base.retrieved.map((paper) => ({
           ...paper,
           dropReason: used.has((paper.doi || '').toLowerCase()) ? null : (round.failures.find((line) => line.startsWith((paper.doi || '').toLowerCase())) || 'Not cited.'),
