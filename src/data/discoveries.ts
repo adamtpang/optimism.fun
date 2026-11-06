@@ -568,6 +568,198 @@ export const discoveries: Discovery[] = [
     changes: 'scale',
     review: 'peer-reviewed',
   },
+  {
+    id: 'barnes-europe-heat-summer-2026',
+    title: 'Heat-related urban mortality attributable to human-induced climate change in Europe in summer 2026',
+    published: '2026-10-31',
+    added: '2026-11-06',
+    source: 'Nature Health',
+    doi: '10.1038/s44360-026-00220-z',
+    url: doi('10.1038/s44360-026-00220-z'),
+    problemSlugs: ['climate-change'],
+    summary:
+      'Across 854 European cities in June-August 2026, the authors estimate 50,391 heat-related excess deaths (95% eCI 46,026-53,878), of which 32,619 (65%) are attributable to anthropogenic climate change.',
+    changes: 'scale',
+    review: 'peer-reviewed',
+  },
+  {
+    id: 'shartova-enso-temperature-mortality-2026',
+    title: 'Global temperature-related mortality associated with El-Nino Southern Oscillation',
+    published: '2026-11-04',
+    added: '2026-11-06',
+    source: 'Nature Medicine',
+    doi: '10.1038/s41591-026-04793-w',
+    url: doi('10.1038/s41591-026-04793-w'),
+    problemSlugs: ['climate-change'],
+    summary:
+      'During very strong El Nino years, global heat-related mortality rose an estimated 28.87% (+107,035 annual deaths; 95% eCI 27,336 to 176,312), while cold-related mortality fell 3.70% (-112,681 annual deaths).',
+    changes: 'scale',
+    review: 'peer-reviewed',
+  },
+  {
+    id: 'gbd-cervical-cancer-2023-2026',
+    title:
+      'Global, regional and national burden of cervical cancer in 1990-2023 with forecasts to 2050: a Global Burden of Disease study',
+    published: '2026-11-02',
+    added: '2026-11-06',
+    source: 'Nature Medicine',
+    doi: '10.1038/s41591-026-04729-4',
+    url: doi('10.1038/s41591-026-04729-4'),
+    problemSlugs: ['cancer'],
+    summary:
+      'In 2023 there were an estimated 887,000 new cervical cancer cases and 369,000 deaths globally. Age-standardized incidence and mortality were more than four and seven times higher in low- versus high-income countries, and absolute cases and deaths are forecast to rise by 20.2% and 39.3% by 2050 even as age-standardized rates fall.',
+    changes: 'scale',
+    review: 'peer-reviewed',
+  },
+  {
+    id: 'unicorn-botensilimab-colon-2026',
+    title:
+      'Neoadjuvant botensilimab with or without balstilimab in pMMR and dMMR colon cancer: the phase 2 UNICORN trial',
+    published: '2026-11-02',
+    added: '2026-11-06',
+    source: 'Nature Medicine',
+    doi: '10.1038/s41591-026-04710-1',
+    url: doi('10.1038/s41591-026-04710-1'),
+    problemSlugs: ['cancer'],
+    summary:
+      'In the phase 2 UNICORN trial of short-course neoadjuvant botensilimab with or without balstilimab (n=56 resectable colon cancers), pathological major response was 100% in dMMR BOT+BAL and 36% in pMMR BOT+BAL, versus 0% with botensilimab alone in pMMR disease.',
+    changes: 'tractability',
+    review: 'trial-result',
+  },
+  {
+    id: 'potassium-bp-untreated-hypertension-2026',
+    title:
+      'Oral Potassium Supplementation Lowers Clinic Blood Pressure in Untreated Primary Hypertension: Systematic Review and Meta-Analysis of Randomized Trials',
+    // JAHA publication history says Published 2026-10-30. Crossref issue date is 2026-11-03.
+    published: '2026-10-30',
+    added: '2026-11-06',
+    source: 'Journal of the American Heart Association',
+    doi: '10.1161/JAHA.125.048590',
+    url: doi('10.1161/JAHA.125.048590'),
+    problemSlugs: ['hypertension'],
+    summary:
+      'A meta-analysis of 19 randomized trials (803 adults with untreated primary hypertension) found oral potassium reduced clinic systolic BP by 5.3 mm Hg and diastolic BP by 4.5 mm Hg; 24-hour ambulatory reductions were smaller (2.8 and 3.2 mm Hg).',
+    changes: 'tractability',
+    review: 'peer-reviewed',
+  },
+  {
+    id: 'mori-nectin4-rubella-2026',
+    title: 'Nectin-4 mediates rubella virus entry in airway and placental cells',
+    published: '2026-11-04',
+    added: '2026-11-06',
+    source: 'Nature',
+    doi: '10.1038/s41586-026-11248-2',
+    url: doi('10.1038/s41586-026-11248-2'),
+    problemSlugs: ['infectious-disease', 'newborn-survival'],
+    summary:
+      'Nectin-4 is identified as a functional rubella virus entry receptor in airway and placental cells, shared with measles virus; Nectin-4 blockade significantly inhibited viral entry in human placental organoid models of transplacental infection.',
+    changes: 'tractability',
+    review: 'peer-reviewed',
+  },
+  {
+    id: 'myc-ultraconserved-rna-aso-2026',
+    title: 'CRISPR mutagenesis of the MYC locus reveals a druggable ultraconserved RNA element',
+    // PubMed electronic date 2026-11-04. Crossref only has the issue month, 2026-11.
+    published: '2026-11-04',
+    added: '2026-11-06',
+    source: 'Cell',
+    doi: '10.1016/j.cell.2026.10.002',
+    url: doi('10.1016/j.cell.2026.10.002'),
+    problemSlugs: ['cancer'],
+    summary:
+      'Base-pair CRISPR tiling of the 10-kb MYC locus found that 67% of functionally essential base pairs are noncoding; steric-blocking antisense oligonucleotides targeting an ultraconserved 3\' UTR RNA element selectively eliminated MYC-dependent cancer cells and inhibited patient-derived tumor organoid growth.',
+    changes: 'tractability',
+    review: 'peer-reviewed',
+  },
+  {
+    id: 'wang-fast-frameshifting-cancer-2026',
+    title: 'Cancer-selective gene circuits via intrinsic ribosomal frameshifting',
+    published: '2026-11-04',
+    added: '2026-11-06',
+    source: 'Nature',
+    doi: '10.1038/s41586-026-11200-4',
+    url: doi('10.1038/s41586-026-11200-4'),
+    problemSlugs: ['cancer'],
+    summary:
+      'An engineered FAST gene circuit that exploits cancer-preferential codon-pair -1 ribosomal frameshifting conditionally expresses gasdermin D; with systemic AAV9 delivery in mouse colorectal and pancreatic models it elicited tumour regression, immune activation, and synergy with checkpoint blockade while sparing normal tissues from detectable toxicity.',
+    changes: 'tractability',
+    review: 'peer-reviewed',
+  },
+  {
+    id: 'heron-lung01-ruzaltatug-2026',
+    title:
+      'Ruzaltatug rezetecan versus chemotherapy for EGFR-mutated advanced non-small-cell lung cancer progressing after EGFR tyrosine kinase inhibitor therapy (HERON-Lung01): interim analysis of a randomised, open-label, phase 3 trial in China',
+    // PubMed electronic date 2026-10-26. Crossref only has the issue month, 2026-11. PubMed journal date is 2026-11-07.
+    published: '2026-10-26',
+    added: '2026-11-06',
+    source: 'The Lancet',
+    doi: '10.1016/S0140-6736(26)01899-4',
+    url: doi('10.1016/S0140-6736(26)01899-4'),
+    problemSlugs: ['cancer'],
+    summary:
+      'In a China phase 3 interim analysis (n=498), the HER3 ADC ruzaltatug rezetecan prolonged BICR PFS versus pemetrexed plus carboplatin or cisplatin after EGFR-TKI failure (median 8.3 vs 5.4 months; HR 0.47, 95% CI 0.36-0.60).',
+    changes: 'tractability',
+    review: 'trial-result',
+  },
+  {
+    id: 'fornace-malaria-climate-asia-pacific-2026',
+    title: 'Climate change threatens malaria elimination in the Asia Pacific',
+    published: '2026-10-30',
+    added: '2026-11-06',
+    source: 'Nature Medicine',
+    doi: '10.1038/s41591-026-04722-x',
+    url: doi('10.1038/s41591-026-04722-x'),
+    problemSlugs: ['infectious-disease', 'climate-change'],
+    // The abstract states a sharp rise, including Pakistan after the 2022 floods.
+    // Draft case counts were not in the abstract, and the article body is paywalled, so they are omitted.
+    summary:
+      'Climate change threatens malaria elimination across the Asia Pacific: reported cases have increased sharply in several regions, including Pakistan following the 2022 floods, through cascading disruptions to health systems, population displacement, and ecological change.',
+    changes: 'scale',
+    review: 'peer-reviewed',
+  },
+  {
+    id: 'lou-preprimary-education-laws-2026',
+    title:
+      'Preprimary education laws and women\'s gender attitudes, empowerment and reproductive autonomy in 117 low- and middle-income countries',
+    published: '2026-11-04',
+    added: '2026-11-06',
+    source: 'Nature Human Behaviour',
+    doi: '10.1038/s41562-026-02583-5',
+    url: doi('10.1038/s41562-026-02583-5'),
+    problemSlugs: ['pedagogy'],
+    summary:
+      'Across 495 surveys covering nearly 6.7 million women in 117 low- and middle-income countries, eligibility under preprimary education legislation was associated with higher female primary enrolment (+1.21 pp) and completion (+0.75 pp), greater ever use of contraception (+2.96 pp), and lower adolescent childbearing (-2.41 pp) and child marriage (-0.43 pp).',
+    changes: 'tractability',
+    review: 'peer-reviewed',
+  },
+  {
+    id: 'mantis-childhood-brain-tumors-2026',
+    title: 'AI-based precision prognostics and therapy personalization for childhood brain tumors',
+    published: '2026-11-03',
+    added: '2026-11-06',
+    source: 'Nature Genetics',
+    doi: '10.1038/s41588-026-02815-4',
+    url: doi('10.1038/s41588-026-02815-4'),
+    problemSlugs: ['cancer'],
+    summary:
+      'MANTIS, built on DNA methylation from 2,786 medulloblastoma and ependymoma patients, reaches concordance indices up to 0.80 +/- 0.07 and identifies about 60% of average-risk medulloblastoma patients without a significant survival disadvantage (P = 0.683) under less intensive craniospinal irradiation.',
+    changes: 'tractability',
+    review: 'peer-reviewed',
+  },
+  {
+    id: 'nad-blood-cvd-not-age-2026',
+    title: 'Whole-blood NAD levels track cardiovascular disease but not chronological age',
+    published: '2026-11-04',
+    added: '2026-11-06',
+    source: 'Nature Metabolism',
+    doi: '10.1038/s42255-026-01660-3',
+    url: doi('10.1038/s42255-026-01660-3'),
+    problemSlugs: ['longevity', 'hypertension'],
+    summary:
+      'In 1,340 measurements from 1,068 adults, whole-blood NAD did not decline with age in healthy people (stable in males, increased in females) but was reduced in cardiovascular disease and hypertension.',
+    changes: 'neglectedness',
+    review: 'peer-reviewed',
+  },
 ]
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/
