@@ -21,7 +21,7 @@ import {
   type DemandComponent,
 } from '@/lib/demand'
 import { demandSignalRegistry } from '@/data/demand-signals'
-import { fetchDemandBurden } from '@/lib/burden-feed'
+import { burdenFromSnapshot } from '@/lib/render-snapshot'
 import { fetchOpenAlexCount } from '@/lib/sources/openalex'
 import { fetchFormDCount } from '@/lib/sources/edgar'
 import { fetchFederalRegisterCount } from '@/lib/sources/federal-register'
@@ -87,7 +87,7 @@ async function liveComponentsFor(
   if (!feeds) return { components: comps, attention: null }
 
   const [burden, openalex, edgar, fedreg, usaspend, wiki, nih, fda] = await Promise.all([
-    feeds.burden ? fetchDemandBurden(feeds.burden) : Promise.resolve(null),
+    feeds.burden ? Promise.resolve(burdenFromSnapshot(feeds.burden)) : Promise.resolve(null),
     feeds.openAlexSearch ? fetchOpenAlexCount(feeds.openAlexSearch) : Promise.resolve(null),
     feeds.edgar
       ? fetchFormDCount(feeds.edgar.q, { kind: feeds.edgar.kind })

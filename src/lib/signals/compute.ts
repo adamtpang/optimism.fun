@@ -1,4 +1,4 @@
-import { fetchWdi } from '@/lib/sources/worldbank'
+import { RENDER_SNAPSHOT_ID, wdiSeriesFromSnapshot } from '@/lib/render-snapshot'
 import { SIGNAL_CATEGORIES, type SignalCategory } from './categories'
 
 export type ScoredSignal = {
@@ -31,11 +31,13 @@ export type ScoredSignal = {
 export async function computeSignals(): Promise<ScoredSignal[]> {
   const results = await Promise.all(
     SIGNAL_CATEGORIES.map(async (category) => {
-      const wdi = await fetchWdi('WLD', category.indicator, { mrv: 25 })
-      if (!wdi || wdi.series.length < 2) return null
-
-      const baseline = wdi.series[0]
-      const latest = wdi.series[wdi.series.length - 1]
+      const captured = wdiSeriesFromSnapshot(category.indicator)
+      const series = captured?.status === 'ok' ? captured.series ?? [] : []
+      if (series.length < 2) return null
+      const windowed = series.slice(-25)
+      const baseline = windowed[0]
+      const latest = windowed[windowed.length - 1]
+      if (!baseline || !latest) return null
       const years = latest.year - baseline.year
       if (years <= 0 || baseline.value <= 0) return null
 
@@ -49,7 +51,7 @@ export async function computeSignals(): Promise<ScoredSignal[]> {
         totalGrowthPct,
         cagrPct,
         years,
-        sourceLastUpdated: wdi.sourceLastUpdated,
+        sourceLastUpdated: RENDER_SNAPSHOT_ID,
       }
       return scored
     }),

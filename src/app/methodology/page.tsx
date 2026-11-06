@@ -7,6 +7,7 @@ import { companies } from '@/data/companies'
 import { ecosystem } from '@/data/ecosystem'
 import { inLimitCaps } from '@/data/in-limit'
 import { deathRatePair } from '@/lib/citations'
+import { RANKING_BEFORE, RANKING_FORMULA_CHANGES, RANKING_MODEL_VERSION, scoreRows } from '@/lib/score-export'
 
 export const metadata = {
   title: 'Methodology | optimism.fun',
@@ -220,9 +221,43 @@ export default function MethodologyPage() {
                   problem pages.
                 </p>
                 <p className="mb-4">
-                  <span className="text-ink-100">How many people,</span> on a log scale.
-                  One person scores 0. All 8.2 billion score 1.
+                  <span className="text-ink-100">How many people,</span> on a log scale,
+                  only for prevalence: people living with the condition under one definition.
+                  One such person scores 0. All 8.2 billion score 1. A population stock
+                  (everyone, or everyone in a set of countries), people requiring an
+                  intervention, people merely at risk, an annual flow, and an indirect
+                  exposure are not that denominator. They score one half, which means
+                  the comparable count is missing.
                 </p>
+                <p className="mb-4 text-ink-100">Ranking change, model {RANKING_MODEL_VERSION}</p>
+                <p className="mb-4">
+                  The order below is not the order this site published before the
+                  2026-11-06 audit. Scores use the committed records and render snapshot
+                  2026-11-06. They do not move when a live API changes.
+                </p>
+                <ul className="space-y-2 text-sm text-ink-400 mb-4">
+                  {RANKING_FORMULA_CHANGES.map((change) => (
+                    <li key={change}>{change}</li>
+                  ))}
+                </ul>
+                <p className="mb-2 text-ink-100">Order before the formula change (main at 80f56d1)</p>
+                <ol className="list-decimal pl-5 text-sm text-ink-400 mb-4">
+                  {RANKING_BEFORE.map((slug) => (
+                    <li key={slug}>{problems.find((p) => p.slug === slug)?.name ?? slug}</li>
+                  ))}
+                </ol>
+                <p className="mb-2 text-ink-100">Order after the formula change</p>
+                <ol className="list-decimal pl-5 text-sm text-ink-400 mb-4">
+                  {scoreRows()
+                    .slice()
+                    .sort((a, b) => Number(b.opportunity) - Number(a.opportunity))
+                    .map((row) => (
+                      <li key={row.slug}>
+                        {problems.find((p) => p.slug === row.slug)?.name ?? row.slug}
+                        {` · ${row.opportunity}`}
+                      </li>
+                    ))}
+                </ol>
                 <p className="mb-4">
                   <span className="text-ink-100">How bad, per person,</span> from 0 to 1,
                   the same way for every problem. Where a source states an annual death
@@ -233,8 +268,12 @@ export default function MethodologyPage() {
                   crushed together and not treated as the same. Where we cannot open both
                   numbers, severity is left empty and scores one half: missing data is not
                   a zero and not a free boost. Death counts are never stored in this field.
-                  A pair whose years differ is still scored, and the mismatch is written
-                  on the row. Two counts are not added when adding them would double-count
+                  A pair is scored only when both counts are the same statistical year and
+                  the denominator is a stock of people, not new diagnoses. A different year,
+                  a missing year, or a different age band is not a case-fatality rate.
+                  Diabetes, COPD, and hypertension are in that group. Missing annual
+                  severity scores one half. That default is not a measured rate.
+                  Two counts are not added when adding them would double-count
                   or mix a stock with a flow.
                 </p>
                 <p className="mb-4 text-ink-100">Sourced on the death-rate scale</p>

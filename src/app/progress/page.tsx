@@ -53,6 +53,7 @@ export default function ProgressPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-ink-700/50 border border-hair">
             {progress.map((p) => {
               const goodTone = p.direction === 'up' ? 'text-terminal-green' : 'text-terminal-green'
+              const unavailable = p.citationStatus === 'unavailable'
               const startVal = formatVal(p.baseline.value, p.format)
               const endVal = formatVal(p.latest.value, p.format)
               return (
@@ -66,6 +67,10 @@ export default function ProgressPage() {
                   </p>
 
                   <div className="border-t border-hair pt-4 font-mono">
+                    {unavailable ? (
+                      <p className="text-sm text-ink-300 leading-relaxed">Citation unavailable. No number is shown for this row.</p>
+                    ) : (
+                    <>
                     <div className="grid grid-cols-3 gap-2 items-baseline mb-3">
                       <div>
                         <p className="text-small uppercase text-ink-500 mb-1">
@@ -85,6 +90,7 @@ export default function ProgressPage() {
                       <span className="text-primary tabular-nums">
                         {delta(p.baseline.value, p.latest.value, p.direction)}
                       </span>
+                      {p.sourceUrl ? (
                       <a
                         href={p.sourceUrl}
                         target="_blank"
@@ -93,7 +99,12 @@ export default function ProgressPage() {
                       >
                         source
                       </a>
+                      ) : (
+                        <span className="text-ink-500 ml-3">no source</span>
+                      )}
                     </div>
+                    </>
+                    )}
                   </div>
                 </article>
               )

@@ -1,35 +1,20 @@
-import { liveSources } from '@/data/data-sources'
-import { fetchWdiLastUpdated } from '@/lib/sources/worldbank'
+import { RENDER_SNAPSHOT_ID, renderSnapshot } from '@/lib/render-snapshot'
 
 /**
- * "Data last updated" strip. The World Bank date is that API's own
- * meta.lastupdated, read when the page renders and cached for a day.
+ * Freshness strip for the frozen capture. It does not call the World Bank.
  */
-export default async function DataFreshness({ className = '' }: { className?: string }) {
-  const published = await fetchWdiLastUpdated()
+export default function DataFreshness({ className = '' }: { className?: string }) {
   return (
     <div
       className={`flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-small text-ink-500 ${className}`}
     >
-      <span className="inline-flex items-center gap-1.5 uppercase text-terminal-green">
-        <span className="inline-block w-1.5 h-1.5 rounded-full bg-terminal-green" />
-        live data
+      <span className="uppercase text-ink-400">
+        Snapshot {RENDER_SNAPSHOT_ID}
       </span>
-      {liveSources.map((s) => (
-        <a
-          key={s.id}
-          href={s.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:text-primary transition-colors"
-          title={`${s.indicators.length} indicators`}
-        >
-          {s.name}
-          {s.id === 'worldbank-wdi' && (
-            <span className="text-ink-600"> · updated {published ?? 'unavailable'}</span>
-          )}
-        </a>
-      ))}
+      <span>
+        WHO, Our World in Data, and World Bank figures on these pages are the capture at{' '}
+        {renderSnapshot.retrievedAt}. A later live value is not shown here.
+      </span>
     </div>
   )
 }

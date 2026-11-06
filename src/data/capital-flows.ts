@@ -81,21 +81,18 @@ export const capitalFlows: CapitalFlow[] = [
   {
     problemSlug: 'infectious-disease',
     usdPerYear: {
-      value: 25_000_000_000,
+      value: 0,
       unit: 'USD/yr',
-      source: 'Previously recorded IHME Financing Global Health reading. The old topic URL returned HTTP 404. The current FGH visual was not re-extracted for the $25 billion figure, so that dollar claim is unverified against the live page.',
+      source:
+        'Citation unavailable. The IHME topic page returned HTTP 404 on 2026-11-06. The $25 billion infectious-disease slice was not re-read from the current Financing Global Health visual, so it is not shown and not scored.',
       sourceUrl: 'https://www.healthdata.org/data-tools-practices/interactive-visuals/financing-global-health',
-      confidence: 'med',
-      asOf: '2024-12-01',
+      confidence: 'low',
+      citationStatus: 'unavailable',
+      asOf: '2026-11-06',
     },
     momentum: 'falling',
     scope:
-      'Development assistance for health aimed at HIV, TB, malaria and immunization (Global Fund, Gavi, PEPFAR, Gates). Excludes domestic health budgets. COVID-era peak has unwound and aid cuts bite.',
-    series: [
-      { year: 2019, usd: 22_000_000_000 },
-      { year: 2021, usd: 35_000_000_000 },
-      { year: 2023, usd: 25_000_000_000 },
-    ],
+      'The previous series (2019 $22 billion, 2021 $35 billion, 2023 $25 billion) is not shown. It was not re-read from a live IHME page.',
   },
   {
     problemSlug: 'biosecurity',

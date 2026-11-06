@@ -66,23 +66,28 @@ function assertUnitInterval(slug: string, field: string, value: number): number 
   return value
 }
 
-/** Count kinds that are a stock of people. Flows and indirect counts are not. */
-const STOCK_COUNT = new Set(['prevalence', 'population', 'interventions-required'])
+/**
+ * Only people living with a condition, in one definition, enter the log
+ * "how many people" term. A population stock (everyone, or everyone in a
+ * set of countries), a program count of people requiring interventions,
+ * people merely at risk, an annual flow, and an indirect exposure are
+ * different denominators. They stay on the row and score as missing.
+ */
+const COMPARABLE_COUNT = new Set(['prevalence'])
 
 /**
  * True when the headline count can enter the "how many people" term.
- * Incidence, annual deaths, at-risk exposure, and indirect counts cannot.
- * A missing kind is treated as not comparable, so a new row cannot sneak in.
+ * A missing kind is not comparable.
  */
 export function quantityComparable(p: Problem): boolean {
   const kind = p.humansAffected?.countKind
-  return kind != null && STOCK_COUNT.has(kind)
+  return kind != null && COMPARABLE_COUNT.has(kind)
 }
 
 /**
  * Quantity of humans, log-scaled against ~8.2 billion, only for a stock count.
- * An incomparable headline (incidence, deaths per year, indirect exposure)
- * scores one half: unknown on this scale, not the log of a different unit.
+ * Anything other than prevalence scores one half: missing on this scale,
+ * not the log of a different kind of count.
  */
 export function quantityScore(p: Problem): number {
   if (!quantityComparable(p)) return 0.5
@@ -91,12 +96,19 @@ export function quantityScore(p: Problem): number {
 
 /**
  * A death-rate pair that is allowed into annual severity.
- * Incident-case denominators are not an annual individual mortality risk.
+ * The two counts must be the same statistical year, and the denominator
+ * must be a stock of people. A different year, a missing year, incident
+ * cases, or an explicit not-scored note means there is no rate.
+ * Disclosing the mismatch is not enough to score it.
  */
 export function annualDeathPair(p: Problem) {
-  return p.mortalityPairs?.find(
-    (pair) => !pair.notScoredBecause && pair.denominatorKind !== 'incident-cases' && pair.denominatorKind !== 'not-a-person-year',
-  )
+  return p.mortalityPairs?.find((pair) => {
+    if (pair.notScoredBecause) return false
+    if (pair.denominatorKind === 'incident-cases' || pair.denominatorKind === 'not-a-person-year') return false
+    if (pair.deaths.year == null || pair.affected.year == null) return false
+    if (pair.deaths.year !== pair.affected.year) return false
+    return true
+  })
 }
 
 /**

@@ -42,11 +42,10 @@ export default function WhitepapersIndex() {
           {sorted.length === 0 ? (
             <div className="border border-dashed border-hair p-8 text-center">
               <p className="font-mono text-small uppercase text-primary mb-3">
-                no drops yet
+                none published
               </p>
               <p className="text-sm text-ink-400 leading-relaxed max-w-md mx-auto mb-4">
-                The first issue is in flight. Subscribe to get it in your inbox the
-                Monday it ships.
+                No whitepaper is in the archive. This page does not invent one, and it does not promise a Monday issue.
               </p>
               <Link
                 href="/#join"

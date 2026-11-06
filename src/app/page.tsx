@@ -114,6 +114,9 @@ export default function Home() {
             <h2 className="text-h1 text-ink-100 mt-2 max-w-[28ch]">
               Humanity&rsquo;s hardest problems.
             </h2>
+            <p className="text-small text-neutral-600 mt-3 max-w-[68ch]">
+              The order changed on 2026-11-06. The methodology page lists the previous order and the formula changes. Scores use the committed records, not a live refetch.
+            </p>
 
             <RankedProblems
               rows={rows.map((r) => {

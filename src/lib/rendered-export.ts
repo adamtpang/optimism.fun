@@ -1,6 +1,6 @@
 import whoReadings from '@/data/who-readings.json'
 import worldbank from '@/data/snapshots/worldbank-gdp-2024.json'
-import renderedSnapshot from '@/data/snapshots/rendered-2026-11-06.json'
+import { RENDER_SNAPSHOT_ID, renderSnapshot } from '@/lib/render-snapshot'
 import { owidCharts } from '@/data/owid-charts'
 import { problems } from '@/data/problems'
 import { RANKING_MODEL_VERSION } from '@/lib/score-export'
@@ -9,8 +9,8 @@ type WorldBankFile = [{ lastupdated?: string }, ...unknown[]]
 
 /**
  * What a researcher can reproduce from this commit.
- * Live OWID and WHO series are not pretended to be here unless a snapshot file
- * recorded them. The WHO block is the wording read on 2026-11-06, not a series.
+ * The WHO, OWID, and World Bank series are `liveCapture`, the same object
+ * the pages render. The WHO readings block is wording, not a second series.
  */
 export function renderedExport() {
   const bank = worldbank as unknown as WorldBankFile
@@ -27,7 +27,8 @@ export function renderedExport() {
         ? 'World Bank snapshot stored in the repository. This is nominal GDP, not a live refetch.'
         : 'World Bank snapshot is present but has no lastupdated field.',
     },
-    liveCapture: renderedSnapshot,
+    snapshotId: RENDER_SNAPSHOT_ID,
+    liveCapture: renderSnapshot,
     owidMappings: Object.entries(owidCharts).map(([problem, chart]) => ({
       problem,
       slug: chart.slug,

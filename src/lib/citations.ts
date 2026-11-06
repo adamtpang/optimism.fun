@@ -1,21 +1,14 @@
 import type { CitedCount, MortalityPair, Problem } from '@/data/types'
 import { displayDeathCitation } from '@/lib/burden'
+import { annualDeathPair } from '@/lib/priority'
 
 export type Citation = { text: string; href?: string }
 
 const SITE = 'https://optimism.fun'
 
-/**
- * The pair that was actually scored as an annual death rate.
- * Incident cases (new diagnoses) are not a person-year denominator.
- */
+/** The pair that was actually scored as an annual death rate. Same rule as annualDeathPair. */
 export function deathRatePair(problem: Problem): MortalityPair | undefined {
-  return problem.mortalityPairs?.find(
-    (pair) =>
-      !pair.notScoredBecause &&
-      pair.denominatorKind !== 'incident-cases' &&
-      pair.denominatorKind !== 'not-a-person-year',
-  )
+  return annualDeathPair(problem)
 }
 
 function yearOf(asOf: string): string {

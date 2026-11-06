@@ -99,6 +99,11 @@ export type SourcedNumber = {
   observationYear?: number
   /** Year the cited report was published, when it differs from the observation year. */
   publicationYear?: number
+  /**
+   * `unavailable` means the number is kept only so the gap is visible.
+   * It is not an established measurement and must not be scored or shown as one.
+   */
+  citationStatus?: 'unavailable'
 }
 
 /**
@@ -670,6 +675,8 @@ export type ProgressMilestone = {
   sourceUrl: string
   confidence: Confidence
   asOf: string
+  /** When set, baseline and latest are not an established series and must not be shown as one. */
+  citationStatus?: 'unavailable'
 }
 
 export type CandidateStatus = 'draft' | 'promoted' | 'rejected'

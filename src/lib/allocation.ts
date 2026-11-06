@@ -41,19 +41,21 @@ export function verdictFor(ratio: number): AllocationVerdict {
 export function computeAllocations(): Map<string, Allocation> {
   const demand = new Map(problems.map((p) => [p.slug, importanceScore(p)]))
   const totalDemand = [...demand.values()].reduce((s, v) => s + v, 0) || 1
-  const totalCapital = capitalFlows.reduce((s, c) => s + c.usdPerYear.value, 0) || 1
+  const counted = capitalFlows.filter((c) => c.usdPerYear.citationStatus !== 'unavailable')
+  const totalCapital = counted.reduce((s, c) => s + c.usdPerYear.value, 0) || 1
 
   const out = new Map<string, Allocation>()
   for (const p of problems) {
     const flow = capitalFlows.find((c) => c.problemSlug === p.slug) ?? null
+    const usable = flow && flow.usdPerYear.citationStatus !== 'unavailable' ? flow : null
     const demandShare = (demand.get(p.slug) ?? 0) / totalDemand
-    const capitalShare = flow ? flow.usdPerYear.value / totalCapital : null
+    const capitalShare = usable ? usable.usdPerYear.value / totalCapital : null
     const ratio =
       capitalShare != null && demandShare > 0 ? capitalShare / demandShare : null
     out.set(p.slug, {
       problemSlug: p.slug,
-      capitalUsd: flow?.usdPerYear.value ?? null,
-      momentum: flow?.momentum ?? null,
+      capitalUsd: usable?.usdPerYear.value ?? null,
+      momentum: usable?.momentum ?? null,
       demandShare,
       capitalShare,
       ratio,

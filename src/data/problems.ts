@@ -1687,15 +1687,8 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: '2026-08-27',
     },
-    severity: {
-      value: 0.463,
-      unit: '0–1 log of annual deaths per affected adult',
-      source:
-        'WHO HEARTS technical package: high blood pressure kills approximately 10 million people a year. WHO fact sheet: 1.4 billion adults aged 30–79 had hypertension in 2024. Rate = 10,000,000 / 1,400,000,000 = 0.00714 deaths per affected person per year. Log-normalized from 1 in 10,000 (0) to certain death this year (1): 0.463. The 23 September 2025 WHO news says "more than 10 million", so 10 million is the approximate figure, not a floor.',
-      sourceUrl: 'https://www.who.int/publications/i/item/9789241511377',
-      confidence: 'med',
-      asOf: '2026-11-01',
-    },
+    severityNote:
+      'Not scored. The death figure is an approximate annual toll with no statistical year, and one WHO page says “more than 10 million.” The 1.4 billion adults are aged 30–79 in 2024. Those are not the same denominator, so there is no annual mortality rate here. Missing annual severity scores one half. That is a missing-data default, not a measured case fatality.',
     mortalityPairs: [
       {
         deaths: {
@@ -1717,6 +1710,8 @@ export const problems: Problem[] = [
         },
         yearMismatch:
           'The 1.4 billion adults are for 2024. The death toll is an approximate annual figure with no statistical year on the page.',
+        notScoredBecause:
+          'No shared year, and the death toll is approximate (“about” or “more than” 10 million). Dividing it by the 2024 prevalence would invent a case-fatality rate.',
       },
     ],
     currentSolutionQuality: {
@@ -2175,15 +2170,8 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: '2026-09-11',
     },
-    severity: {
-      value: 0.551,
-      unit: '0–1 log of annual deaths per prevalent case',
-      source:
-        'WHO COPD fact sheet (opened 2026-11-01): 3.4 million deaths in 2023, citing GBD 2023. GBD 2021 (PubMed 39748260): 213.39 million prevalent cases. Years differ, so the rate is approximate: 3,400,000 / 213,390,000 = 0.0159 deaths per prevalent case per year. Log-normalized from 1 in 10,000 (0) to certain death this year (1): 0.551. The mortality row still records WHO\'s earlier 3.5 million deaths for 2021.',
-      sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/chronic-obstructive-pulmonary-disease-(copd)',
-      confidence: 'med',
-      asOf: '2026-11-01',
-    },
+    severityNote:
+      'Not scored. Deaths are 3.4 million in 2023 (WHO fact sheet, citing GBD 2023). Prevalent cases are 213.39 million in 2021 (GBD 2021). The years and the study editions differ, so the ratio is not an annual mortality rate among people living with COPD. Missing annual severity scores one half.',
     mortalityPairs: [
       {
         deaths: {
@@ -2204,6 +2192,8 @@ export const problems: Problem[] = [
           asOf: '2026-11-01',
         },
         yearMismatch: 'Deaths are for 2023. Prevalent cases are for 2021.',
+        notScoredBecause:
+          '2023 deaths and 2021 prevalent cases are not a person-year rate. No same-year prevalence was opened, and none is invented.',
       },
     ],
     marketSize: {
@@ -2314,15 +2304,8 @@ export const problems: Problem[] = [
       confidence: 'high',
       asOf: '2026-09-11',
     },
-    severity: {
-      value: 0.3455,
-      unit: '0–1 log of annual direct deaths per person living with diabetes. Not the IDF 20–79 count.',
-      source:
-        'WHO diabetes fact sheet read 2026-11-06: diabetes was the direct cause of 2.0 million deaths in 2023, and 830 million people were living with diabetes in 2022. Rate = 2,000,000 / 830,000,000. The years differ. Log-normalized from 1 in 10,000 (0) to certain death this year (1). This is not 2.0 million divided by the IDF’s 589 million adults aged 20–79. The IDF’s broader attributable-death figure is a different definition and is not used. An earlier reading of this fact sheet stated 1.6 million direct deaths in 2021; that figure is historical and is not this rate.',
-      sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/diabetes',
-      confidence: 'med',
-      asOf: '2026-11-06',
-    },
+    severityNote:
+      'Not scored. The headline is IDF adults aged 20–79 in 2024 (589 million). WHO direct deaths are 2.0 million in 2023. The only opened prevalence is 830 million people of all ages in 2022. The year, the age band, and the source differ from the headline, so 2.0 million / 830 million is not a case-fatality rate and is not used. Missing annual severity scores one half. 1.6 million direct deaths in 2021 is an earlier reading of the fact sheet and is not the latest figure.',
     mortalityPairs: [
       {
         deaths: {
@@ -2343,7 +2326,9 @@ export const problems: Problem[] = [
         },
         denominatorKind: 'person-stock',
         yearMismatch:
-          'Deaths are for 2023. People living with diabetes are for 2022. Neither figure is the IDF count of adults aged 20–79 in 2024.',
+          'Deaths are for 2023, all-ages direct cause. People living with diabetes are for 2022, all ages. The headline count is adults aged 20–79 in 2024.',
+        notScoredBecause:
+          'The death year, the prevalence year, and the headline age band are not the same denominator. No same-year, same-age person stock was opened, and none is invented.',
       },
       {
         deaths: {

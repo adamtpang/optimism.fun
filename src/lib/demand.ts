@@ -112,7 +112,10 @@ export function buildComponents(p: Problem): DemandComponent[] {
   // Capital flux: estimated $/yr flowing at the problem (PitchBook/NVCA-style),
   // log-scaled to $1T. Momentum rides along.
   const flow = getCapitalFlow(p.slug)
-  const capital = flow ? logNorm(flow.usdPerYear.value, 1_000_000_000_000) : null
+  const capital =
+    flow && flow.usdPerYear.citationStatus !== 'unavailable'
+      ? logNorm(flow.usdPerYear.value, 1_000_000_000_000)
+      : null
 
   // Expert priors: convergence of credible prioritizers.
   const expert = expertPriorStrength(p.slug)

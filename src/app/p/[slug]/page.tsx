@@ -129,7 +129,14 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
                 href={deathsMetric?.sourceUrl ?? deathSource?.sourceUrl ?? cite}
               />
             )}
-            {flow && (
+            {flow && flow.usdPerYear.citationStatus === 'unavailable' && (
+              <Stat
+                label="spent on it / yr"
+                value="Citation unavailable"
+                source={flow.usdPerYear.source}
+              />
+            )}
+            {flow && flow.usdPerYear.citationStatus !== 'unavailable' && (
               <Stat
                 label="spent on it / yr"
                 value={fmtUsdCompact(flow.usdPerYear.value)}

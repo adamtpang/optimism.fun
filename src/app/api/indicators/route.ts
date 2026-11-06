@@ -1,44 +1,49 @@
 /**
  * GET /api/indicators
  *
- * DB-backed read of the latest live indicator values (World Bank WDI today),
- * one per problem, plus the freshness signal (when our cron last wrote and the
- * source's own last-published date). Public, dynamic, cached for a minute.
- *
- * Returns an empty observation list (not an error) when DATABASE_URL is not
- * configured, so the front end can fall back to seed data cleanly.
+ * Latest World Bank points from the frozen render snapshot. This route does
+ * not read the database and does not call the World Bank at request time.
  */
 import { NextResponse } from 'next/server'
-import { getLatestObservations, getLatestFetchedAt } from '@/lib/indicators'
 import { allLiveIndicators } from '@/data/data-sources'
-import { fetchWdiLastUpdated } from '@/lib/sources/worldbank'
-import { isDbConfigured } from '@/lib/db'
+import { RENDER_SNAPSHOT_ID, renderSnapshot, wdiSeriesFromSnapshot } from '@/lib/render-snapshot'
 
 export const runtime = 'nodejs'
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-static'
 
-export async function GET() {
-  const labelFor = new Map(allLiveIndicators.map((i) => [i.indicator, i.label]))
-
-  const [observations, dbFetchedAt, sourceLastUpdated] = await Promise.all([
-    getLatestObservations(),
-    getLatestFetchedAt(),
-    fetchWdiLastUpdated({ revalidateSeconds: 86400 }),
-  ])
+export function GET() {
+  const observations = allLiveIndicators.flatMap((indicator) => {
+    const row = wdiSeriesFromSnapshot(indicator.indicator)
+    if (!row || row.status !== 'ok' || !row.latest) return []
+    return [
+      {
+        problemSlug: indicator.problemSlug,
+        indicator: indicator.indicator,
+        countryIso3: indicator.countryIso3,
+        year: row.latest.year,
+        value: row.latest.value,
+        sourceLastUpdated: RENDER_SNAPSHOT_ID,
+        fetchedAt: row.retrievedAt ?? renderSnapshot.retrievedAt,
+        label: indicator.label,
+      },
+    ]
+  })
+  const missing = allLiveIndicators
+    .filter((indicator) => !observations.some((row) => row.indicator === indicator.indicator))
+    .map((indicator) => indicator.indicator)
 
   return NextResponse.json(
     {
       ok: true,
-      source: 'worldbank-wdi',
-      dbConfigured: isDbConfigured(),
-      sourceLastUpdated,
-      dbFetchedAt,
+      source: 'render-snapshot',
+      snapshot: RENDER_SNAPSHOT_ID,
+      dbConfigured: false,
+      sourceLastUpdated: RENDER_SNAPSHOT_ID,
+      dbFetchedAt: null,
       count: observations.length,
-      observations: observations.map((o) => ({
-        ...o,
-        label: labelFor.get(o.indicator) ?? o.indicator,
-      })),
+      missing,
+      observations,
     },
-    { headers: { 'cache-control': 'public, max-age=60, s-maxage=60' } },
+    { headers: { 'cache-control': 'public, max-age=3600, s-maxage=86400' } },
   )
 }

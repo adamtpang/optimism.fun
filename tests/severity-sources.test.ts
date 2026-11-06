@@ -58,11 +58,10 @@ describe('sourced severity', () => {
   })
 
   it('flags mismatched years on the scored pairs that have them', () => {
-    expect(deathRatePair(problems.find((p) => p.slug === 'diabetes')!)!.yearMismatch).toMatch(/2023/)
-    expect(deathRatePair(problems.find((p) => p.slug === 'copd')!)!.yearMismatch).toMatch(/2023/)
-    expect(deathRatePair(problems.find((p) => p.slug === 'hypertension')!)!.yearMismatch).toBeTruthy()
-    expect(deathRatePair(problems.find((p) => p.slug === 'cancer')!)).toBeUndefined()
-    expect(deathRatePair(problems.find((p) => p.slug === 'copd')!)!.affected.doi).toBe(
+    for (const slug of ['diabetes', 'copd', 'hypertension', 'cancer']) {
+      expect(deathRatePair(problems.find((p) => p.slug === slug)!), slug).toBeUndefined()
+    }
+    expect(problems.find((p) => p.slug === 'copd')!.mortalityPairs?.[0]?.affected.doi).toBe(
       '10.1186/s12931-024-03051-2',
     )
   })

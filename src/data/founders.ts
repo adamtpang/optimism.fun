@@ -888,8 +888,8 @@ export const founders: Founder[] = [
   ]),
   mk(85, 'Dilip Shanghvi', 25_600_000_000, 'Sun Pharmaceutical Industries', 'India', 70, 'scaling-proven-tech', [
     {
-      vehicle: 'Shantilal Shanghvi Foundation + Sun Foundation',
-      description: 'Citation unavailable. The only recorded source, a LinkedIn pulse, resolved on 2026-11-06 to LinkedIn’s generic article-not-found page. The earlier description of rural healthcare programs is unverified and is not restated.',
+      vehicle: 'Philanthropy record',
+      description: 'Citation unavailable. The only recorded source resolved to a generic LinkedIn article-not-found page on 2026-11-06. No program, foundation, or dollar claim is shown.',
       source: 'Citation unavailable — LinkedIn pulse not found',
       sourceUrl: 'https://www.linkedin.com/pulse/dilip-shanghvi-illuminating-path-healthcare-innovation',
     },

@@ -6,13 +6,18 @@ import { KARDASHEV, formatKardashev } from '@/lib/kardashev'
 import { yearsBefore1950FromBce } from '@/lib/calendar'
 import { discoveries } from '@/data/discoveries'
 import { publicPaths } from '@/lib/public-routes'
-import { scoreRows, RANKING_MODEL_VERSION } from '@/lib/score-export'
+import { RANKING_AFTER, RANKING_BEFORE, RANKING_MODEL_VERSION, scoreRows } from '@/lib/score-export'
 import { renderedExport } from '@/lib/rendered-export'
 import { headroomScenarios } from '@/lib/marketcap'
 import { companies } from '@/data/companies'
 import { ecosystem } from '@/data/ecosystem'
 import { deathRatePair } from '@/lib/citations'
-import { isConditionalStake, severityScore } from '@/lib/priority'
+import { isConditionalStake, quantityComparable, severityScore } from '@/lib/priority'
+import { burdenFromSnapshot, owidChartFromSnapshot, RENDER_SNAPSHOT_ID, renderSnapshot, wdiSeriesFromSnapshot } from '@/lib/render-snapshot'
+import { whitepapers } from '@/data/whitepapers'
+import { progress } from '@/data/progress'
+import { getCapitalFlow } from '@/data/capital-flows'
+import { demandSignalRegistry } from '@/data/demand-signals'
 
 const repo = (path: string) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8')
 
@@ -33,9 +38,11 @@ describe('audit corrections', () => {
     expect(diabetes.tagline).toMatch(/30\+/)
     expect(diabetes.tagline).toMatch(/2022/)
     expect(diabetes.description).not.toMatch(/59 percent are not even diagnosed/)
-    const scored = deathRatePair(diabetes)!
-    expect(scored.deaths).toMatchObject({ value: 2_000_000, year: 2023 })
-    expect(scored.affected.value).toBe(830_000_000)
+    expect(deathRatePair(diabetes)).toBeUndefined()
+    expect(diabetes.severity).toBeUndefined()
+    expect(diabetes.mortalityPairs?.[0]?.deaths).toMatchObject({ value: 2_000_000, year: 2023 })
+    expect(diabetes.mortalityPairs?.[0]?.affected).toMatchObject({ value: 830_000_000, year: 2022 })
+    expect(diabetes.mortalityPairs?.[0]?.notScoredBecause).toMatch(/not the same denominator/)
     expect(diabetes.mortalityPairs?.some((pair) => pair.deaths.value === 1_600_000 && pair.notScoredBecause)).toBe(true)
   })
 
@@ -53,6 +60,7 @@ describe('audit corrections', () => {
   it('converts BCE to BP with a 1950 epoch and no year 0', () => {
     expect(yearsBefore1950FromBce(3200)).toBe(5149)
     expect(yearsBefore1950FromBce(9000)).toBe(10949)
+    expect(yearsBefore1950FromBce(1)).toBe(1950)
     expect(repo('src/app/ages/page.tsx')).not.toMatch(/k BP/)
   })
 
@@ -147,5 +155,98 @@ describe('audit corrections', () => {
     expect(rendered.liveCapture.owid.find((row) => row.problem === 'neglected-tropical-diseases')?.status).toBe('ok')
     expect(rendered.who.retrievedAt).toBe('2026-11-06')
     expect(rendered.worldbank.lastupdated).toBeTruthy()
+    expect(rendered.liveCapture).toBe(renderSnapshot)
+    expect(rendered.snapshotId).toBe(RENDER_SNAPSHOT_ID)
+  })
+
+  it('keeps the NTD headline and the later chart as different observations', () => {
+    const chart = owidChartFromSnapshot('neglected-tropical-diseases')
+    expect(chart.state).toBe('ok')
+    if (chart.state !== 'ok') return
+    const point2023 = chart.chart.series.find((point) => point.year === 2023)
+    const point2024 = chart.chart.series.find((point) => point.year === 2024)
+    expect(point2024).toEqual({ year: 2024, value: 1409526996 })
+    expect(point2023?.value).not.toBe(1_495_000_000)
+    const exported = renderedExport().liveCapture.owid.find((row) => row.problem === 'neglected-tropical-diseases')
+    expect(exported?.series).toEqual(chart.chart.series)
+    expect(exported?.unit).toBe(chart.chart.unit)
+  })
+
+  it('renders every mapped OWID, WHO, and World Bank series from the export snapshot', () => {
+    for (const row of renderSnapshot.owid) {
+      const rendered = owidChartFromSnapshot(row.problem)
+      expect(rendered.state, row.problem).toBe('ok')
+      if (rendered.state !== 'ok') continue
+      expect(rendered.chart.series).toEqual(row.series)
+      expect(rendered.chart.unit).toBe(row.unit)
+      expect(rendered.chart.asOf).toBe(row.sourceAsOf || RENDER_SNAPSHOT_ID)
+    }
+    for (const feed of Object.values(demandSignalRegistry)) {
+      if (!feed.burden) continue
+      const reading = burdenFromSnapshot(feed.burden)
+      expect(reading.status, feed.burden.kind).toBe('ok')
+      if (reading.status !== 'ok') continue
+      const burden = feed.burden
+      if (burden.kind === 'owid') {
+        const row = renderSnapshot.owid.find((item) => item.slug === burden.slug)
+        expect(reading.value).toBe(row?.latest?.value)
+        expect(reading.year).toBe(row?.latest?.year)
+      }
+      if (burden.kind === 'who') {
+        const row = renderSnapshot.who.find((item) => item.code === burden.code)
+        expect(reading.value).toBe(row?.latest?.value)
+      }
+      if (burden.kind === 'wdi') {
+        const row = wdiSeriesFromSnapshot(burden.indicator)
+        expect(reading.value).toBe(row?.latest?.value)
+      }
+    }
+  })
+
+  it('does not treat population stocks as prevalence', () => {
+    for (const slug of ['biosecurity', 'climate-change', 'longevity', 'energy-abundance', 'neglected-tropical-diseases']) {
+      expect(quantityComparable(problems.find((p) => p.slug === slug)!), slug).toBe(false)
+    }
+    expect(quantityComparable(problems.find((p) => p.slug === 'copd')!)).toBe(true)
+  })
+
+  it('does not present the three unresolved citations as established numbers', () => {
+    const gdp = progress.find((row) => row.slug === 'gdp-per-capita')!
+    expect(gdp.citationStatus).toBe('unavailable')
+    expect(repo('src/app/progress/page.tsx')).toMatch(/Citation unavailable/)
+    expect(gdp.description).not.toMatch(/\$16,700/)
+    const flow = getCapitalFlow('infectious-disease')!
+    expect(flow.usdPerYear.citationStatus).toBe('unavailable')
+    expect(flow.usdPerYear.value).toBe(0)
+    expect(flow.series ?? []).toEqual([])
+    expect(repo('src/app/p/[slug]/page.tsx')).toMatch(/Citation unavailable/)
+    const founders = repo('src/data/founders.ts')
+    expect(founders).toMatch(/Dilip Shanghvi/)
+    expect(founders).toMatch(/No program, foundation, or dollar claim is shown/)
+    expect(founders).not.toMatch(/Shantilal Shanghvi Foundation/)
+  })
+
+  it('lists only real whitepapers and indexes those routes', () => {
+    expect(whitepapers.length).toBeGreaterThan(0)
+    const paths = publicPaths()
+    expect(paths).toContain('/whitepapers')
+    for (const paper of whitepapers) {
+      expect(problems.some((problem) => problem.slug === paper.problemSlug), paper.slug).toBe(true)
+      expect(paper.publishedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+      expect(paths).toContain(`/p/${paper.problemSlug}/whitepaper`)
+    }
+    expect(paths.some((path) => path.startsWith('/admin'))).toBe(false)
+    expect(repo('src/app/whitepapers/page.tsx')).not.toMatch(/Monday it ships/)
+  })
+
+  it('freezes the pre-change ranking order', () => {
+    expect(RANKING_MODEL_VERSION).toBe('2026-11-06.2')
+    expect(RANKING_BEFORE).toHaveLength(problems.length)
+    const now = scoreRows()
+      .slice()
+      .sort((a, b) => Number(b.opportunity) - Number(a.opportunity))
+      .map((row) => row.slug)
+    expect(now).not.toEqual([...RANKING_BEFORE])
+    expect(now).toEqual([...RANKING_AFTER])
   })
 })

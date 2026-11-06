@@ -20,10 +20,11 @@ type Resp = {
   dbFetchedAt: string | null
   count: number
   observations: Obs[]
+  missing?: string[]
+  snapshot?: string
 }
 
 const fmt = (n: number) => new Intl.NumberFormat('en', { maximumFractionDigits: 2 }).format(n)
-const day = (s: string | null) => (s ? s.slice(0, 10) : '—')
 
 /**
  * Reads /api/indicators (DB-backed live World Bank values) and renders the
@@ -50,16 +51,14 @@ export default function LiveIndicators() {
     }
   }, [])
 
-  if (err) return <p className="text-sm text-ink-500">Live data unavailable right now.</p>
-  if (!data) return <p className="text-sm text-ink-500">Loading live values…</p>
+  if (err) return <p className="text-sm text-ink-500">Snapshot unavailable right now.</p>
+  if (!data) return <p className="text-sm text-ink-500">Loading the captured values…</p>
 
   return (
     <div>
       {data.observations.length === 0 ? (
         <p className="text-sm text-ink-400">
-          The live table is wired and will populate on the next scheduled refresh
-          {data.dbConfigured ? '' : ' once the database is connected'}. Seed values are shown
-          across the site until then.
+          No World Bank point from the {data.snapshot ?? 'render'} snapshot is available for this table.
         </p>
       ) : (
         <div className="rounded border border-hair overflow-hidden">
@@ -83,9 +82,13 @@ export default function LiveIndicators() {
           </table>
         </div>
       )}
+      {data.missing && data.missing.length > 0 && (
+        <p className="mt-3 text-sm text-ink-400">
+          Not in the snapshot, so not shown: {data.missing.join(', ')}.
+        </p>
+      )}
       <p className="mt-3 font-mono text-small text-ink-500">
-        <span className="text-primary">●</span> source: World Bank WDI · published{' '}
-        {data.sourceLastUpdated ? day(data.sourceLastUpdated) : 'unavailable'} · our copy refreshed {day(data.dbFetchedAt)}
+        Source: World Bank rows in snapshot {data.snapshot ?? data.sourceLastUpdated ?? 'unavailable'}. Not a live refetch.
       </p>
     </div>
   )
