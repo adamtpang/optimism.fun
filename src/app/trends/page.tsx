@@ -13,9 +13,7 @@ export const metadata: Metadata = {
     'What is rising on the internet, scored by momentum, novelty and cross-source spread — and specifically what is rising that nobody has priced yet.',
 }
 
-// Hourly. The underlying windows are 7 and 30 days, so anything faster would
-// just re-fetch the same numbers.
-export const revalidate = 3600
+export const revalidate = 86400
 
 export default async function TrendsPage() {
   const board = await computeTrendBoard()
@@ -41,8 +39,8 @@ export default async function TrendsPage() {
               so a thread cannot masquerade as a trend.
             </p>
             <p className="mt-4 font-mono text-small text-ink-500">
-              {board.resolved} of {board.attempted} terms returned live signal · {rising} rising ·
-              refreshed hourly
+              {board.resolved} of {board.attempted} terms have a captured signal · {rising} rising ·
+              snapshot 2026-11-06, not a request-time refetch
             </p>
           </div>
         </section>

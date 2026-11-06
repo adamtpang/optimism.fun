@@ -272,7 +272,12 @@ export default function MethodologyPage() {
                   the denominator is a stock of people, not new diagnoses. A different year,
                   a missing year, or a different age band is not a case-fatality rate.
                   Diabetes, COPD, and hypertension are in that group. Missing annual
-                  severity scores one half. That default is not a measured rate.
+                  severity scores one half. That one half is an imputation, a model
+                  choice for a missing input. It is not a measured severity, and the
+                  order it produces is not an empirical finding that the first problem
+                  is the most important problem. Hypertension is first under this
+                  model because its prevalence is large and its annual severity is
+                  that imputation, after year-mismatched death rates were removed.
                   Two counts are not added when adding them would double-count
                   or mix a stock with a flow.
                 </p>

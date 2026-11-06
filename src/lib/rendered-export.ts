@@ -3,20 +3,24 @@ import worldbank from '@/data/snapshots/worldbank-gdp-2024.json'
 import { RENDER_SNAPSHOT_ID, renderSnapshot } from '@/lib/render-snapshot'
 import { owidCharts } from '@/data/owid-charts'
 import { problems } from '@/data/problems'
-import { RANKING_MODEL_VERSION } from '@/lib/score-export'
+import { RANKING_FORMULAS, RANKING_MODEL_VERSION } from '@/lib/score-export'
+import { RENDER_INVENTORY } from '@/data/render-inventory'
 
 type WorldBankFile = [{ lastupdated?: string }, ...unknown[]]
 
 /**
  * What a researcher can reproduce from this commit.
- * The WHO, OWID, and World Bank series are `liveCapture`, the same object
- * the pages render. The WHO readings block is wording, not a second series.
+ * `liveCapture` is the same object the pages render: WHO, OWID, World Bank,
+ * OpenAlex, Wikipedia, EDGAR, Federal Register, USAspending, NIH, openFDA,
+ * and the trend observations. The WHO readings block is wording, not a second series.
  */
 export function renderedExport() {
   const bank = worldbank as unknown as WorldBankFile
   const lastupdated = bank[0]?.lastupdated ?? null
   return {
     model: RANKING_MODEL_VERSION,
+    formulas: RANKING_FORMULAS,
+    inventory: RENDER_INVENTORY,
     generatedFrom: 'repository files, not a live refetch at request time',
     who: whoReadings,
     worldbank: {

@@ -25,7 +25,7 @@
 import type { Problem, CapitalMomentum, DemandClass } from '@/data/types'
 import { quantityScore, severityScore, abilityToPayScore } from '@/lib/priority'
 import { mortalitySignal } from '@/lib/burden'
-import { getCapitalFlow } from '@/data/capital-flows'
+import { getCapitalFlow, establishedCapitalUsd } from '@/data/capital-flows'
 import { expertPriorStrength } from '@/data/expert-priors'
 
 const clamp01 = (x: number) => Math.max(0, Math.min(1, x))
@@ -112,10 +112,8 @@ export function buildComponents(p: Problem): DemandComponent[] {
   // Capital flux: estimated $/yr flowing at the problem (PitchBook/NVCA-style),
   // log-scaled to $1T. Momentum rides along.
   const flow = getCapitalFlow(p.slug)
-  const capital =
-    flow && flow.usdPerYear.citationStatus !== 'unavailable'
-      ? logNorm(flow.usdPerYear.value, 1_000_000_000_000)
-      : null
+  const capitalUsd = establishedCapitalUsd(flow)
+  const capital = capitalUsd != null ? logNorm(capitalUsd, 1_000_000_000_000) : null
 
   // Expert priors: convergence of credible prioritizers.
   const expert = expertPriorStrength(p.slug)
@@ -213,7 +211,7 @@ export function demandScore(p: Problem): DemandReadout {
   return {
     problemSlug: p.slug,
     ...composed,
-    momentum: flow?.momentum ?? null,
+    momentum: establishedCapitalUsd(flow) != null ? flow?.momentum ?? null : null,
     components: comps,
   }
 }

@@ -216,3 +216,13 @@ export const capitalFlows: CapitalFlow[] = [
 
 export const getCapitalFlow = (problemSlug: string): CapitalFlow | undefined =>
   capitalFlows.find((c) => c.problemSlug === problemSlug)
+
+/**
+ * Dollars that may enter a total, a share, or a displayed capital figure.
+ * Unavailable is not zero: a stored 0 with citationStatus unavailable is a
+ * placeholder, and returning it would label the problem as measured empty.
+ */
+export function establishedCapitalUsd(flow: CapitalFlow | undefined | null): number | null {
+  if (!flow || flow.usdPerYear.citationStatus === 'unavailable') return null
+  return flow.usdPerYear.value
+}

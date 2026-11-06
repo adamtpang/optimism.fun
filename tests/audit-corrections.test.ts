@@ -6,7 +6,7 @@ import { KARDASHEV, formatKardashev } from '@/lib/kardashev'
 import { yearsBefore1950FromBce } from '@/lib/calendar'
 import { discoveries } from '@/data/discoveries'
 import { publicPaths } from '@/lib/public-routes'
-import { RANKING_AFTER, RANKING_BEFORE, RANKING_MODEL_VERSION, scoreRows } from '@/lib/score-export'
+import { RANKING_AFTER, RANKING_BEFORE, RANKING_FORMULAS, RANKING_MODEL_VERSION, scoreRows } from '@/lib/score-export'
 import { renderedExport } from '@/lib/rendered-export'
 import { headroomScenarios } from '@/lib/marketcap'
 import { companies } from '@/data/companies'
@@ -16,8 +16,12 @@ import { isConditionalStake, quantityComparable, severityScore } from '@/lib/pri
 import { burdenFromSnapshot, owidChartFromSnapshot, RENDER_SNAPSHOT_ID, renderSnapshot, wdiSeriesFromSnapshot } from '@/lib/render-snapshot'
 import { whitepapers } from '@/data/whitepapers'
 import { progress } from '@/data/progress'
-import { getCapitalFlow } from '@/data/capital-flows'
+import { establishedCapitalUsd, getCapitalFlow } from '@/data/capital-flows'
 import { demandSignalRegistry } from '@/data/demand-signals'
+import { computeAllocations } from '@/lib/allocation'
+import { buildComponents } from '@/lib/demand'
+import { computeDemandRows } from '@/lib/demand-live'
+import { computeTrendBoard } from '@/lib/trends/engine'
 
 const repo = (path: string) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8')
 
@@ -248,5 +252,144 @@ describe('audit corrections', () => {
       .map((row) => row.slug)
     expect(now).not.toEqual([...RANKING_BEFORE])
     expect(now).toEqual([...RANKING_AFTER])
+    expect(RANKING_FORMULAS.missingSeverityImputation).toMatch(/imputation/)
+    expect(RANKING_FORMULAS.missingSeverityImputation).toMatch(/not a measured severity/)
+    expect(RANKING_FORMULAS.missingSeverityImputation).toMatch(/not an empirical finding/)
+    expect(repo('src/app/methodology/page.tsx')).toMatch(/imputation/)
+  })
+
+  it('does not treat unavailable infectious-disease capital as a measured zero', () => {
+    const flow = getCapitalFlow('infectious-disease')!
+    expect(flow.usdPerYear.value).toBe(0)
+    expect(establishedCapitalUsd(flow)).toBeNull()
+    const row = computeAllocations().get('infectious-disease')!
+    expect(row.capitalUsd).toBeNull()
+    expect(row.capitalShare).toBeNull()
+    expect(row.verdict).toBeNull()
+    const capital = buildComponents(problems.find((p) => p.slug === 'infectious-disease')!).find(
+      (c) => c.class === 'capital',
+    )!
+    expect(capital.strength).toBeNull()
+    const counted = [...computeAllocations().values()].filter((a) => a.capitalUsd != null)
+    expect(counted.some((a) => a.problemSlug === 'infectious-disease')).toBe(false)
+    expect(repo('src/app/rfs/page.tsx')).not.toMatch(/usdPerYear\.value/)
+  })
+
+  it('renders demand and trend numbers from the same snapshot the export returns', async () => {
+    const exported = renderedExport()
+    expect(exported.liveCapture).toBe(renderSnapshot)
+    expect(exported.inventory.map((item) => item.provider)).toEqual(
+      expect.arrayContaining(['openalex', 'wikipedia', 'sec-edgar', 'hackernews, github, wikipedia']),
+    )
+    expect(repo('src/lib/demand-live.ts')).not.toMatch(/fetchOpenAlexCount|fetchWikipediaPageviews/)
+    expect(repo('src/lib/trends/engine.ts')).not.toMatch(/fetchGithubTrend|fetchHackerNewsTrend|fetchWikipediaPageviews/)
+
+    const rows = await computeDemandRows()
+    const feeds = renderSnapshot.demandFeeds ?? []
+    expect(feeds.length).toBeGreaterThan(0)
+    for (const feed of feeds) {
+      const row = rows.find((item) => item.slug === feed.problem)
+      expect(row, feed.problem).toBeTruthy()
+      if (feed.provider === 'openalex' && feed.status === 'ok') {
+        const research = row!.components.find((c) => c.class === 'research')
+        expect(research?.live?.value).toBe(feed.value)
+        expect(research?.live?.unit).toBe('papers')
+        expect(research?.strength == null || (research.strength as number) > 0).toBe(true)
+      }
+      if (feed.provider === 'wikipedia' && feed.status === 'ok') {
+        expect(row!.attention?.value).toBe(feed.value)
+        expect(row!.attention?.unit).toBe('monthly readers')
+      }
+      if (feed.provider === 'federal-register' && feed.status === 'ok') {
+        const policy = row!.components.find((c) => c.class === 'policy')
+        expect(policy?.live?.value).toBe(feed.value)
+        expect(policy?.live?.unit).toBe('federal documents')
+      }
+      if (feed.provider === 'openfda' && feed.status === 'ok') {
+        const queues = row!.components.find((c) => c.class === 'queues')
+        expect(queues?.live?.value).toBe(feed.value)
+      }
+      if (feed.provider === 'edgar' && feed.status === 'ok') {
+        const capital = row!.components.find((c) => c.class === 'capital')
+        expect(capital?.live?.value).toBe(feed.value)
+      }
+      if (feed.provider === 'usaspending' && feed.status === 'ok') {
+        const edgar = feeds.find((item) => item.problem === feed.problem && item.provider === 'edgar' && item.status === 'ok')
+        if (!edgar) {
+          const capital = row!.components.find((c) => c.class === 'capital')
+          expect(capital?.live?.value).toBe(feed.value)
+          expect(capital?.live?.unit).toBe('federal awards')
+        }
+      }
+      if (feed.provider === 'nih' && feed.status === 'ok') {
+        const openalex = feeds.find((item) => item.problem === feed.problem && item.provider === 'openalex' && item.status === 'ok')
+        if (!openalex) {
+          const research = row!.components.find((c) => c.class === 'research')
+          expect(research?.live?.value).toBe(feed.value)
+        }
+      }
+      if (feed.status === 'unavailable') {
+        const shown = row!.components.find((c) => c.live?.value === 0 && c.unavailable !== 'unavailable')
+        expect(shown).toBeUndefined()
+      }
+    }
+
+    const board = await computeTrendBoard()
+    expect(Date.parse(board.generatedAt)).toBeLessThanOrEqual(Date.now())
+    for (const capture of renderSnapshot.trends ?? []) {
+      const scored = board.ranked.find((item) => item.term === capture.term)
+      expect(scored, capture.term).toBeTruthy()
+      const detail = capture.detail as { observations?: { source: string; current: number; prior: number }[]; unavailableSources?: string[] }
+      for (const observation of detail.observations ?? []) {
+        const shown = scored!.observations.find((item) => item.source === observation.source)
+        if (observation.current === 0 && observation.prior === 0) {
+          expect(shown).toBeUndefined()
+        } else {
+          expect(shown?.current).toBe(observation.current)
+          expect(shown?.prior).toBe(observation.prior)
+        }
+      }
+      for (const missing of detail.unavailableSources ?? []) {
+        expect(scored!.observations.some((item) => item.source === missing)).toBe(false)
+      }
+    }
+  })
+
+  it('records capture times in the past, in UTC and Central', () => {
+    const chicago = (iso: string) =>
+      new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'America/Chicago',
+        hour: '2-digit',
+        minute: '2-digit',
+        hourCycle: 'h23',
+      }).format(new Date(iso))
+    expect(chicago('2026-11-06T22:59:18.869Z')).toBe('16:59')
+    expect(chicago('2026-11-06T23:11:44.702Z')).toBe('17:11')
+
+    const stamps: string[] = []
+    const walk = (value: unknown) => {
+      if (Array.isArray(value)) {
+        value.forEach(walk)
+        return
+      }
+      if (!value || typeof value !== 'object') return
+      for (const [key, child] of Object.entries(value)) {
+        if ((key === 'retrievedAt' || key.endsWith('Utc')) && typeof child === 'string' && child.includes('T')) {
+          stamps.push(child)
+        } else walk(child)
+      }
+    }
+    walk(renderSnapshot)
+    expect(stamps.length).toBeGreaterThan(20)
+    for (const stamp of stamps) {
+      const parsed = Date.parse(stamp)
+      expect(Number.isNaN(parsed), stamp).toBe(false)
+      expect(parsed, stamp).toBeLessThanOrEqual(Date.now())
+      expect(stamp.startsWith('2026-11-06'), stamp).toBe(true)
+    }
+    for (const feed of [...(renderSnapshot.demandFeeds ?? []), ...(renderSnapshot.trends ?? [])]) {
+      expect(feed.retrievedAtCt).toMatch(/-06:00$/)
+      expect(Math.abs(Date.parse(feed.retrievedAtCt) - Date.parse(feed.retrievedAtUtc))).toBeLessThan(1000)
+    }
   })
 })

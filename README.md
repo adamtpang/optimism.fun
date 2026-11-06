@@ -30,7 +30,7 @@ These files are public downloads of the current commit. They are not a supported
 
 `/api/scores` repeats the ranking inputs, the formulas, a worked example, and model-sensitivity bounds. Those bounds are what the score does if a missing annual-severity default is set to 0 or to 1. They are not a statistical confidence interval. No validated interval is published.
 
-`/api/rendered` includes the WHO sentences read on 2026-11-06, the World Bank GDP file already in the repo, and the Our World in Data, WHO, and World Bank series captured in `src/data/snapshots/rendered-2026-11-06.json`. A row with status `unavailable` was a failed fetch. It is not a stored historical value. A problem page may still fetch a live chart; that fetch can fail, and the page says so.
+`/api/rendered` returns the same snapshot the public pages render. The file is `src/data/snapshots/rendered-2026-11-06.json`. It holds the Our World in Data, WHO, and World Bank series, plus the OpenAlex, Wikipedia, SEC EDGAR, Federal Register, USAspending, NIH RePORTER, and openFDA counts on `/demand`, and the Hacker News, GitHub, and Wikipedia observations on `/trends`. A row with status `unavailable` was a failed fetch. It is not stored as zero and it is not a filled-in historical value. `/research` answers a question only after someone asks; those answers are not a standing table in the snapshot.
 
 A stored chart uses only the series already stored for that problem. If there is no stored series, the page says so. A live chart under it is a separate retrieval, with its own year and definition.
 

@@ -18,7 +18,7 @@
  */
 import { problems } from '@/data/problems'
 import { importanceScore } from '@/lib/priority'
-import { capitalFlows } from '@/data/capital-flows'
+import { capitalFlows, establishedCapitalUsd } from '@/data/capital-flows'
 import type { AllocationVerdict, CapitalMomentum } from '@/data/types'
 
 export type Allocation = {
@@ -41,21 +41,23 @@ export function verdictFor(ratio: number): AllocationVerdict {
 export function computeAllocations(): Map<string, Allocation> {
   const demand = new Map(problems.map((p) => [p.slug, importanceScore(p)]))
   const totalDemand = [...demand.values()].reduce((s, v) => s + v, 0) || 1
-  const counted = capitalFlows.filter((c) => c.usdPerYear.citationStatus !== 'unavailable')
-  const totalCapital = counted.reduce((s, c) => s + c.usdPerYear.value, 0) || 1
+  const counted = capitalFlows
+    .map((c) => establishedCapitalUsd(c))
+    .filter((v): v is number => v != null)
+  const totalCapital = counted.reduce((s, v) => s + v, 0) || 1
 
   const out = new Map<string, Allocation>()
   for (const p of problems) {
     const flow = capitalFlows.find((c) => c.problemSlug === p.slug) ?? null
-    const usable = flow && flow.usdPerYear.citationStatus !== 'unavailable' ? flow : null
+    const usableUsd = establishedCapitalUsd(flow)
     const demandShare = (demand.get(p.slug) ?? 0) / totalDemand
-    const capitalShare = usable ? usable.usdPerYear.value / totalCapital : null
+    const capitalShare = usableUsd != null ? usableUsd / totalCapital : null
     const ratio =
       capitalShare != null && demandShare > 0 ? capitalShare / demandShare : null
     out.set(p.slug, {
       problemSlug: p.slug,
-      capitalUsd: usable?.usdPerYear.value ?? null,
-      momentum: usable?.momentum ?? null,
+      capitalUsd: usableUsd,
+      momentum: usableUsd != null ? flow?.momentum ?? null : null,
       demandShare,
       capitalShare,
       ratio,

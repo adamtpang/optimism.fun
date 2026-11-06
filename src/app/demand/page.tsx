@@ -11,10 +11,9 @@ import { demandSignalSources } from '@/data/demand-signals'
 export const metadata: Metadata = {
   title: 'The Demand Map | optimism.fun',
   description:
-    "Humanity's demand, measured — every problem scored by triangulating costly, revealed-preference signals: burden, willingness to pay, capital, research, policy, expert priors, and queues. Live from open statistical APIs.",
+    "Humanity's demand, measured — every problem scored by triangulating costly, revealed-preference signals: burden, willingness to pay, capital, research, policy, expert priors, and queues. Numbers are the 2026-11-06 render snapshot.",
 }
 
-// Re-fetch the live signals daily; every source degrades gracefully.
 export const revalidate = 86400
 
 export default async function DemandPage() {
@@ -47,7 +46,7 @@ export default async function DemandPage() {
             </p>
             <p className="mt-4 font-mono text-small text-ink-500">
               <span className="text-terminal-green">●</span>{' '}
-              {liveCells} signals live from open statistical APIs · refreshed daily · every
+              {liveCells} signals from snapshot 2026-11-06 · the same file the export returns · every
               cell cites its source
             </p>
           </div>

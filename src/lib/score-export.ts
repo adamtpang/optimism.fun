@@ -88,6 +88,8 @@ export const RANKING_FORMULAS = {
   deathRateFloor: DEATH_RATE_FLOOR,
   quantity: 'log10(count) / log10(8.2e9) for prevalence only; every other count kind is 0.5',
   missingJudgment: 0.5,
+  missingSeverityImputation:
+    '0.5 is an imputation: a model choice for a missing input. It is not a measured severity and not an empirical finding that the first-ranked problem is the most important problem. Hypertension ranks first under this model because its prevalence is large and its annual severity is that imputation.',
   opportunity: 'round(itn * (1 - supply) * (0.7 + 0.3 * urgency) * 100)',
   sensitivity:
     'If annual severity is missing or is a conditional stake, the export also records the score with that default set to 0 and to 1. Those are model sensitivities, not a statistical interval.',

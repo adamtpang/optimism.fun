@@ -46,12 +46,34 @@ type WdiRow = {
   latest?: Point | null
 }
 
+export type DemandFeedRow = {
+  problem?: string
+  term?: string
+  provider: string
+  status: 'ok' | 'unavailable'
+  retrievedAtUtc: string
+  retrievedAtCt: string
+  unit: string
+  value: number | null
+  detail: unknown
+  reason?: string
+  githubRetrievedAtUtc?: string
+  githubRetrievedAtCt?: string
+}
+
 type SnapshotFile = {
   retrievedAt: string
   note: string
+  timekeeping?: {
+    retrievedAtMeans: string
+    displayTimezone: string
+    note: string
+  }
   owid: OwidRow[]
   who: WhoRow[]
   worldbankWdi: WdiRow[]
+  demandFeeds?: DemandFeedRow[]
+  trends?: DemandFeedRow[]
 }
 
 export const renderSnapshot = snapshot as SnapshotFile
@@ -91,6 +113,15 @@ export function wdiSeriesFromSnapshot(indicator: string): WdiRow | null {
 
 export function whoSeriesFromSnapshot(code: string): WhoRow | null {
   return renderSnapshot.who.find((row) => row.code === code) ?? null
+}
+
+/** One captured demand feed. Missing means the registry does not ask for it. */
+export function demandCapture(problem: string, provider: string): DemandFeedRow | undefined {
+  return renderSnapshot.demandFeeds?.find((row) => row.problem === problem && row.provider === provider)
+}
+
+export function trendCaptures(): DemandFeedRow[] {
+  return renderSnapshot.trends ?? []
 }
 
 /** Burden number shown on the demand page. Same rows as the export. */

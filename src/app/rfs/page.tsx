@@ -16,7 +16,6 @@ import { problems } from '@/data/problems'
 import { requestsForStartups, getRequestsForProblem } from '@/data/rfs'
 import { getEcosystemForProblem } from '@/data/ecosystem'
 import { getInLimitCap } from '@/data/in-limit'
-import { getCapitalFlow } from '@/data/capital-flows'
 import { computeAllocations } from '@/lib/allocation'
 
 export const metadata: Metadata = {
@@ -35,15 +34,14 @@ const groups: RfsGroupData[] = problems
     const requests = getRequestsForProblem(p.slug)
     if (requests.length === 0) return null
     const prize = getInLimitCap(p.slug)
-    const flow = getCapitalFlow(p.slug)
     const alloc = allocations.get(p.slug)
     return {
       problemSlug: p.slug,
       problemName: p.name,
       tier: p.tier,
       prizeUsd: prize?.marketCap.value ?? null,
-      capitalUsd: flow?.usdPerYear.value ?? null,
-      momentum: flow?.momentum ?? null,
+      capitalUsd: alloc?.capitalUsd ?? null,
+      momentum: alloc?.momentum ?? null,
       ratio: alloc?.ratio ?? null,
       verdict: alloc?.verdict ?? null,
       funders: getEcosystemForProblem(p.slug).map((e) => ({
