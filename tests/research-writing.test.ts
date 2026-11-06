@@ -7,7 +7,9 @@ import {
   coversPrimary,
   enrollmentNumber,
   headlineTrial,
+  fallbackSentence,
   isFiller,
+  isOpinionPiece,
   readWritten,
   sameNumber,
   selectWritingPapers,
@@ -165,6 +167,15 @@ describe('838d2f4 sentence checks', () => {
     expect(sentenceProblems('The study did not include 90 participants and improved the outcome.', 'The trial improved the measured outcome.', ['The trial improved the measured outcome.']).join(' ')).toContain('90')
     expect(attributionOnlyReason('it does not attribute these findings to Tait (2019)')).toBe(true)
     expect(attributionOnlyReason('the abstract does not support 90% efficacy')).toBe(false)
+    const followUp = 'Vaccine efficacy was 54.0% after a mean of 2.3 years of follow-up in adults with latent infection.'
+    expect(sentenceProblems(`A 2018 trial reported efficacy after a mean of 2.3 years of follow-up in adults.`, followUp, [followUp]).join(' ')).toContain('copied abstract wording')
+    expect(sentenceProblems('Carr 2022 described a trial of 2,516 participants and said the regimen was noninferior.', 'The guidance says the 4-month regimen is effective.', ['The guidance says the 4-month regimen is effective.']).join(' ')).toContain('2,516')
+    expect(sentenceProblems('Horne 2024 studied 68 adults with lower baseline growth hormone and found reduced insulin resistance.', 'The trial enrolled 68 adults. Insulin resistance fell in the lower baseline growth hormone subgroup.', ['The trial enrolled 68 adults. Insulin resistance fell in the lower baseline growth hormone subgroup.']).join(' ')).toContain('wrong group')
+    expect(fallbackSentence('Semnani-Azad', '2021', 'A meta-analysis found intermittent fasting improved fasting glucose.')).toContain('Semnani-Azad 2021')
+    const editorial = { doi: '10.1000/edit', title: 'Editorial on the malaria vaccine', abstract: 'This editorial discusses a randomized malaria vaccine trial.', rank: 1, kind: 'editorial' }
+    const trial = { doi: '10.1000/trial', title: 'A phase 3 randomized trial of the malaria vaccine', abstract: 'The randomized malaria vaccine trial enrolled 200 children. Efficacy was 70%.', rank: 0 }
+    expect(isOpinionPiece(editorial)).toBe(true)
+    expect(selectWritingPapers('How well does this malaria vaccine work?', [editorial, trial]).map((paper) => paper.doi)).toEqual([trial.doi])
     expect(paperStatus({
       url: 'https://doi.org/10.1016/S0140-6736(23)02511-4',
       doi: '10.1016/S0140-6736(23)02511-4',

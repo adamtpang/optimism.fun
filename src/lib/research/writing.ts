@@ -12,6 +12,7 @@ export type WritingPaper = {
   title: string
   abstract: string
   rank: number
+  kind?: string
 }
 
 const COMMON_WORDS = new Set(`
@@ -72,8 +73,15 @@ export function readJudge(payload: unknown): { supported: boolean; reason: strin
   return null
 }
 
+/** Editorials and commentaries are not trials, even when they mention a randomized result. */
+export function isOpinionPiece(paper: { title: string; abstract?: string; kind?: string }): boolean {
+  const label = `${paper.kind || ''}\n${paper.title}\n${(paper.abstract || '').slice(0, 240)}`.toLowerCase()
+  return /\b(editorial|commentary|perspective|viewpoint)\b/.test(label)
+}
+
 /** RCTs, phase 3 trials, noninferiority trials, and meta-analyses outrank other papers. */
 export function isPriorityStudy(paper: WritingPaper): boolean {
+  if (isOpinionPiece(paper)) return false
   const text = `${paper.title}\n${paper.abstract}`.toLowerCase()
   return /phase\s*3|phase\s*iii|non-?inferior|\brandomi[sz]ed\b|\brct\b|meta-analysis|systematic review/.test(text)
 }
@@ -87,7 +95,8 @@ export function trialScore(paper: WritingPaper): number {
   else if (/\brandomi[sz]ed\b/.test(text)) score += 20
   if (/meta-analysis|systematic review/.test(text)) score += 45
   if (/placebo-controlled|placebo controlled/.test(text)) score += 10
-  if (/\bcommentary\b|\beditorial\b|\bnarrative review\b/.test(text) && !/meta-analysis|systematic review/.test(text)) score -= 30
+  if (isOpinionPiece(paper)) score -= 80
+  else if (/\bnarrative review\b/.test(text) && !/meta-analysis|systematic review/.test(text)) score -= 30
   return score
 }
 
@@ -98,8 +107,10 @@ function aboutQuestion(question: string, paper: WritingPaper): boolean {
 /** The highest-ranked relevant trial. No paper is pinned to a question. */
 export function headlineTrial(question: string, papers: WritingPaper[]): string | null {
   const matching = papers.filter((paper) => aboutQuestion(question, paper))
-  const priority = matching.filter((paper) => isPriorityStudy(paper) || paper.rank < 2)
-  const pool = priority.length ? priority : matching
+  const trials = matching.filter((paper) => !isOpinionPiece(paper))
+  const eligible = trials.length ? trials : matching
+  const priority = eligible.filter((paper) => isPriorityStudy(paper) || paper.rank < 2)
+  const pool = priority.length ? priority : eligible
   if (!pool.length) return null
   return [...pool].sort((a, b) => trialScore(b) - trialScore(a) || a.doi.localeCompare(b.doi))[0].doi
 }
@@ -107,8 +118,10 @@ export function headlineTrial(question: string, papers: WritingPaper[]): string 
 export function selectWritingPapers(question: string, papers: WritingPaper[]): WritingPaper[] {
   const headline = headlineTrial(question, papers)
   const matching = papers.filter((paper) => aboutQuestion(question, paper))
-  const pool = matching.filter((paper) => paper.doi === headline || isPriorityStudy(paper) || paper.rank < 2)
-  const chosen = (pool.length ? pool : matching).slice()
+  const trials = matching.filter((paper) => !isOpinionPiece(paper))
+  const eligible = trials.length ? trials : matching
+  const pool = eligible.filter((paper) => paper.doi === headline || isPriorityStudy(paper) || paper.rank < 2)
+  const chosen = (pool.length ? pool : eligible).slice()
   chosen.sort((a, b) => {
     if (a.doi === headline) return -1
     if (b.doi === headline) return 1
@@ -248,6 +261,34 @@ function printedVerbatim(token: string, abstract: string): boolean {
   return numberMatches(token, abstract)
 }
 
+/** "68 adults with lower growth hormone" is wrong when 68 is the whole trial and the qualifier sits elsewhere. */
+export function misplacedQualifier(sentence: string, abstract: string): string | null {
+  const pattern = /(\d[\d,]*(?:\.\d+)?%?)\s+(?:adults|participants|children|patients|people|men|women|individuals)\s+(?:with|who|whose)\s+([^.;]{8,80})/gi
+  const hay = abstract.toLowerCase()
+  for (const match of sentence.matchAll(pattern)) {
+    const words = match[2].toLowerCase().split(/[^a-z0-9]+/).filter((word) => word.length > 3).slice(0, 4)
+    if (words.length < 2) continue
+    const token = match[1].replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/,/g, ',?')
+    const at = hay.search(new RegExp(token))
+    if (at < 0) continue
+    const window = hay.slice(at, at + 48)
+    if (!words.every((word) => window.includes(word))) return 'number attached to the wrong group'
+  }
+  return null
+}
+
+/** A short sentence that names the author and year and does not import numbers. */
+export function fallbackSentence(author: string, year: string, abstract: string): string {
+  if (!author || !year || /^(?:al|et)$/i.test(author)) return ''
+  const source = abstract.toLowerCase()
+  let clause = ''
+  if (/non-?inferior/.test(source)) clause = 'found the comparison was noninferior'
+  else if (/did not|do not|no difference|not significant/.test(source)) clause = 'found the measured outcome did not change'
+  else if (/\befficacy\b|\bimproved\b|\breduced\b/.test(source)) clause = 'reported improved efficacy on the measured outcome'
+  if (!clause) return ''
+  return `${author} ${year} ${clause}.`
+}
+
 export function normalizedSentence(text: string): string {
   return normalizeSpan(text).replace(/\b\d+\b/g, '#').replace(/\s+/g, ' ').trim()
 }
@@ -271,6 +312,8 @@ export type SentenceAttribution = { author?: string; year?: string }
 export function sentenceProblems(sentence: string, abstract: string, abstracts: string[], attribution?: SentenceAttribution): string[] {
   const problems: string[] = []
   const text = sentence.replace(/\[\d+\]/g, ' ')
+  const misplaced = misplacedQualifier(text, abstract)
+  if (misplaced) problems.push(misplaced)
   if (/[\u2014]/.test(sentence)) problems.push('em dash')
   if (/\(\s*\)/.test(sentence) || /\(\s*[,.]/.test(sentence)) problems.push('empty parentheses')
   if (/not explicitly stated|\bsnippet\b|as an ai|model note|unspecified number|not stated|not reported/i.test(sentence)) problems.push('meta note')

@@ -4,7 +4,7 @@ import { isCoverageUrl, isExcludedUrl, isMirrorUrl, isRejectedResultUrl } from '
 import { arxivIdFromUrl, cleanDoi, doiFromUrl, isGuidanceRecord, isNonAnswer, isPdfUrl, normalizeTitle, normalizeUrl, paperStatus, plainSentence, pmidFromUrl, repairOpening, statusLabel, studyDirection, validateQuestion, workKey } from '@/lib/research/papers'
 import { chooseBalancedClaims, claimNeedsRepair, dedupeSources, groundClaims, paragraphFromClaims, polishClaim, questionIsGrounded, readPaperClaims, studyRank, unsupportedNumbers, type PaperClaim } from '@/lib/research/claims'
 import { citeName, renderExtractSentence, supportText, verifyExtract, type PaperExtract } from '@/lib/research/extract'
-import { JUDGE_PROMPT, attributionOnlyReason, auditSentences, headlineTrial, readJudge, readModelFacts, readWritten, requiredFacts, selectWritingPapers, sentenceProblems, withMarker, type SentenceAttribution, type WrittenSentence } from '@/lib/research/writing'
+import { JUDGE_PROMPT, attributionOnlyReason, auditSentences, fallbackSentence, headlineTrial, isOpinionPiece, readJudge, readModelFacts, readWritten, requiredFacts, selectWritingPapers, sentenceProblems, withMarker, type SentenceAttribution, type WrittenSentence } from '@/lib/research/writing'
 import { copiedContentRun } from '@/lib/research/text-checks.mjs'
 import {
   readSource,
@@ -869,8 +869,9 @@ function writerQuery(question: string, rows: { doi: string; who: string; year: s
   return [
     `Question: ${question}`,
     'Write 2 to 5 plain-English sentences, one finding per paper.',
-    'Each sentence names the first author surname and the publication year exactly as given. A different year is wrong.',
-    'Use your own words. Every number must be printed in that paper\'s abstract. Do not say thousands of participants, or that a count was not stated, when the abstract prints an exact count.',
+    'Each sentence names the first author surname and the publication year exactly as given. Do not write "et al." in place of the surname. A different year is wrong.',
+    'Use your own words. Every number must be printed in that same paper\'s abstract. Never move a number from one paper onto another.',
+    'Do not say thousands of participants, or that a count was not stated, when the abstract prints an exact count.',
     'State the direction exactly as the abstract does.',
     'The first paper is the primary trial. Its sentence must include the must-state facts when they are listed.',
     'Return strict JSON {sentences:[{text, paper_id, numbers:[]}]}. No notes field and no text outside the JSON.',
@@ -956,12 +957,17 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
       const empty = shapeResearchAnswer({ retrieved: papers, answer: null, metaByKey: foundMeta, now: deps.now })
       return withDebug(question, { ...empty, sentences: [], citations: [] }, { status: 'no-answer', error: UNVERIFIED_ANSWER })
     }
-    const selected = selectWritingPapers(question, briefs.map((paper) => ({
-      doi: paper.doi,
-      title: paper.title,
-      abstract: paper.abstract,
-      rank: studyRank(paper.title, paper.abstract),
-    })))
+    const selected = selectWritingPapers(question, briefs.map((paper) => {
+      const source = papers.find((item) => paperDoi(item, foundMeta) === paper.doi)
+      const meta = source ? (foundMeta[source.url] ?? foundMeta[workKey(source)] ?? {}) : {}
+      return {
+        doi: paper.doi,
+        title: paper.title,
+        abstract: paper.abstract,
+        rank: studyRank(paper.title, paper.abstract),
+        kind: [meta.crossrefType, meta.openAlexType, meta.articleType].filter(Boolean).join(' '),
+      }
+    }))
     const drafted = selected.map((paper) => {
       const source = papers.find((item) => paperDoi(item, foundMeta) === paper.doi)
       const meta = source ? (foundMeta[source.url] ?? foundMeta[workKey(source)] ?? {}) : {}
@@ -1046,10 +1052,10 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
           const attribution = !judge.supported && attributionOnlyReason(judge.reason)
           return { row, supported: judge.supported, attribution, reason: judge.reason }
         }))
-        const kept = judged.filter((item) => item.supported || item.attribution).map((item) => item.row)
+        const kept = audited.ok
         const failures = [
           ...audited.failures,
-          ...judged.filter((item) => !item.supported).map((item) => `${item.row.paper_id}: judge said no (${item.reason})`),
+          ...judged.filter((item) => !item.supported && !item.attribution).map((item) => `${item.row.paper_id}: judge said no (${item.reason})`),
         ]
         return { kept, failures }
       }
@@ -1063,9 +1069,10 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
         if (missingHeadline && headline) {
           const facts = factMap.get(headline) || []
           const person = people.get(headline)
-          const repaired = readWritten(await postAnswer(writerBody(`Include a sentence for the primary trial ${headline}. Name ${person?.author || 'the first author'} and the year ${person?.year || ''}. must state: ${facts.join('; ')}`)))
-          if (repaired?.length) {
-            latest = repaired
+          const repaired = readWritten(await postAnswer(writerBody(`Add one sentence for the primary trial ${headline}. Keep every other sentence. Name ${person?.author || 'the first author'} and the year ${person?.year || ''}. must state: ${facts.join('; ')}`)))
+          const added = repaired?.find((item) => item.paper_id === headline) || repaired?.[0]
+          if (added) {
+            latest = [...latest.filter((row) => row.paper_id !== headline), { ...added, paper_id: headline }]
             round = await judgeRows(latest)
           }
           continue
@@ -1102,6 +1109,18 @@ export async function askResearch(question: string, partial?: Partial<Deps>): Pr
         const byId = new Map(rewritten.map((row) => [row.paper_id, row]))
         latest = latest.map((row) => byId.get(row.paper_id) || row)
         round = await judgeRows(latest)
+      }
+      const have = new Set(round.kept.map((row) => row.paper_id))
+      const recovery = rows.filter((row) => !isOpinionPiece(row))
+      for (const row of (recovery.length ? recovery : rows)) {
+        if (round.kept.length >= 2) break
+        if (have.has(row.doi)) continue
+        const text = fallbackSentence(row.author, row.year, row.abstract)
+        if (!text) continue
+        const problems = sentenceProblems(text, row.abstract, [row.abstract], people.get(row.doi))
+        if (problems.length) continue
+        round.kept.push({ text, paper_id: row.doi })
+        have.add(row.doi)
       }
       const kept = round.kept.slice(0, 5)
       const guidanceOnly = kept.length > 0 && kept.every((row) => isGuidanceRecord({ doi: row.paper_id })) && selected.some((paper) => paper.rank < 2 && !isGuidanceRecord({ doi: paper.doi, title: paper.title }))
