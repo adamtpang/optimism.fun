@@ -1,14 +1,13 @@
-import type { MetadataRoute } from "next";
+import type { MetadataRoute } from 'next'
+import { publicPaths } from '@/lib/public-routes'
 
-const SITE_URL = "https://optimism.fun";
+const SITE_URL = 'https://optimism.fun'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ["", "/discoveries", "/methodology", "/about", "/contact", "/privacy"];
-
-  return routes.map((route, index) => ({
-    url: `${SITE_URL}${route}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly",
-    priority: index === 0 ? 1 : 0.7,
-  }));
+  return publicPaths().map((route) => ({
+    url: route === '' ? `${SITE_URL}/` : `${SITE_URL}${route}`,
+    lastModified: new Date('2026-11-06'),
+    changeFrequency: 'weekly' as const,
+    priority: route === '' ? 1 : route.startsWith('/p/') ? 0.8 : 0.6,
+  }))
 }

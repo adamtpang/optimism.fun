@@ -7,7 +7,7 @@ import { getProblemBySlug } from '@/data/problems'
 export const metadata = {
   title: 'Whitepapers · optimism.fun',
   description:
-    'Weekly blackpaper + whitepaper drops. One problem at a time, deep dive plus proposed solution.',
+    'The whitepapers that have actually been published. Not a promise of a new one every Monday.',
 }
 
 export default function WhitepapersIndex() {
@@ -25,15 +25,15 @@ export default function WhitepapersIndex() {
               <span>&larr;</span> back
             </Link>
             <p className="font-mono text-small uppercase text-primary mb-3">
-              weekly drops
+              published archive
             </p>
             <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.05] text-ink-100 mb-5">
               Whitepapers.
             </h1>
             <p className="text-lg text-ink-300 leading-relaxed max-w-2xl">
-              Every Monday, one problem. Blackpaper: the deep dive. Whitepaper: the
-              proposed solution and the founders &amp; allocators it&rsquo;s
-              addressed to.
+              {sorted.length === 0
+                ? 'None published yet. This page will list them when they exist. It does not invent earlier issues.'
+                : `${sorted.length} published. Each one is a blackpaper and a proposed solution. A new one is not promised every Monday, and missing weeks are not filled in.`}
             </p>
           </div>
         </section>

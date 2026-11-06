@@ -80,9 +80,12 @@ export default function AboutPage() {
             <h2 className="font-serif text-2xl text-ink-100">What the site offers</h2>
             <p className="mt-4 leading-7 text-ink-300">
               Visitors can browse the published research, filter interactive rankings, subscribe
-              for project updates, send feedback, and use an optional founder-fit interview. The
-              site does not advertise a supported public API or MCP contract; automated readers
-              should use the substantive pages and the project&rsquo;s llms.txt guidance instead.
+              for project updates, send feedback, and use an optional founder-fit interview. There
+              is no supported API and no stability guarantee. The downloads at{' '}
+              <Link href="/data" className="text-primary hover:underline">/data</Link> are public,
+              versioned files of what the site currently stores. They can change when the data
+              changes. Automated readers should use those files, the substantive pages, and the
+              project&rsquo;s llms.txt guidance.
             </p>
           </div>
         </section>

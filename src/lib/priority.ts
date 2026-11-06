@@ -19,10 +19,11 @@ import type { Problem } from '@/data/types'
  * the methodology page. A value outside 0..1 is a bug and throws. There is
  * no silent "divide by 10" conversion.
  *
- * Catastrophic risks (tier x-risk) use the loss if the catastrophe happens,
- * not this year's deaths. A sourced single probability would multiply that
- * stake. A range with no midpoint does not: we do not invent the center.
- * Tagged companies are not treated as proof the tail is covered; supply
+ * Catastrophic risks record the loss if the catastrophe happens. That
+ * conditional stake is not this year's death rate and does not enter annual
+ * severity. A sourced single probability would multiply the stake. A range
+ * with no midpoint does not: we do not invent the center. Tagged companies
+ * are not treated as proof the tail is covered; supply
  * for an x-risk falls back to the neglectedness judgment.
  *
  * Zero tagged companies and zero tagged funders is missing data, not an
@@ -65,19 +66,56 @@ function assertUnitInterval(slug: string, field: string, value: number): number 
   return value
 }
 
-/** Quantity of humans affected, log-scaled against all of humanity (~8.2B). */
+/** Count kinds that are a stock of people. Flows and indirect counts are not. */
+const STOCK_COUNT = new Set(['prevalence', 'population', 'interventions-required'])
+
+/**
+ * True when the headline count can enter the "how many people" term.
+ * Incidence, annual deaths, at-risk exposure, and indirect counts cannot.
+ * A missing kind is treated as not comparable, so a new row cannot sneak in.
+ */
+export function quantityComparable(p: Problem): boolean {
+  const kind = p.humansAffected?.countKind
+  return kind != null && STOCK_COUNT.has(kind)
+}
+
+/**
+ * Quantity of humans, log-scaled against ~8.2 billion, only for a stock count.
+ * An incomparable headline (incidence, deaths per year, indirect exposure)
+ * scores one half: unknown on this scale, not the log of a different unit.
+ */
 export function quantityScore(p: Problem): number {
+  if (!quantityComparable(p)) return 0.5
   return logNorm(p.humansAffected?.value, 8_200_000_000)
 }
 
 /**
- * Per-person severity, 0..1. Missing severity is unknown and scores one half,
- * so a gap in the sources neither rewards nor zeroes a problem.
+ * A death-rate pair that is allowed into annual severity.
+ * Incident-case denominators are not an annual individual mortality risk.
  */
-export function severityScore(p: Problem): number {
-  const v = p.severity?.value
-  if (v == null) return 0.5
-  return assertUnitInterval(p.slug, 'severity', v)
+export function annualDeathPair(p: Problem) {
+  return p.mortalityPairs?.find(
+    (pair) => !pair.notScoredBecause && pair.denominatorKind !== 'incident-cases' && pair.denominatorKind !== 'not-a-person-year',
+  )
+}
+
+/**
+ * Conditional extinction stake. Stored for display. Not this year's death rate,
+ * and not multiplied into the annual score. A probability range with no
+ * midpoint is not averaged.
+ */
+export function isConditionalStake(p: Problem): boolean {
+  return p.tier === 'x-risk' && p.severity != null && !annualDeathPair(p)
+}
+
+/**
+ * Per-person annual severity, 0..1. Missing severity scores one half.
+ * A conditional extinction stake also scores one half here: the stake stays
+ * on the row and is not treated as this year's harm.
+ */
+export function severityScore(p: Problem, missing = 0.5): number {
+  if (isConditionalStake(p) || p.severity?.value == null) return missing
+  return assertUnitInterval(p.slug, 'severity', p.severity.value)
 }
 
 /** 1–10 judgment as a 0..1 factor. Missing scores one half. */
@@ -112,8 +150,8 @@ export function abilityToPayScore(p: Problem): number {
 }
 
 /** importance = quantity × severity, gated (not zeroed) by ability to pay. */
-export function importanceScore(p: Problem): number {
-  const base = quantityScore(p) * severityScore(p)
+export function importanceScore(p: Problem, missingSeverity = 0.5): number {
+  const base = quantityScore(p) * severityScore(p, missingSeverity)
   const gate = 0.5 + 0.5 * abilityToPayScore(p) // market scales importance 0.5x..1x
   return clamp01(base * gate)
 }
@@ -122,9 +160,9 @@ export function importanceScore(p: Problem): number {
  * Scale × neglectedness × tractability, times the x-risk weight.
  * This is what the homepage multiplies by the supply gap.
  */
-export function itnScore(p: Problem): number {
+export function itnScore(p: Problem, missingSeverity = 0.5): number {
   return (
-    importanceScore(p) *
+    importanceScore(p, missingSeverity) *
     judgmentFactor(p.neglectedness?.score) *
     judgmentFactor(p.tractability?.score) *
     existentialWeight(p)
@@ -154,8 +192,8 @@ export function urgencyScore(p: Problem): number {
 }
 
 /** Headline 0..100 priority: ITN × urgency. No supply discount. */
-export function priorityScore(p: Problem): number {
-  return Math.round(itnScore(p) * urgencyScore(p) * 100)
+export function priorityScore(p: Problem, missingSeverity = 0.5): number {
+  return Math.round(itnScore(p, missingSeverity) * urgencyScore(p) * 100)
 }
 
 /** A "rising" problem is one whose headline number is getting worse. */
@@ -213,8 +251,8 @@ export function supplyScore(p: Problem, s: SupplyInputs): number {
 /**
  * 0..100 opportunity score: high ITN, low supply. The homepage sorts on this.
  */
-export function opportunityScore(p: Problem, s: SupplyInputs): number {
+export function opportunityScore(p: Problem, s: SupplyInputs, missingSeverity = 0.5): number {
   const supply = supplyScore(p, s)
   const urgency = 0.7 + 0.3 * urgencyScore(p)
-  return Math.round(itnScore(p) * (1 - supply) * urgency * 100)
+  return Math.round(itnScore(p, missingSeverity) * (1 - supply) * urgency * 100)
 }

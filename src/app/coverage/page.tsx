@@ -10,12 +10,13 @@ import {
   type CoverageStatus,
 } from '@/data/coverage'
 import { unmappedCauses } from '@/lib/burden'
+import { problems } from '@/data/problems'
 import { formatHumans } from '@/lib/format'
 
 export const metadata: Metadata = {
   title: 'Is this index comprehensive? | optimism.fun',
   description:
-    'The 11 problems on this index were hand-seeded, not discovered. Cross-referenced against the UN SDGs, 80,000 Hours, and the Global Burden of Disease to find out what is missing.',
+    'The problems on this index were hand-seeded, not discovered. Cross-referenced against the UN SDGs, 80,000 Hours, and the Global Burden of Disease to find out what is missing.',
 }
 
 const STATUS_LABEL: Record<CoverageStatus, string> = {
@@ -50,7 +51,7 @@ export default function CoveragePage() {
               <span className="block text-primary">a comprehensive index?</span>
             </h1>
             <p className="text-ink-400 leading-relaxed max-w-2xl text-base">
-              The 11 problems on this index were hand-seeded across a build session — not
+              The {problems.length} problems on this index were hand-seeded across a build — not
               discovered. A curated list reflects the curator&apos;s blind spots. So instead of
               trusting that, we cross-checked the list against three taxonomies that were each
               built, independently, to be exhaustive over a domain — and counted what falls
@@ -236,7 +237,7 @@ export default function CoveragePage() {
             <div className="space-y-4 font-mono text-small leading-relaxed text-ink-400 max-w-7xl">
               <p>
                 <span className="text-ink-100">This is a snapshot, not a live check.</span> The
-                taxonomies here are hand-fetched and hand-mapped, same as the 11 problems
+                taxonomies here are hand-fetched and hand-mapped, same as the {problems.length} problems
                 themselves. It answers &quot;what are we obviously missing&quot;, not &quot;are we
                 complete&quot; — no finite set of taxonomies proves completeness, it only lowers the
                 chance of an obvious blind spot.

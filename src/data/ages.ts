@@ -34,13 +34,13 @@ export const ages: Age[] = [
   },
   {
     slug: 'agricultural-revolution',
-    year: -10_000,
-    yearLabel: '~10,000 BCE',
+    year: -9000,
+    yearLabel: '~9000 BCE',
     name: 'Agricultural Revolution',
     description:
-      'Plant and animal domestication began independently in several regions, starting with the Fertile Crescent. Farming let a fixed area of land support far more people than foraging, which is what made cities, specialization, and surplus-funded institutions possible at all.',
-    source: 'Our World in Data — Origins of Agriculture',
-    sourceUrl: 'https://ourworldindata.org/history-of-agriculture',
+      'World History Encyclopedia dates wheat and goat domestication in the Levant to about 9000 BCE, with other crops following in the Fertile Crescent, and says agriculture also arose independently in central America and China. 9000 BCE is 10,949 years before 1950, not “10,000 BP.” The old Our World in Data history-of-agriculture URL returned HTTP 404 on 2026-11-06 and is not used.',
+    source: 'World History Encyclopedia — Agriculture in the Fertile Crescent & Mesopotamia',
+    sourceUrl: 'https://www.worldhistory.org/article/9/agriculture-in-the-fertile-crescent--mesopotamia/',
     precision: 'approximate',
   },
   {
@@ -84,7 +84,7 @@ export const ages: Age[] = [
     description:
       'Edison\'s long-lasting carbon-filament bulb made electric lighting commercially viable, and electrification followed over the next five decades: light, then motors, then an entire grid most of the modern economy still runs on.',
     source: 'Library of Congress — Edison\'s Lightbulb',
-    sourceUrl: 'https://www.loc.gov/collections/edison-company-motion-pictures-and-sound-recordings/articles-and-essays/biography/edison-invents/electric-light-and-power/',
+    sourceUrl: 'https://www.loc.gov/collections/edison-company-motion-pictures-and-sound-recordings/articles-and-essays/biography/life-of-thomas-alva-edison',
     precision: 'dated',
   },
   {
@@ -106,7 +106,7 @@ export const ages: Age[] = [
     description:
       'The first detonation of a nuclear weapon, in the New Mexico desert, opened a civilizational-scale energy source and a civilizational-scale risk in the same instant. Every energy-abundance conversation since carries this in the background.',
     source: 'U.S. Department of Energy — Manhattan Project history',
-    sourceUrl: 'https://www.energy.gov/management/articles/manhattan-project-trinity-test-1945',
+    sourceUrl: 'https://www.osti.gov/opennet/manhattan-project-history/Events/1945/trinity.htm',
     precision: 'dated',
   },
   {
@@ -116,8 +116,8 @@ export const ages: Age[] = [
     name: 'Sputnik — the Space Age begins',
     description:
       'The Soviet Union\'s Sputnik 1 was the first artificial satellite. It weighed 184 pounds and did nothing but beep, and it still triggered a full civilizational reorientation of resources toward space within a decade.',
-    source: 'NASA — Sputnik and the Dawn of the Space Age',
-    sourceUrl: 'https://www.nasa.gov/history/sputnik-and-the-dawn-of-the-space-age/',
+    source: 'NASA — 65 Years Ago: Sputnik Ushers in the Space Age',
+    sourceUrl: 'https://www.nasa.gov/history/65-years-ago-sputnik-ushers-in-the-space-age/',
     precision: 'dated',
   },
   {
@@ -138,8 +138,8 @@ export const ages: Age[] = [
     name: 'World Wide Web goes public',
     description:
       'Tim Berners-Lee published the first website and made the WWW protocol publicly available from CERN. The internet-adoption curve tracked live on /signals starts counting from here.',
-    source: 'CERN — A short history of the Web',
-    sourceUrl: 'https://home.cern/science/computing/birth-web/short-history-web',
+    source: 'W3C — 25 years ago the world changed forever (Berners-Lee, 6 August 1991, from CERN)',
+    sourceUrl: 'https://www.w3.org/blog/2016/25-years-ago-the-world-changed-forever/',
     precision: 'dated',
   },
 ]

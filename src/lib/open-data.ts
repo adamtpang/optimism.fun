@@ -87,6 +87,11 @@ export function problemRows() {
     humans_affected_source_url: p.humansAffected?.sourceUrl ?? '',
     humans_affected_as_of: p.humansAffected?.asOf ?? '',
     humans_affected_confidence: p.humansAffected?.confidence ?? '',
+    humans_affected_count_kind: p.humansAffected?.countKind ?? '',
+    humans_affected_observation_year: p.humansAffected?.observationYear ?? '',
+    humans_affected_publication_year: p.humansAffected?.publicationYear ?? '',
+    severity: p.severity?.value ?? '',
+    severity_unit: p.severity?.unit ?? '',
     scale_value: p.scale?.value ?? '',
     scale_unit: p.scale?.unit ?? '',
     scale_trend: p.scale?.trend ?? '',
@@ -229,7 +234,10 @@ export function problemDataset(slug: string) {
     lastUpdated: p.lastUpdated ?? p.asOf,
     metrics,
     series,
-    seriesNote: series.length >= 2 ? null : 'No time series is stored for this measure.',
+    seriesNote:
+      series.length >= 2
+        ? null
+        : 'No time series is stored for this measure. A live chart, when the page can fetch one, is a separate retrieval and is not this stored series.',
   }
 }
 

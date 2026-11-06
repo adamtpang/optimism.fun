@@ -162,8 +162,8 @@ export default async function SeasonPage({
                     </span>
                     <span className={open ? 'text-terminal-green' : 'text-primary'}>
                       {q.competitorCount === 0
-                        ? 'nobody building this'
-                        : `${q.competitorCount} already building`}
+                        ? '0 in the tracked search — not proof of an empty field'
+                        : `${q.competitorCount} recorded in the tracked search`}
                     </span>
                     {q.prizeUsd != null && (
                       <span>

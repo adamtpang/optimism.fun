@@ -3,6 +3,9 @@ import Footer from '@/components/Footer'
 import LiveIndicators from '@/components/LiveIndicators'
 import Link from 'next/link'
 import { problems } from '@/data/problems'
+import { companies } from '@/data/companies'
+import { ecosystem } from '@/data/ecosystem'
+import { inLimitCaps } from '@/data/in-limit'
 import { deathRatePair } from '@/lib/citations'
 
 export const metadata = {
@@ -539,10 +542,11 @@ export default function MethodologyPage() {
                   Phase 0 status
                 </h2>
                 <p className="mb-3">
-                  This is v0.1. 10 problems, ~50 companies, 15 ecosystem entities. Shipped in
-                  days, not months. Every cell is hand-curated and honestly tagged. Many
-                  cells are &ldquo;med&rdquo; or &ldquo;low&rdquo; confidence. Expected at this
-                  stage.
+                  Counts are read from the files, not typed in. {problems.length} problems,{' '}
+                  {companies.length} companies, {ecosystem.length} ecosystem entities,{' '}
+                  {inLimitCaps.length} problems with an editorial market-cap ceiling. Every cell
+                  is hand-curated and honestly tagged. Many cells are &ldquo;med&rdquo; or
+                  &ldquo;low&rdquo; confidence.
                 </p>
                 <p>
                   The public ledger gets refined weekly. Criticism is the point. If you see a

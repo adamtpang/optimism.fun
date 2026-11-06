@@ -36,10 +36,10 @@ export default function RankingPoster() {
         <p className="text-small text-neutral-600">CC BY 4.0</p>
       </div>
       <h2 className="text-h1 mt-3 text-neutral-900">
-        Humanity&rsquo;s hardest problems, by how many people they reach.
+        Humanity&rsquo;s hardest problems, in rank order.
       </h2>
       <p className="mt-3 text-body text-neutral-700 max-w-[68ch]">
-        Longer bar, more people, on a log scale. The order is the site ranking.
+        The order is need against how well each problem is served. Bar length is the stored headline count on a log scale. Those counts are not the same kind of number.
       </p>
 
       <ol className="mt-6">

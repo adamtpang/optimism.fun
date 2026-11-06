@@ -66,6 +66,26 @@ export type DammedFlow = {
   scope: string
 }
 
+/**
+ * What a headline count is. These kinds are not one population and are not
+ * interchangeable in a ranking.
+ * - prevalence: people living with the condition
+ * - population: a population stock (everyone, or people in a set of countries)
+ * - interventions-required: people a program counts as needing an intervention
+ * - at-risk: people exposed to a risk, not people currently ill
+ * - incidence: new cases per year
+ * - annual-deaths: deaths per year used as the headline count
+ * - indirect: a count that is not a direct affliction
+ */
+export type CountKind =
+  | 'prevalence'
+  | 'population'
+  | 'interventions-required'
+  | 'at-risk'
+  | 'incidence'
+  | 'annual-deaths'
+  | 'indirect'
+
 export type SourcedNumber = {
   value: number
   unit?: string
@@ -73,6 +93,12 @@ export type SourcedNumber = {
   sourceUrl?: string
   confidence: Confidence
   asOf: string
+  /** Set on headline human counts. Other sourced numbers leave it unset. */
+  countKind?: CountKind
+  /** Year the source assigns to the observation. Distinct from asOf and from the publication year. */
+  observationYear?: number
+  /** Year the cited report was published, when it differs from the observation year. */
+  publicationYear?: number
 }
 
 /**
@@ -97,6 +123,12 @@ export type CitedCount = {
 export type MortalityPair = {
   deaths: CitedCount
   affected: CitedCount
+  /**
+   * What the denominator is. Incident cases and other non-person-year
+   * denominators are not an annual individual mortality risk.
+   * Omitted means a stock of people (prevalence or a population).
+   */
+  denominatorKind?: 'person-stock' | 'incident-cases' | 'not-a-person-year'
   /** Set when the two years are not the same statistical year. */
   yearMismatch?: string
   /** Why this pair was not turned into a severity. */

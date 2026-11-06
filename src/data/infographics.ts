@@ -28,7 +28,7 @@ export const infographicBriefs: InfographicBrief[] = [
     status: 'in-review',
     title: 'The biggest health market failure you have never heard of',
     kicker: 'NEGLECTED TROPICAL DISEASES',
-    claim: '1.7 billion people need treatment for diseases that receive under 2% of pharmaceutical R&D.',
+    claim: '1.495 billion people required NTD interventions in 2023 (WHO report published 2025).',
     problemSlug: 'neglected-tropical-diseases',
     visual: {
       format: 'portrait',
@@ -36,14 +36,14 @@ export const infographicBriefs: InfographicBrief[] = [
       direction: 'A single 100-block bar: fewer than two illuminated blocks for NTD R&D, then a human-scale 1.7B figure and the financing/delivery gap below.',
     },
     facts: [
-      { value: '1.7B', label: 'people need NTD interventions', source: 'WHO Global report on NTDs 2025', sourceUrl: 'https://www.who.int/teams/control-of-neglected-tropical-diseases/global-report-on-neglected-tropical-diseases-2025' },
+      { value: '1.495B', label: 'people required NTD interventions in 2023', source: 'WHO Global report on NTDs 2025 (published 2025)', sourceUrl: 'https://www.who.int/teams/control-of-neglected-tropical-diseases/global-report-on-neglected-tropical-diseases-2025' },
       { value: '<2%', label: 'of pharmaceutical R&D reaches NTDs', source: '2026 pharmaceutical-industry NTD review', sourceUrl: 'https://link.springer.com/article/10.1186/s41182-026-00951-5' },
       { value: '−41%', label: 'NTD aid, 2018–2023', source: 'WHO, June 2025', sourceUrl: 'https://www.who.int/news/item/04-06-2025-neglected-tropical-diseases-further-neglected-due-to-oda-cuts' },
     ],
     sourceNote: 'Claim is about funding and delivery failure, not a lack of treatable disease science.',
-    xDraft: '1.7B people need treatment for neglected tropical diseases. They receive under 2% of pharmaceutical R&D, while aid fell 41% in five years.\n\nThe frontier is not only new drugs. It is manufacturing, pooled procurement, and last-mile delivery.\n\nSources: WHO + 2026 NTD review. optimism.fun',
-    instagramDraft: 'The biggest health market failure you have never heard of:\n\n1.7 billion people need treatment for neglected tropical diseases. Yet they receive under 2% of pharmaceutical R&D, and aid fell 41% from 2018 to 2023.\n\nThe opportunity is not abstract: build the financing, manufacturing, and delivery rails that let proven interventions reach people.\n\nSources in the graphic.\n\n#globalhealth #healthinnovation #goodquests',
-    altText: 'A 100-unit bar shows fewer than two units of pharmaceutical research and development allocated to neglected tropical diseases, alongside figures showing 1.7 billion people need interventions and aid fell 41 percent between 2018 and 2023.',
+    xDraft: '1.495 billion people required neglected-tropical-disease interventions in 2023 (WHO report published 2025). They receive under 2% of pharmaceutical R&D, while aid fell 41% in five years.\n\nThe frontier is not only new drugs. It is manufacturing, pooled procurement, and last-mile delivery.\n\nSources: WHO + 2026 NTD review. optimism.fun',
+    instagramDraft: 'The biggest health market failure you have never heard of:\n\n1.495 billion people required interventions for neglected tropical diseases in 2023, in the WHO report published in 2025. Yet they receive under 2% of pharmaceutical R&D, and aid fell 41% from 2018 to 2023.\n\nThe opportunity is not abstract: build the financing, manufacturing, and delivery rails that let proven interventions reach people.\n\nSources in the graphic.\n\n#globalhealth #healthinnovation #goodquests',
+    altText: 'A 100-unit bar shows fewer than two units of pharmaceutical research and development allocated to neglected tropical diseases, alongside the WHO 2025 report figure of 1.495 billion people requiring interventions in 2023 and aid falling 41 percent between 2018 and 2023.',
   },
   {
     slug: 'poverty-graduation-cost-collapse',
@@ -80,7 +80,7 @@ export const infographicBriefs: InfographicBrief[] = [
       direction: 'Contrast the current hospital-first detection timeline with wastewater, airport, and air-handler monitoring; label the intervention as earlier warning, not guaranteed prevention.',
     },
     facts: [
-      { value: '~20M', label: 'excess deaths in the last major pandemic', source: 'WHO excess-deaths estimates and subsequent totals', sourceUrl: 'https://www.who.int/data/stories/global-excess-deaths-associated-with-covid-19-january-2020-to-december-2021' },
+      { value: '14.9M', label: 'excess deaths associated with COVID-19, 2020–2021', source: 'WHO news, 5 May 2022. A later ~20M figure is not on this page.', sourceUrl: 'https://www.who.int/news/item/05-05-2022-14.9-million-excess-deaths-were-associated-with-the-covid-19-pandemic-in-2020-and-2021' },
       { value: '8.1B', label: 'people exposed to pandemic risk', source: '80,000 Hours biosecurity profile', sourceUrl: 'https://80000hours.org/problem-profiles/preventing-catastrophic-pandemics/' },
       { value: '100 days', label: 'CEPI target for a new vaccine response', source: 'CEPI 100 Days Mission', sourceUrl: 'https://cepi.net/100-days' },
     ],

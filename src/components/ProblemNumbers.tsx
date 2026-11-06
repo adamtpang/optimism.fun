@@ -57,8 +57,16 @@ export default async function ProblemNumbers({ problem }: { problem: Problem }) 
           <p className="font-mono text-3xl tabular-nums text-ink-100">
             {scale ? formatMeasure(scale.value) : '·'}
           </p>
-          <p className="text-sm text-ink-400 mt-1">{scale?.unit ?? 'No headline measure is stored.'}</p>
-          <p className="text-sm text-ink-500 mt-3">No time series is stored for this measure.</p>
+          <p className="text-sm text-ink-400 mt-1">
+            {scale?.unit ?? (owid.state === 'ok'
+              ? 'No separate stored headline. The chart below is the live retrieval.'
+              : 'No headline measure is stored.')}
+          </p>
+          <p className="text-sm text-ink-500 mt-3">
+            {owid.state === 'ok'
+              ? 'Fewer than two stored year-points. The live chart below is a separate retrieval, with its own years and definition. It does not erase the headline above.'
+              : 'No year-by-year series is stored for this measure, and no live chart is available right now.'}
+          </p>
           {scale && <SourceLink source={scale.source} href={scale.sourceUrl ?? null} />}
         </div>
       )}

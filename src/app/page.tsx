@@ -112,11 +112,8 @@ export default function Home() {
           <Container>
             <p className="text-label text-primary">The problems</p>
             <h2 className="text-h1 text-ink-100 mt-2 max-w-[28ch]">
-              Humanity&rsquo;s hardest problems, by how many people they reach.
+              Humanity&rsquo;s hardest problems.
             </h2>
-            <p className="text-body text-neutral-600 mt-3 max-w-[68ch]">
-              Longer bar, more people, on a log scale. The order is the site ranking. Ranked by need against how well-served each problem is. Related deaths count every cause a problem feeds, so they overlap.
-            </p>
 
             <RankedProblems
               rows={rows.map((r) => {

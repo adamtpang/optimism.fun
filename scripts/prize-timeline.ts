@@ -36,7 +36,7 @@ const PRIZES: Record<string, { value: number; note: string }> = {
   loneliness: { value: 15_000_000_000, note: 'conservative 5% of 1.5B lonely adults x $200/year membership-based "third place"' },
   'extreme-poverty': { value: 70_000_000_000, note: "World Bank's own poverty-gap floor to close the $2.15/day line for 700M people" },
   'climate-change': { value: 2_700_000_000_000, note: 'IEA Net Zero Roadmap — the annual investment gap, $4.5T needed minus $1.8T actually invested' },
-  'neglected-tropical-diseases': { value: 850_000_000, note: 'full MDA coverage — 1.7B people x ~$0.50/person/year, WHO/CDC/PLOS benchmark' },
+  'neglected-tropical-diseases': { value: 747_500_000, note: 'illustration only: 1.495 billion people requiring interventions in 2023 × the existing ~$0.50/person/year benchmark. Not a WHO budget and not a confidence interval.' },
   'newborn-survival': { value: 2_750_000_000, note: '20-30M small/sick newborns x ~$100-130/baby, NEST360 real multi-country cost data' },
 }
 

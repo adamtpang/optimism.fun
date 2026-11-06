@@ -6,7 +6,7 @@ import EmailCapture from '@/components/EmailCapture'
 import PageHeader from '@/components/PageHeader'
 import HeroFigure from '@/components/HeroFigure'
 import QuestGrid from '@/components/QuestGrid'
-import { getProgressBySlug } from '@/data/progress'
+import { formatKardashev } from '@/lib/kardashev'
 import { ARCHETYPES } from '@/data/archetypes'
 import { computeQuestRankings } from '@/lib/rankings'
 import { placeOnQuestGrid } from '@/lib/quest-grid'
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 }
 
 export default function GoodQuestsPage() {
-  const kardashev = getProgressBySlug('kardashev-scale')
+  const kardashev = formatKardashev()
   const ranked = computeQuestRankings()
   const plotted = placeOnQuestGrid(ranked)
   const hardGoodCount = plotted.filter((q) => q.good >= 50 && q.hard >= 50).length
@@ -32,18 +32,16 @@ export default function GoodQuestsPage() {
         <PageHeader
           kicker="A gamified walkthrough · Choose Good Quests"
           title="You are not too late. You are absurdly early."
-          lede="Homo sapiens has existed for roughly 300,000 years. Writing is 5,000 years old. Every technology you've ever used is younger than your grandparents. Humanity is not in its late chapters — it is in its opening pages, and the pages left to write are the ones you're standing in front of right now."
+          lede="Homo sapiens has existed for roughly 300,000 years. Writing is about five millennia old. Many tools are older than any living person, and ocean crossings were already routine for several maritime societies 500 years ago. What changed is speed, cost, and who can make the trip. Humanity is early in the spread of some capabilities and late in others."
           rightStats={
-            kardashev
-              ? [
+            [
                   {
-                    label: 'humanity, Kardashev scale',
-                    value: `Type ${kardashev.latest.value.toFixed(2)}`,
+                    label: 'Sagan index, not a percent',
+                    value: `Type ${kardashev.index}`,
                     tone: 'amber',
                   },
                   { label: 'hard + good quests, live', value: hardGoodCount, tone: 'cyan' },
                 ]
-              : undefined
           }
         />
 
@@ -51,13 +49,11 @@ export default function GoodQuestsPage() {
         <section className="border-b border-hair bg-ink-900/30">
           <div className="site-shell py-14">
             <div className="grid md:grid-cols-[minmax(0,14rem)_minmax(0,1fr)] gap-8 items-start">
-              {kardashev && (
-                <HeroFigure
-                  value={`${(kardashev.latest.value * 100).toFixed(0)}%`}
-                  label="of one planet's energy, harnessed"
-                  caption="Type I on the Kardashev scale is full use of everything Earth receives from the sun. We are not there yet. Type III is a civilization running on the energy of an entire galaxy."
-                />
-              )}
+              <HeroFigure
+                value={kardashev.fraction}
+                label="of the Type I reference (10^16 W), at ~20 TW"
+                caption={kardashev.caption}
+              />
               <div className="space-y-4">
                 <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight">
                   This is what &ldquo;the beginning of infinity&rdquo; actually means.
@@ -65,10 +61,11 @@ export default function GoodQuestsPage() {
                 <p className="text-ink-300 text-sm leading-relaxed max-w-2xl">
                   Not a slogan — a fact about knowledge. Every problem that is not forbidden by
                   the laws of physics is solvable, given the right knowledge, and the stock of
-                  knowledge has no ceiling anyone has ever found. The species that couldn&rsquo;t
-                  cross an ocean 500 years ago now argues about who gets to live on Mars. There is
-                  no evidence the curve stops here, only evidence that someone has to keep
-                  pushing it.
+                  knowledge has no ceiling anyone has ever found. Ocean crossings were already
+                  routine for several maritime societies 500 years ago. The change since is speed,
+                  cost, and who can make the trip, including arguments about who might live on Mars.
+                  There is no evidence every curve stops here, only evidence that someone has to
+                  keep pushing the ones that are still open.
                 </p>
                 <p className="font-mono text-small text-ink-600 leading-relaxed max-w-2xl">
                   Full deep-history timeline and the live numbers behind this on{' '}

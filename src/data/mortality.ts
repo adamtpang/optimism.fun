@@ -170,12 +170,13 @@ export const mortalityCauses: MortalityCause[] = [
     slug: 'diabetes',
     name: 'Diabetes',
     deaths: {
-      value: 1_600_000,
-      year: 2021,
-      source: 'WHO diabetes fact sheet (diabetes the direct cause of 1.6 million deaths in 2021)',
+      value: 2_000_000,
+      year: 2023,
+      source:
+        'WHO diabetes fact sheet read 2026-11-06: diabetes was the direct cause of 2.0 million deaths in 2023. An earlier reading of the same page stated 1.6 million direct deaths in 2021; that figure is historical and is not this count.',
       sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/diabetes',
       confidence: 'high',
-      asOf: '2026-09-11',
+      asOf: '2026-11-06',
     },
     whoRank2021: 8,
     trend: 'Rising: deaths up 95 percent between 2000 and 2021 (WHO); 47 percent of them before age 70.',

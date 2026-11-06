@@ -38,8 +38,23 @@ export default function RankedProblems({ rows }: { rows: RankedRow[] }) {
     return copy
   }, [rows, sort])
 
+  const heading =
+    sort === 'people'
+      ? 'Sorted by the stored headline count.'
+      : sort === 'neglected'
+        ? 'Sorted by the stored neglectedness score.'
+        : 'Ranked by need against how well each problem is served.'
+  const detail =
+    sort === 'people'
+      ? 'The bar is that stored count on a log scale. Prevalence, annual incidence, annual deaths, and indirect exposure are different kinds of number. A longer bar is not a larger population of the same kind.'
+      : sort === 'neglected'
+        ? 'Neglectedness is the stored 0 to 10 judgment. It is not a death rate and not a person count. The bar still shows the headline count, whose units differ by row.'
+        : 'This is the site ranking: importance, neglectedness, tractability, and how thin supply looks. It is not an ordering by how many people a problem reaches. The bar is the stored headline count, and those counts are not comparable across rows. Related deaths count every cause a problem feeds, so they overlap. They are not added into the rank as one mortality risk.'
+
   return (
     <>
+      <p className="text-body text-neutral-600 mt-3 max-w-[68ch]">{heading}</p>
+      <p className="text-small text-neutral-600 mt-2 max-w-[68ch]">{detail}</p>
       <div className="mt-8">
         <ToggleGroup
           type="single"

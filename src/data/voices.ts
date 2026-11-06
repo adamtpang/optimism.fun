@@ -144,8 +144,8 @@ export const voices: Voice[] = [
         problemSlug: 'biosecurity',
         stance:
           'Funded Fast Grants during COVID to demonstrate that biomedical research can move at wartime speed when the structure allows it.',
-        source: 'Fast Grants and Fast',
-        sourceUrl: 'https://fastgrants.org',
+        source: 'Patrick Collison, Tyler Cowen, and Patrick Hsu, “What We Learned Doing Fast Grants” (Future). fastgrants.org returned HTTP 404 on 2026-11-06.',
+        sourceUrl: 'https://future.com/what-we-learned-doing-fast-grants/',
         asOf: TODAY,
       },
     ],
