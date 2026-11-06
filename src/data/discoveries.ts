@@ -1,5 +1,6 @@
 /**
- * Discoveries: verified findings tagged to ranked problems.
+ * Discoveries: curated findings tagged to ranked problems.
+ * "Curated" means an editor added the row. It is not a signed scientific review.
  *
  * Append-only. The page sorts newest first. Schema and the rules for adding
  * a row: research/DISCOVERIES.md.
@@ -90,7 +91,7 @@ export const discoveries: Discovery[] = [
     url: doi('10.1038/s41586-025-08800-x'),
     problemSlugs: ['longevity'],
     summary:
-      'A natural experiment in Wales found shingles vaccination cut new dementia diagnoses by 20% (relative) over 7 years.',
+      'In a Wales natural experiment, the live-attenuated vaccine Zostavax was associated with 3.5 percentage points fewer new dementia diagnoses over 7 years (95% CI 0.6-7.1), a 20.0% relative reduction (95% CI 6.5-33.4). The regression weights people primarily aged 79 to 80. This is one study’s estimate, not proof the vaccine prevents dementia in every population.',
     changes: 'tractability',
     review: 'peer-reviewed',
   },
@@ -293,7 +294,7 @@ export const discoveries: Discovery[] = [
     url: doi('10.1038/s41562-023-01617-6'),
     problemSlugs: ['loneliness'],
     summary:
-      'A meta-analysis of 90 cohort studies found social isolation raised all-cause mortality risk 32%, and loneliness raised it 14%.',
+      'A meta-analysis of 90 prospective cohort studies, which are observational, found social isolation was associated with a 32% higher all-cause mortality risk and loneliness with a 14% higher risk. Association in cohorts is not proof that isolation or loneliness caused the deaths.',
     changes: 'scale',
     review: 'peer-reviewed',
   },
@@ -742,7 +743,7 @@ export const discoveries: Discovery[] = [
     url: doi('10.1038/s41588-026-02815-4'),
     problemSlugs: ['cancer'],
     summary:
-      'MANTIS, built on DNA methylation from 2,786 medulloblastoma and ependymoma patients, reaches concordance indices up to 0.80 +/- 0.07 and identifies about 60% of average-risk medulloblastoma patients without a significant survival disadvantage (P = 0.683) under less intensive craniospinal irradiation.',
+      'MANTIS, built on DNA methylation from 2,786 medulloblastoma and ependymoma patients, reports concordance indices up to 0.80 +/- 0.07. It identifies about 60% of average-risk medulloblastoma patients with no statistically significant survival difference (P = 0.683) under less intensive craniospinal irradiation. A non-significant P value does not show noninferiority or that the lower dose is safe. The DOI was not independently challenged in this pass and is not marked false.',
     changes: 'tractability',
     review: 'peer-reviewed',
   },

@@ -42,7 +42,7 @@ export default function PathsPage() {
         <PageHeader
           kicker="The atlas · start or join"
           title="Start it, or join it."
-          lede="Every quest on this board has quietly assumed you would found the company. That is only ever half the answer. The deciding variable is already in the data: crowding. A quest with no funded competitor is one to start. A quest with eight is a company to join, and joining is not the consolation prize, it is the correct move on the biggest problems."
+          lede="Crowding on this page is a tracked search, not a census. A quest with zero or one recorded competitor is a candidate to look at starting. That zero does not mean nobody else is building it. A quest with many recorded competitors is a candidate to join. Joining is a real path, and the count can miss companies the search never saw."
           rightStats={[
             { label: '$1T+ problems', value: bigProblems.length, tone: 'amber' },
             { label: 'join paths', value: joinPaths.length, tone: 'violet' },
@@ -61,8 +61,9 @@ export default function PathsPage() {
                 <p className="font-mono text-small text-terminal-green mb-1.5">N = 0–1 · open</p>
                 <p className="text-ink-100 text-sm font-medium mb-1.5">Start it</p>
                 <p className="text-ink-400 text-small leading-relaxed">
-                  Nobody funded is racing you. The starter pack has the name ideas, the riskiest
-                  assumption, and the first artifact.
+                  The tracked search recorded zero or one funded competitor. That is an estimate of
+                  coverage, not a fact that the field is empty. The starter pack has name ideas,
+                  the riskiest assumption, and a first artifact.
                 </p>
               </div>
               <div>

@@ -87,7 +87,7 @@ function InProgressCallout({ note }: { note: string }) {
         Section in progress
       </p>
       <p>
-        {note} New whitepaper sections ship with each Monday newsletter drop.{' '}
+        {note} Unpublished sections stay empty. A Monday newsletter is not promised.{' '}
         <Link
           href="/#join"
           className="text-primary hover:text-primary underline decoration-dotted underline-offset-2"

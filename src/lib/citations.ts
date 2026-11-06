@@ -5,9 +5,17 @@ export type Citation = { text: string; href?: string }
 
 const SITE = 'https://optimism.fun'
 
-/** The pair that was actually scored, if this problem has a death-rate severity. */
+/**
+ * The pair that was actually scored as an annual death rate.
+ * Incident cases (new diagnoses) are not a person-year denominator.
+ */
 export function deathRatePair(problem: Problem): MortalityPair | undefined {
-  return problem.mortalityPairs?.find((pair) => !pair.notScoredBecause)
+  return problem.mortalityPairs?.find(
+    (pair) =>
+      !pair.notScoredBecause &&
+      pair.denominatorKind !== 'incident-cases' &&
+      pair.denominatorKind !== 'not-a-person-year',
+  )
 }
 
 function yearOf(asOf: string): string {

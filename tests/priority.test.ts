@@ -62,10 +62,12 @@ describe('severity and solution quality stay on 0..1', () => {
     const hypertension = problems.find((p) => p.slug === 'hypertension')!
     const copd = problems.find((p) => p.slug === 'copd')!
     const cancer = problems.find((p) => p.slug === 'cancer')!
-    expect(diabetes.severity!.value).toBeCloseTo(severityFromDeathRate(1_600_000, 830_000_000), 3)
+    expect(diabetes.severity!.value).toBeCloseTo(severityFromDeathRate(2_000_000, 830_000_000), 3)
     expect(hypertension.severity!.value).toBeCloseTo(severityFromDeathRate(10_000_000, 1_400_000_000), 3)
     expect(copd.severity!.value).toBeCloseTo(severityFromDeathRate(3_400_000, 213_390_000), 3)
-    expect(cancer.severity!.value).toBeCloseTo(severityFromDeathRate(9_700_000, 20_000_000), 3)
+    expect(cancer.severity).toBeUndefined()
+    expect(cancer.mortalityPairs?.[0]?.denominatorKind).toBe('incident-cases')
+    expect(cancer.mortalityPairs?.[0]?.notScoredBecause).toMatch(/not an annual individual mortality risk/)
   })
 
   it('leaves severity empty where the death rate was not sourced, and scores that as one half', () => {

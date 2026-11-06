@@ -321,7 +321,7 @@ function QuestRow({
               <p className="text-ink-300 text-small leading-relaxed">
                 {q.exampleCompetitors.length > 0
                   ? q.exampleCompetitors.join(' · ')
-                  : 'No named competitors found. Open field.'}
+                  : 'No competitor was recorded in the tracked search. That is not evidence the field is empty.'}
               </p>
             </div>
           )}

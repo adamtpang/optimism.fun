@@ -7,11 +7,13 @@ export const problems: Problem[] = [
     slug: 'biosecurity',
     domain: 'bio',
     scale: {
-      value: 20_000_000,
-      unit: 'excess deaths in the last major pandemic (COVID-19)',
+      value: 14_900_000,
+      unit: 'excess deaths associated with COVID-19 in 2020 and 2021 (WHO, 5 May 2022). Not a later unofficial total.',
       trend: 'worsening',
-      source: 'WHO estimated ~14.8M excess deaths in 2020-21; later totals ~20M. Engineered-pandemic risk is rising as DNA synthesis and gain-of-function capability spread.',
-      sourceUrl: 'https://www.who.int/data/stories/global-excess-deaths-associated-with-covid-19-january-2020-to-december-2021',
+      source:
+        'WHO news, 5 May 2022: 14.9 million excess deaths were associated with the COVID-19 pandemic in 2020 and 2021. A later “~20 million” total was not on this page and is not used. The old WHO data-story URL returned HTTP 404 on 2026-11-06.',
+      sourceUrl:
+        'https://www.who.int/news/item/05-05-2022-14.9-million-excess-deaths-were-associated-with-the-covid-19-pandemic-in-2020-and-2021',
       confidence: 'med',
       asOf: '2026-06-09',
     },
@@ -54,7 +56,8 @@ export const problems: Problem[] = [
       'COVID-19 demonstrated the tail risk from a single pathogen. Dual-use gene synthesis, lab leaks, and deliberate misuse mean that worst-case pandemics could be civilization-ending. Tractable: far-UVC sterilization, early-warning surveillance, broad-spectrum countermeasures, pathogen-agnostic detection.',
     humansAffected: {
       value: 8_100_000_000,
-      unit: 'humans',
+      unit: 'humans potentially exposed to a pandemic tail, not people currently ill',
+      countKind: 'population',
       source: '80,000 Hours biosecurity profile',
       sourceUrl: 'https://80000hours.org/problem-profiles/preventing-catastrophic-pandemics/',
       confidence: 'high',
@@ -204,7 +207,8 @@ export const problems: Problem[] = [
       "Energy underwrites every other quest. Current global primary energy use is ~600 EJ/year at ~$0.10/kWh average. Thermodynamic physics allows orders of magnitude more throughput at far lower cost. Fusion (net energy achieved at NIF 2022), advanced fission (SMRs, Gen IV), and enhanced geothermal are all within the adjacent possible. Energy is the denominator in Musk's utility-delta: cheap energy improves every human life.",
     humansAffected: {
       value: 8_100_000_000,
-      unit: 'humans',
+      unit: 'humans (population exposure, not people without electricity)',
+      countKind: 'population',
       source: 'IEA World Energy Outlook',
       sourceUrl: 'https://www.iea.org/reports/world-energy-outlook-2025',
       confidence: 'high',
@@ -329,6 +333,7 @@ export const problems: Problem[] = [
     humansAffected: {
       value: 1_600_000_000,
       unit: 'humans in inadequate housing',
+      countKind: 'prevalence',
       source: 'UN-Habitat World Cities Report',
       sourceUrl: 'https://unhabitat.org/wcr/',
       confidence: 'high',
@@ -449,6 +454,7 @@ export const problems: Problem[] = [
     humansAffected: {
       value: 1_500_000_000,
       unit: 'children undereducated',
+      countKind: 'prevalence',
       source: 'UNESCO Global Education Monitoring Report',
       sourceUrl: 'https://www.unesco.org/gem-report/en',
       confidence: 'high',
@@ -575,7 +581,8 @@ export const problems: Problem[] = [
       "Malaria killed ~600,000 people in 2023, mostly children under 5. Tuberculosis kills ~1.3M per year. HIV kills ~630,000 per year despite proven suppression protocols. The Copenhagen Consensus ranks these interventions among the highest benefit-cost ratios in global development, $1 of intervention returns $20-$100 in economic and welfare gains. This is the baseline anyone claiming to rank humanity's problems has to include.",
     humansAffected: {
       value: 2_500_000_000,
-      unit: 'humans at risk of at least one',
+      unit: 'humans at risk of at least one of malaria, TB, or HIV (exposure, not prevalent cases)',
+      countKind: 'at-risk',
       source: 'WHO Global Burden of Disease',
       sourceUrl: 'https://www.who.int/data/gho',
       confidence: 'high',
@@ -687,8 +694,8 @@ export const problems: Problem[] = [
       welfareBCR: {
         value: 48,
         unit: '$ of benefit per $ spent',
-        source: 'Copenhagen Consensus Halftime Report 2023',
-        sourceUrl: 'https://copenhagenconsensus.com/halftime-sdg/welfare',
+        source: 'Copenhagen Consensus halftime research page: the malaria insecticide-treated net case, $48 of benefits per dollar. Not a combined TB/HIV/malaria ratio. The old /halftime-sdg/welfare URL returned HTTP 404.',
+        sourceUrl: 'https://copenhagenconsensus.com/halftime-sustainable-development-goals-2016-2030/research',
         confidence: 'high',
         asOf: TODAY,
       },
@@ -759,7 +766,8 @@ export const problems: Problem[] = [
       'Bloom, Jones, Van Reenen and Webb showed research productivity across semiconductors, agriculture, and biomedicine has been falling for decades, we spend far more scientist-hours for each new idea. The meta-problem: every other quest on this list depends on scientific throughput. Focused Research Organizations, AI-assisted research, metascience reform, and funding structure changes all compound across every domain.',
     humansAffected: {
       value: 8_100_000_000,
-      unit: 'humans (compound effect)',
+      unit: 'humans (indirect compound effect, not a direct affliction count)',
+      countKind: 'indirect',
       source: 'estimated, scientific productivity compounds across every domain',
       confidence: 'med',
       asOf: TODAY,
@@ -893,7 +901,8 @@ export const problems: Problem[] = [
       "Aging underlies cardiovascular disease, cancer, neurodegeneration, and frailty. Every human alive is affected. The hallmarks-of-aging framework (López-Otín et al.) gives discrete targets: senescent cell clearance, epigenetic reprogramming, stem cell exhaustion. Partial cellular reprogramming (Altos, Retro, NewLimit) and geroprotective drugs (rapamycin, metformin class) are in early trials. Utility delta is enormous: current median healthspan ~75 years, theoretical ceiling unknown and likely much higher.",
     humansAffected: {
       value: 8_100_000_000,
-      unit: 'humans (everyone ages)',
+      unit: 'humans (everyone ages; a population stock, not a disease prevalence)',
+      countKind: 'population',
       source: 'UN Population Division',
       sourceUrl: 'https://population.un.org/wpp/',
       confidence: 'high',
@@ -1020,6 +1029,7 @@ export const problems: Problem[] = [
     humansAffected: {
       value: 6_000_000_000,
       unit: 'humans in countries below replacement',
+      countKind: 'population',
       source: 'UN World Population Prospects',
       sourceUrl: 'https://population.un.org/wpp/',
       confidence: 'high',
@@ -1137,6 +1147,7 @@ export const problems: Problem[] = [
     humansAffected: {
       value: 1_500_000_000,
       unit: 'adults reporting measurable loneliness',
+      countKind: 'prevalence',
       source: 'US Surgeon General 2023 advisory + global WHO data',
       sourceUrl: 'https://www.hhs.gov/sites/default/files/surgeon-general-social-connection-advisory.pdf',
       confidence: 'med',
@@ -1222,7 +1233,9 @@ export const problems: Problem[] = [
       'Extreme poverty is the canonical proof that humanity can solve its biggest problems: the share of people living below the international poverty line fell from ~38% in 1990 to under 9% before the pandemic, the fastest decline in human history. The unfinished work is concentrated in Sub-Saharan Africa and fragile states, where economic growth, direct cash transfers, and proven public-health interventions still have enormous, measurable returns.',
     humansAffected: {
       value: 700_000_000,
-      unit: 'humans',
+      unit: 'people living below $2.15 a day',
+      countKind: 'prevalence',
+      observationYear: 2022,
       source: 'World Bank — Poverty and Inequality Platform',
       sourceUrl: 'https://pip.worldbank.org',
       confidence: 'high',
@@ -1319,7 +1332,8 @@ export const problems: Problem[] = [
       'Climate change is a problem of getting clean energy and industry cheaper than the dirty incumbents, fast. The optimistic case is strong: solar, wind, and batteries have fallen ~90% in cost in a decade and are now the cheapest power in history. Emissions are still rising, so the work is real, but the frontier is concrete: industrial heat, cement, steel, aviation, and durable carbon removal. The framing here is not sacrifice, it is abundance: the same cheap clean energy that limits warming also lifts living standards.',
     humansAffected: {
       value: 8_200_000_000,
-      unit: 'humans',
+      unit: 'humans (global exposure to climate impacts, not a prevalence count)',
+      countKind: 'population',
       source: 'IPCC AR6 — climate impacts are global',
       sourceUrl: 'https://www.ipcc.ch/report/ar6/syr/',
       confidence: 'high',
@@ -1410,16 +1424,28 @@ export const problems: Problem[] = [
     tier: 'welfare',
     domain: 'health',
     tagline:
-      '1.7 billion people need treatment for diseases that get under 2% of pharmaceutical R&D and falling aid.',
+      '1.495 billion people required interventions in 2023, the figure in the WHO 2025 report.',
     description:
-      "Neglected tropical diseases cause chronic disability, stigma, and impoverishment across more than 1.7 billion people, yet the commercial market for new diagnostics and medicines is structurally weak: successful control shrinks the market, patients are largely poor, and delivery is hard. Official development assistance for NTDs fell 41% between 2018 and 2023 even as interventions remain some of the cheapest in global health — mass drug administration often costs under a dollar per person per year. This is not a science-discovery problem, it is a market-failure and delivery-financing problem: pooled procurement, target product profiles, milestone prizes, and stabilized field logistics could close most of the gap with tools that already exist.",
+      "Neglected tropical diseases cause chronic disability, stigma, and impoverishment. The WHO Global report on neglected tropical diseases 2025, which presents data gathered in 2024, says an estimated 1.495 billion people required interventions against NTDs in 2023. That observation year is 2023. The report was published in 2025. A later WHO Global Health Observatory series, drawn on the live chart below, continues to 2024 and is a later point in the same indicator family, not a contradiction of the 2023 report figure. The commercial market for new diagnostics and medicines is structurally weak: successful control shrinks the market, patients are largely poor, and delivery is hard. Official development assistance for NTDs fell 41% between 2018 and 2023 even as interventions remain some of the cheapest in global health — mass drug administration often costs under a dollar per person per year. This is not a science-discovery problem, it is a market-failure and delivery-financing problem.",
     humansAffected: {
-      value: 1_700_000_000,
-      unit: 'humans needing NTD interventions',
-      source: "WHO Global report on neglected tropical diseases 2025; pharmaceutical industry's role in NTD control (2026 review)",
+      value: 1_495_000_000,
+      unit: 'people requiring interventions against NTDs in 2023',
+      countKind: 'interventions-required',
+      observationYear: 2023,
+      publicationYear: 2025,
+      source: 'WHO Global report on neglected tropical diseases 2025: an estimated 1.495 billion people required interventions against NTDs in 2023',
       sourceUrl: 'https://www.who.int/teams/control-of-neglected-tropical-diseases/global-report-on-neglected-tropical-diseases-2025',
       confidence: 'high',
-      asOf: TODAY,
+      asOf: '2026-11-06',
+    },
+    scale: {
+      value: 1_495_000_000,
+      unit: 'people requiring interventions against NTDs in 2023 (WHO Global report 2025). The live chart is the later GHO series and is not this headline.',
+      trend: 'improving',
+      source: 'WHO Global report on neglected tropical diseases 2025. Key facts: 1.495 billion people required interventions in 2023, 122 million fewer than in 2022.',
+      sourceUrl: 'https://www.who.int/teams/control-of-neglected-tropical-diseases/global-report-on-neglected-tropical-diseases-2025',
+      confidence: 'high',
+      asOf: '2026-11-06',
     },
     severityNote:
       'Deaths are not the harm this problem is. WHO’s 2025 report says NTD-related deaths fell to 119,000 by 2021, and that 1.495 billion people required interventions in 2023. The same sentences lead with disability: 14.1 million DALYs in 2021. The death year and the intervention year differ, and “just over 1 billion” people affected in 2021 is not a precise count. A death rate on the 2023 population would sit below this scale’s floor and would treat a disability problem as mild. The appropriate measure is DALYs, or people requiring interventions.',
@@ -1476,7 +1502,7 @@ export const problems: Problem[] = [
     },
     transformation: {
       before:
-        '1.7B people need NTD interventions. ODA fell 41% 2018–2023. NTDs receive under 2% of pharmaceutical R&D investment despite the population affected.',
+        '1.495 billion people required NTD interventions in 2023 (WHO report published 2025). ODA fell 41% 2018–2023. NTDs receive under 2% of pharmaceutical R&D investment.',
       after:
         'Mass drug administration reaches 90%+ coverage in endemic areas via pooled procurement and stabilized financing; several NTDs (following guinea worm and trachoma) are fully eliminated; a durable innovation pipeline replaces one-off donation drives.',
       horizon: '10 years',
@@ -1537,7 +1563,9 @@ export const problems: Problem[] = [
       "Neonatal deaths fell from roughly 5 million in 1990 to 2.3 million in 2024, but progress has lagged behind under-5 mortality broadly: the neonatal share of all under-5 deaths rose from 40% to 47% over the same period, because the interventions that drove the rest of the decline — vaccines, oral rehydration — don't fix a newborn in respiratory distress or sepsis. Small and sick newborns need functional oxygen delivery, pulse oximetry, and same-day sepsis diagnostics, and low-resource facilities routinely lack all three: not because the devices don't exist, but because power, consumables, maintenance, and training don't reliably reach the facilities that need them. This is a delivery and market-incentive problem — commercial returns on neonatal diagnostics in low-income markets are too thin to finance development without external structure like advance market commitments.",
     humansAffected: {
       value: 2_300_000,
-      unit: 'newborns who die in their first month of life, per year',
+      unit: 'newborn deaths per year (an annual flow, not people living with a condition)',
+      countKind: 'annual-deaths',
+      observationYear: 2024,
       source: 'UN Inter-agency Group for Child Mortality Estimation (UNICEF/WHO)',
       sourceUrl: 'https://data.unicef.org/topic/child-survival/neonatal-mortality/',
       confidence: 'high',
@@ -1652,6 +1680,8 @@ export const problems: Problem[] = [
     humansAffected: {
       value: 1_400_000_000,
       unit: 'adults aged 30-79 living with hypertension',
+      countKind: 'prevalence',
+      observationYear: 2024,
       source: 'WHO Global report on hypertension 2025',
       sourceUrl: 'https://www.who.int/publications/i/item/9789240115569',
       confidence: 'high',
@@ -1790,7 +1820,8 @@ export const problems: Problem[] = [
       'Nvidia and the hyperscalers already captured the AI compute layer — Nvidia alone is worth $5.27T (live, companiesmarketcap.com), and hyperscaler AI capex will hit $775-800B in 2026 (CFA Institute / Alcapital Advisory). None of that is bottlenecked by chips anymore. It is bottlenecked by power: nearly 2,300GW of generation and storage sits stuck in US interconnection queues, transformer lead times have stretched from 24-30 months to 5 years, and the three grid-hardware majors (Hitachi Energy, Siemens Energy, GE Vernova) already carry a combined $180B+ backlog with 6+ years of revenue booked. McKinsey\'s own "$7 trillion race to scale data centers" report splits the AI-datacenter buildout through 2030 into ~$3.1T for chips/tech (captured) and ~$1.3T for power: generation, transmission, cooling, and electrical equipment. That $1.3T is not one company\'s market — it fragments into real sub-niches moving at different speeds, some already spoken for (SMR fleets: four vendors hold nearly every hyperscaler off-take deal), some genuinely still open (behind-the-meter battery storage for GPU-cluster load smoothing, still uncaptured as of 2026).',
     humansAffected: {
       value: 8_200_000_000,
-      unit: 'humans (indirect)',
+      unit: 'humans (indirect exposure, not a direct affliction count)',
+      countKind: 'indirect',
       source: 'Indirect and low-confidence by design: global AI-driven productivity and service gains are gated on this specific power bottleneck, not a direct affliction count like a disease or poverty line.',
       confidence: 'low',
       asOf: TODAY,
@@ -1907,6 +1938,7 @@ export const problems: Problem[] = [
     humansAffected: {
       value: 1_300_000_000,
       unit: 'unbanked adults',
+      countKind: 'prevalence',
       source: 'World Bank Global Findex 2025 (account ownership reached 79% of adults, up from 74% in 2021)',
       sourceUrl: 'https://www.worldbank.org/en/publication/globalfindex',
       confidence: 'high',
@@ -1990,21 +2022,16 @@ export const problems: Problem[] = [
       'Cancer is hundreds of distinct diseases with one shared mechanism: accumulated DNA damage lets a cell escape growth control. The causes differ, tobacco, infections, alcohol, obesity, radiation, and above all the years lived, since mutations accumulate with age. GLOBOCAN counted 20 million new cases and 9.7 million deaths in 2022, lung the largest share of both. Roughly one in five people develop cancer in their lifetime. Spending is not the gap: cancer medicines cost $252 billion in 2024 and the best-selling drug on Earth is an oncology drug. The unsolved problems are earlier detection, the cancers that still have no effective treatment, and the collapse of survival in low-income settings where the same diagnosis is often fatal.',
     humansAffected: {
       value: 20_000_000,
-      unit: 'new cancer diagnoses per year (2022)',
+      unit: 'new cancer diagnoses per year (2022). Annual incidence, not people living with cancer.',
+      countKind: 'incidence',
+      observationYear: 2022,
       source: 'IARC GLOBOCAN 2022, via UICC',
       sourceUrl: 'https://www.uicc.org/news-and-updates/news/globocan-2022-latest-global-cancer-data-shows-rising-incidence-and-stark',
       confidence: 'high',
       asOf: '2026-09-11',
     },
-    severity: {
-      value: 0.921,
-      unit: '0–1 log of deaths per new diagnosis in 2022',
-      source:
-        'UICC on GLOBOCAN 2022: 9.7 million deaths and 20 million new cases. This problem counts affected people as new diagnoses, so the rate is 9,700,000 / 20,000,000 = 0.485 deaths per new case that year, not per person living with cancer. Log-normalized from 1 in 10,000 (0) to certain death this year (1): 0.921.',
-      sourceUrl: 'https://www.uicc.org/news-and-updates/news/globocan-2022-latest-global-cancer-data-shows-rising-incidence-and-stark',
-      confidence: 'med',
-      asOf: '2026-11-01',
-    },
+    severityNote:
+      '9.7 million cancer deaths and 20 million new diagnoses in 2022 are both annual flows. Dividing them is not an annual individual mortality risk and is not scored. A prevalence denominator was not opened, and none is invented here.',
     mortalityPairs: [
       {
         deaths: {
@@ -2025,6 +2052,9 @@ export const problems: Problem[] = [
             'https://www.uicc.org/news-and-updates/news/globocan-2022-latest-global-cancer-data-shows-rising-incidence-and-stark',
           asOf: '2026-11-01',
         },
+        denominatorKind: 'incident-cases',
+        notScoredBecause:
+          'The denominator is annual incidence (new diagnoses), not a stock of people at risk for one year. 9.7 million deaths / 20 million new diagnoses is not an annual individual mortality risk.',
       },
     ],
     marketSize: {
@@ -2138,6 +2168,8 @@ export const problems: Problem[] = [
     humansAffected: {
       value: 213_390_000,
       unit: 'prevalent cases of COPD (2021)',
+      countKind: 'prevalence',
+      observationYear: 2021,
       source: 'Global Burden of Disease Study 2021, COPD burden in 204 countries',
       sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/39748260/',
       confidence: 'high',
@@ -2268,45 +2300,71 @@ export const problems: Problem[] = [
     domain: 'health',
     sectors: ['physical-health-and-disease'],
     tagline:
-      '589 million adults have it. 59 percent take no medicine, though the drugs exist.',
+      'IDF: 589 million adults aged 20–79 in 2024. WHO: 59% of adults aged 30+ were not on medication in 2022. Different groups and years.',
     description:
-      'Diabetes is chronically high blood glucose, from the body resisting insulin or failing to make it. Over years it damages blood vessels, nerves, eyes and kidneys, and it sits upstream of a large share of cardiovascular and kidney deaths. The IDF counts 589 million adults living with it in 2024, one in nine, heading to 853 million by 2050; WHO counts 830 million people of all ages in 2022, up from 200 million in 1990. Its rise tracks obesity. The drugs are old, cheap and effective for most patients, and the newest class is the most valuable in pharma: semaglutide earned $29 billion in 2024 and tirzepatide carried Lilly past a trillion dollars. Yet 59 percent of adults with diabetes took no medication in 2022, and in low-income countries 59 percent are not even diagnosed. The frontier is not the molecule. It is delivery.',
+      'Diabetes is chronically high blood glucose, from the body resisting insulin or failing to make it. Over years it damages blood vessels, nerves, eyes and kidneys, and it sits upstream of a large share of cardiovascular and kidney deaths. The IDF Diabetes Atlas (11th edition, 2025) counts 589 million adults aged 20–79 living with diabetes in 2024. That is not the group in the WHO treatment sentence. The WHO fact sheet read on 2026-11-06 says 830 million people of all ages were living with diabetes in 2022, up from 200 million in 1990, and that 59% of adults aged 30 years and over living with diabetes were not taking medication in 2022. Its rise tracks obesity. The drugs are old, cheap and effective for most patients, and the newest class is the most valuable in pharma: semaglutide earned $29 billion in 2024 and tirzepatide carried Lilly past a trillion dollars. The frontier is not the molecule. It is delivery. An earlier edition of the same fact sheet stated 1.6 million direct deaths in 2021. That figure is historical. The page now states 2.0 million direct deaths in 2023.',
     humansAffected: {
       value: 589_000_000,
-      unit: 'adults aged 20-79 living with diabetes (2024)',
+      unit: 'adults aged 20–79 living with diabetes in 2024 (IDF). Not the WHO 30+ medication group.',
+      countKind: 'prevalence',
+      observationYear: 2024,
+      publicationYear: 2025,
       source: 'IDF Diabetes Atlas, 11th edition, 2025',
       sourceUrl: 'https://media.idf.org/media/uploads/sites/3/2025/04/IDF_Atlas_11th_Edition_2025_Global-Factsheet.pdf',
       confidence: 'high',
       asOf: '2026-09-11',
     },
     severity: {
-      value: 0.321,
-      unit: '0–1 log of annual direct deaths per person living with diabetes',
+      value: 0.3455,
+      unit: '0–1 log of annual direct deaths per person living with diabetes. Not the IDF 20–79 count.',
       source:
-        'WHO diabetes fact sheet: diabetes was the direct cause of 1.6 million deaths in 2021, and 830 million people were living with diabetes in 2022. Rate = 1,600,000 / 830,000,000 = 0.00193 deaths per person per year. The years differ by one. Log-normalized from 1 in 10,000 (0) to certain death this year (1): 0.321. The IDF\'s broader 3.4 million attributable deaths is a different definition and is not used here.',
+        'WHO diabetes fact sheet read 2026-11-06: diabetes was the direct cause of 2.0 million deaths in 2023, and 830 million people were living with diabetes in 2022. Rate = 2,000,000 / 830,000,000. The years differ. Log-normalized from 1 in 10,000 (0) to certain death this year (1). This is not 2.0 million divided by the IDF’s 589 million adults aged 20–79. The IDF’s broader attributable-death figure is a different definition and is not used. An earlier reading of this fact sheet stated 1.6 million direct deaths in 2021; that figure is historical and is not this rate.',
       sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/diabetes',
       confidence: 'med',
-      asOf: '2026-11-01',
+      asOf: '2026-11-06',
     },
     mortalityPairs: [
       {
         deaths: {
-          value: 1_600_000,
-          year: 2021,
+          value: 2_000_000,
+          year: 2023,
           label: 'deaths directly caused by diabetes',
-          source: 'WHO diabetes fact sheet: diabetes was the direct cause of 1.6 million deaths in 2021',
+          source: 'WHO diabetes fact sheet read 2026-11-06: diabetes was the direct cause of 2.0 million deaths in 2023',
           sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/diabetes',
-          asOf: '2026-11-01',
+          asOf: '2026-11-06',
         },
         affected: {
           value: 830_000_000,
           year: 2022,
-          label: 'people living with diabetes',
+          label: 'people of all ages living with diabetes',
           source: 'WHO diabetes fact sheet: 830 million people were living with diabetes in 2022',
           sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/diabetes',
-          asOf: '2026-11-01',
+          asOf: '2026-11-06',
         },
-        yearMismatch: 'Deaths are for 2021. People living with diabetes are for 2022.',
+        denominatorKind: 'person-stock',
+        yearMismatch:
+          'Deaths are for 2023. People living with diabetes are for 2022. Neither figure is the IDF count of adults aged 20–79 in 2024.',
+      },
+      {
+        deaths: {
+          value: 1_600_000,
+          year: 2021,
+          label: 'historical direct deaths, not the latest fact-sheet figure',
+          source:
+            'Earlier reading of the WHO diabetes fact sheet (recorded 2026-09-11): 1.6 million direct deaths in 2021. The fact sheet read on 2026-11-06 no longer states 1.6 million; it states 2.0 million direct deaths in 2023.',
+          sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/diabetes',
+          asOf: '2026-11-06',
+        },
+        affected: {
+          value: 830_000_000,
+          year: 2022,
+          label: 'people of all ages living with diabetes',
+          source: 'WHO diabetes fact sheet: 830 million people were living with diabetes in 2022',
+          sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/diabetes',
+          asOf: '2026-11-06',
+        },
+        notScoredBecause:
+          '1.6 million direct deaths in 2021 is a historical figure from an earlier reading of the fact sheet. It is not the latest direct-death count on that page.',
       },
     ],
     marketSize: {
@@ -2348,7 +2406,7 @@ export const problems: Problem[] = [
     },
     transformation: {
       before:
-        '589M adults with diabetes, 59 percent taking no medication, 59 percent undiagnosed in low-income countries, and 3.4M deaths a year, most of them from complications the existing drugs prevent.',
+        'IDF: 589 million adults aged 20–79 in 2024. WHO: 59% of a different group, adults aged 30 and over, were not taking medication in 2022. Direct deaths on the fact sheet read in 2026 are 2.0 million in 2023. The 1.6 million figure for 2021 is an earlier reading, not the latest.',
       after:
         'Diagnosis is routine, insulin and oral drugs are as available as they are cheap, and the GLP-1 class reaches the patients who need it rather than the ones who can pay list price.',
       horizon: '10 years',
@@ -2358,7 +2416,7 @@ export const problems: Problem[] = [
     neglectedness: {
       score: 3,
       rationale:
-        'Not neglected by capital: Ozempic earned $17.5 billion and Mounjaro $11.5 billion in 2024, and tirzepatide made Lilly the first trillion-dollar single-franchise pharma. Neglected in delivery: 59 percent of adults with diabetes take no medication, 82 percent of the undiagnosed live in middle-income countries, and treatment coverage is lowest where the disease is growing fastest.',
+        'Not neglected by capital: Ozempic earned $17.5 billion and Mounjaro $11.5 billion in 2024, and tirzepatide made Lilly the first trillion-dollar single-franchise pharma. Neglected in delivery for a different population than the IDF headline: the WHO fact sheet says 59% of adults aged 30 and over with diabetes were not taking medication in 2022, and treatment coverage was lowest in low- and middle-income countries.',
       source: 'Novo Nordisk annual report 2024; IDF Diabetes Atlas 2025; WHO diabetes fact sheet',
       sourceUrl: 'https://annualreport.novonordisk.com/2024/strategic-aspirations/financials.html',
       confidence: 'high',
@@ -2383,7 +2441,7 @@ export const problems: Problem[] = [
       { name: 'Jens Juul Holst', role: 'co-discoverer of GLP-1, University of Copenhagen', url: 'https://www.ku.dk' },
     ],
     waysToHelp: [
-      { mode: 'build', text: 'Build diagnosis and registry tooling for primary care, insulin cold-chain and pricing transparency, and affordable glucose monitoring for the 59 percent who are untreated.' },
+      { mode: 'build', text: 'Build diagnosis and registry tooling for primary care, insulin cold-chain and pricing transparency, and affordable glucose monitoring. WHO’s 59% untreated figure is adults aged 30 and over in 2022, not the IDF’s adults aged 20–79 in 2024.' },
       { mode: 'policy', text: 'Sugar-sweetened beverage taxes, insulin price regulation, and the WHO Global Diabetes Compact coverage targets.', url: 'https://www.who.int/initiatives/the-who-global-diabetes-compact' },
       { mode: 'career', text: 'Primary care, endocrinology, or medicine access in the middle-income countries that hold four in five of the undiagnosed.' },
     ],
@@ -2393,7 +2451,7 @@ export const problems: Problem[] = [
       xriskITN: null,
       utilityDelta: {
         value: 0.59,
-        unit: 'share of adults with diabetes not taking medication',
+        unit: 'share of adults aged 30 and over with diabetes not taking medication in 2022 (WHO). Not the IDF 20–79 group in 2024.',
         source: 'WHO diabetes fact sheet',
         sourceUrl: 'https://www.who.int/news-room/fact-sheets/detail/diabetes',
         confidence: 'high',

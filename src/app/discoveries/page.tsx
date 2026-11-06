@@ -10,7 +10,7 @@ import { listDiscoveries } from '@/data/discoveries'
 export const metadata: Metadata = {
   title: 'Discoveries | optimism.fun',
   description:
-    'Verified findings tagged to humanity\'s biggest problems. Newest first. Preprints are marked. Challenged results stay visible.',
+    'Curated findings tagged to humanity\'s biggest problems. Newest first. Preprints are marked. Challenged results stay visible. Curated means an editor added the row, not that a review panel signed it.',
 }
 
 const FILTER_LABEL: Record<string, string> = {
@@ -76,7 +76,7 @@ export default async function DiscoveriesPage({
               New science on the hard problems.
             </h1>
             <p className="text-ink-400 mt-4 text-lg max-w-2xl">
-              Verified findings, newest first. Preprints are marked. Challenged results stay visible.
+              Curated findings, newest first. An editor added each row. That is not a signed scientific review. Preprints are marked. Challenged results stay visible.
             </p>
             <p className="font-mono text-sm mt-3">
               <a href="/api/discoveries" className="text-primary hover:underline">JSON</a>

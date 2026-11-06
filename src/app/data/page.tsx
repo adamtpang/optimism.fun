@@ -24,7 +24,7 @@ const SETS = [
   },
   {
     name: 'Discoveries',
-    note: 'Verified findings, with the paper link and the problem they are tagged to.',
+    note: 'Curated findings, with the paper link and the problem they are tagged to. Curated means an editor added the row.',
     json: '/api/discoveries',
     csv: '/api/discoveries/csv',
   },
@@ -76,8 +76,30 @@ export default function DataPage() {
           <span className="font-mono text-ink-300">research/CTAS.md</span> and{' '}
           <span className="font-mono text-ink-300">research/DISCOVERIES.md</span>. A human reviews it before it merges.
         </p>
+        <ul className="mt-2 border-t border-hair">
+          <li className="py-5 border-b border-hair">
+            <h2 className="font-serif text-2xl text-ink-100">Scores</h2>
+            <p className="text-sm text-ink-400 mt-1">
+              The ranking inputs, formulas, worked example, and model-sensitivity bounds. Those bounds are not a confidence interval. No validated statistical interval is included.
+            </p>
+            <p className="font-mono text-sm mt-3">
+              <a href="/api/scores" className="text-primary hover:underline">JSON</a>
+              {' · '}
+              <a href="/api/scores/csv" className="text-primary hover:underline">CSV</a>
+            </p>
+          </li>
+          <li className="py-5 border-b border-hair">
+            <h2 className="font-serif text-2xl text-ink-100">Rendered snapshot</h2>
+            <p className="text-sm text-ink-400 mt-1">
+              Stored headlines, the WHO sentences read on 2026-11-06, and the World Bank file already in the repository. Live Our World in Data series are listed by chart slug. If a series was not captured, the file says so and does not invent the points.
+            </p>
+            <p className="font-mono text-sm mt-3">
+              <a href="/api/rendered" className="text-primary hover:underline">JSON</a>
+            </p>
+          </li>
+        </ul>
         <p className="text-sm text-ink-400 mt-4 leading-relaxed">
-          Live WHO, Our World in Data, and World Bank figures are fetched when a page renders. They are not in these downloads. WHO data is under{' '}
+          These downloads are public and versioned by the commit that produced them. They are not a supported API and they have no stability guarantee. A live Our World in Data or WHO chart can fail or go stale; the page says when a fetch is unavailable. WHO data is under{' '}
           <a href="https://data.who.int/about/data/terms-and-conditions" className="text-primary underline decoration-dotted" target="_blank" rel="noopener noreferrer">
             WHO&apos;s terms
           </a>

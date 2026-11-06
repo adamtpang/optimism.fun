@@ -83,8 +83,8 @@ export const capitalFlows: CapitalFlow[] = [
     usdPerYear: {
       value: 25_000_000_000,
       unit: 'USD/yr',
-      source: 'IHME — Financing Global Health (infectious-disease slice of DAH)',
-      sourceUrl: 'https://www.healthdata.org/research-analysis/health-by-topic/financing-global-health',
+      source: 'Previously recorded IHME Financing Global Health reading. The old topic URL returned HTTP 404. The current FGH visual was not re-extracted for the $25 billion figure, so that dollar claim is unverified against the live page.',
+      sourceUrl: 'https://www.healthdata.org/data-tools-practices/interactive-visuals/financing-global-health',
       confidence: 'med',
       asOf: '2024-12-01',
     },

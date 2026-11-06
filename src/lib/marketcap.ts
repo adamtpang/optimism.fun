@@ -120,6 +120,12 @@ export function indexTotals(rows: MarketCapRow[]) {
   return {
     totalCeiling,
     totalClaimed,
+    /**
+     * Illustrative base scenario: covered ceilings minus deduped tracked
+     * valuations. Not a measurement and not a confidence interval. Summing
+     * row headrooms double-counts a company tagged to several problems, so
+     * this deduped figure is not the sum of the rows.
+     */
     measuredHeadroom: Math.max(0, coveredCeiling - totalClaimed),
     trackedCompanies: trackedCompanies.size,
     valuedCompanies: valuedCompanies.size,
@@ -132,6 +138,27 @@ export function indexTotals(rows: MarketCapRow[]) {
      */
     coveredClaimedPct:
       coveredCeiling > 0 ? Math.min(1, totalClaimed / coveredCeiling) : 0,
+  }
+}
+
+/**
+ * Three arithmetic scenarios. They are not a statistical interval and they
+ * are not calibrated. Low is "ceiling already captured." Base is ceiling
+ * minus tracked valuations. High is the ceiling itself, as if none of it
+ * were in the tracked set. No other band is available.
+ */
+export function headroomScenarios(ceiling: number, claimed: number): {
+  low: number
+  base: number
+  high: number
+  note: string
+} {
+  return {
+    low: 0,
+    base: Math.max(0, ceiling - claimed),
+    high: Math.max(0, ceiling),
+    note:
+      'Illustrative scenarios from the editorial ceiling and the tracked valuations. Not an empirical confidence interval. No validated interval is available.',
   }
 }
 

@@ -78,11 +78,14 @@ export default function FrontierPage() {
 
   const byProblem = new Map<string, BetWithFounder[]>()
   const byGap = new Map<string, BetWithFounder[]>()
+  const problemByName = new Map(problems.map((p) => [p.name.toLowerCase(), p.slug]))
   for (const b of allBets) {
-    if (b.problemSlug) {
-      byProblem.set(b.problemSlug, [...(byProblem.get(b.problemSlug) ?? []), b])
+    const named = b.gapLabel ? problemByName.get(b.gapLabel.trim().toLowerCase()) : undefined
+    const slug = b.problemSlug ?? named
+    if (slug) {
+      byProblem.set(slug, [...(byProblem.get(slug) ?? []), b])
     }
-    if (b.gapLabel) {
+    if (b.gapLabel && !named) {
       byGap.set(b.gapLabel, [...(byGap.get(b.gapLabel) ?? []), b])
     }
   }

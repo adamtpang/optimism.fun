@@ -23,8 +23,16 @@ Every public dataset is JSON and CSV, with the citation on the row.
 | Time series | `/api/series` | `/api/series/csv` |
 | Discoveries | `/api/discoveries` | `/api/discoveries/csv` |
 | Calls to action | `/api/ctas` | `/api/ctas/csv` |
+| Ranking scores | `/api/scores` | `/api/scores/csv` |
+| Rendered snapshot | `/api/rendered` |  |
 
-A problem page links the same files. A chart uses only the series already stored for that problem. If there is no series, the page says so and does not draw a trend.
+These files are public downloads of the current commit. They are not a supported API and they have no stability guarantee.
+
+`/api/scores` repeats the ranking inputs, the formulas, a worked example, and model-sensitivity bounds. Those bounds are what the score does if a missing annual-severity default is set to 0 or to 1. They are not a statistical confidence interval. No validated interval is published.
+
+`/api/rendered` includes the WHO sentences read on 2026-11-06, the World Bank GDP file already in the repo, and the Our World in Data, WHO, and World Bank series captured in `src/data/snapshots/rendered-2026-11-06.json`. A row with status `unavailable` was a failed fetch. It is not a stored historical value. A problem page may still fetch a live chart; that fetch can fail, and the page says so.
+
+A stored chart uses only the series already stored for that problem. If there is no stored series, the page says so. A live chart under it is a separate retrieval, with its own year and definition.
 
 ## Stack
 

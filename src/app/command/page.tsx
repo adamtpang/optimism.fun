@@ -39,10 +39,10 @@ function Row({ label, value, href, src, tag }: { label: string; value: string; h
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        title={src}
-        className="text-small tabular-nums text-ink-100 hover:text-primary text-right min-w-0 break-words"
+        className="text-body tabular-nums text-ink-100 hover:text-primary text-right min-w-0 break-words underline decoration-dotted underline-offset-2"
       >
         {value}
+        <span className="block text-small font-normal text-primary no-underline">{src}</span>
       </a>
     </li>
   )

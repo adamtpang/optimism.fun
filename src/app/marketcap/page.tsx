@@ -9,6 +9,7 @@ import {
   indexTotals,
   leastCapturable,
   validateMarketCapInputs,
+  headroomScenarios,
 } from '@/lib/marketcap'
 import { formatUSD, formatHumans, formatPercent } from '@/lib/format'
 
@@ -31,6 +32,10 @@ export default function MarketCapPage() {
   const totals = indexTotals(rows)
   const uncapturable = leastCapturable(rows, 3)
   const top = rows[0]
+  const scenario = headroomScenarios(
+    rows.filter((r) => r.covered).reduce((s, r) => s + r.ceiling, 0),
+    totals.totalClaimed,
+  )
 
   return (
     <>
@@ -48,10 +53,15 @@ export default function MarketCapPage() {
             </h1>
             <p className="text-ink-400 leading-relaxed max-w-2xl text-base">
               CoinMarketCap ranks assets by what the market has{' '}
-              <span className="text-ink-200">already</span> priced. This ranks problems by what the
-              market <span className="text-ink-200">could</span> price if someone actually solved
-              them, then subtracts the value companies have already captured. What is left is the
-              headroom: the part of the prize still sitting there unclaimed.
+              <span className="text-ink-200">already</span> priced. This page subtracts tracked
+              company valuations from editorial ceilings. The result is an illustrative scenario,
+              not a measured headroom and not a confidence interval. Ceilings are speculative.
+              Tracked valuations are a selected subset, so a zero is missing data, not an empty
+              market. Summing rows double-counts a company that sits on more than one problem.
+              {rows.length} problems have a ceiling. The ranked list is larger. No validated
+              low-to-high interval is available. The low scenario on a row is zero (ceiling
+              already captured). The base is ceiling minus tracked value. The high is the ceiling
+              itself.
             </p>
 
             {/* Ticker */}
@@ -74,7 +84,7 @@ export default function MarketCapPage() {
               </div>
               <div className="bg-ink-900/40 px-4 py-3">
                 <p className="font-mono text-small uppercase text-ink-500 mb-1">
-                  Measured headroom
+                  Illustrative base scenario
                 </p>
                 <p className="font-mono text-xl text-terminal-green tabular-nums">
                   {formatUSD(totals.measuredHeadroom)}
@@ -98,6 +108,11 @@ export default function MarketCapPage() {
                 companies
               </p>
             )}
+            <p className="mt-3 text-sm text-ink-400 max-w-2xl">
+              Deduped tracked valuations against covered ceilings. Low {formatUSD(scenario.low)}, base{' '}
+              {formatUSD(scenario.base)}, high {formatUSD(scenario.high)}. {scenario.note} Row
+              scenarios are on each ceiling and are not additive with this line.
+            </p>
             <DataFreshness className="mt-5" />
           </div>
         </section>

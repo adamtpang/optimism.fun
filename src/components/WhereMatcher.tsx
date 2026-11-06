@@ -132,7 +132,20 @@ export default function WhereMatcher({ catalog }: { catalog: WhereCatalog }) {
             <p className="text-sm text-ink-400 mt-2">{match.entry.tagline}</p>
             <p className="text-sm text-ink-300 mt-2">{match.reasons.join(' · ')}</p>
             {match.ctas.length === 0 ? (
-              <p className="text-sm text-ink-500 mt-4">No matching action is listed yet.</p>
+              <div className="text-sm text-ink-500 mt-4 space-y-2">
+                <p>No checked action is listed for this match. This page does not invent openings.</p>
+                <p>
+                  <Link href={match.entry.href} className="text-primary hover:underline">Read the problem and its sources</Link>
+                  {match.entry.kind === 'problem' && (
+                    <>
+                      {' · '}
+                      <Link href={`/discoveries?problem=${match.entry.id}`} className="text-primary hover:underline">Curated findings</Link>
+                    </>
+                  )}
+                  {' · '}
+                  <Link href="/research" className="text-primary hover:underline">Ask a sourced research question</Link>
+                </p>
+              </div>
             ) : (
               <ul className="mt-4 border-t border-hair">
                 {match.ctas.slice(0, 4).map((cta) => (

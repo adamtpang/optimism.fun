@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import PageHeader from '@/components/PageHeader'
 import { ages } from '@/data/ages'
+import { formatBpFromBce } from '@/lib/calendar'
 import { progress, getProgressBySlug } from '@/data/progress'
 import { formatUSD } from '@/lib/format'
 
@@ -36,7 +37,7 @@ export default function AgesPage() {
         <PageHeader
           kicker="The atlas · humanity's ages"
           title="Every leap, in order."
-          lede="~300,000 years of one species, compressed to the moments that actually changed the ceiling on what was possible. Deep history has no clean before/after number to cite, just a date and why it mattered. The current age does have numbers, tracked live below, the same Kardashev scale and cost-to-orbit data already on /progress."
+          lede="~300,000 years of one species, compressed to the moments that actually changed the ceiling on what was possible. Dates before the common era are BCE year numbers. When a BP figure is shown, BP means years before 1950, and there is no year 0, so 3200 BCE is 5,149 BP. “Years ago” is not converted into BP. The current age has numbers below, from the same Kardashev definition as /capital."
           rightStats={[{ label: 'epochs', value: ages.length, tone: 'amber' }]}
         />
 
@@ -52,13 +53,14 @@ export default function AgesPage() {
                   />
                 )}
                 <span className="absolute left-0 top-0 flex h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-full border border-hair bg-paper font-mono text-small sm:text-xs text-primary text-center leading-tight px-1">
-                  {age.year < 0
-                    ? `~${Math.round(Math.abs(age.year) / 1000)}k BP`
-                    : age.year}
+                  {age.yearLabel.includes('BCE') ? 'BCE' : age.year < 0 ? 'ago' : age.year}
                 </span>
                 <div className="pt-1">
                   <p className="font-mono text-small text-ink-500 mb-1">
                     {age.yearLabel}
+                    {age.yearLabel.includes('BCE') && (
+                      <span> · {formatBpFromBce(Math.abs(age.year))}</span>
+                    )}
                     {age.precision === 'approximate' && (
                       <span className="text-ink-600"> · approximate</span>
                     )}

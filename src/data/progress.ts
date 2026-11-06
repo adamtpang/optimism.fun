@@ -4,6 +4,7 @@
 // readability; precise series live at the linked sources.
 
 import type { ProgressMilestone } from './types'
+import { KARDASHEV } from '@/lib/kardashev'
 
 const TODAY = '2026-04-24'
 
@@ -73,13 +74,14 @@ export const progress: ProgressMilestone[] = [
     name: 'Real GDP per capita (global)',
     description:
       'Inflation-adjusted economic output per person. The quiet engine behind nearly every other metric on this page.',
-    unit: 'USD, 2017 PPP',
+    unit: 'USD, 2017 PPP (unverified against a live chart)',
     format: 'usd',
     baseline: { year: 1820, value: 1200 },
     latest: { year: 2022, value: 16700 },
     direction: 'up',
-    source: 'Maddison Project Database 2023 + World Bank',
-    sourceUrl: 'https://ourworldindata.org/grapher/gdp-per-capita-worldbank-maddison',
+    source:
+      'Citation unavailable for these two points. The grapher gdp-per-capita-worldbank-maddison returned HTTP 404 on 2026-11-06. The live Maddison Project chart is in 2011 international dollars and is a different series, so it is not used as a replacement. Treat $1,200 (1820) and $16,700 (2022) as unverified.',
+    sourceUrl: 'https://ourworldindata.org/grapher/gdp-per-capita-maddison-project-database',
     confidence: 'high',
     asOf: TODAY,
   },
@@ -127,13 +129,13 @@ export const progress: ProgressMilestone[] = [
     slug: 'kardashev-scale',
     name: 'Kardashev scale (energy civilization type)',
     description:
-      'How much of a star’s available energy a civilization has learned to harness, on Kardashev’s Type 0-to-3 scale. Type 1 is full use of everything a home planet receives. This is the closest thing to a single number for "how advanced is humanity," and by design it does not care about GDP or population — only energy captured and put to use.',
-    unit: 'Kardashev type (1.0 = full planetary energy capture)',
+      'Sagan’s 1973 continuous index, K = (log10(P) − 6) / 10. Type I on this scale is 10^16 watts, the same reference /capital uses. The index is logarithmic: 0.73 is not 73% of planetary energy. At the stated ~20 TW, the index is about 0.73 and the power is 0.2% of that Type I reference. The 1973 baseline is Sagan’s published estimate, not this formula run on a 1973 wattage we do not store.',
+    unit: 'Sagan continuous index (Type I = 10^16 W). Not a percent.',
     format: 'absolute',
     baseline: { year: 1973, value: 0.7 },
-    latest: { year: 2026, value: 0.7276 },
+    latest: { year: 2026, value: KARDASHEV.index },
     direction: 'up',
-    source: 'Carl Sagan’s 1973 estimate; Kardashev1.com live tracker',
+    source: 'Computed from the stated ~20 TW and Sagan’s 1973 formula. Not a Kardashev1.com scrape.',
     sourceUrl: 'https://www.kardashev1.com/',
     confidence: 'low',
     asOf: '2026-08-06',

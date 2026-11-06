@@ -121,7 +121,7 @@ describe('the coverage finding', () => {
     const b = burdenForProblem('diabetes')
     expect(b).not.toBeNull()
     expect(b!.counted.map((c) => c.slug)).toEqual(['diabetes'])
-    expect(b!.deaths).toBe(1_600_000)
+    expect(b!.deaths).toBe(2_000_000)
     expect(b!.unmeasured.map((c) => c.slug)).toEqual(['kidney-diseases'])
     expect(mortalitySignal('diabetes')).not.toBeNull()
   })

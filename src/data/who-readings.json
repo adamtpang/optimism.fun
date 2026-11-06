@@ -1,0 +1,18 @@
+{
+  "retrievedAt": "2026-11-06",
+  "note": "Sentences copied from the live pages on this date. Not a time series.",
+  "readings": [
+    {
+      "url": "https://www.who.int/teams/control-of-neglected-tropical-diseases/global-report-on-neglected-tropical-diseases-2025",
+      "text": "In 2023, an estimated 1.495 billion people required interventions against NTDs, 122 million fewer than in 2022 and a 32% decrease from the 2010 baseline. Between 2015 and 2021, the disease burden dropped from 17.2 million to 14.1 million DALYs, while NTD-related deaths decreased from an estimated 139 000 to 119 000."
+    },
+    {
+      "url": "https://www.who.int/news-room/fact-sheets/detail/diabetes",
+      "text": "The number of people living with diabetes rose from 200 million in 1990 to 830 million in 2022. More than half (59%) of adults aged 30 years and over living with diabetes were not taking medication for their diabetes in 2022. In 2023, diabetes was the direct cause of 2.0 million deaths. The page no longer stated 1.6 million deaths in 2021."
+    },
+    {
+      "url": "https://www.who.int/news/item/05-05-2022-14.9-million-excess-deaths-were-associated-with-the-covid-19-pandemic-in-2020-and-2021",
+      "text": "14.9 million excess deaths associated with the COVID-19 pandemic in 2020 and 2021. The previous data-story URL returned HTTP 404. A later total of about 20 million was not on this page."
+    }
+  ]
+}

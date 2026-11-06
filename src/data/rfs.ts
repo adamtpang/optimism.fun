@@ -28,7 +28,7 @@ export const requestsForStartups: RequestForStartup[] = [
     successLooksLike:
       'Time-to-detection for a novel pathogen drops from weeks to days, globally, before the first hospital wave.',
     goodQuest:
-      'A real systems + bioinformatics frontier, decisive against the one risk that scales to civilization-ending, and good with no plausible misuse.',
+      'A hypothesis: pathogen-agnostic surveillance could shorten detection. Failure modes include false alarms, privacy and dual-use from the samples themselves, and a network that misses the pathogen that matters. It needs a validation plan before anyone calls it safe or misuse-proof.',
     confidence: 'med',
     asOf: ASOF,
   },
@@ -64,7 +64,7 @@ export const requestsForStartups: RequestForStartup[] = [
     successLooksLike:
       'Airborne transmission indoors becomes as rare as cholera from tap water in developed economies.',
     goodQuest:
-      'An engineering frontier with massive everyday upside even absent a pandemic, and good with no downside.',
+      'A hypothesis: filtered far-UVC plus ventilation could cut indoor transmission. Known failure modes include eye and skin exposure if the spectrum or dose is wrong, cost, and uneven installation. Safety and effectiveness have to be measured in occupied rooms, not assumed.',
     confidence: 'med',
     asOf: ASOF,
   },
@@ -102,7 +102,7 @@ export const requestsForStartups: RequestForStartup[] = [
     successLooksLike:
       'Firm geothermal is deployable in most geographies at a cost competitive with gas peakers.',
     goodQuest:
-      'A real engineering + cost frontier, decisive for firm clean power, and good with negligible externalities.',
+      'A hypothesis: oilfield tooling could make firm geothermal more widely buildable. Externalities are not negligible by assumption: induced seismicity, water use, and failed wells are the failure modes a project has to measure.',
     confidence: 'med',
     asOf: ASOF,
   },
@@ -152,7 +152,7 @@ export const requestsForStartups: RequestForStartup[] = [
     pitch:
       'A single-family home waits months on discretionary review that produces no safety value. Build the software that turns zoning + permitting from a black box into a queryable, deterministic API.',
     whyNow:
-      'Municipal records are digitizing and LLMs can finally parse zoning code reliably enough to be load-bearing.',
+      'Municipal records are digitizing. LLMs can draft a reading of zoning text, but that reading is not yet reliable enough to be load-bearing. A permit that depends on it needs a human check and a test against adopted code.',
     shape:
       'A platform that ingests local code, returns by-right buildable envelopes instantly, auto-generates compliant submittals, and tracks the approval pipeline for builders and cities.',
     successLooksLike:
@@ -536,7 +536,7 @@ export const requestsForStartups: RequestForStartup[] = [
     successLooksLike:
       'A single, room-temperature-stable antivenom treats bites from most medically important snakes in a region without first identifying the species.',
     goodQuest:
-      'A real biologics-manufacturing frontier against a WHO-listed neglected disease that kills as many people as some infectious epidemics, with no plausible misuse.',
+      'A hypothesis: recombinant antivenom could replace horse serum for some bites. Failure modes include incomplete coverage across species, cold-chain or cost barriers, and a product that looks broad in a paper and narrow in a clinic. Misuse is not the main risk; lack of evidence is.',
     confidence: 'med',
     asOf: ASOF,
   },
@@ -576,7 +576,7 @@ export const requestsForStartups: RequestForStartup[] = [
     successLooksLike:
       'Datacenter operators treat GPU-cluster power smoothing as a standard purchased line item, the way they already buy UPS systems, and this company is the default vendor.',
     goodQuest:
-      'A real systems-engineering frontier sitting at the exact chokepoint under the AI buildout, genuinely still open as of 2026, good with no plausible misuse.',
+      'A hypothesis, as of 2026: GPU-cluster power smoothing is still a narrow product. “Open” here means few tracked entrants, not proof of no competition. Failure modes include fire risk, interconnection rules, and a battery sized for the wrong transient.',
     confidence: 'med',
     asOf: '2026-08-20',
   },

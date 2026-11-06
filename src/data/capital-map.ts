@@ -423,17 +423,4 @@ export function codeAttackableFlows(): DammedFlow[] {
   return dammedFlows.filter((f) => f.attackableBy === 'code')
 }
 
-/**
- * Kardashev position. Sagan's continuous formula: K = (log10(P) - 6) / 10,
- * where P is total power consumption in watts. Humanity uses ~20 TW.
- */
-export const KARDASHEV = {
-  currentWatts: 2e13,
-  typeIWatts: 1e16,
-  get current(): number {
-    return (Math.log10(this.currentWatts) - 6) / 10
-  },
-  get multipleToTypeI(): number {
-    return this.typeIWatts / this.currentWatts
-  },
-}
+export { KARDASHEV } from '@/lib/kardashev'

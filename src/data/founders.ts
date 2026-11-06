@@ -204,7 +204,7 @@ export const founders: Founder[] = [
       description: 'Environmental conservation education and workforce development — institution-building, not unproven science.',
       amount: { value: 115_000_000, unit: 'USD donated (Oct 2025)', source: 'ASU Newsroom', confidence: 'high', asOf: RESEARCHED },
       source: 'ASU Newsroom — $115 million gift will establish Rob Walton School of Conservation Futures',
-      sourceUrl: 'https://newsroom.asu.edu/press-releases/115-million-gift-will-establish-rob-walton-school-conservation-futures',
+      sourceUrl: 'https://news.asu.edu/20250922-environment-and-sustainability-115M-gift-largest-ever-asu-establishes-walton-school-conservation-futures',
     },
   ]),
   mk(12, 'Jim Walton', 129_000_000_000, 'Walmart', 'USA', undefined, undefined, []),
@@ -643,10 +643,9 @@ export const founders: Founder[] = [
   mk(59, 'Henry Samueli', 30_800_000_000, 'Broadcom (semiconductors)', 'USA', 71, 'conventional-philanthropy', [
     {
       vehicle: 'UCI and UCLA engineering + integrative medicine',
-      description: '$500M+ across the Samueli Schools of Engineering at UCLA and UC Irvine and a college of integrative health sciences — university-building, not a distinct frontier-science bet.',
-      amount: { value: 500_000_000, unit: 'USD cumulative', source: 'UCI Samueli School of Engineering', confidence: 'high', asOf: RESEARCHED },
-      source: 'UCI Engineering — How Broadcom’s Henry Samueli Is Giving Away Billions',
-      sourceUrl: 'https://engineering.uci.edu/how-broadcom-s-henry-samueli-giving-away-billions',
+      description: 'University-building gifts to the Samueli engineering schools at UCLA and UC Irvine and to health sciences at UC Irvine. The IEEE Spectrum article with this title is the live source. A previous “$500 million cumulative” figure lived on a UCI URL that returned HTTP 404 and was not re-read here, so it is not stated.',
+      source: 'IEEE Spectrum — How Broadcom’s Henry Samueli Is Giving Away Billions. The UCI URL with this title returned HTTP 404. This article documents major UCLA and UC Irvine gifts. A previous “$500 million cumulative” figure was not re-read on this page and is not stated.',
+      sourceUrl: 'https://spectrum.ieee.org/how-broadcoms-henry-samueli-is-giving-away-billions',
     },
   ]),
   mk(60, 'Eric Schmidt', 35_500_000_000, 'Google, Alphabet', 'USA', 71, 'frontier-bets', [
@@ -890,8 +889,8 @@ export const founders: Founder[] = [
   mk(85, 'Dilip Shanghvi', 25_600_000_000, 'Sun Pharmaceutical Industries', 'India', 70, 'scaling-proven-tech', [
     {
       vehicle: 'Shantilal Shanghvi Foundation + Sun Foundation',
-      description: 'Rural healthcare infrastructure and medicine access for underserved communities in India — delivering existing, proven healthcare at scale, not funding new frontier research.',
-      source: 'LinkedIn — Dilip Shanghvi: Illuminating the Path of Healthcare Innovation',
+      description: 'Citation unavailable. The only recorded source, a LinkedIn pulse, resolved on 2026-11-06 to LinkedIn’s generic article-not-found page. The earlier description of rural healthcare programs is unverified and is not restated.',
+      source: 'Citation unavailable — LinkedIn pulse not found',
       sourceUrl: 'https://www.linkedin.com/pulse/dilip-shanghvi-illuminating-path-healthcare-innovation',
     },
   ]),
@@ -970,7 +969,7 @@ export const founders: Founder[] = [
       vehicle: 'Harry Triguboff Foundation',
       description: 'Roughly A$3M/yr in disclosed giving, including support for Jewish immigration to Israel via the Shorashim Center, plus one-off gifts like A$5,000 to each of the 99 Australian medal winners at the Tokyo Olympics — modest and steady relative to a $23B fortune, not frontier research.',
       source: 'Meriton — AOC thanks Harry Triguboff for generous donation to Tokyo 2020 medal winners',
-      sourceUrl: 'https://www.meriton.com.au/aoc-thanks-harry-triguboff-for-generous-donation-to-tokyo-2020-medal-winners/',
+      sourceUrl: 'https://www.olympics.com.au/news/aoc-thanks-harry-triguboff-for-generous-donation-to-tokyo-2020-medal-winners/',
     },
   ]),
   mk(95, 'Steve Cohen', 23_000_000_000, 'Point72 Asset Management (hedge fund)', 'USA', 69, 'frontier-bets', [
@@ -1034,8 +1033,8 @@ export const founders: Founder[] = [
       vehicle: 'Raising Cane’s community giving ("Cane’s for a Cause")',
       description: '$25M spread across hometown communities nationwide for the chain’s 25th anniversary in 2021, plus one-off gifts like $1M for 2025 Texas flood relief via the American Red Cross — branded, feel-good local philanthropy rather than a bet on any research frontier.',
       amount: { value: 25_000_000, unit: 'USD (25th-anniversary community donations, 2021)', source: 'KATC', confidence: 'high', asOf: RESEARCHED },
-      source: 'KATC — Raising Cane’s celebrates 25 years with $25M donation to communities nationwide',
-      sourceUrl: 'https://www.katc.com/news/covering-louisiana/raising-canes-celebrates-25-years-with-25m-donation-to-communities-nationwide',
+      source: 'The Advocate — Raising Cane’s hits 25 year milestone with $25 million in donations. The KATC URL returned HTTP 404.',
+      sourceUrl: 'https://www.theadvocate.com/baton_rouge/news/business/raising-canes-hits-25-year-milestone-with-25-million-in-donations-plans-to-open-100/article_93562aba-05c0-11ec-8343-675e70db65fc.html',
     },
   ]),
   mk(102, 'John Fredriksen', 21_300_000_000, 'Frontline / Golden Ocean / Seadrill (shipping, tankers, offshore drilling)', 'Cyprus', 81, 'conventional-philanthropy', [
