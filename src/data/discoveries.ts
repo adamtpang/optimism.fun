@@ -761,6 +761,20 @@ export const discoveries: Discovery[] = [
     changes: 'neglectedness',
     review: 'peer-reviewed',
   },
+  {
+    id: 'harvard-global-cancer-treatment-costs-2026',
+    title: 'Estimated global treatment costs for 31 cancer types by stage, year, and follow-up period: a systematic review and modelling study',
+    published: '2026-11-02',
+    added: '2026-11-08',
+    source: 'The Lancet Oncology',
+    doi: '10.1016/s1470-2045(26)00388-8',
+    url: doi('10.1016/s1470-2045(26)00388-8'),
+    problemSlugs: ['cancer'],
+    summary:
+      'Modelled 10-year treatment costs for cancers diagnosed in 2022 total $771.48 billion globally. Mean cost per patient is $38,650, from $3,380 in eastern Africa to $93,600 in North America. North America and Europe hold 64% of costs but 36% of cases.',
+    changes: 'scale',
+    review: 'peer-reviewed',
+  },
 ]
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/
