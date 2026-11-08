@@ -1,4 +1,5 @@
 import type { Company } from './types'
+import { healthCompanies } from './health-companies'
 
 const TODAY = '2026-04-24'
 
@@ -827,7 +828,7 @@ export const companies: Company[] = [
     slug: 'gsk',
     name: 'GSK',
     url: 'https://www.gsk.com',
-    problemSlugs: ['infectious-disease'],
+    problemSlugs: ['infectious-disease', 'copd'],
     marketCap: {
       value: 72_000_000_000,
       unit: 'USD',
@@ -840,7 +841,7 @@ export const companies: Company[] = [
     country: 'UK',
     description:
       'Global pharma. Manufacturer of RTS, S and R21 malaria vaccines; major HIV and TB portfolios.',
-    sources: [src('GSK', 'https://www.gsk.com')],
+    sources: [src('GSK, Nucala approved by US FDA for COPD, 2025-05-22', 'https://www.gsk.com/en-gb/media/press-releases/nucala-mepolizumab-approved-by-us-fda/'), src('GSK', 'https://www.gsk.com')],
     asOf: TODAY,
   },
   {
@@ -1179,6 +1180,7 @@ export const companies: Company[] = [
     sources: [src('Marco Polo', 'https://www.marcopolo.me')],
     asOf: TODAY,
   },
+  ...healthCompanies,
 ]
 
 export const getCompaniesForProblem = (problemSlug: string): Company[] =>

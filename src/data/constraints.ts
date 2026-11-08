@@ -9,6 +9,8 @@
  * Pass 1 of the loop, 2026-10-04: hypertension. Sources are the WHO pages
  * cited in research/hypertension plus the two checks run against the claim.
  */
+import { cancerTree } from './trees/cancer'
+import { energyAbundanceTree } from './trees/energy'
 
 export type Level = 'low' | 'medium' | 'high' | 'unknown'
 
@@ -161,6 +163,78 @@ export const constraintTrees: ConstraintTree[] = [
       },
     ],
   },
+  {
+    problemSlug: 'diabetes',
+    outcome:
+      'Every adult with diabetes diagnosed and treated. Today 252 million of 589 million are undiagnosed, and 59 percent of adults over 30 take no diabetes medicine.',
+    whyUnsolved:
+      'Not the science. Metformin and insulin are old and cheap, and the newest drugs work. Nearly half of cases are never diagnosed, and of those over 30, 445 million take nothing. The gap is finding people and keeping medicine affordable, mostly in India and China.',
+    bindingId: 'diagnosis',
+    updated: '2026-10-29',
+    root: [
+      {
+        id: 'diagnosis',
+        claim: 'Half of people with diabetes do not know they have it.',
+        kind: 'delivery',
+        whyUnsolved:
+          'Diabetes is silent for years. 42.8 percent of adults with it, 252 million people, were undiagnosed in 2024, 82 percent of them in middle-income countries where screening is rare.',
+        falsifier: 'Places that screen widely still leave most diagnosed people untreated, so finding people would not be the main gap.',
+        tested:
+          'Partly. Untreated (445 million over 30) is larger than undiagnosed (252 million), so some diagnosed people also go untreated. Diagnosis is the first gap, not the only one. Our inference from two different studies with different age ranges.',
+        suppliers: ['IDF', 'National screening programmes'],
+        supplyState: 'thin',
+        additionality: {
+          level: 'high',
+          why: 'Most undiagnosed people live where screening barely exists, so each working screening route reaches people nobody else reaches.',
+        },
+        entryPoints: [
+          { who: 'operator', action: 'Add a glucose test to an existing blood-pressure or pharmacy screening point.' },
+          { who: 'talent', action: 'Map where undiagnosed adults live in one country and who could test them.' },
+        ],
+        sources: [
+          { label: 'IDF Diabetes Atlas 2025, undiagnosed estimates', url: 'https://research.bidmc.org/oscar/publications/global-regional-and-national-estimates-undiagnosed-diabetes-adults-findings-2025-idf' },
+        ],
+      },
+      {
+        id: 'treatment',
+        claim: 'Diagnosed people go untreated, mostly in India and China.',
+        kind: 'delivery',
+        whyUnsolved:
+          '445 million adults over 30 with diabetes took no medicine in 2022, 3.5 times the 1990 number. 133 million live in India and 78 million in China.',
+        falsifier: 'Untreated rates stay high even where medicine is free and nearby.',
+        suppliers: ['National health systems', 'WHO Global Diabetes Compact'],
+        supplyState: 'unresearched',
+        additionality: { level: 'unknown', why: 'Not yet researched who runs diabetes treatment delivery at scale in India.' },
+        entryPoints: [{ who: 'talent', action: 'Find what share of India’s 133 million untreated adults were ever diagnosed.' }],
+        sources: [{ label: 'NCD-RisC, The Lancet, November 2024', url: 'https://www.news-medical.net/news/20241118/Diabetes-rates-skyrocket-globally-with-millions-left-untreated.aspx' }],
+      },
+      {
+        id: 'price',
+        claim: 'The newest drugs are priced hundreds of times above their cost.',
+        kind: 'payment',
+        whyUnsolved:
+          'A month of semaglutide could be made for $0.89 to $4.73, against a US list price near $969. Patents held it there. They began expiring in India in March 2026.',
+        falsifier: 'Cheap generic versions arrive and treatment rates do not rise.',
+        tested:
+          'Too early to test. The cost figure is a modeled estimate, and Novo Nordisk did not share its costs.',
+        suppliers: ['Eli Lilly', 'Novo Nordisk', 'Generic makers after patent expiry'],
+        supplyState: 'contested',
+        additionality: {
+          level: 'medium',
+          why: 'The India patent ended in March 2026 and generics are filing in India, Canada and China. A new entrant matters most where it arrives first.',
+        },
+        entryPoints: [
+          { who: 'capital', action: 'Back a low-cost generic GLP-1 supplier for a market where the patent has expired.' },
+        ],
+        sources: [
+          { label: 'Barber et al., JAMA Network Open 2024, via Fortune', url: 'https://www.fortune.com/europe/2024/03/28/ozempic-maker-novo-nordisk-facing-pressure-as-study-finds-1000-appetite-suppressant-can-be-made-for-just-5' },
+          { label: 'Asia IP, semaglutide patent expiry, March 2026', url: 'https://www.asiaiplaw.com/index.php/sector/patents/ozempic-patent-expiry-opens-door-for-generics-in-india-china-canada' },
+        ],
+      },
+    ],
+  },
+  cancerTree,
+  energyAbundanceTree,
 ]
 
 export const getConstraintTree = (slug: string) =>
