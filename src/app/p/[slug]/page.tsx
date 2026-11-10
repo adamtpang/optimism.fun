@@ -7,6 +7,7 @@ import { technologiesForProblem } from '@/data/technologies'
 import OpenQuestCard from '@/components/OpenQuestCard'
 import { openQuestsFor } from '@/lib/open-quests'
 import { balanceBySlug } from '@/lib/sourced-balance'
+import { readingsFor } from '@/lib/demand-snapshot'
 import { getCapitalFlow } from '@/data/capital-flows'
 import { getInLimitCap } from '@/data/in-limit'
 import { displayDeathCitation, displayDeaths } from '@/lib/burden'
@@ -83,6 +84,9 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
   const technologies = technologiesForProblem(slug)
   const score = balanceBySlug().get(slug)
   const openQuests = openQuestsFor(slug)
+  const readings = readingsFor(slug)
+  const sponsorReading = readings.find((reading) => reading.feed === 'clinicaltrials-sponsors')
+  const paperReading = readings.find((reading) => reading.feed === 'openalex-companies')
   const flow = getCapitalFlow(slug)
   const prize = getInLimitCap(slug)
   const deaths = displayDeaths(slug)
@@ -195,6 +199,44 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
                 )
               })}
             </ul>
+          )}
+          {sponsorReading?.names && sponsorReading.names.length > 0 && (
+            <div className="mt-6">
+              <h3 className="font-mono text-small uppercase tracking-wider text-ink-500">Industry sponsors on active trials</h3>
+              <p className="text-sm text-ink-400 mt-2">
+                {sponsorReading.value ?? 'Count not stored'} distinct industry sponsors. Each link is the query for that sponsor. Top names by trial count.
+              </p>
+              <ul className="mt-3 space-y-2">
+                {sponsorReading.names.slice(0, 8).map((name) => (
+                  <li key={name.url} className="text-sm text-ink-300 break-words">
+                    <a href={name.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      {name.name}
+                    </a>
+                    {` · ${name.count} trials`}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {(paperReading?.names?.length ?? 0) > 0 && (
+            <div className="mt-6">
+              <h3 className="font-mono text-small uppercase tracking-wider text-ink-500">Company affiliations on recent papers</h3>
+              <p className="text-sm text-ink-400 mt-2">
+                {paperReading?.capped
+                  ? 'OpenAlex stops at 200 institutions for this query, so the count is not in the score. These are the top names from that capped list.'
+                  : `${paperReading?.value ?? 'Count not stored'} company affiliations on papers from the last 12 months.`}
+              </p>
+              <ul className="mt-3 space-y-2">
+                {paperReading?.names?.slice(0, 8).map((name) => (
+                  <li key={name.url} className="text-sm text-ink-300 break-words">
+                    <a href={name.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      {name.name}
+                    </a>
+                    {` · ${name.count} works`}
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
           {technologies.length > 0 && (
             <div className="mt-6">

@@ -30,10 +30,15 @@
  *   A missing value is left out of that column. It is not filled with 0,
  *   with the mean, or with any other number.
  *
+ *   A demand score is published only when at least 3 demand inputs have a
+ *   percentile. Fewer than that is "not enough data", including a score that
+ *   would otherwise come from a single death figure.
+ *   A supply score is published only when at least one supply input is a
+ *   sourced number, and a stored zero counts. Capital with no figure does not.
  *   demand score = round(100 * mean of that problem's demand percentiles)
  *   supply score = round(100 * mean of that problem's supply percentiles)
  *   gap = demand score - supply score
- *   If a side has no percentiles, that score is "not yet sourced" and the gap is too.
+ *   If either side is not published, the gap is "not enough data".
  *
  * Omitting a missing indicator from the mean is not imputation. A stored count
  * of zero is a real zero and does enter its column.
@@ -46,6 +51,10 @@ import { getCapitalFlow } from '@/data/capital-flows'
 import { displayDeaths, displayDeathCitation } from '@/lib/burden'
 import { rankBySlug } from '@/lib/open-data'
 import { NOT_SOURCED } from '@/lib/quest-types'
+
+export const NOT_ENOUGH = 'not enough data'
+export const MIN_DEMAND_INPUTS = 3
+export const MIN_SUPPLY_INPUTS = 1
 import { demandSnapshot, type SnapshotReading } from '@/lib/demand-snapshot'
 
 export type ScoreInput = {
@@ -57,6 +66,7 @@ export type ScoreInput = {
   sourceUrl: string | null
   /** True when this input is allowed into the percentile mean. */
   inScore: boolean
+  role: 'demand' | 'supply' | 'shown'
 }
 
 export type BalanceRow = {
@@ -73,10 +83,23 @@ export type BalanceRow = {
   burdenValue: number | null
   companyCount: number
   openQuest: boolean
+  companyNote: string | null
   inputs: ScoreInput[]
 }
 
-const DEMAND_FEEDS = new Set(['openalex', 'nih', 'federal-register', 'usaspending', 'edgar', 'openfda'])
+const DEMAND_FEEDS = new Set(['openalex', 'nih', 'clinicaltrials', 'federal-register', 'usaspending', 'edgar', 'openfda'])
+const SUPPLY_FEEDS = new Set(['clinicaltrials-sponsors', 'openalex-companies'])
+
+export function coveredMean(values: (number | null)[], minimum: number): number | null {
+  const present = values.filter((value): value is number => typeof value === 'number' && Number.isFinite(value))
+  if (present.length < minimum) return null
+  return present.reduce((sum, value) => sum + value, 0) / present.length
+}
+
+export function formatCovered(score: number | null, inputCount: number, minimum: number): string {
+  if (inputCount < minimum || score == null) return NOT_ENOUGH
+  return String(Math.round(score * 100))
+}
 
 export function percentileHigh(values: (number | null)[]): (number | null)[] {
   const present = values
@@ -111,24 +134,29 @@ export function formatScore(score: number | null): string {
 }
 
 export function formatGap(demand: number | null, supply: number | null): { value: number | null; label: string } {
-  if (demand == null || supply == null) return { value: null, label: NOT_SOURCED }
+  if (demand == null || supply == null) return { value: null, label: NOT_ENOUGH }
   const value = Math.round(demand * 100) - Math.round(supply * 100)
   return { value, label: String(value) }
+}
+
+function deathOrDaly(unit: string): boolean {
+  return /death|daly/i.test(unit)
 }
 
 function formatNumber(value: number): string {
   return value.toLocaleString('en-US')
 }
 
-function readingInput(reading: SnapshotReading, inScore: boolean): ScoreInput {
+function readingInput(reading: SnapshotReading, inScore: boolean, role: ScoreInput['role']): ScoreInput {
   if (reading.status !== 'ok' || reading.value == null) {
     return {
       label: reading.label,
       value: null,
-      display: NOT_SOURCED,
+      display: reading.capped ? 'count capped' : NOT_SOURCED,
       unit: reading.unit,
       sourceUrl: reading.sourceUrl,
       inScore: false,
+      role,
     }
   }
   return {
@@ -138,7 +166,17 @@ function readingInput(reading: SnapshotReading, inScore: boolean): ScoreInput {
     unit: reading.unit,
     sourceUrl: reading.sourceUrl,
     inScore,
+    role,
   }
+}
+
+export function hasNamedExternalCompany(slug: string): boolean {
+  const readings = demandSnapshot.problems[slug] ?? []
+  return readings.some((reading) => {
+    if (reading.feed === 'clinicaltrials-sponsors' && reading.status === 'ok' && (reading.value ?? 0) > 0) return true
+    if (reading.feed === 'openalex-companies' && ((reading.value ?? 0) > 0 || (reading.names?.length ?? 0) > 0)) return true
+    return false
+  })
 }
 
 export function sourcedCompanyCount(slug: string): number {
@@ -205,15 +243,17 @@ export function balanceRows(): BalanceRow[] {
   const funderPct = percentileHigh(rows.map((row) => row.funders))
   const capitalPct = percentileHigh(rows.map((row) => row.capital))
 
-  const feedIds = [...DEMAND_FEEDS]
+  const feedIds = [...DEMAND_FEEDS, ...SUPPLY_FEEDS, 'burden']
   const feedPct = new Map<string, (number | null)[]>()
   for (const feed of feedIds) {
     feedPct.set(
       feed,
       percentileHigh(
         rows.map((row) => {
-          const reading = row.demandFeeds.find((item) => item.feed === feed && item.status === 'ok')
-          return reading?.value ?? null
+          const reading = row.shownFeeds.find((item) => item.feed === feed && item.status === 'ok' && !item.capped)
+          if (!reading || reading.value == null) return null
+          if (feed === 'burden' && !deathOrDaly(reading.unit)) return null
+          return reading.value
         }),
       ),
     )
@@ -222,11 +262,21 @@ export function balanceRows(): BalanceRow[] {
   return rows
     .map((row, index) => {
       const demandParts: (number | null)[] = [deathPct[index]]
-      for (const feed of feedIds) demandParts.push(feedPct.get(feed)?.[index] ?? null)
-      const supplyParts: (number | null)[] = [companyPct[index], founderPct[index], funderPct[index], capitalPct[index]]
-      const demand = meanPresent(demandParts)
-      const supply = meanPresent(supplyParts)
+      for (const feed of DEMAND_FEEDS) demandParts.push(feedPct.get(feed)?.[index] ?? null)
+      const burdenPct = feedPct.get('burden')?.[index] ?? null
+      if (burdenPct != null) demandParts.push(burdenPct)
+      const sponsorPct = feedPct.get('clinicaltrials-sponsors')?.[index] ?? null
+      const paperPct = feedPct.get('openalex-companies')?.[index] ?? null
+      const supplyParts: (number | null)[] = [companyPct[index], founderPct[index], funderPct[index], capitalPct[index], sponsorPct, paperPct]
+      const demandInputs = demandParts.filter((value) => value != null).length
+      const supplyInputs = supplyParts.filter((value) => value != null).length
+      const demand = coveredMean(demandParts, MIN_DEMAND_INPUTS)
+      const supply = coveredMean(supplyParts, MIN_SUPPLY_INPUTS)
       const gap = formatGap(demand, supply)
+      const named = hasNamedExternalCompany(row.slug)
+      const oa = row.shownFeeds.find((item) => item.feed === 'openalex-companies')
+      const sponsors = row.shownFeeds.find((item) => item.feed === 'clinicaltrials-sponsors' && item.status === 'ok')
+      const exactExternal = (sponsors?.value ?? 0) + (oa?.status === 'ok' ? oa.value ?? 0 : 0)
       const inputs: ScoreInput[] = []
       inputs.push({
         label: 'Related deaths / yr',
@@ -235,18 +285,24 @@ export function balanceRows(): BalanceRow[] {
         unit: 'deaths/yr',
         sourceUrl: row.deathUrl,
         inScore: row.deaths != null && deathPct[index] != null,
+        role: 'demand',
       })
       for (const reading of row.shownFeeds) {
-        const pct = feedPct.get(reading.feed)?.[index]
-        inputs.push(readingInput(reading, DEMAND_FEEDS.has(reading.feed) && reading.status === 'ok' && pct != null))
+        const pct = feedPct.get(reading.feed)?.[index] ?? null
+        const burdenOk = reading.feed === 'burden' && reading.status === 'ok' && deathOrDaly(reading.unit) && pct != null
+        const demandOk = DEMAND_FEEDS.has(reading.feed) && reading.status === 'ok' && pct != null
+        const supplyOk = SUPPLY_FEEDS.has(reading.feed) && reading.status === 'ok' && !reading.capped && pct != null
+        const role: ScoreInput['role'] = SUPPLY_FEEDS.has(reading.feed) ? 'supply' : demandOk || burdenOk ? 'demand' : 'shown'
+        inputs.push(readingInput(reading, demandOk || burdenOk || supplyOk, role))
       }
       inputs.push({
-        label: 'Sourced companies',
+        label: 'Sourced companies on file',
         value: row.companies,
         display: formatNumber(row.companies),
         unit: 'companies',
         sourceUrl: null,
         inScore: companyPct[index] != null,
+        role: 'supply',
       })
       inputs.push({
         label: 'Sourced founders',
@@ -255,6 +311,7 @@ export function balanceRows(): BalanceRow[] {
         unit: 'founders',
         sourceUrl: null,
         inScore: founderPct[index] != null,
+        role: 'supply',
       })
       inputs.push({
         label: 'Sourced funders',
@@ -263,6 +320,7 @@ export function balanceRows(): BalanceRow[] {
         unit: 'funders',
         sourceUrl: null,
         inScore: funderPct[index] != null,
+        role: 'supply',
       })
       inputs.push({
         label: 'Annual capital',
@@ -271,6 +329,7 @@ export function balanceRows(): BalanceRow[] {
         unit: 'USD/yr',
         sourceUrl: row.capitalUrl,
         inScore: row.capital != null && capitalPct[index] != null,
+        role: 'supply',
       })
       return {
         slug: row.slug,
@@ -279,13 +338,14 @@ export function balanceRows(): BalanceRow[] {
         demandScore: demand,
         supplyScore: supply,
         gap: gap.value,
-        demandLabel: formatScore(demand),
-        supplyLabel: formatScore(supply),
+        demandLabel: formatCovered(demand, demandInputs, MIN_DEMAND_INPUTS),
+        supplyLabel: formatCovered(supply, supplyInputs, MIN_SUPPLY_INPUTS),
         gapLabel: gap.label,
         burdenLabel: row.deaths == null ? NOT_SOURCED : formatNumber(row.deaths),
         burdenValue: row.deaths,
-        companyCount: row.companies,
-        openQuest: row.companies === 0,
+        companyCount: row.companies + exactExternal,
+        openQuest: row.companies === 0 && !named,
+        companyNote: oa?.capped ? 'OpenAlex company list is capped' : null,
         inputs,
       }
     })

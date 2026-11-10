@@ -14,6 +14,8 @@ export type SnapshotReading = {
   sourceUrl: string | null
   retrievedOn: string
   reason: string | null
+  names?: { name: string; url: string; count: number }[]
+  capped?: boolean
 }
 
 export type DemandSnapshotFile = {

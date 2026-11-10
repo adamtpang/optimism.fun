@@ -72,6 +72,11 @@ export type DemandSignalFeeds = {
    * silently as "no attention" rather than erroring.
    */
   wikipediaArticle?: string
+  /**
+   * ClinicalTrials.gov v2 condition or term. Only set when the problem is a
+   * clinical condition. Other problems get no trial query.
+   */
+  clinicalTrials?: { cond?: string; term?: string }
 }
 
 export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
@@ -80,6 +85,7 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     wikipediaArticle: 'Extreme_poverty', // 113,575 views
     usaSpendingTerm: 'poverty', // US 5,185 awards
     openAlexSearch: 'extreme poverty', // 3,344
+    nihSearch: 'extreme poverty',
     burden: {
       kind: 'wdi',
       indicator: 'SI.POV.DDAY',
@@ -114,12 +120,14 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
       unit: 'births/woman',
     },
     nihSearch: 'infertility',
+    clinicalTrials: { cond: 'Infertility' },
   },
   pedagogy: {
     federalRegisterTerm: 'tutoring', // FR 25
     wikipediaArticle: 'Education', // 873,320 views
     usaSpendingTerm: 'tutoring', // US 571 awards
     openAlexSearch: 'tutoring', // 25,046 — 'pedagogy' alone is 237k, too broad
+    nihSearch: 'tutoring',
     burden: {
       kind: 'wdi',
       indicator: 'SE.ADT.LITR.ZS',
@@ -144,6 +152,7 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     },
     nihSearch: 'aging longevity',
     fdaCategory: 'Oncology',
+    clinicalTrials: { cond: 'Aging' },
   },
   'infectious-disease': {
     federalRegisterTerm: 'tuberculosis', // FR 44
@@ -160,6 +169,7 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     },
     nihSearch: 'infectious disease',
     fdaCategory: 'Anti-Infective',
+    clinicalTrials: { term: 'malaria OR tuberculosis OR HIV' },
   },
   biosecurity: {
     federalRegisterTerm: 'biosecurity', // FR 33
@@ -174,12 +184,14 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     usaSpendingTerm: 'loneliness', // US 193 awards
     openAlexSearch: 'loneliness', // 26,374
     nihSearch: 'loneliness',
+    clinicalTrials: { cond: 'Loneliness' },
   },
   'energy-abundance': {
     federalRegisterTerm: 'geothermal', // FR 114
     wikipediaArticle: 'Renewable_energy', // 485,879 views
     usaSpendingTerm: 'geothermal', // US 241 awards
     openAlexSearch: 'decarbonization', // 31,890 — 'energy transition' at 193k is too broad
+    nihSearch: 'decarbonization',
     edgar: { q: '"Other Energy"', kind: 'industry-group' }, // 389 filings
   },
   'housing-construction': {
@@ -187,6 +199,7 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     wikipediaArticle: 'Affordable_housing', // 80,001 views
     usaSpendingTerm: 'housing affordability', // US 23 awards
     openAlexSearch: 'housing affordability', // 9,050
+    nihSearch: 'housing affordability',
     edgar: { q: '"Construction"', kind: 'industry-group' }, // 317 filings
   },
   'scientific-productivity': {
@@ -194,6 +207,63 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     wikipediaArticle: 'Metascience', // 41,069 — 'Replication_crisis' 404s on this API
     usaSpendingTerm: 'research infrastructure', // US 995 awards
     openAlexSearch: 'metascience', // 378 — genuinely a tiny field, which is the signal
+    nihSearch: 'metascience',
+  },
+  'neglected-tropical-diseases': {
+    openAlexSearch: 'neglected tropical diseases',
+    nihSearch: 'neglected tropical diseases',
+    usaSpendingTerm: 'neglected tropical diseases',
+    wikipediaArticle: 'Neglected_tropical_diseases',
+    clinicalTrials: { cond: 'Neglected Tropical Diseases' },
+  },
+  'newborn-survival': {
+    openAlexSearch: 'neonatal mortality',
+    nihSearch: 'neonatal mortality',
+    usaSpendingTerm: 'neonatal mortality',
+    // Infant mortality is the first year, wider than the first month. The
+    // Wikipedia title Neonatal_mortality is a redirect with almost no views.
+    wikipediaArticle: 'Infant_mortality',
+    clinicalTrials: { cond: 'Infant, Newborn' },
+  },
+  hypertension: {
+    openAlexSearch: 'hypertension',
+    nihSearch: 'hypertension',
+    usaSpendingTerm: 'hypertension',
+    wikipediaArticle: 'Hypertension',
+    clinicalTrials: { cond: 'Hypertension' },
+  },
+  'ai-datacenter-power': {
+    openAlexSearch: 'AI data center',
+    nihSearch: 'AI data center',
+    usaSpendingTerm: 'AI data center',
+    wikipediaArticle: 'AI_data_center',
+  },
+  'financial-infrastructure': {
+    openAlexSearch: 'payment system',
+    nihSearch: 'payment system',
+    usaSpendingTerm: 'payment system',
+    wikipediaArticle: 'Payment_system',
+  },
+  cancer: {
+    openAlexSearch: 'cancer',
+    nihSearch: 'cancer',
+    usaSpendingTerm: 'cancer',
+    wikipediaArticle: 'Cancer',
+    clinicalTrials: { cond: 'Cancer' },
+  },
+  copd: {
+    openAlexSearch: 'chronic obstructive pulmonary disease',
+    nihSearch: 'chronic obstructive pulmonary disease',
+    usaSpendingTerm: 'chronic obstructive pulmonary disease',
+    wikipediaArticle: 'Chronic_obstructive_pulmonary_disease',
+    clinicalTrials: { cond: 'Pulmonary Disease, Chronic Obstructive' },
+  },
+  diabetes: {
+    openAlexSearch: 'diabetes',
+    nihSearch: 'diabetes',
+    usaSpendingTerm: 'diabetes',
+    wikipediaArticle: 'Diabetes',
+    clinicalTrials: { cond: 'Diabetes Mellitus' },
   },
 }
 

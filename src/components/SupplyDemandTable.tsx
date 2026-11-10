@@ -90,6 +90,7 @@ export default function SupplyDemandTable({ rows }: { rows: BalanceRow[] }) {
                 <td className="px-3 py-3 text-sm tabular-nums">
                   {row.companyCount}
                   {row.openQuest ? ' · open quest' : ''}
+                  {row.companyNote ? ` · ${row.companyNote}` : ''}
                 </td>
               </tr>
             ))}

@@ -9,7 +9,7 @@ import { constraintTrees, type Constraint } from '@/data/constraints'
 import { SKILLS } from '@/lib/where-match'
 import { NOT_SOURCED } from '@/lib/quest-types'
 import { technologiesForProblem } from '@/data/technologies'
-import { balanceBySlug, sourcedCompanyCount, type ScoreInput } from '@/lib/sourced-balance'
+import { balanceBySlug, hasNamedExternalCompany, sourcedCompanyCount, type ScoreInput } from '@/lib/sourced-balance'
 
 export type OpenQuest = {
   id: string
@@ -58,7 +58,7 @@ function demandInputs(slug: string): ScoreInput[] {
 export function openQuestPlaceholders(): OpenQuest[] {
   const out: OpenQuest[] = []
   for (const problem of problems) {
-    if (sourcedCompanyCount(problem.slug) === 0) {
+    if (sourcedCompanyCount(problem.slug) === 0 && !hasNamedExternalCompany(problem.slug)) {
       out.push({
         id: `open:${problem.slug}`,
         placeholder: true,

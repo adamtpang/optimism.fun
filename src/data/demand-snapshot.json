@@ -23,24 +23,120 @@
       {
         "feed": "openalex",
         "status": "ok",
-        "label": "OpenAlex works",
-        "value": 8402,
+        "label": "OpenAlex works, last 12 months",
+        "value": 4315,
         "unit": "works",
         "query": "biosecurity",
-        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Abiosecurity%2Cfrom_publication_date%3A2024-01-01",
+        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Abiosecurity%2Cfrom_publication_date%3A2025-11-10",
         "retrievedOn": "2026-11-10",
         "reason": null
       },
       {
         "feed": "nih",
         "status": "ok",
-        "label": "NIH RePORTER projects",
-        "value": 260,
-        "unit": "projects",
-        "query": "pandemic preparedness",
-        "sourceUrl": "https://reporter.nih.gov/search/psdYOW8qTkWKxmwd-tbgBQ/projects",
+        "label": "NIH RePORTER funding",
+        "value": 248311579,
+        "unit": "USD",
+        "query": "pandemic preparedness (FY2026)",
+        "sourceUrl": "https://reporter.nih.gov/search/E9feE_WfV0O08wOhi5P1Gg/projects",
         "retrievedOn": "2026-11-10",
-        "reason": null
+        "reason": "2 projects had no reported award amount. Those amounts were not filled in. The value is the sum of reported awards."
+      },
+      {
+        "feed": "openalex-companies",
+        "status": "unavailable",
+        "label": "OpenAlex company affiliations",
+        "value": null,
+        "unit": "companies",
+        "query": "biosecurity",
+        "sourceUrl": "https://api.openalex.org/works?filter=title_and_abstract.search%3Abiosecurity%2Cfrom_publication_date%3A2025-11-10%2Cauthorships.institutions.type%3Acompany&group_by=authorships.institutions.id&per_page=200&mailto=adamtpang%40gmail.com",
+        "retrievedOn": "2026-11-10",
+        "reason": "OpenAlex group_by returns at most 200 institutions. The distinct company count is higher and was not invented. The named list is the top of that capped response.",
+        "names": [
+          {
+            "name": "Royal GD (Netherlands)",
+            "url": "https://openalex.org/I4210119978",
+            "count": 6
+          },
+          {
+            "name": "Utrecht University",
+            "url": "https://openalex.org/I193662353",
+            "count": 5
+          },
+          {
+            "name": "Twist Bioscience (United States)",
+            "url": "https://openalex.org/I4210123866",
+            "count": 5
+          },
+          {
+            "name": "Battelle",
+            "url": "https://openalex.org/I1325736334",
+            "count": 4
+          },
+          {
+            "name": "Ghent University",
+            "url": "https://openalex.org/I32597200",
+            "count": 4
+          },
+          {
+            "name": "Norwegian Veterinary Institute",
+            "url": "https://openalex.org/I4210164950",
+            "count": 4
+          },
+          {
+            "name": "Norwegian University of Life Sciences",
+            "url": "https://openalex.org/I54108979",
+            "count": 4
+          },
+          {
+            "name": "Microsoft (United States)",
+            "url": "https://openalex.org/I1290206253",
+            "count": 3
+          },
+          {
+            "name": "RTX (United States)",
+            "url": "https://openalex.org/I1306686416",
+            "count": 3
+          },
+          {
+            "name": "United States Department of Agriculture",
+            "url": "https://openalex.org/I1336096307",
+            "count": 3
+          },
+          {
+            "name": "Razi Vaccine and Serum Research Institute",
+            "url": "https://openalex.org/I1336229394",
+            "count": 3
+          },
+          {
+            "name": "Estonian University of Life Sciences",
+            "url": "https://openalex.org/I19409027",
+            "count": 3
+          }
+        ],
+        "capped": true
+      },
+      {
+        "feed": "clinicaltrials",
+        "status": "unavailable",
+        "label": "ClinicalTrials.gov active trials",
+        "value": null,
+        "unit": "",
+        "query": null,
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-10",
+        "reason": "Not a clinical condition. No trial query was registered."
+      },
+      {
+        "feed": "clinicaltrials-sponsors",
+        "status": "unavailable",
+        "label": "ClinicalTrials.gov industry sponsors",
+        "value": null,
+        "unit": "",
+        "query": null,
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-10",
+        "reason": "Not a clinical condition. No trial query was registered."
       },
       {
         "feed": "federal-register",
@@ -113,24 +209,120 @@
       {
         "feed": "openalex",
         "status": "ok",
-        "label": "OpenAlex works",
-        "value": 35207,
+        "label": "OpenAlex works, last 12 months",
+        "value": 16974,
         "unit": "works",
         "query": "decarbonization",
-        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Adecarbonization%2Cfrom_publication_date%3A2024-01-01",
+        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Adecarbonization%2Cfrom_publication_date%3A2025-11-10",
         "retrievedOn": "2026-11-10",
         "reason": null
       },
       {
         "feed": "nih",
+        "status": "ok",
+        "label": "NIH RePORTER funding",
+        "value": 0,
+        "unit": "USD",
+        "query": "decarbonization (FY2026)",
+        "sourceUrl": "https://reporter.nih.gov/search/ZKhyR4VWrEmEJpNB4rIWzA/projects",
+        "retrievedOn": "2026-11-10",
+        "reason": null
+      },
+      {
+        "feed": "openalex-companies",
         "status": "unavailable",
-        "label": "NIH RePORTER projects",
+        "label": "OpenAlex company affiliations",
+        "value": null,
+        "unit": "companies",
+        "query": "decarbonization",
+        "sourceUrl": "https://api.openalex.org/works?filter=title_and_abstract.search%3Adecarbonization%2Cfrom_publication_date%3A2025-11-10%2Cauthorships.institutions.type%3Acompany&group_by=authorships.institutions.id&per_page=200&mailto=adamtpang%40gmail.com",
+        "retrievedOn": "2026-11-10",
+        "reason": "OpenAlex group_by returns at most 200 institutions. The distinct company count is higher and was not invented. The named list is the top of that capped response.",
+        "names": [
+          {
+            "name": "State Grid Corporation of China (China)",
+            "url": "https://openalex.org/I17442442",
+            "count": 49
+          },
+          {
+            "name": "Tsinghua University",
+            "url": "https://openalex.org/I99065089",
+            "count": 37
+          },
+          {
+            "name": "China Southern Power Grid (China)",
+            "url": "https://openalex.org/I74872605",
+            "count": 27
+          },
+          {
+            "name": "Abu Dhabi National Oil (United Arab Emirates)",
+            "url": "https://openalex.org/I97699614",
+            "count": 22
+          },
+          {
+            "name": "Chinese Academy of Sciences",
+            "url": "https://openalex.org/I19820366",
+            "count": 20
+          },
+          {
+            "name": "Saudi Aramco (Saudi Arabia)",
+            "url": "https://openalex.org/I4210143841",
+            "count": 19
+          },
+          {
+            "name": "China National Petroleum Corporation (China)",
+            "url": "https://openalex.org/I98227222",
+            "count": 18
+          },
+          {
+            "name": "Guangdong Power Grid Company (China)",
+            "url": "https://openalex.org/I4405272762",
+            "count": 16
+          },
+          {
+            "name": "Sinopec (China)",
+            "url": "https://openalex.org/I106994412",
+            "count": 15
+          },
+          {
+            "name": "Shanghai Jiao Tong University",
+            "url": "https://openalex.org/I183067930",
+            "count": 14
+          },
+          {
+            "name": "Ricerca sul Sistema Energetico (Italy)",
+            "url": "https://openalex.org/I4210134634",
+            "count": 13
+          },
+          {
+            "name": "North China Electric Power University",
+            "url": "https://openalex.org/I153473198",
+            "count": 12
+          }
+        ],
+        "capped": true
+      },
+      {
+        "feed": "clinicaltrials",
+        "status": "unavailable",
+        "label": "ClinicalTrials.gov active trials",
         "value": null,
         "unit": "",
         "query": null,
         "sourceUrl": null,
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": "Not a clinical condition. No trial query was registered."
+      },
+      {
+        "feed": "clinicaltrials-sponsors",
+        "status": "unavailable",
+        "label": "ClinicalTrials.gov industry sponsors",
+        "value": null,
+        "unit": "",
+        "query": null,
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-10",
+        "reason": "Not a clinical condition. No trial query was registered."
       },
       {
         "feed": "federal-register",
@@ -203,24 +395,119 @@
       {
         "feed": "openalex",
         "status": "ok",
-        "label": "OpenAlex works",
-        "value": 10048,
+        "label": "OpenAlex works, last 12 months",
+        "value": 4478,
         "unit": "works",
         "query": "housing affordability",
-        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Ahousing%20affordability%2Cfrom_publication_date%3A2024-01-01",
+        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Ahousing%20affordability%2Cfrom_publication_date%3A2025-11-10",
         "retrievedOn": "2026-11-10",
         "reason": null
       },
       {
         "feed": "nih",
+        "status": "ok",
+        "label": "NIH RePORTER funding",
+        "value": 4710958,
+        "unit": "USD",
+        "query": "housing affordability (FY2026)",
+        "sourceUrl": "https://reporter.nih.gov/search/4Z-EM3rvoke9oZSruInkrg/projects",
+        "retrievedOn": "2026-11-10",
+        "reason": null
+      },
+      {
+        "feed": "openalex-companies",
+        "status": "ok",
+        "label": "OpenAlex company affiliations",
+        "value": 53,
+        "unit": "companies",
+        "query": "housing affordability",
+        "sourceUrl": "https://api.openalex.org/works?filter=title_and_abstract.search%3Ahousing%20affordability%2Cfrom_publication_date%3A2025-11-10%2Cauthorships.institutions.type%3Acompany&group_by=authorships.institutions.id&per_page=200&mailto=adamtpang%40gmail.com",
+        "retrievedOn": "2026-11-10",
+        "reason": null,
+        "names": [
+          {
+            "name": "Google DeepMind (United Kingdom)",
+            "url": "https://openalex.org/I4210090411",
+            "count": 33
+          },
+          {
+            "name": "Amazon (United States)",
+            "url": "https://openalex.org/I1311688040",
+            "count": 2
+          },
+          {
+            "name": "Peking University",
+            "url": "https://openalex.org/I20231570",
+            "count": 2
+          },
+          {
+            "name": "UNSW Sydney",
+            "url": "https://openalex.org/I31746571",
+            "count": 2
+          },
+          {
+            "name": "Urban Planning & Design Institute of Shenzhen (China)",
+            "url": "https://openalex.org/I4210120706",
+            "count": 2
+          },
+          {
+            "name": "Zillow Group (United States)",
+            "url": "https://openalex.org/I4210149135",
+            "count": 2
+          },
+          {
+            "name": "Columbia University",
+            "url": "https://openalex.org/I78577930",
+            "count": 2
+          },
+          {
+            "name": "University of Hong Kong",
+            "url": "https://openalex.org/I889458895",
+            "count": 2
+          },
+          {
+            "name": "Florida State University",
+            "url": "https://openalex.org/I103163165",
+            "count": 1
+          },
+          {
+            "name": "University of North Carolina at Chapel Hill",
+            "url": "https://openalex.org/I114027177",
+            "count": 1
+          },
+          {
+            "name": "University of Southern California",
+            "url": "https://openalex.org/I1174212",
+            "count": 1
+          },
+          {
+            "name": "Westat (United States)",
+            "url": "https://openalex.org/I1333523220",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "feed": "clinicaltrials",
         "status": "unavailable",
-        "label": "NIH RePORTER projects",
+        "label": "ClinicalTrials.gov active trials",
         "value": null,
         "unit": "",
         "query": null,
         "sourceUrl": null,
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": "Not a clinical condition. No trial query was registered."
+      },
+      {
+        "feed": "clinicaltrials-sponsors",
+        "status": "unavailable",
+        "label": "ClinicalTrials.gov industry sponsors",
+        "value": null,
+        "unit": "",
+        "query": null,
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-10",
+        "reason": "Not a clinical condition. No trial query was registered."
       },
       {
         "feed": "federal-register",
@@ -293,24 +580,119 @@
       {
         "feed": "openalex",
         "status": "ok",
-        "label": "OpenAlex works",
-        "value": 31246,
+        "label": "OpenAlex works, last 12 months",
+        "value": 14877,
         "unit": "works",
         "query": "tutoring",
-        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Atutoring%2Cfrom_publication_date%3A2024-01-01",
+        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Atutoring%2Cfrom_publication_date%3A2025-11-10",
         "retrievedOn": "2026-11-10",
         "reason": null
       },
       {
         "feed": "nih",
+        "status": "ok",
+        "label": "NIH RePORTER funding",
+        "value": 703568885,
+        "unit": "USD",
+        "query": "tutoring (FY2026)",
+        "sourceUrl": "https://reporter.nih.gov/search/nrWBvJV18EeC4E2MxZGT9g/projects",
+        "retrievedOn": "2026-11-10",
+        "reason": "13 projects had no reported award amount. Those amounts were not filled in. The value is the sum of reported awards."
+      },
+      {
+        "feed": "openalex-companies",
+        "status": "ok",
+        "label": "OpenAlex company affiliations",
+        "value": 147,
+        "unit": "companies",
+        "query": "tutoring",
+        "sourceUrl": "https://api.openalex.org/works?filter=title_and_abstract.search%3Atutoring%2Cfrom_publication_date%3A2025-11-10%2Cauthorships.institutions.type%3Acompany&group_by=authorships.institutions.id&per_page=200&mailto=adamtpang%40gmail.com",
+        "retrievedOn": "2026-11-10",
+        "reason": null,
+        "names": [
+          {
+            "name": "Google DeepMind (United Kingdom)",
+            "url": "https://openalex.org/I4210090411",
+            "count": 11
+          },
+          {
+            "name": "Carnegie Mellon University",
+            "url": "https://openalex.org/I74973139",
+            "count": 7
+          },
+          {
+            "name": "Microsoft (United States)",
+            "url": "https://openalex.org/I1290206253",
+            "count": 5
+          },
+          {
+            "name": "Amazon (United States)",
+            "url": "https://openalex.org/I1311688040",
+            "count": 5
+          },
+          {
+            "name": "Carnegie Learning, Inc. (United States)",
+            "url": "https://openalex.org/I4387153386",
+            "count": 5
+          },
+          {
+            "name": "University of Science and Technology of China",
+            "url": "https://openalex.org/I126520041",
+            "count": 3
+          },
+          {
+            "name": "University of Toronto",
+            "url": "https://openalex.org/I185261750",
+            "count": 3
+          },
+          {
+            "name": "Meta (United States)",
+            "url": "https://openalex.org/I4210114444",
+            "count": 3
+          },
+          {
+            "name": "Alibaba Group (China)",
+            "url": "https://openalex.org/I45928872",
+            "count": 3
+          },
+          {
+            "name": "Canadian Institute for Advanced Research",
+            "url": "https://openalex.org/I109736498",
+            "count": 2
+          },
+          {
+            "name": "National Bureau of Economic Research",
+            "url": "https://openalex.org/I1321305853",
+            "count": 2
+          },
+          {
+            "name": "Red Hat (United States)",
+            "url": "https://openalex.org/I1328219102",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "feed": "clinicaltrials",
         "status": "unavailable",
-        "label": "NIH RePORTER projects",
+        "label": "ClinicalTrials.gov active trials",
         "value": null,
         "unit": "",
         "query": null,
         "sourceUrl": null,
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": "Not a clinical condition. No trial query was registered."
+      },
+      {
+        "feed": "clinicaltrials-sponsors",
+        "status": "unavailable",
+        "label": "ClinicalTrials.gov industry sponsors",
+        "value": null,
+        "unit": "",
+        "query": null,
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-10",
+        "reason": "Not a clinical condition. No trial query was registered."
       },
       {
         "feed": "federal-register",
@@ -383,24 +765,182 @@
       {
         "feed": "openalex",
         "status": "ok",
-        "label": "OpenAlex works",
-        "value": 90155,
+        "label": "OpenAlex works, last 12 months",
+        "value": 36308,
         "unit": "works",
         "query": "malaria|tuberculosis",
-        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Amalaria%7Ctuberculosis%2Cfrom_publication_date%3A2024-01-01",
+        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Amalaria%7Ctuberculosis%2Cfrom_publication_date%3A2025-11-10",
         "retrievedOn": "2026-11-10",
         "reason": null
       },
       {
         "feed": "nih",
         "status": "ok",
-        "label": "NIH RePORTER projects",
-        "value": 6072,
-        "unit": "projects",
-        "query": "infectious disease",
-        "sourceUrl": "https://reporter.nih.gov/search/iZYQjRWjREiYsguXYTaFPQ/projects",
+        "label": "NIH RePORTER funding",
+        "value": 3997759952,
+        "unit": "USD",
+        "query": "infectious disease (FY2026)",
+        "sourceUrl": "https://reporter.nih.gov/search/b-cGwUJ0_UuZF21RyutKAg/projects",
+        "retrievedOn": "2026-11-10",
+        "reason": "100 projects had no reported award amount. Those amounts were not filled in. The value is the sum of reported awards."
+      },
+      {
+        "feed": "openalex-companies",
+        "status": "unavailable",
+        "label": "OpenAlex company affiliations",
+        "value": null,
+        "unit": "companies",
+        "query": "malaria|tuberculosis",
+        "sourceUrl": "https://api.openalex.org/works?filter=title_and_abstract.search%3Amalaria%7Ctuberculosis%2Cfrom_publication_date%3A2025-11-10%2Cauthorships.institutions.type%3Acompany&group_by=authorships.institutions.id&per_page=200&mailto=adamtpang%40gmail.com",
+        "retrievedOn": "2026-11-10",
+        "reason": "OpenAlex group_by returns at most 200 institutions. The distinct company count is higher and was not invented. The named list is the top of that capped response.",
+        "names": [
+          {
+            "name": "London School of Hygiene & Tropical Medicine",
+            "url": "https://openalex.org/I4210089966",
+            "count": 33
+          },
+          {
+            "name": "Organisation de Coordination pour la lutte contre les Endémies en Afrique Centrale",
+            "url": "https://openalex.org/I4210115601",
+            "count": 27
+          },
+          {
+            "name": "University of the Witwatersrand",
+            "url": "https://openalex.org/I192619145",
+            "count": 26
+          },
+          {
+            "name": "National Institutes of Health",
+            "url": "https://openalex.org/I1299303238",
+            "count": 22
+          },
+          {
+            "name": "Johns Hopkins University",
+            "url": "https://openalex.org/I145311948",
+            "count": 21
+          },
+          {
+            "name": "University of Oxford",
+            "url": "https://openalex.org/I40120149",
+            "count": 20
+          },
+          {
+            "name": "Witshealth Consortium (Pty) Ltd. (South Africa)",
+            "url": "https://openalex.org/I4405267342",
+            "count": 20
+          },
+          {
+            "name": "Karger Publishers (Switzerland)",
+            "url": "https://openalex.org/I4210162602",
+            "count": 19
+          },
+          {
+            "name": "Centre National de la Recherche Scientifique",
+            "url": "https://openalex.org/I1294671590",
+            "count": 18
+          },
+          {
+            "name": "University of Cape Town",
+            "url": "https://openalex.org/I157614274",
+            "count": 18
+          },
+          {
+            "name": "National Institute of Allergy and Infectious Diseases",
+            "url": "https://openalex.org/I4210134534",
+            "count": 18
+          },
+          {
+            "name": "University of California, San Francisco",
+            "url": "https://openalex.org/I180670191",
+            "count": 17
+          }
+        ],
+        "capped": true
+      },
+      {
+        "feed": "clinicaltrials",
+        "status": "ok",
+        "label": "ClinicalTrials.gov active trials",
+        "value": 2055,
+        "unit": "active trials",
+        "query": "malaria OR tuberculosis OR HIV",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.term=malaria+OR+tuberculosis+OR+HIV&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&countTotal=true&pageSize=1",
         "retrievedOn": "2026-11-10",
         "reason": null
+      },
+      {
+        "feed": "clinicaltrials-sponsors",
+        "status": "ok",
+        "label": "ClinicalTrials.gov industry sponsors",
+        "value": 121,
+        "unit": "industry sponsors",
+        "query": "malaria OR tuberculosis OR HIV",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.term=malaria+OR+tuberculosis+OR+HIV&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&filter.advanced=AREA%5BLeadSponsorClass%5DINDUSTRY&countTotal=true&pageSize=1",
+        "retrievedOn": "2026-11-10",
+        "reason": null,
+        "names": [
+          {
+            "name": "Merck Sharp & Dohme LLC",
+            "count": 26,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.term=malaria+OR+tuberculosis+OR+HIV&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Merck+Sharp+%26+Dohme+LLC&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Gilead Sciences",
+            "count": 25,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.term=malaria+OR+tuberculosis+OR+HIV&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Gilead+Sciences&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "ViiV Healthcare",
+            "count": 25,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.term=malaria+OR+tuberculosis+OR+HIV&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=ViiV+Healthcare&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "GlaxoSmithKline",
+            "count": 10,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.term=malaria+OR+tuberculosis+OR+HIV&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=GlaxoSmithKline&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Novartis Pharmaceuticals",
+            "count": 7,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.term=malaria+OR+tuberculosis+OR+HIV&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Novartis+Pharmaceuticals&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "AstraZeneca",
+            "count": 6,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.term=malaria+OR+tuberculosis+OR+HIV&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=AstraZeneca&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "bioLytical Laboratories",
+            "count": 4,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.term=malaria+OR+tuberculosis+OR+HIV&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=bioLytical+Laboratories&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "BioNTech SE",
+            "count": 4,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.term=malaria+OR+tuberculosis+OR+HIV&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=BioNTech+SE&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Sanaria Inc.",
+            "count": 4,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.term=malaria+OR+tuberculosis+OR+HIV&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Sanaria+Inc.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Bristol-Myers Squibb",
+            "count": 3,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.term=malaria+OR+tuberculosis+OR+HIV&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Bristol-Myers+Squibb&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Institut Pasteur",
+            "count": 3,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.term=malaria+OR+tuberculosis+OR+HIV&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Institut+Pasteur&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Janssen Research & Development, LLC",
+            "count": 3,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.term=malaria+OR+tuberculosis+OR+HIV&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Janssen+Research+%26+Development%2C+LLC&countTotal=true&pageSize=1"
+          }
+        ]
       },
       {
         "feed": "federal-register",
@@ -473,24 +1013,58 @@
       {
         "feed": "openalex",
         "status": "ok",
-        "label": "OpenAlex works",
-        "value": 377,
+        "label": "OpenAlex works, last 12 months",
+        "value": 246,
         "unit": "works",
         "query": "metascience",
-        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Ametascience%2Cfrom_publication_date%3A2024-01-01",
+        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Ametascience%2Cfrom_publication_date%3A2025-11-10",
         "retrievedOn": "2026-11-10",
         "reason": null
       },
       {
         "feed": "nih",
+        "status": "ok",
+        "label": "NIH RePORTER funding",
+        "value": 0,
+        "unit": "USD",
+        "query": "metascience (FY2026)",
+        "sourceUrl": "https://reporter.nih.gov/search/z5T1_qp7QEidfeASYTUsOw/projects",
+        "retrievedOn": "2026-11-10",
+        "reason": null
+      },
+      {
+        "feed": "openalex-companies",
+        "status": "ok",
+        "label": "OpenAlex company affiliations",
+        "value": 0,
+        "unit": "companies",
+        "query": "metascience",
+        "sourceUrl": "https://api.openalex.org/works?filter=title_and_abstract.search%3Ametascience%2Cfrom_publication_date%3A2025-11-10%2Cauthorships.institutions.type%3Acompany&group_by=authorships.institutions.id&per_page=200&mailto=adamtpang%40gmail.com",
+        "retrievedOn": "2026-11-10",
+        "reason": null,
+        "names": []
+      },
+      {
+        "feed": "clinicaltrials",
         "status": "unavailable",
-        "label": "NIH RePORTER projects",
+        "label": "ClinicalTrials.gov active trials",
         "value": null,
         "unit": "",
         "query": null,
         "sourceUrl": null,
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": "Not a clinical condition. No trial query was registered."
+      },
+      {
+        "feed": "clinicaltrials-sponsors",
+        "status": "unavailable",
+        "label": "ClinicalTrials.gov industry sponsors",
+        "value": null,
+        "unit": "",
+        "query": null,
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-10",
+        "reason": "Not a clinical condition. No trial query was registered."
       },
       {
         "feed": "federal-register",
@@ -563,24 +1137,182 @@
       {
         "feed": "openalex",
         "status": "ok",
-        "label": "OpenAlex works",
-        "value": 48152,
+        "label": "OpenAlex works, last 12 months",
+        "value": 19342,
         "unit": "works",
         "query": "longevity|healthspan",
-        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Alongevity%7Chealthspan%2Cfrom_publication_date%3A2024-01-01",
+        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Alongevity%7Chealthspan%2Cfrom_publication_date%3A2025-11-10",
         "retrievedOn": "2026-11-10",
         "reason": null
       },
       {
         "feed": "nih",
         "status": "ok",
-        "label": "NIH RePORTER projects",
-        "value": 606,
-        "unit": "projects",
-        "query": "aging longevity",
-        "sourceUrl": "https://reporter.nih.gov/search/GAeuwP8-UEG-gzhIlutX8Q/projects",
+        "label": "NIH RePORTER funding",
+        "value": 438407873,
+        "unit": "USD",
+        "query": "aging longevity (FY2026)",
+        "sourceUrl": "https://reporter.nih.gov/search/0IlRYWApIUmNfw8bBYx_qQ/projects",
+        "retrievedOn": "2026-11-10",
+        "reason": "10 projects had no reported award amount. Those amounts were not filled in. The value is the sum of reported awards."
+      },
+      {
+        "feed": "openalex-companies",
+        "status": "unavailable",
+        "label": "OpenAlex company affiliations",
+        "value": null,
+        "unit": "companies",
+        "query": "longevity|healthspan",
+        "sourceUrl": "https://api.openalex.org/works?filter=title_and_abstract.search%3Alongevity%7Chealthspan%2Cfrom_publication_date%3A2025-11-10%2Cauthorships.institutions.type%3Acompany&group_by=authorships.institutions.id&per_page=200&mailto=adamtpang%40gmail.com",
+        "retrievedOn": "2026-11-10",
+        "reason": "OpenAlex group_by returns at most 200 institutions. The distinct company count is higher and was not invented. The named list is the top of that capped response.",
+        "names": [
+          {
+            "name": "Google DeepMind (United Kingdom)",
+            "url": "https://openalex.org/I4210090411",
+            "count": 66
+          },
+          {
+            "name": "ETH Zurich",
+            "url": "https://openalex.org/I35440088",
+            "count": 12
+          },
+          {
+            "name": "University of Copenhagen",
+            "url": "https://openalex.org/I124055696",
+            "count": 11
+          },
+          {
+            "name": "Centre National de la Recherche Scientifique",
+            "url": "https://openalex.org/I1294671590",
+            "count": 11
+          },
+          {
+            "name": "Stanford University",
+            "url": "https://openalex.org/I97018004",
+            "count": 11
+          },
+          {
+            "name": "Buck Institute for Research on Aging",
+            "url": "https://openalex.org/I1337826666",
+            "count": 10
+          },
+          {
+            "name": "L'Oréal (France)",
+            "url": "https://openalex.org/I14285755",
+            "count": 10
+          },
+          {
+            "name": "University of Cambridge",
+            "url": "https://openalex.org/I241749",
+            "count": 10
+          },
+          {
+            "name": "Université Paris-Saclay",
+            "url": "https://openalex.org/I277688954",
+            "count": 10
+          },
+          {
+            "name": "Harvard University",
+            "url": "https://openalex.org/I136199984",
+            "count": 9
+          },
+          {
+            "name": "Chinese Academy of Sciences",
+            "url": "https://openalex.org/I19820366",
+            "count": 9
+          },
+          {
+            "name": "University of Bern",
+            "url": "https://openalex.org/I118564535",
+            "count": 8
+          }
+        ],
+        "capped": true
+      },
+      {
+        "feed": "clinicaltrials",
+        "status": "ok",
+        "label": "ClinicalTrials.gov active trials",
+        "value": 1066,
+        "unit": "active trials",
+        "query": "Aging",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.cond=Aging&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&countTotal=true&pageSize=1",
         "retrievedOn": "2026-11-10",
         "reason": null
+      },
+      {
+        "feed": "clinicaltrials-sponsors",
+        "status": "ok",
+        "label": "ClinicalTrials.gov industry sponsors",
+        "value": 92,
+        "unit": "industry sponsors",
+        "query": "Aging",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.cond=Aging&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&filter.advanced=AREA%5BLeadSponsorClass%5DINDUSTRY&countTotal=true&pageSize=1",
+        "retrievedOn": "2026-11-10",
+        "reason": null,
+        "names": [
+          {
+            "name": "Amazentis SA",
+            "count": 4,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Aging&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Amazentis+SA&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Eurofins Dermscan Pharmascan",
+            "count": 4,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Aging&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Eurofins+Dermscan+Pharmascan&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "dsm-firmenich Switzerland AG",
+            "count": 3,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Aging&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=dsm-firmenich+Switzerland+AG&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "L'Oreal",
+            "count": 3,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Aging&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=L%27Oreal&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Longevity Metrics, Inc.",
+            "count": 3,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Aging&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Longevity+Metrics%2C+Inc.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Teoxane SA",
+            "count": 3,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Aging&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Teoxane+SA&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "AB Biotics, SA",
+            "count": 2,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Aging&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=AB+Biotics%2C+SA&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Alethios, Inc.",
+            "count": 2,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Aging&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Alethios%2C+Inc.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Cosmetique Active International",
+            "count": 2,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Aging&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Cosmetique+Active+International&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Elysium Health",
+            "count": 2,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Aging&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Elysium+Health&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "IBSA Farmaceutici Italia Srl",
+            "count": 2,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Aging&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=IBSA+Farmaceutici+Italia+Srl&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Mucosa Innovations, S.L.",
+            "count": 2,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Aging&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Mucosa+Innovations%2C+S.L.&countTotal=true&pageSize=1"
+          }
+        ]
       },
       {
         "feed": "federal-register",
@@ -653,24 +1385,181 @@
       {
         "feed": "openalex",
         "status": "ok",
-        "label": "OpenAlex works",
-        "value": 8905,
+        "label": "OpenAlex works, last 12 months",
+        "value": 4432,
         "unit": "works",
         "query": "fertility decline",
-        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Afertility%20decline%2Cfrom_publication_date%3A2024-01-01",
+        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Afertility%20decline%2Cfrom_publication_date%3A2025-11-10",
         "retrievedOn": "2026-11-10",
         "reason": null
       },
       {
         "feed": "nih",
         "status": "ok",
-        "label": "NIH RePORTER projects",
-        "value": 639,
-        "unit": "projects",
-        "query": "infertility",
-        "sourceUrl": "https://reporter.nih.gov/search/0FtLXvcHpky6IyYcQjsrKw/projects",
+        "label": "NIH RePORTER funding",
+        "value": 313438188,
+        "unit": "USD",
+        "query": "infertility (FY2026)",
+        "sourceUrl": "https://reporter.nih.gov/search/5Otfzhw7kEShUTuiCWlDTA/projects",
+        "retrievedOn": "2026-11-10",
+        "reason": "5 projects had no reported award amount. Those amounts were not filled in. The value is the sum of reported awards."
+      },
+      {
+        "feed": "openalex-companies",
+        "status": "ok",
+        "label": "OpenAlex company affiliations",
+        "value": 132,
+        "unit": "companies",
+        "query": "fertility decline",
+        "sourceUrl": "https://api.openalex.org/works?filter=title_and_abstract.search%3Afertility%20decline%2Cfrom_publication_date%3A2025-11-10%2Cauthorships.institutions.type%3Acompany&group_by=authorships.institutions.id&per_page=200&mailto=adamtpang%40gmail.com",
+        "retrievedOn": "2026-11-10",
+        "reason": null,
+        "names": [
+          {
+            "name": "Google DeepMind (United Kingdom)",
+            "url": "https://openalex.org/I4210090411",
+            "count": 5
+          },
+          {
+            "name": "Monash University",
+            "url": "https://openalex.org/I56590836",
+            "count": 2
+          },
+          {
+            "name": "Stanford University",
+            "url": "https://openalex.org/I97018004",
+            "count": 2
+          },
+          {
+            "name": "South China Agricultural University",
+            "url": "https://openalex.org/I101479585",
+            "count": 1
+          },
+          {
+            "name": "Rutgers, The State University of New Jersey",
+            "url": "https://openalex.org/I102322142",
+            "count": 1
+          },
+          {
+            "name": "Canadian Institute for Advanced Research",
+            "url": "https://openalex.org/I109736498",
+            "count": 1
+          },
+          {
+            "name": "Boston University",
+            "url": "https://openalex.org/I111088046",
+            "count": 1
+          },
+          {
+            "name": "New England Biolabs (United States)",
+            "url": "https://openalex.org/I115020962",
+            "count": 1
+          },
+          {
+            "name": "California Institute of Technology",
+            "url": "https://openalex.org/I122411786",
+            "count": 1
+          },
+          {
+            "name": "Ben-Gurion University of the Negev",
+            "url": "https://openalex.org/I124227911",
+            "count": 1
+          },
+          {
+            "name": "Center for Economic and Policy Research",
+            "url": "https://openalex.org/I1279858714",
+            "count": 1
+          },
+          {
+            "name": "Brigham and Women's Hospital",
+            "url": "https://openalex.org/I1283280774",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "feed": "clinicaltrials",
+        "status": "ok",
+        "label": "ClinicalTrials.gov active trials",
+        "value": 521,
+        "unit": "active trials",
+        "query": "Infertility",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infertility&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&countTotal=true&pageSize=1",
         "retrievedOn": "2026-11-10",
         "reason": null
+      },
+      {
+        "feed": "clinicaltrials-sponsors",
+        "status": "ok",
+        "label": "ClinicalTrials.gov industry sponsors",
+        "value": 51,
+        "unit": "industry sponsors",
+        "query": "Infertility",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infertility&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&filter.advanced=AREA%5BLeadSponsorClass%5DINDUSTRY&countTotal=true&pageSize=1",
+        "retrievedOn": "2026-11-10",
+        "reason": null,
+        "names": [
+          {
+            "name": "Inception Fertility Research Institute, LLC",
+            "count": 7,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infertility&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Inception+Fertility+Research+Institute%2C+LLC&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Igenomix",
+            "count": 6,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infertility&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Igenomix&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Genomic Prediction Inc.",
+            "count": 5,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infertility&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Genomic+Prediction+Inc.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Ferring Pharmaceuticals",
+            "count": 3,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infertility&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Ferring+Pharmaceuticals&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "TBF Genie Tissulaire",
+            "count": 3,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infertility&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=TBF+Genie+Tissulaire&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Changchun GeneScience Pharmaceutical Co., Ltd.",
+            "count": 2,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infertility&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Changchun+GeneScience+Pharmaceutical+Co.%2C+Ltd.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Conceivable Life Sciences",
+            "count": 2,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infertility&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Conceivable+Life+Sciences&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Sunkaky Medical Cooperation",
+            "count": 2,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infertility&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Sunkaky+Medical+Cooperation&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "The Bird and Be Co Inc",
+            "count": 2,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infertility&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=The+Bird+and+Be+Co+Inc&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Urmila DIwekar",
+            "count": 2,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infertility&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Urmila+DIwekar&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Antev Ltd.",
+            "count": 1,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infertility&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Antev+Ltd.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Apple Inc.",
+            "count": 1,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infertility&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Apple+Inc.&countTotal=true&pageSize=1"
+          }
+        ]
       },
       {
         "feed": "federal-register",
@@ -743,24 +1632,132 @@
       {
         "feed": "openalex",
         "status": "ok",
-        "label": "OpenAlex works",
-        "value": 29079,
+        "label": "OpenAlex works, last 12 months",
+        "value": 13095,
         "unit": "works",
         "query": "loneliness",
-        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Aloneliness%2Cfrom_publication_date%3A2024-01-01",
+        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Aloneliness%2Cfrom_publication_date%3A2025-11-10",
         "retrievedOn": "2026-11-10",
         "reason": null
       },
       {
         "feed": "nih",
         "status": "ok",
-        "label": "NIH RePORTER projects",
-        "value": 230,
-        "unit": "projects",
+        "label": "NIH RePORTER funding",
+        "value": 139996446,
+        "unit": "USD",
+        "query": "loneliness (FY2026)",
+        "sourceUrl": "https://reporter.nih.gov/search/NnvsqtgsxEijcd6bO2rPJA/projects",
+        "retrievedOn": "2026-11-10",
+        "reason": "13 projects had no reported award amount. Those amounts were not filled in. The value is the sum of reported awards."
+      },
+      {
+        "feed": "openalex-companies",
+        "status": "unavailable",
+        "label": "OpenAlex company affiliations",
+        "value": null,
+        "unit": "companies",
         "query": "loneliness",
-        "sourceUrl": "https://reporter.nih.gov/search/1SewbmEKUEu_A0MleKuK9A/projects",
+        "sourceUrl": "https://api.openalex.org/works?filter=title_and_abstract.search%3Aloneliness%2Cfrom_publication_date%3A2025-11-10%2Cauthorships.institutions.type%3Acompany&group_by=authorships.institutions.id&per_page=200&mailto=adamtpang%40gmail.com",
+        "retrievedOn": "2026-11-10",
+        "reason": "OpenAlex group_by returns at most 200 institutions. The distinct company count is higher and was not invented. The named list is the top of that capped response.",
+        "names": [
+          {
+            "name": "Google DeepMind (United Kingdom)",
+            "url": "https://openalex.org/I4210090411",
+            "count": 23
+          },
+          {
+            "name": "Northwestern University",
+            "url": "https://openalex.org/I111979921",
+            "count": 3
+          },
+          {
+            "name": "Universidad Complutense de Madrid",
+            "url": "https://openalex.org/I121748325",
+            "count": 3
+          },
+          {
+            "name": "Instituto de Salud Carlos III",
+            "url": "https://openalex.org/I2801357902",
+            "count": 3
+          },
+          {
+            "name": "Hospital General Universitario Gregorio Marañón",
+            "url": "https://openalex.org/I2960094004",
+            "count": 3
+          },
+          {
+            "name": "Centro de Investigación Biomédica en Red de Salud Mental",
+            "url": "https://openalex.org/I4210090703",
+            "count": 3
+          },
+          {
+            "name": "ResearchGate",
+            "url": "https://openalex.org/I4387154174",
+            "count": 3
+          },
+          {
+            "name": "Vrije Universiteit Amsterdam",
+            "url": "https://openalex.org/I865915315",
+            "count": 3
+          },
+          {
+            "name": "Stanford University",
+            "url": "https://openalex.org/I97018004",
+            "count": 3
+          },
+          {
+            "name": "Icahn School of Medicine at Mount Sinai",
+            "url": "https://openalex.org/I98704320",
+            "count": 3
+          },
+          {
+            "name": "Jikei University School of Medicine",
+            "url": "https://openalex.org/I115498069",
+            "count": 2
+          },
+          {
+            "name": "University of Copenhagen",
+            "url": "https://openalex.org/I124055696",
+            "count": 2
+          }
+        ],
+        "capped": true
+      },
+      {
+        "feed": "clinicaltrials",
+        "status": "ok",
+        "label": "ClinicalTrials.gov active trials",
+        "value": 122,
+        "unit": "active trials",
+        "query": "Loneliness",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.cond=Loneliness&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&countTotal=true&pageSize=1",
         "retrievedOn": "2026-11-10",
         "reason": null
+      },
+      {
+        "feed": "clinicaltrials-sponsors",
+        "status": "ok",
+        "label": "ClinicalTrials.gov industry sponsors",
+        "value": 2,
+        "unit": "industry sponsors",
+        "query": "Loneliness",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.cond=Loneliness&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&filter.advanced=AREA%5BLeadSponsorClass%5DINDUSTRY&countTotal=true&pageSize=1",
+        "retrievedOn": "2026-11-10",
+        "reason": null,
+        "names": [
+          {
+            "name": "Equa Health",
+            "count": 1,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Loneliness&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Equa+Health&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "SocialRx Inc",
+            "count": 1,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Loneliness&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=SocialRx+Inc&countTotal=true&pageSize=1"
+          }
+        ]
       },
       {
         "feed": "federal-register",
@@ -833,24 +1830,119 @@
       {
         "feed": "openalex",
         "status": "ok",
-        "label": "OpenAlex works",
-        "value": 3808,
+        "label": "OpenAlex works, last 12 months",
+        "value": 1487,
         "unit": "works",
         "query": "extreme poverty",
-        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Aextreme%20poverty%2Cfrom_publication_date%3A2024-01-01",
+        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Aextreme%20poverty%2Cfrom_publication_date%3A2025-11-10",
         "retrievedOn": "2026-11-10",
         "reason": null
       },
       {
         "feed": "nih",
+        "status": "ok",
+        "label": "NIH RePORTER funding",
+        "value": 25351117,
+        "unit": "USD",
+        "query": "extreme poverty (FY2026)",
+        "sourceUrl": "https://reporter.nih.gov/search/DjdX0cfar0uj4ENdf08xEg/projects",
+        "retrievedOn": "2026-11-10",
+        "reason": null
+      },
+      {
+        "feed": "openalex-companies",
+        "status": "ok",
+        "label": "OpenAlex company affiliations",
+        "value": 47,
+        "unit": "companies",
+        "query": "extreme poverty",
+        "sourceUrl": "https://api.openalex.org/works?filter=title_and_abstract.search%3Aextreme%20poverty%2Cfrom_publication_date%3A2025-11-10%2Cauthorships.institutions.type%3Acompany&group_by=authorships.institutions.id&per_page=200&mailto=adamtpang%40gmail.com",
+        "retrievedOn": "2026-11-10",
+        "reason": null,
+        "names": [
+          {
+            "name": "Harvard University",
+            "url": "https://openalex.org/I136199984",
+            "count": 3
+          },
+          {
+            "name": "Inserm",
+            "url": "https://openalex.org/I154526488",
+            "count": 2
+          },
+          {
+            "name": "Japan Advanced Institute of Science and Technology",
+            "url": "https://openalex.org/I177738480",
+            "count": 2
+          },
+          {
+            "name": "University of Cambridge",
+            "url": "https://openalex.org/I241749",
+            "count": 2
+          },
+          {
+            "name": "Sanofi (France)",
+            "url": "https://openalex.org/I3018075036",
+            "count": 2
+          },
+          {
+            "name": "University of Oxford",
+            "url": "https://openalex.org/I40120149",
+            "count": 2
+          },
+          {
+            "name": "Centre Hospitalier Universitaire de Montpellier",
+            "url": "https://openalex.org/I4210093292",
+            "count": 2
+          },
+          {
+            "name": "Hôpital Foch",
+            "url": "https://openalex.org/I4210156825",
+            "count": 2
+          },
+          {
+            "name": "European Organization for Nuclear Research",
+            "url": "https://openalex.org/I67311998",
+            "count": 2
+          },
+          {
+            "name": "Dartmouth College",
+            "url": "https://openalex.org/I107672454",
+            "count": 1
+          },
+          {
+            "name": "Australian National University",
+            "url": "https://openalex.org/I118347636",
+            "count": 1
+          },
+          {
+            "name": "Dartmouth–Hitchcock Medical Center",
+            "url": "https://openalex.org/I1289422878",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "feed": "clinicaltrials",
         "status": "unavailable",
-        "label": "NIH RePORTER projects",
+        "label": "ClinicalTrials.gov active trials",
         "value": null,
         "unit": "",
         "query": null,
         "sourceUrl": null,
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": "Not a clinical condition. No trial query was registered."
+      },
+      {
+        "feed": "clinicaltrials-sponsors",
+        "status": "unavailable",
+        "label": "ClinicalTrials.gov industry sponsors",
+        "value": null,
+        "unit": "",
+        "query": null,
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-10",
+        "reason": "Not a clinical condition. No trial query was registered."
       },
       {
         "feed": "federal-register",
@@ -923,24 +2015,120 @@
       {
         "feed": "openalex",
         "status": "ok",
-        "label": "OpenAlex works",
-        "value": 68750,
+        "label": "OpenAlex works, last 12 months",
+        "value": 33386,
         "unit": "works",
         "query": "climate adaptation",
-        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Aclimate%20adaptation%2Cfrom_publication_date%3A2024-01-01",
+        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Aclimate%20adaptation%2Cfrom_publication_date%3A2025-11-10",
         "retrievedOn": "2026-11-10",
         "reason": null
       },
       {
         "feed": "nih",
         "status": "ok",
-        "label": "NIH RePORTER projects",
-        "value": 298,
-        "unit": "projects",
-        "query": "climate change health",
-        "sourceUrl": "https://reporter.nih.gov/search/9rqywUG3MUim966umrFrAA/projects",
+        "label": "NIH RePORTER funding",
+        "value": 165123745,
+        "unit": "USD",
+        "query": "climate change health (FY2026)",
+        "sourceUrl": "https://reporter.nih.gov/search/wpDUZCQf8kSqeU2Ctojqdw/projects",
         "retrievedOn": "2026-11-10",
-        "reason": null
+        "reason": "5 projects had no reported award amount. Those amounts were not filled in. The value is the sum of reported awards."
+      },
+      {
+        "feed": "openalex-companies",
+        "status": "unavailable",
+        "label": "OpenAlex company affiliations",
+        "value": null,
+        "unit": "companies",
+        "query": "climate adaptation",
+        "sourceUrl": "https://api.openalex.org/works?filter=title_and_abstract.search%3Aclimate%20adaptation%2Cfrom_publication_date%3A2025-11-10%2Cauthorships.institutions.type%3Acompany&group_by=authorships.institutions.id&per_page=200&mailto=adamtpang%40gmail.com",
+        "retrievedOn": "2026-11-10",
+        "reason": "OpenAlex group_by returns at most 200 institutions. The distinct company count is higher and was not invented. The named list is the top of that capped response.",
+        "names": [
+          {
+            "name": "Institut National de Recherche pour l'Agriculture, l'Alimentation et l'Environnement",
+            "url": "https://openalex.org/I4210088668",
+            "count": 16
+          },
+          {
+            "name": "Centre National de la Recherche Scientifique",
+            "url": "https://openalex.org/I1294671590",
+            "count": 15
+          },
+          {
+            "name": "Barcelona Supercomputing Center",
+            "url": "https://openalex.org/I2799803557",
+            "count": 14
+          },
+          {
+            "name": "National Research Council",
+            "url": "https://openalex.org/I4210155236",
+            "count": 12
+          },
+          {
+            "name": "European Centre for Medium-Range Weather Forecasts",
+            "url": "https://openalex.org/I154986956",
+            "count": 10
+          },
+          {
+            "name": "CSC - IT Center for Science (Finland)",
+            "url": "https://openalex.org/I4210150043",
+            "count": 10
+          },
+          {
+            "name": "Technical University of Denmark",
+            "url": "https://openalex.org/I96673099",
+            "count": 10
+          },
+          {
+            "name": "University of Copenhagen",
+            "url": "https://openalex.org/I124055696",
+            "count": 9
+          },
+          {
+            "name": "Alfred-Wegener-Institut Helmholtz-Zentrum für Polar- und Meeresforschung",
+            "url": "https://openalex.org/I127251866",
+            "count": 9
+          },
+          {
+            "name": "Chinese Academy of Sciences",
+            "url": "https://openalex.org/I19820366",
+            "count": 9
+          },
+          {
+            "name": "Deltares",
+            "url": "https://openalex.org/I4210103266",
+            "count": 9
+          },
+          {
+            "name": "Institut de Recherche pour le Développement",
+            "url": "https://openalex.org/I4210166444",
+            "count": 9
+          }
+        ],
+        "capped": true
+      },
+      {
+        "feed": "clinicaltrials",
+        "status": "unavailable",
+        "label": "ClinicalTrials.gov active trials",
+        "value": null,
+        "unit": "",
+        "query": null,
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-10",
+        "reason": "Not a clinical condition. No trial query was registered."
+      },
+      {
+        "feed": "clinicaltrials-sponsors",
+        "status": "unavailable",
+        "label": "ClinicalTrials.gov industry sponsors",
+        "value": null,
+        "unit": "",
+        "query": null,
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-10",
+        "reason": "Not a clinical condition. No trial query was registered."
       },
       {
         "feed": "federal-register",
@@ -1012,25 +2200,121 @@
       },
       {
         "feed": "openalex",
-        "status": "unavailable",
-        "label": "OpenAlex works",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "status": "ok",
+        "label": "OpenAlex works, last 12 months",
+        "value": 2062,
+        "unit": "works",
+        "query": "neglected tropical diseases",
+        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Aneglected%20tropical%20diseases%2Cfrom_publication_date%3A2025-11-10",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       },
       {
         "feed": "nih",
-        "status": "unavailable",
-        "label": "NIH RePORTER projects",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "status": "ok",
+        "label": "NIH RePORTER funding",
+        "value": 32201044,
+        "unit": "USD",
+        "query": "neglected tropical diseases (FY2026)",
+        "sourceUrl": "https://reporter.nih.gov/search/cEYUPaX1WkGX5OIgP9cjcQ/projects",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
+      },
+      {
+        "feed": "openalex-companies",
+        "status": "ok",
+        "label": "OpenAlex company affiliations",
+        "value": 170,
+        "unit": "companies",
+        "query": "neglected tropical diseases",
+        "sourceUrl": "https://api.openalex.org/works?filter=title_and_abstract.search%3Aneglected%20tropical%20diseases%2Cfrom_publication_date%3A2025-11-10%2Cauthorships.institutions.type%3Acompany&group_by=authorships.institutions.id&per_page=200&mailto=adamtpang%40gmail.com",
+        "retrievedOn": "2026-11-10",
+        "reason": null,
+        "names": [
+          {
+            "name": "PAI Life Sciences (United States)",
+            "url": "https://openalex.org/I4210158131",
+            "count": 3
+          },
+          {
+            "name": "Texas Tech University",
+            "url": "https://openalex.org/I12315562",
+            "count": 2
+          },
+          {
+            "name": "Novartis (Switzerland)",
+            "url": "https://openalex.org/I1283582996",
+            "count": 2
+          },
+          {
+            "name": "Kaiser Permanente Washington Health Research Institute",
+            "url": "https://openalex.org/I150117356",
+            "count": 2
+          },
+          {
+            "name": "GlaxoSmithKline (United Kingdom)",
+            "url": "https://openalex.org/I188950975",
+            "count": 2
+          },
+          {
+            "name": "University of Washington",
+            "url": "https://openalex.org/I201448701",
+            "count": 2
+          },
+          {
+            "name": "University of Cambridge",
+            "url": "https://openalex.org/I241749",
+            "count": 2
+          },
+          {
+            "name": "Fred Hutch Cancer Center",
+            "url": "https://openalex.org/I4210089486",
+            "count": 2
+          },
+          {
+            "name": "Universidad de la Costa",
+            "url": "https://openalex.org/I4210112678",
+            "count": 2
+          },
+          {
+            "name": "German Center for Infection Research",
+            "url": "https://openalex.org/I4210115305",
+            "count": 2
+          },
+          {
+            "name": "Aqualinc (New Zealand)",
+            "url": "https://openalex.org/I4210117761",
+            "count": 2
+          },
+          {
+            "name": "Universidad de Manizales",
+            "url": "https://openalex.org/I4210127211",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "feed": "clinicaltrials",
+        "status": "ok",
+        "label": "ClinicalTrials.gov active trials",
+        "value": 11,
+        "unit": "active trials",
+        "query": "Neglected Tropical Diseases",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.cond=Neglected+Tropical+Diseases&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&countTotal=true&pageSize=1",
+        "retrievedOn": "2026-11-10",
+        "reason": null
+      },
+      {
+        "feed": "clinicaltrials-sponsors",
+        "status": "ok",
+        "label": "ClinicalTrials.gov industry sponsors",
+        "value": 0,
+        "unit": "industry sponsors",
+        "query": "Neglected Tropical Diseases",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.cond=Neglected+Tropical+Diseases&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&filter.advanced=AREA%5BLeadSponsorClass%5DINDUSTRY&countTotal=true&pageSize=1",
+        "retrievedOn": "2026-11-10",
+        "reason": null,
+        "names": []
       },
       {
         "feed": "federal-register",
@@ -1045,14 +2329,14 @@
       },
       {
         "feed": "usaspending",
-        "status": "unavailable",
+        "status": "ok",
         "label": "USAspending awards",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "value": 83,
+        "unit": "awards",
+        "query": "neglected tropical diseases",
+        "sourceUrl": "https://www.usaspending.gov/search?hash=&keywords=neglected%20tropical%20diseases",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       },
       {
         "feed": "edgar",
@@ -1078,14 +2362,14 @@
       },
       {
         "feed": "wikipedia",
-        "status": "unavailable",
+        "status": "ok",
         "label": "Wikipedia pageviews (attention, not demand)",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "value": 114627,
+        "unit": "pageviews",
+        "query": "Neglected_tropical_diseases",
+        "sourceUrl": "https://en.wikipedia.org/wiki/Neglected_tropical_diseases",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       }
     ],
     "newborn-survival": [
@@ -1102,25 +2386,183 @@
       },
       {
         "feed": "openalex",
-        "status": "unavailable",
-        "label": "OpenAlex works",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "status": "ok",
+        "label": "OpenAlex works, last 12 months",
+        "value": 8363,
+        "unit": "works",
+        "query": "neonatal mortality",
+        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Aneonatal%20mortality%2Cfrom_publication_date%3A2025-11-10",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       },
       {
         "feed": "nih",
-        "status": "unavailable",
-        "label": "NIH RePORTER projects",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "status": "ok",
+        "label": "NIH RePORTER funding",
+        "value": 345345337,
+        "unit": "USD",
+        "query": "neonatal mortality (FY2026)",
+        "sourceUrl": "https://reporter.nih.gov/search/ijLn5NQsTE-NXAbYmMbITQ/projects",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": "1 projects had no reported award amount. Those amounts were not filled in. The value is the sum of reported awards."
+      },
+      {
+        "feed": "openalex-companies",
+        "status": "unavailable",
+        "label": "OpenAlex company affiliations",
+        "value": null,
+        "unit": "companies",
+        "query": "neonatal mortality",
+        "sourceUrl": "https://api.openalex.org/works?filter=title_and_abstract.search%3Aneonatal%20mortality%2Cfrom_publication_date%3A2025-11-10%2Cauthorships.institutions.type%3Acompany&group_by=authorships.institutions.id&per_page=200&mailto=adamtpang%40gmail.com",
+        "retrievedOn": "2026-11-10",
+        "reason": "OpenAlex group_by returns at most 200 institutions. The distinct company count is higher and was not invented. The named list is the top of that capped response.",
+        "names": [
+          {
+            "name": "Karger Publishers (Switzerland)",
+            "url": "https://openalex.org/I4210162602",
+            "count": 17
+          },
+          {
+            "name": "Université Paris-Saclay",
+            "url": "https://openalex.org/I277688954",
+            "count": 7
+          },
+          {
+            "name": "Hôpital Antoine-Béclère",
+            "url": "https://openalex.org/I4210150149",
+            "count": 7
+          },
+          {
+            "name": "Assistance Publique – Hôpitaux de Paris",
+            "url": "https://openalex.org/I4210097159",
+            "count": 6
+          },
+          {
+            "name": "Harvard University",
+            "url": "https://openalex.org/I136199984",
+            "count": 5
+          },
+          {
+            "name": "Johns Hopkins University",
+            "url": "https://openalex.org/I145311948",
+            "count": 5
+          },
+          {
+            "name": "Boston Children's Hospital",
+            "url": "https://openalex.org/I1288882113",
+            "count": 4
+          },
+          {
+            "name": "University of Utah",
+            "url": "https://openalex.org/I223532165",
+            "count": 4
+          },
+          {
+            "name": "Weill Cornell Medicine",
+            "url": "https://openalex.org/I4387153466",
+            "count": 4
+          },
+          {
+            "name": "University of Naples Federico II",
+            "url": "https://openalex.org/I71267560",
+            "count": 4
+          },
+          {
+            "name": "Inserm",
+            "url": "https://openalex.org/I154526488",
+            "count": 3
+          },
+          {
+            "name": "Columbia University Irving Medical Center",
+            "url": "https://openalex.org/I2799503643",
+            "count": 3
+          }
+        ],
+        "capped": true
+      },
+      {
+        "feed": "clinicaltrials",
+        "status": "ok",
+        "label": "ClinicalTrials.gov active trials",
+        "value": 1159,
+        "unit": "active trials",
+        "query": "Infant, Newborn",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infant%2C+Newborn&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&countTotal=true&pageSize=1",
+        "retrievedOn": "2026-11-10",
+        "reason": null
+      },
+      {
+        "feed": "clinicaltrials-sponsors",
+        "status": "ok",
+        "label": "ClinicalTrials.gov industry sponsors",
+        "value": 94,
+        "unit": "industry sponsors",
+        "query": "Infant, Newborn",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infant%2C+Newborn&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&filter.advanced=AREA%5BLeadSponsorClass%5DINDUSTRY&countTotal=true&pageSize=1",
+        "retrievedOn": "2026-11-10",
+        "reason": null,
+        "names": [
+          {
+            "name": "Vertex Pharmaceuticals Incorporated",
+            "count": 8,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infant%2C+Newborn&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Vertex+Pharmaceuticals+Incorporated&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Janssen Research & Development, LLC",
+            "count": 5,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infant%2C+Newborn&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Janssen+Research+%26+Development%2C+LLC&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Quoin Pharmaceuticals",
+            "count": 4,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infant%2C+Newborn&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Quoin+Pharmaceuticals&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Bayer",
+            "count": 3,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infant%2C+Newborn&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Bayer&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Denali Therapeutics Inc.",
+            "count": 3,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infant%2C+Newborn&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Denali+Therapeutics+Inc.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "REGENXBIO Inc.",
+            "count": 3,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infant%2C+Newborn&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=REGENXBIO+Inc.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "BioMarin Pharmaceutical",
+            "count": 2,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infant%2C+Newborn&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=BioMarin+Pharmaceutical&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Ipsen",
+            "count": 2,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infant%2C+Newborn&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Ipsen&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Novlead Inc.",
+            "count": 2,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infant%2C+Newborn&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Novlead+Inc.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Renata Medical",
+            "count": 2,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infant%2C+Newborn&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Renata+Medical&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Sanofi",
+            "count": 2,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infant%2C+Newborn&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Sanofi&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "4D Molecular Therapeutics",
+            "count": 1,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Infant%2C+Newborn&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=4D+Molecular+Therapeutics&countTotal=true&pageSize=1"
+          }
+        ]
       },
       {
         "feed": "federal-register",
@@ -1135,14 +2577,14 @@
       },
       {
         "feed": "usaspending",
-        "status": "unavailable",
+        "status": "ok",
         "label": "USAspending awards",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "value": 49,
+        "unit": "awards",
+        "query": "neonatal mortality",
+        "sourceUrl": "https://www.usaspending.gov/search?hash=&keywords=neonatal%20mortality",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       },
       {
         "feed": "edgar",
@@ -1168,14 +2610,14 @@
       },
       {
         "feed": "wikipedia",
-        "status": "unavailable",
+        "status": "ok",
         "label": "Wikipedia pageviews (attention, not demand)",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "value": 127349,
+        "unit": "pageviews",
+        "query": "Infant_mortality",
+        "sourceUrl": "https://en.wikipedia.org/wiki/Infant_mortality",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       }
     ],
     "hypertension": [
@@ -1192,25 +2634,183 @@
       },
       {
         "feed": "openalex",
-        "status": "unavailable",
-        "label": "OpenAlex works",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "status": "ok",
+        "label": "OpenAlex works, last 12 months",
+        "value": 68834,
+        "unit": "works",
+        "query": "hypertension",
+        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Ahypertension%2Cfrom_publication_date%3A2025-11-10",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       },
       {
         "feed": "nih",
-        "status": "unavailable",
-        "label": "NIH RePORTER projects",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "status": "ok",
+        "label": "NIH RePORTER funding",
+        "value": 1497563493,
+        "unit": "USD",
+        "query": "hypertension (FY2026)",
+        "sourceUrl": "https://reporter.nih.gov/search/aWTOyPb9a0-RSDvnV0NmrQ/projects",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": "80 projects had no reported award amount. Those amounts were not filled in. The value is the sum of reported awards."
+      },
+      {
+        "feed": "openalex-companies",
+        "status": "unavailable",
+        "label": "OpenAlex company affiliations",
+        "value": null,
+        "unit": "companies",
+        "query": "hypertension",
+        "sourceUrl": "https://api.openalex.org/works?filter=title_and_abstract.search%3Ahypertension%2Cfrom_publication_date%3A2025-11-10%2Cauthorships.institutions.type%3Acompany&group_by=authorships.institutions.id&per_page=200&mailto=adamtpang%40gmail.com",
+        "retrievedOn": "2026-11-10",
+        "reason": "OpenAlex group_by returns at most 200 institutions. The distinct company count is higher and was not invented. The named list is the top of that capped response.",
+        "names": [
+          {
+            "name": "Karger Publishers (Switzerland)",
+            "url": "https://openalex.org/I4210162602",
+            "count": 121
+          },
+          {
+            "name": "Harvard University",
+            "url": "https://openalex.org/I136199984",
+            "count": 54
+          },
+          {
+            "name": "Merck & Co., Inc., Rahway, NJ, USA (United States)",
+            "url": "https://openalex.org/I1285764155",
+            "count": 46
+          },
+          {
+            "name": "Inserm",
+            "url": "https://openalex.org/I154526488",
+            "count": 45
+          },
+          {
+            "name": "University of Michigan",
+            "url": "https://openalex.org/I27837315",
+            "count": 42
+          },
+          {
+            "name": "The University of Texas Southwestern Medical Center",
+            "url": "https://openalex.org/I867280407",
+            "count": 42
+          },
+          {
+            "name": "Brigham and Women's Hospital",
+            "url": "https://openalex.org/I1283280774",
+            "count": 41
+          },
+          {
+            "name": "Johnson & Johnson (United States)",
+            "url": "https://openalex.org/I1330063522",
+            "count": 38
+          },
+          {
+            "name": "University of California San Diego",
+            "url": "https://openalex.org/I36258959",
+            "count": 38
+          },
+          {
+            "name": "Assistance Publique – Hôpitaux de Paris",
+            "url": "https://openalex.org/I4210097159",
+            "count": 36
+          },
+          {
+            "name": "Mayo Clinic",
+            "url": "https://openalex.org/I1330342723",
+            "count": 35
+          },
+          {
+            "name": "Stanford University",
+            "url": "https://openalex.org/I97018004",
+            "count": 32
+          }
+        ],
+        "capped": true
+      },
+      {
+        "feed": "clinicaltrials",
+        "status": "ok",
+        "label": "ClinicalTrials.gov active trials",
+        "value": 2255,
+        "unit": "active trials",
+        "query": "Hypertension",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.cond=Hypertension&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&countTotal=true&pageSize=1",
+        "retrievedOn": "2026-11-10",
+        "reason": null
+      },
+      {
+        "feed": "clinicaltrials-sponsors",
+        "status": "ok",
+        "label": "ClinicalTrials.gov industry sponsors",
+        "value": 237,
+        "unit": "industry sponsors",
+        "query": "Hypertension",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.cond=Hypertension&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&filter.advanced=AREA%5BLeadSponsorClass%5DINDUSTRY&countTotal=true&pageSize=1",
+        "retrievedOn": "2026-11-10",
+        "reason": null,
+        "names": [
+          {
+            "name": "Merck Sharp & Dohme LLC",
+            "count": 10,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Hypertension&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Merck+Sharp+%26+Dohme+LLC&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Boryung Pharmaceutical Co., Ltd",
+            "count": 9,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Hypertension&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Boryung+Pharmaceutical+Co.%2C+Ltd&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "United Therapeutics",
+            "count": 8,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Hypertension&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=United+Therapeutics&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Aktiia SA",
+            "count": 7,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Hypertension&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Aktiia+SA&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Glaukos Corporation",
+            "count": 7,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Hypertension&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Glaukos+Corporation&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Medtronic Vascular",
+            "count": 7,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Hypertension&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Medtronic+Vascular&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "AstraZeneca",
+            "count": 6,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Hypertension&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=AstraZeneca&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "iSTAR Medical",
+            "count": 6,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Hypertension&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=iSTAR+Medical&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Novartis Pharmaceuticals",
+            "count": 6,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Hypertension&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Novartis+Pharmaceuticals&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "ReCor Medical, Inc.",
+            "count": 6,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Hypertension&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=ReCor+Medical%2C+Inc.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Shenzhen Salubris Pharmaceuticals Co., Ltd.",
+            "count": 6,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Hypertension&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Shenzhen+Salubris+Pharmaceuticals+Co.%2C+Ltd.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Liquidia Technologies, Inc.",
+            "count": 5,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Hypertension&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Liquidia+Technologies%2C+Inc.&countTotal=true&pageSize=1"
+          }
+        ]
       },
       {
         "feed": "federal-register",
@@ -1225,14 +2825,14 @@
       },
       {
         "feed": "usaspending",
-        "status": "unavailable",
+        "status": "ok",
         "label": "USAspending awards",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "value": 2319,
+        "unit": "awards",
+        "query": "hypertension",
+        "sourceUrl": "https://www.usaspending.gov/search?hash=&keywords=hypertension",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       },
       {
         "feed": "edgar",
@@ -1258,14 +2858,14 @@
       },
       {
         "feed": "wikipedia",
-        "status": "unavailable",
+        "status": "ok",
         "label": "Wikipedia pageviews (attention, not demand)",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "value": 895815,
+        "unit": "pageviews",
+        "query": "Hypertension",
+        "sourceUrl": "https://en.wikipedia.org/wiki/Hypertension",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       }
     ],
     "ai-datacenter-power": [
@@ -1282,25 +2882,121 @@
       },
       {
         "feed": "openalex",
-        "status": "unavailable",
-        "label": "OpenAlex works",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "status": "ok",
+        "label": "OpenAlex works, last 12 months",
+        "value": 17635,
+        "unit": "works",
+        "query": "AI data center",
+        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3AAI%20data%20center%2Cfrom_publication_date%3A2025-11-10",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       },
       {
         "feed": "nih",
+        "status": "ok",
+        "label": "NIH RePORTER funding",
+        "value": 789105160,
+        "unit": "USD",
+        "query": "AI data center (FY2026)",
+        "sourceUrl": "https://reporter.nih.gov/search/ZHl_rSqfuUaA3Vw6wmytfQ/projects",
+        "retrievedOn": "2026-11-10",
+        "reason": "8 projects had no reported award amount. Those amounts were not filled in. The value is the sum of reported awards."
+      },
+      {
+        "feed": "openalex-companies",
         "status": "unavailable",
-        "label": "NIH RePORTER projects",
+        "label": "OpenAlex company affiliations",
+        "value": null,
+        "unit": "companies",
+        "query": "AI data center",
+        "sourceUrl": "https://api.openalex.org/works?filter=title_and_abstract.search%3AAI%20data%20center%2Cfrom_publication_date%3A2025-11-10%2Cauthorships.institutions.type%3Acompany&group_by=authorships.institutions.id&per_page=200&mailto=adamtpang%40gmail.com",
+        "retrievedOn": "2026-11-10",
+        "reason": "OpenAlex group_by returns at most 200 institutions. The distinct company count is higher and was not invented. The named list is the top of that capped response.",
+        "names": [
+          {
+            "name": "Google DeepMind (United Kingdom)",
+            "url": "https://openalex.org/I4210090411",
+            "count": 184
+          },
+          {
+            "name": "Microsoft (United States)",
+            "url": "https://openalex.org/I1290206253",
+            "count": 19
+          },
+          {
+            "name": "Harvard University",
+            "url": "https://openalex.org/I136199984",
+            "count": 14
+          },
+          {
+            "name": "Google (United States)",
+            "url": "https://openalex.org/I1291425158",
+            "count": 12
+          },
+          {
+            "name": "Nvidia (United States)",
+            "url": "https://openalex.org/I4210127875",
+            "count": 12
+          },
+          {
+            "name": "Intel (United States)",
+            "url": "https://openalex.org/I1343180700",
+            "count": 11
+          },
+          {
+            "name": "State Grid Corporation of China (China)",
+            "url": "https://openalex.org/I17442442",
+            "count": 11
+          },
+          {
+            "name": "Tsinghua University",
+            "url": "https://openalex.org/I99065089",
+            "count": 11
+          },
+          {
+            "name": "RISE Research Institutes of Sweden",
+            "url": "https://openalex.org/I2800664555",
+            "count": 10
+          },
+          {
+            "name": "Meta (United States)",
+            "url": "https://openalex.org/I4210114444",
+            "count": 10
+          },
+          {
+            "name": "Amazon (United States)",
+            "url": "https://openalex.org/I1311688040",
+            "count": 9
+          },
+          {
+            "name": "IBM (United States)",
+            "url": "https://openalex.org/I1341412227",
+            "count": 9
+          }
+        ],
+        "capped": true
+      },
+      {
+        "feed": "clinicaltrials",
+        "status": "unavailable",
+        "label": "ClinicalTrials.gov active trials",
         "value": null,
         "unit": "",
         "query": null,
         "sourceUrl": null,
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": "Not a clinical condition. No trial query was registered."
+      },
+      {
+        "feed": "clinicaltrials-sponsors",
+        "status": "unavailable",
+        "label": "ClinicalTrials.gov industry sponsors",
+        "value": null,
+        "unit": "",
+        "query": null,
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-10",
+        "reason": "Not a clinical condition. No trial query was registered."
       },
       {
         "feed": "federal-register",
@@ -1315,14 +3011,14 @@
       },
       {
         "feed": "usaspending",
-        "status": "unavailable",
+        "status": "ok",
         "label": "USAspending awards",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "value": 18,
+        "unit": "awards",
+        "query": "AI data center",
+        "sourceUrl": "https://www.usaspending.gov/search?hash=&keywords=AI%20data%20center",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       },
       {
         "feed": "edgar",
@@ -1348,14 +3044,14 @@
       },
       {
         "feed": "wikipedia",
-        "status": "unavailable",
+        "status": "ok",
         "label": "Wikipedia pageviews (attention, not demand)",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "value": 146618,
+        "unit": "pageviews",
+        "query": "AI_data_center",
+        "sourceUrl": "https://en.wikipedia.org/wiki/AI_data_center",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       }
     ],
     "financial-infrastructure": [
@@ -1372,25 +3068,121 @@
       },
       {
         "feed": "openalex",
-        "status": "unavailable",
-        "label": "OpenAlex works",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "status": "ok",
+        "label": "OpenAlex works, last 12 months",
+        "value": 21346,
+        "unit": "works",
+        "query": "payment system",
+        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Apayment%20system%2Cfrom_publication_date%3A2025-11-10",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       },
       {
         "feed": "nih",
+        "status": "ok",
+        "label": "NIH RePORTER funding",
+        "value": 142609401,
+        "unit": "USD",
+        "query": "payment system (FY2026)",
+        "sourceUrl": "https://reporter.nih.gov/search/ICvt2AHx7k-ML3n0ogwWyg/projects",
+        "retrievedOn": "2026-11-10",
+        "reason": "11 projects had no reported award amount. Those amounts were not filled in. The value is the sum of reported awards."
+      },
+      {
+        "feed": "openalex-companies",
         "status": "unavailable",
-        "label": "NIH RePORTER projects",
+        "label": "OpenAlex company affiliations",
+        "value": null,
+        "unit": "companies",
+        "query": "payment system",
+        "sourceUrl": "https://api.openalex.org/works?filter=title_and_abstract.search%3Apayment%20system%2Cfrom_publication_date%3A2025-11-10%2Cauthorships.institutions.type%3Acompany&group_by=authorships.institutions.id&per_page=200&mailto=adamtpang%40gmail.com",
+        "retrievedOn": "2026-11-10",
+        "reason": "OpenAlex group_by returns at most 200 institutions. The distinct company count is higher and was not invented. The named list is the top of that capped response.",
+        "names": [
+          {
+            "name": "Google DeepMind (United Kingdom)",
+            "url": "https://openalex.org/I4210090411",
+            "count": 56
+          },
+          {
+            "name": "Mastercard (United States)",
+            "url": "https://openalex.org/I4210126839",
+            "count": 14
+          },
+          {
+            "name": "State Grid Corporation of China (China)",
+            "url": "https://openalex.org/I17442442",
+            "count": 13
+          },
+          {
+            "name": "Infosys (India)",
+            "url": "https://openalex.org/I110675161",
+            "count": 12
+          },
+          {
+            "name": "Amazon (United States)",
+            "url": "https://openalex.org/I1311688040",
+            "count": 11
+          },
+          {
+            "name": "ResearchGate",
+            "url": "https://openalex.org/I4387154174",
+            "count": 11
+          },
+          {
+            "name": "JPMorgan Chase & Co (United States)",
+            "url": "https://openalex.org/I1305429384",
+            "count": 7
+          },
+          {
+            "name": "Visa (United States)",
+            "url": "https://openalex.org/I4210148469",
+            "count": 6
+          },
+          {
+            "name": "Microsoft (United States)",
+            "url": "https://openalex.org/I1290206253",
+            "count": 5
+          },
+          {
+            "name": "Meta (United States)",
+            "url": "https://openalex.org/I4210114444",
+            "count": 4
+          },
+          {
+            "name": "Fiserv (United States)",
+            "url": "https://openalex.org/I4210142508",
+            "count": 4
+          },
+          {
+            "name": "American Express (United States)",
+            "url": "https://openalex.org/I4210149506",
+            "count": 4
+          }
+        ],
+        "capped": true
+      },
+      {
+        "feed": "clinicaltrials",
+        "status": "unavailable",
+        "label": "ClinicalTrials.gov active trials",
         "value": null,
         "unit": "",
         "query": null,
         "sourceUrl": null,
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": "Not a clinical condition. No trial query was registered."
+      },
+      {
+        "feed": "clinicaltrials-sponsors",
+        "status": "unavailable",
+        "label": "ClinicalTrials.gov industry sponsors",
+        "value": null,
+        "unit": "",
+        "query": null,
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-10",
+        "reason": "Not a clinical condition. No trial query was registered."
       },
       {
         "feed": "federal-register",
@@ -1405,14 +3197,14 @@
       },
       {
         "feed": "usaspending",
-        "status": "unavailable",
+        "status": "ok",
         "label": "USAspending awards",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "value": 127,
+        "unit": "awards",
+        "query": "payment system",
+        "sourceUrl": "https://www.usaspending.gov/search?hash=&keywords=payment%20system",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       },
       {
         "feed": "edgar",
@@ -1438,14 +3230,14 @@
       },
       {
         "feed": "wikipedia",
-        "status": "unavailable",
+        "status": "ok",
         "label": "Wikipedia pageviews (attention, not demand)",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "value": 79008,
+        "unit": "pageviews",
+        "query": "Payment_system",
+        "sourceUrl": "https://en.wikipedia.org/wiki/Payment_system",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       }
     ],
     "cancer": [
@@ -1462,25 +3254,183 @@
       },
       {
         "feed": "openalex",
-        "status": "unavailable",
-        "label": "OpenAlex works",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "status": "ok",
+        "label": "OpenAlex works, last 12 months",
+        "value": 373950,
+        "unit": "works",
+        "query": "cancer",
+        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Acancer%2Cfrom_publication_date%3A2025-11-10",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       },
       {
         "feed": "nih",
         "status": "unavailable",
-        "label": "NIH RePORTER projects",
+        "label": "NIH RePORTER funding",
         "value": null,
         "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "query": "cancer (FY2026)",
+        "sourceUrl": "https://reporter.nih.gov/",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": "NIH RePORTER rejects offsets at 15000, and this query has more projects than that. The award total was not summed from a partial set."
+      },
+      {
+        "feed": "openalex-companies",
+        "status": "unavailable",
+        "label": "OpenAlex company affiliations",
+        "value": null,
+        "unit": "companies",
+        "query": "cancer",
+        "sourceUrl": "https://api.openalex.org/works?filter=title_and_abstract.search%3Acancer%2Cfrom_publication_date%3A2025-11-10%2Cauthorships.institutions.type%3Acompany&group_by=authorships.institutions.id&per_page=200&mailto=adamtpang%40gmail.com",
+        "retrievedOn": "2026-11-10",
+        "reason": "OpenAlex group_by returns at most 200 institutions. The distinct company count is higher and was not invented. The named list is the top of that capped response.",
+        "names": [
+          {
+            "name": "The University of Texas MD Anderson Cancer Center",
+            "url": "https://openalex.org/I1343551460",
+            "count": 607
+          },
+          {
+            "name": "Memorial Sloan Kettering Cancer Center",
+            "url": "https://openalex.org/I1334819555",
+            "count": 540
+          },
+          {
+            "name": "Dana-Farber Cancer Institute",
+            "url": "https://openalex.org/I4210117453",
+            "count": 504
+          },
+          {
+            "name": "Harvard University",
+            "url": "https://openalex.org/I136199984",
+            "count": 427
+          },
+          {
+            "name": "Merck & Co., Inc., Rahway, NJ, USA (United States)",
+            "url": "https://openalex.org/I1285764155",
+            "count": 424
+          },
+          {
+            "name": "AstraZeneca (United Kingdom)",
+            "url": "https://openalex.org/I105036370",
+            "count": 385
+          },
+          {
+            "name": "AstraZeneca (United States)",
+            "url": "https://openalex.org/I4210150756",
+            "count": 332
+          },
+          {
+            "name": "Pfizer (United States)",
+            "url": "https://openalex.org/I180857899",
+            "count": 328
+          },
+          {
+            "name": "Karger Publishers (Switzerland)",
+            "url": "https://openalex.org/I4210162602",
+            "count": 321
+          },
+          {
+            "name": "Vall d'Hebron Institute of Oncology",
+            "url": "https://openalex.org/I4387155398",
+            "count": 285
+          },
+          {
+            "name": "Genentech",
+            "url": "https://openalex.org/I183934855",
+            "count": 274
+          },
+          {
+            "name": "Vall d'Hebron Hospital Universitari",
+            "url": "https://openalex.org/I4210127641",
+            "count": 271
+          }
+        ],
+        "capped": true
+      },
+      {
+        "feed": "clinicaltrials",
+        "status": "ok",
+        "label": "ClinicalTrials.gov active trials",
+        "value": 33901,
+        "unit": "active trials",
+        "query": "Cancer",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.cond=Cancer&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&countTotal=true&pageSize=1",
+        "retrievedOn": "2026-11-10",
+        "reason": null
+      },
+      {
+        "feed": "clinicaltrials-sponsors",
+        "status": "ok",
+        "label": "ClinicalTrials.gov industry sponsors",
+        "value": 2090,
+        "unit": "industry sponsors",
+        "query": "Cancer",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.cond=Cancer&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&filter.advanced=AREA%5BLeadSponsorClass%5DINDUSTRY&countTotal=true&pageSize=1",
+        "retrievedOn": "2026-11-10",
+        "reason": null,
+        "names": [
+          {
+            "name": "AstraZeneca",
+            "count": 355,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Cancer&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=AstraZeneca&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Merck Sharp & Dohme LLC",
+            "count": 271,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Cancer&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Merck+Sharp+%26+Dohme+LLC&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Novartis Pharmaceuticals",
+            "count": 129,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Cancer&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Novartis+Pharmaceuticals&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Sichuan Baili Pharmaceutical Co., Ltd.",
+            "count": 122,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Cancer&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Sichuan+Baili+Pharmaceutical+Co.%2C+Ltd.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Janssen Research & Development, LLC",
+            "count": 115,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Cancer&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Janssen+Research+%26+Development%2C+LLC&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "AbbVie",
+            "count": 112,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Cancer&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=AbbVie&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Daiichi Sankyo",
+            "count": 109,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Cancer&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Daiichi+Sankyo&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Bristol-Myers Squibb",
+            "count": 105,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Cancer&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Bristol-Myers+Squibb&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Baili-Bio (Chengdu) Pharmaceutical Co., Ltd.",
+            "count": 99,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Cancer&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Baili-Bio+%28Chengdu%29+Pharmaceutical+Co.%2C+Ltd.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Pfizer",
+            "count": 97,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Cancer&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Pfizer&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Hoffmann-La Roche",
+            "count": 87,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Cancer&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Hoffmann-La+Roche&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "GlaxoSmithKline",
+            "count": 75,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Cancer&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=GlaxoSmithKline&countTotal=true&pageSize=1"
+          }
+        ]
       },
       {
         "feed": "federal-register",
@@ -1495,14 +3445,14 @@
       },
       {
         "feed": "usaspending",
-        "status": "unavailable",
+        "status": "ok",
         "label": "USAspending awards",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "value": 21298,
+        "unit": "awards",
+        "query": "cancer",
+        "sourceUrl": "https://www.usaspending.gov/search?hash=&keywords=cancer",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       },
       {
         "feed": "edgar",
@@ -1528,14 +3478,14 @@
       },
       {
         "feed": "wikipedia",
-        "status": "unavailable",
+        "status": "ok",
         "label": "Wikipedia pageviews (attention, not demand)",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "value": 1096969,
+        "unit": "pageviews",
+        "query": "Cancer",
+        "sourceUrl": "https://en.wikipedia.org/wiki/Cancer",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       }
     ],
     "copd": [
@@ -1552,25 +3502,183 @@
       },
       {
         "feed": "openalex",
-        "status": "unavailable",
-        "label": "OpenAlex works",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "status": "ok",
+        "label": "OpenAlex works, last 12 months",
+        "value": 11541,
+        "unit": "works",
+        "query": "chronic obstructive pulmonary disease",
+        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Achronic%20obstructive%20pulmonary%20disease%2Cfrom_publication_date%3A2025-11-10",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       },
       {
         "feed": "nih",
-        "status": "unavailable",
-        "label": "NIH RePORTER projects",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "status": "ok",
+        "label": "NIH RePORTER funding",
+        "value": 286637697,
+        "unit": "USD",
+        "query": "chronic obstructive pulmonary disease (FY2026)",
+        "sourceUrl": "https://reporter.nih.gov/search/hukr9Y5ysEak86_6tn109w/projects",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": "41 projects had no reported award amount. Those amounts were not filled in. The value is the sum of reported awards."
+      },
+      {
+        "feed": "openalex-companies",
+        "status": "unavailable",
+        "label": "OpenAlex company affiliations",
+        "value": null,
+        "unit": "companies",
+        "query": "chronic obstructive pulmonary disease",
+        "sourceUrl": "https://api.openalex.org/works?filter=title_and_abstract.search%3Achronic%20obstructive%20pulmonary%20disease%2Cfrom_publication_date%3A2025-11-10%2Cauthorships.institutions.type%3Acompany&group_by=authorships.institutions.id&per_page=200&mailto=adamtpang%40gmail.com",
+        "retrievedOn": "2026-11-10",
+        "reason": "OpenAlex group_by returns at most 200 institutions. The distinct company count is higher and was not invented. The named list is the top of that capped response.",
+        "names": [
+          {
+            "name": "AstraZeneca (United Kingdom)",
+            "url": "https://openalex.org/I105036370",
+            "count": 43
+          },
+          {
+            "name": "AstraZeneca (United States)",
+            "url": "https://openalex.org/I4210150756",
+            "count": 34
+          },
+          {
+            "name": "University of Alabama at Birmingham",
+            "url": "https://openalex.org/I32389192",
+            "count": 33
+          },
+          {
+            "name": "Regeneron (United States)",
+            "url": "https://openalex.org/I186523950",
+            "count": 27
+          },
+          {
+            "name": "Imperial College London",
+            "url": "https://openalex.org/I47508984",
+            "count": 26
+          },
+          {
+            "name": "GlaxoSmithKline (United States)",
+            "url": "https://openalex.org/I4210114143",
+            "count": 22
+          },
+          {
+            "name": "German Center for Lung Research",
+            "url": "https://openalex.org/I4210129183",
+            "count": 22
+          },
+          {
+            "name": "GlaxoSmithKline (United Kingdom)",
+            "url": "https://openalex.org/I188950975",
+            "count": 21
+          },
+          {
+            "name": "University of Manchester",
+            "url": "https://openalex.org/I28407311",
+            "count": 21
+          },
+          {
+            "name": "Chiesi (Italy)",
+            "url": "https://openalex.org/I4210162628",
+            "count": 21
+          },
+          {
+            "name": "Inserm",
+            "url": "https://openalex.org/I154526488",
+            "count": 18
+          },
+          {
+            "name": "University of Michigan",
+            "url": "https://openalex.org/I27837315",
+            "count": 18
+          }
+        ],
+        "capped": true
+      },
+      {
+        "feed": "clinicaltrials",
+        "status": "ok",
+        "label": "ClinicalTrials.gov active trials",
+        "value": 980,
+        "unit": "active trials",
+        "query": "Pulmonary Disease, Chronic Obstructive",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.cond=Pulmonary+Disease%2C+Chronic+Obstructive&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&countTotal=true&pageSize=1",
+        "retrievedOn": "2026-11-10",
+        "reason": null
+      },
+      {
+        "feed": "clinicaltrials-sponsors",
+        "status": "ok",
+        "label": "ClinicalTrials.gov industry sponsors",
+        "value": 134,
+        "unit": "industry sponsors",
+        "query": "Pulmonary Disease, Chronic Obstructive",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.cond=Pulmonary+Disease%2C+Chronic+Obstructive&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&filter.advanced=AREA%5BLeadSponsorClass%5DINDUSTRY&countTotal=true&pageSize=1",
+        "retrievedOn": "2026-11-10",
+        "reason": null,
+        "names": [
+          {
+            "name": "AstraZeneca",
+            "count": 17,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Pulmonary+Disease%2C+Chronic+Obstructive&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=AstraZeneca&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Sanofi",
+            "count": 14,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Pulmonary+Disease%2C+Chronic+Obstructive&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Sanofi&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "GlaxoSmithKline",
+            "count": 8,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Pulmonary+Disease%2C+Chronic+Obstructive&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=GlaxoSmithKline&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Haisco Pharmaceutical Group Co., Ltd.",
+            "count": 7,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Pulmonary+Disease%2C+Chronic+Obstructive&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Haisco+Pharmaceutical+Group+Co.%2C+Ltd.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Incyte Corporation",
+            "count": 7,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Pulmonary+Disease%2C+Chronic+Obstructive&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Incyte+Corporation&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Chia Tai Tianqing Pharmaceutical Group Co., Ltd.",
+            "count": 4,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Pulmonary+Disease%2C+Chronic+Obstructive&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Chia+Tai+Tianqing+Pharmaceutical+Group+Co.%2C+Ltd.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Regeneron Pharmaceuticals",
+            "count": 4,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Pulmonary+Disease%2C+Chronic+Obstructive&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Regeneron+Pharmaceuticals&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Ausper Biopharma Co., Ltd.",
+            "count": 3,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Pulmonary+Disease%2C+Chronic+Obstructive&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Ausper+Biopharma+Co.%2C+Ltd.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Fisher and Paykel Healthcare",
+            "count": 3,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Pulmonary+Disease%2C+Chronic+Obstructive&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Fisher+and+Paykel+Healthcare&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Pulmair Medical, Inc.",
+            "count": 3,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Pulmonary+Disease%2C+Chronic+Obstructive&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Pulmair+Medical%2C+Inc.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Amgen",
+            "count": 2,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Pulmonary+Disease%2C+Chronic+Obstructive&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Amgen&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Apreo Health, Inc.",
+            "count": 2,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Pulmonary+Disease%2C+Chronic+Obstructive&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Apreo+Health%2C+Inc.&countTotal=true&pageSize=1"
+          }
+        ]
       },
       {
         "feed": "federal-register",
@@ -1585,14 +3693,14 @@
       },
       {
         "feed": "usaspending",
-        "status": "unavailable",
+        "status": "ok",
         "label": "USAspending awards",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "value": 325,
+        "unit": "awards",
+        "query": "chronic obstructive pulmonary disease",
+        "sourceUrl": "https://www.usaspending.gov/search?hash=&keywords=chronic%20obstructive%20pulmonary%20disease",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       },
       {
         "feed": "edgar",
@@ -1618,14 +3726,14 @@
       },
       {
         "feed": "wikipedia",
-        "status": "unavailable",
+        "status": "ok",
         "label": "Wikipedia pageviews (attention, not demand)",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "value": 1258182,
+        "unit": "pageviews",
+        "query": "Chronic_obstructive_pulmonary_disease",
+        "sourceUrl": "https://en.wikipedia.org/wiki/Chronic_obstructive_pulmonary_disease",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       }
     ],
     "diabetes": [
@@ -1642,25 +3750,183 @@
       },
       {
         "feed": "openalex",
-        "status": "unavailable",
-        "label": "OpenAlex works",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "status": "ok",
+        "label": "OpenAlex works, last 12 months",
+        "value": 138279,
+        "unit": "works",
+        "query": "diabetes",
+        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Adiabetes%2Cfrom_publication_date%3A2025-11-10",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       },
       {
         "feed": "nih",
-        "status": "unavailable",
-        "label": "NIH RePORTER projects",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "status": "ok",
+        "label": "NIH RePORTER funding",
+        "value": 3128058768,
+        "unit": "USD",
+        "query": "diabetes (FY2026)",
+        "sourceUrl": "https://reporter.nih.gov/search/SksK2HUSzU2cvZEGFii6nw/projects",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": "157 projects had no reported award amount. Those amounts were not filled in. The value is the sum of reported awards."
+      },
+      {
+        "feed": "openalex-companies",
+        "status": "unavailable",
+        "label": "OpenAlex company affiliations",
+        "value": null,
+        "unit": "companies",
+        "query": "diabetes",
+        "sourceUrl": "https://api.openalex.org/works?filter=title_and_abstract.search%3Adiabetes%2Cfrom_publication_date%3A2025-11-10%2Cauthorships.institutions.type%3Acompany&group_by=authorships.institutions.id&per_page=200&mailto=adamtpang%40gmail.com",
+        "retrievedOn": "2026-11-10",
+        "reason": "OpenAlex group_by returns at most 200 institutions. The distinct company count is higher and was not invented. The named list is the top of that capped response.",
+        "names": [
+          {
+            "name": "Novo Nordisk (Denmark)",
+            "url": "https://openalex.org/I189090001",
+            "count": 183
+          },
+          {
+            "name": "Karger Publishers (Switzerland)",
+            "url": "https://openalex.org/I4210162602",
+            "count": 168
+          },
+          {
+            "name": "Eli Lilly (United States)",
+            "url": "https://openalex.org/I168537998",
+            "count": 150
+          },
+          {
+            "name": "Harvard University",
+            "url": "https://openalex.org/I136199984",
+            "count": 140
+          },
+          {
+            "name": "University of Copenhagen",
+            "url": "https://openalex.org/I124055696",
+            "count": 110
+          },
+          {
+            "name": "Brigham and Women's Hospital",
+            "url": "https://openalex.org/I1283280774",
+            "count": 95
+          },
+          {
+            "name": "Steno Diabetes Center Copenhagen",
+            "url": "https://openalex.org/I4405255865",
+            "count": 81
+          },
+          {
+            "name": "University of Washington",
+            "url": "https://openalex.org/I201448701",
+            "count": 78
+          },
+          {
+            "name": "University of Toronto",
+            "url": "https://openalex.org/I185261750",
+            "count": 75
+          },
+          {
+            "name": "Inserm",
+            "url": "https://openalex.org/I154526488",
+            "count": 65
+          },
+          {
+            "name": "Bayer (Germany)",
+            "url": "https://openalex.org/I67348948",
+            "count": 63
+          },
+          {
+            "name": "Yale University",
+            "url": "https://openalex.org/I32971472",
+            "count": 62
+          }
+        ],
+        "capped": true
+      },
+      {
+        "feed": "clinicaltrials",
+        "status": "ok",
+        "label": "ClinicalTrials.gov active trials",
+        "value": 3874,
+        "unit": "active trials",
+        "query": "Diabetes Mellitus",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.cond=Diabetes+Mellitus&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&countTotal=true&pageSize=1",
+        "retrievedOn": "2026-11-10",
+        "reason": null
+      },
+      {
+        "feed": "clinicaltrials-sponsors",
+        "status": "ok",
+        "label": "ClinicalTrials.gov industry sponsors",
+        "value": 373,
+        "unit": "industry sponsors",
+        "query": "Diabetes Mellitus",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.cond=Diabetes+Mellitus&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&filter.advanced=AREA%5BLeadSponsorClass%5DINDUSTRY&countTotal=true&pageSize=1",
+        "retrievedOn": "2026-11-10",
+        "reason": null,
+        "names": [
+          {
+            "name": "Eli Lilly and Company",
+            "count": 40,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Diabetes+Mellitus&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Eli+Lilly+and+Company&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Novo Nordisk A/S",
+            "count": 36,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Diabetes+Mellitus&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Novo+Nordisk+A%2FS&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "AstraZeneca",
+            "count": 20,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Diabetes+Mellitus&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=AstraZeneca&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Gan & Lee Pharmaceuticals.",
+            "count": 11,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Diabetes+Mellitus&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Gan+%26+Lee+Pharmaceuticals.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Hangzhou Zhongmei Huadong Pharmaceutical Co., Ltd.",
+            "count": 10,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Diabetes+Mellitus&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Hangzhou+Zhongmei+Huadong+Pharmaceutical+Co.%2C+Ltd.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Hoffmann-La Roche",
+            "count": 10,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Diabetes+Mellitus&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Hoffmann-La+Roche&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Sanofi",
+            "count": 10,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Diabetes+Mellitus&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Sanofi&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Amgen",
+            "count": 9,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Diabetes+Mellitus&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Amgen&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Fujian Shengdi Pharmaceutical Co., Ltd.",
+            "count": 7,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Diabetes+Mellitus&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Fujian+Shengdi+Pharmaceutical+Co.%2C+Ltd.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Abbott Diabetes Care",
+            "count": 6,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Diabetes+Mellitus&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Abbott+Diabetes+Care&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Bayer",
+            "count": 6,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Diabetes+Mellitus&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Bayer&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Boryung Pharmaceutical Co., Ltd",
+            "count": 6,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Diabetes+Mellitus&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Boryung+Pharmaceutical+Co.%2C+Ltd&countTotal=true&pageSize=1"
+          }
+        ]
       },
       {
         "feed": "federal-register",
@@ -1675,14 +3941,14 @@
       },
       {
         "feed": "usaspending",
-        "status": "unavailable",
+        "status": "ok",
         "label": "USAspending awards",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "value": 5798,
+        "unit": "awards",
+        "query": "diabetes",
+        "sourceUrl": "https://www.usaspending.gov/search?hash=&keywords=diabetes",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       },
       {
         "feed": "edgar",
@@ -1708,14 +3974,14 @@
       },
       {
         "feed": "wikipedia",
-        "status": "unavailable",
+        "status": "ok",
         "label": "Wikipedia pageviews (attention, not demand)",
-        "value": null,
-        "unit": "",
-        "query": null,
-        "sourceUrl": null,
+        "value": 894537,
+        "unit": "pageviews",
+        "query": "Diabetes",
+        "sourceUrl": "https://en.wikipedia.org/wiki/Diabetes",
         "retrievedOn": "2026-11-10",
-        "reason": "No query is registered for this problem. A query was not invented."
+        "reason": null
       }
     ]
   }

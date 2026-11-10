@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import { problems } from '@/data/problems'
 import { companies } from '@/data/companies'
-import { balanceRows, formatGap, formatScore, meanPresent, percentileHigh, sourcedCompanyCount } from '@/lib/sourced-balance'
+import { NOT_ENOUGH, balanceRows, coveredMean, formatCovered, formatGap, meanPresent, percentileHigh, sourcedCompanyCount } from '@/lib/sourced-balance'
+import { demandSnapshot } from '@/lib/demand-snapshot'
+import { FETCHED_PAGE_TAGS } from '@/data/technologies'
 import { openQuestPlaceholders } from '@/lib/open-quests'
 import { TECHNOLOGY_TAGS, appliedTechnologyTags } from '@/data/technologies'
 import { rankBySlug } from '@/lib/open-data'
@@ -12,9 +14,12 @@ describe('supply and demand score', () => {
     expect(meanPresent([null, null])).toBeNull()
     expect(meanPresent([1, null, 1])).toBe(1)
     expect(meanPresent([1, 0])).toBe(0.5)
-    expect(formatScore(null)).toBe(NOT_SOURCED)
-    expect(formatGap(null, 1).label).toBe(NOT_SOURCED)
+    expect(formatGap(null, 1).label).toBe(NOT_ENOUGH)
     expect(formatGap(1, 0.25)).toEqual({ value: 75, label: '75' })
+    expect(coveredMean([0.2, null, null], 3)).toBeNull()
+    expect(coveredMean([0.2, 0.4, 0.8], 3)).toBeCloseTo(0.466666, 5)
+    expect(formatCovered(0.5, 1, 3)).toBe(NOT_ENOUGH)
+    expect(formatCovered(0.5, 3, 3)).toBe('50')
   })
 
   it('ranks only the problems that have a number', () => {
@@ -36,9 +41,15 @@ describe('supply and demand score', () => {
 
   it('shows not yet sourced when a demand score has no usable inputs', () => {
     for (const row of balanceRows()) {
-      if (row.demandScore == null) expect(row.demandLabel).toBe(NOT_SOURCED)
-      if (row.supplyScore == null) expect(row.supplyLabel).toBe(NOT_SOURCED)
-      if (row.demandScore == null || row.supplyScore == null) expect(row.gapLabel).toBe(NOT_SOURCED)
+      const demandIn = row.inputs.filter((input) => input.role === 'demand' && input.inScore)
+      if (demandIn.length < 3) {
+        expect(row.demandScore).toBeNull()
+        expect(row.demandLabel).toBe(NOT_ENOUGH)
+      } else if (row.demandScore != null) {
+        expect(demandIn.length).toBeGreaterThanOrEqual(3)
+      }
+      if (row.supplyScore == null) expect(row.supplyLabel).toBe(NOT_ENOUGH)
+      if (row.demandScore == null || row.supplyScore == null) expect(row.gapLabel).toBe(NOT_ENOUGH)
       const capital = row.inputs.find((input) => input.label === 'Annual capital')
       expect(capital).toBeTruthy()
       if (capital?.value == null) expect(capital?.display).toBe(NOT_SOURCED)
@@ -63,14 +74,25 @@ describe('open quest placeholders', () => {
       const counted = companies.filter((company) => company.problemSlugs.includes(problem.slug)).length
       expect(sourcedCompanyCount(problem.slug)).toBe(counted)
       const row = balanceRows().find((item) => item.slug === problem.slug)
-      expect(row?.companyCount).toBe(counted)
-      expect(row?.openQuest).toBe(counted === 0)
+      expect(row && row.companyCount >= counted).toBe(true)
+      if (row?.openQuest) expect(counted).toBe(0)
     }
     expect(problems.some((problem) => problem.slug === 'ai' || problem.name === 'AI')).toBe(false)
   })
 
   it('keeps every technology tag on a stored source sentence and URL', () => {
-    expect(appliedTechnologyTags()).toHaveLength(TECHNOLOGY_TAGS.length)
-    expect(appliedTechnologyTags().some((tag) => tag.id === 'ai')).toBe(true)
+    expect(appliedTechnologyTags().length).toBe(TECHNOLOGY_TAGS.length + FETCHED_PAGE_TAGS.length)
+    const openai = appliedTechnologyTags().find((tag) => tag.companySlug === 'openai')
+    expect(openai?.sourceUrl).toBe('https://en.wikipedia.org/wiki/OpenAI')
+    expect(openai?.evidence).toContain('Artificial intelligence')
+  })
+
+  it('stores an OpenAlex, NIH, USAspending, and Wikipedia reading for every problem', () => {
+    for (const problem of problems) {
+      const feeds = new Set((demandSnapshot.problems[problem.slug] ?? []).map((reading) => reading.feed))
+      for (const feed of ['openalex', 'nih', 'usaspending', 'wikipedia']) {
+        expect(feeds.has(feed), `${problem.slug} ${feed}`).toBe(true)
+      }
+    }
   })
 })

@@ -157,7 +157,7 @@ export default function Home() {
             <p className="text-label text-primary">Supply and demand</p>
             <h2 className="text-h1 text-ink-100 mt-2 max-w-[28ch]">Numbers next to the rank.</h2>
             <p className="text-body text-neutral-600 mt-3 max-w-[68ch]">
-              Priority rank stays the site ranking. Demand, supply, and gap are a separate score. Demand uses stored readings and related deaths. Supply uses counted companies, founders, funders, and capital when a capital figure is stored. A missing input stays not yet sourced. An open quest marker means no sourced company, and the placeholder is not counted.
+              Priority rank stays the site ranking. Demand, supply, and gap are a separate score. A demand score is shown only when at least 3 demand inputs have a comparable number. Otherwise the cell says not enough data. Burden enters the score only as deaths or DALYs. Supply uses counted companies, trial sponsors, paper affiliations, founders, funders, and capital when that figure is stored. A stored zero counts. A missing input stays not yet sourced. An open quest marker means no sourced company, and the placeholder is not counted.
             </p>
             <p className="text-small text-neutral-600 mt-2">
               <Link href="/methodology" className="text-primary underline underline-offset-2">

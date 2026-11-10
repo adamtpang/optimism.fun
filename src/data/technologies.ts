@@ -44,6 +44,38 @@ export type TechnologyTag = {
  * src/data/companies.ts and src/data/health-companies.ts. The URL is that
  * company's existing source, not a new citation.
  */
+/**
+ * Phrases read from the fetched page on 2026-11-10. openai.com returned HTTP 403,
+ * so the OpenAI tag uses the Wikipedia page that calls it an artificial
+ * intelligence company. The other three homepages returned 200 and said AI.
+ */
+export const FETCHED_PAGE_TAGS: TechnologyTag[] = [
+  {
+    companySlug: 'openai',
+    technologyId: 'ai',
+    evidence: 'Artificial intelligence companies',
+    sourceUrl: 'https://en.wikipedia.org/wiki/OpenAI',
+  },
+  {
+    companySlug: 'isomorphic-labs',
+    technologyId: 'ai',
+    evidence: 'with AI',
+    sourceUrl: 'https://www.isomorphiclabs.com',
+  },
+  {
+    companySlug: 'insitro',
+    technologyId: 'ai',
+    evidence: 'Causal AI',
+    sourceUrl: 'https://www.insitro.com',
+  },
+  {
+    companySlug: 'recursion',
+    technologyId: 'ai',
+    evidence: 'AI Drug Discovery',
+    sourceUrl: 'https://www.recursion.com',
+  },
+]
+
 export const TECHNOLOGY_TAGS: TechnologyTag[] = [
   { companySlug: 'khan-academy', technologyId: 'ai', evidence: 'AI tutor', sourceUrl: 'https://www.khanacademy.org' },
   { companySlug: 'speak', technologyId: 'ai', evidence: 'AI conversational tutor', sourceUrl: 'https://www.speak.com' },
@@ -115,6 +147,18 @@ export type AppliedTechnology = {
 /** Tags whose evidence phrase and URL are actually on the company record. */
 export function appliedTechnologyTags(): AppliedTechnology[] {
   const out: AppliedTechnology[] = []
+  for (const tag of FETCHED_PAGE_TAGS) {
+    const company = companies.find((row) => row.slug === tag.companySlug)
+    if (!company || !tag.sourceUrl.startsWith('https://') || tag.evidence.length < 4) continue
+    out.push({
+      id: tag.technologyId,
+      name: technologyName(tag.technologyId),
+      companyName: company.name,
+      companySlug: company.slug,
+      evidence: tag.evidence,
+      sourceUrl: tag.sourceUrl,
+    })
+  }
   for (const tag of TECHNOLOGY_TAGS) {
     const company = companies.find((row) => row.slug === tag.companySlug)
     if (!company) continue
