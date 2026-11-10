@@ -23,6 +23,9 @@ export default function Footer() {
               <Link href="/" className="inline-flex items-center h-11 text-neutral-800 hover:text-primary">
                 problems
               </Link>
+              <Link href="/quests" className="inline-flex items-center h-11 text-neutral-800 hover:text-primary">
+                quests
+              </Link>
               <Link href="/voices" className="inline-flex items-center h-11 text-neutral-800 hover:text-primary">
                 explanations
               </Link>

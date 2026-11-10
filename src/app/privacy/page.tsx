@@ -68,6 +68,16 @@ export default function PrivacyPage() {
               data removes those local values, although provider-side records may remain under the
               retention settings of the relevant service account.
             </p>
+            <p className="mt-4 leading-8">
+              The player card on Quests and Where stores skills, domains, places, communities,
+              networks, a capital band, time, and risk appetite in localStorage under the key
+              optimism.playerCard.v1. The card is not sent to a server and it is not written into
+              the repository. Copying the share link, or letting the page address update, puts those
+              selected fields in the query string, so anyone with that URL can read the same card.
+              Downloading the card image keeps the file on the device. Selected chips are visible
+              text, so session replay can capture them: masking covers input values, not the rest of
+              the page. Clearing site data removes the stored card.
+            </p>
           </section>
 
           <section>

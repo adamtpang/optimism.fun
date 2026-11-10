@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/s
 
 const NAV_TABS = [
   { name: 'Problems', href: '/' },
+  { name: 'Quests', href: '/quests' },
   { name: 'Where', href: '/where' },
   { name: 'Discoveries', href: '/discoveries' },
   { name: 'Research', href: '/research' },
