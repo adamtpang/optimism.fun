@@ -9,6 +9,8 @@ import Broll from '@/components/media/Broll'
 import Credit from '@/components/media/Credit'
 import { mediaCredit } from '@/components/media/credits'
 import RankedProblems from '@/components/RankedProblems'
+import SupplyDemandTable from '@/components/SupplyDemandTable'
+import { balanceRows } from '@/lib/sourced-balance'
 import { Button } from '@/components/ui/button'
 import { problems } from '@/data/problems'
 import { discoveryCountByProblem } from '@/data/discoveries'
@@ -36,6 +38,7 @@ const EARTHSET = [
 
 export default function Home() {
   const rows = computeRadarRows().sort((a, b) => b.opportunity - a.opportunity)
+  const supplyRows = balanceRows()
   const bySlug = new Map(problems.map((p) => [p.slug, p]))
   const discoveryCounts = discoveryCountByProblem()
   const updated = [...problems.map((p) => p.lastUpdated ?? p.asOf)].sort().at(-1)
@@ -146,6 +149,22 @@ export default function Home() {
               </p>
               <p>CC BY 4.0</p>
             </div>
+          </Container>
+        </Section>
+
+        <Section id="supply-demand" className="scroll-mt-20 pt-0">
+          <Container>
+            <p className="text-label text-primary">Supply and demand</p>
+            <h2 className="text-h1 text-ink-100 mt-2 max-w-[28ch]">Numbers next to the rank.</h2>
+            <p className="text-body text-neutral-600 mt-3 max-w-[68ch]">
+              Priority rank stays the site ranking. Demand, supply, and gap are a separate score. A demand score is shown only when at least 3 demand inputs have a comparable number. Otherwise the cell says not enough data. Burden enters the score only as deaths or DALYs. Supply uses counted companies, trial sponsors, paper affiliations, founders, funders, and capital when that figure is stored. A stored zero counts. A missing input stays not yet sourced. An open quest marker means no sourced company, and the placeholder is not counted.
+            </p>
+            <p className="text-small text-neutral-600 mt-2">
+              <Link href="/methodology" className="text-primary underline underline-offset-2">
+                Formula and every input
+              </Link>
+            </p>
+            <SupplyDemandTable rows={supplyRows} />
           </Container>
         </Section>
 

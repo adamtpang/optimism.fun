@@ -6,11 +6,12 @@
  * 1. The player's rarest intersecting field meets the quest's least-supplied gap.
  * 2. Domain on the card is the quest's domain.
  * 3. A skill on the card covers the quest's domain.
- * 4. Time or capital on the card can fill that thinner side.
- * 5. A place on the card is on a sourced builder or funder.
- * 6. A community or network on the card is already sourced on the quest.
- * 7. Risk appetite matches the quest's tier, or a low appetite meets sourced teams.
- * 8. Existing site rank, then name.
+ * 4. A technology on the card is a sourced technology tag on the quest.
+ * 5. Time or capital on the card can fill that thinner side.
+ * 6. A place on the card is on a sourced builder or funder.
+ * 7. A community or network on the card is already sourced on the quest.
+ * 8. Risk appetite matches the quest's tier, or a low appetite meets sourced teams.
+ * 9. Existing site rank, then name.
  */
 import { SKILLS, type SkillId } from '@/lib/where-match'
 import {
@@ -259,6 +260,7 @@ type Flags = {
   intersects: boolean
   domain: boolean
   skill: boolean
+  technology: boolean
   fills: boolean
   place: boolean
   community: boolean
@@ -267,7 +269,7 @@ type Flags = {
 }
 
 function compare(a: { flags: Flags; rank: number; name: string }, b: { flags: Flags; rank: number; name: string }): number {
-  const keys: (keyof Flags)[] = ['intersects', 'domain', 'skill', 'fills', 'place', 'community', 'network', 'risk']
+  const keys: (keyof Flags)[] = ['intersects', 'domain', 'skill', 'technology', 'fills', 'place', 'community', 'network', 'risk']
   for (const key of keys) {
     if (a.flags[key] !== b.flags[key]) return a.flags[key] ? -1 : 1
   }
@@ -280,6 +282,7 @@ export function matchQuests(card: PlayerCard, quests: QuestView[], options: Play
 
   for (const quest of quests) {
     const matchedSkills = skillHits(card.skills, quest.domain)
+    const matchedTech = card.technologies.filter((id) => (quest.technologyIds ?? []).includes(id))
     const domainHit = Boolean(quest.domain && card.domains.includes(quest.domain))
     const placesHere = card.places.filter((place) => quest.countries.includes(place))
     const communitiesHere = card.communities.filter((id) => quest.funderSlugs.includes(id))
@@ -298,6 +301,7 @@ export function matchQuests(card: PlayerCard, quests: QuestView[], options: Play
       intersects: candidates.length > 0,
       domain: domainHit,
       skill: matchedSkills.length > 0,
+      technology: matchedTech.length > 0,
       fills: capitalHit || timeHit || placeGap || (domainHit && quest.leastSupplied === 'teams') || (matchedSkills.length > 0 && quest.leastSupplied === 'teams'),
       place: placesHere.length > 0,
       community: communitiesHere.length > 0,
@@ -322,6 +326,10 @@ export function matchQuests(card: PlayerCard, quests: QuestView[], options: Play
           ? `Your ${label} meets this quest's gap in teams.`
           : `Your ${label} meets this quest's domain${quest.domainLabel ? `, ${quest.domainLabel}` : ''}.`,
       )
+    }
+    for (const id of matchedTech) {
+      const label = optionLabel(id, options.technologies)
+      reasons.push(`Your ${label} technology is a sourced tag on this quest.`)
     }
     for (const place of placesHere) {
       reasons.push(`Your place ${place} is where a sourced builder or funder on this quest is based.`)

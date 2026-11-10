@@ -48,7 +48,7 @@ export default async function QuestsPage({ searchParams }: { searchParams: Promi
         <div className="mt-8">
           <h2 className="font-serif text-3xl text-ink-100">Player card</h2>
           <p className="text-sm text-ink-400 mt-3 max-w-2xl">
-            Skills, domains, places, communities, networks, capital, time, and risk appetite. Stored in this browser. A share link or a downloaded image carries only the fields you select.
+            Skills, domains, technologies, places, communities, networks, capital, time, and risk appetite. Technologies are enabling tags with a source, not problems. Stored in this browser. A share link or a downloaded image carries only the fields you select.
           </p>
           <div className="mt-4">
             <PlayerCardPanel

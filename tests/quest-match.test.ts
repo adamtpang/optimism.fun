@@ -14,6 +14,10 @@ const options: PlayerOptions = {
     { id: 'energy', label: 'Energy' },
     { id: 'ai', label: 'AI' },
   ],
+  technologies: [
+    { id: 'ai', label: 'AI' },
+    { id: 'biotech', label: 'Biotech' },
+  ],
   places: ['USA', 'Kenya'],
   communities: [{ id: 'emergent-ventures', label: 'Emergent Ventures' }],
   networks: [
@@ -49,6 +53,9 @@ function quest(partial: Partial<QuestView> & Pick<QuestView, 'slug' | 'name' | '
     funderSlugs: [],
     companyIds: [],
     founderIds: [],
+    technologyIds: [],
+    sourcedCompanies: [],
+    sourcedCompanyCount: 0,
     actions: [],
     gapLine: '',
     ...partial,
@@ -178,6 +185,20 @@ describe('quest matching', () => {
     }
   })
 
+  it('matches through a technology tag with no other field filled in', () => {
+    const tagged = quest({
+      slug: 'pedagogy-ai',
+      name: 'Pedagogy',
+      rank: 3,
+      technologyIds: ['ai'],
+      leastSupplied: 'not yet sourced',
+    })
+    const other = quest({ slug: 'grid', name: 'Grid', rank: 1, technologyIds: ['energy-tech'] })
+    const matches = matchQuests(card({ technologies: ['ai'] }), [tagged, other], options)
+    expect(matches.map((match) => match.slug)).toEqual(['pedagogy-ai'])
+    expect(matches[0].reasons.some((reason) => reason.includes('AI') && reason.includes('sourced tag'))).toBe(true)
+  })
+
   it('drops a domain the index does not use', () => {
     const board = buildQuestBoard()
     const liveOptions = buildPlayerOptions()
@@ -204,6 +225,10 @@ describe('new quest copy has no em dash', () => {
       'src/app/where/page.tsx',
       'src/app/founders/page.tsx',
       'src/app/companies/page.tsx',
+      'src/components/OpenQuestCard.tsx',
+      'src/components/SupplyDemandTable.tsx',
+      'src/lib/open-quests.ts',
+      'src/app/page.tsx',
     ]
     for (const file of files) {
       const text = readFileSync(file, 'utf8')

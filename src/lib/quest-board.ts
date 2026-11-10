@@ -12,6 +12,9 @@ import { ctas } from '@/data/ctas'
 import { getCapitalFlow } from '@/data/capital-flows'
 import { expertPriors } from '@/data/expert-priors'
 import { demandSignalRegistry, type DemandSignalFeeds } from '@/data/demand-signals'
+import { TECHNOLOGIES } from '@/data/technologies'
+import { technologyIdsForProblem } from '@/data/technologies'
+import { readingsFor } from '@/lib/demand-snapshot'
 import { ECOSYSTEM_TYPE_LABEL } from '@/data/types'
 import { rankBySlug } from '@/lib/open-data'
 import { SKILLS } from '@/lib/where-match'
@@ -100,6 +103,7 @@ export function buildPlayerOptions(): PlayerOptions {
       id,
       label: DOMAIN_LABEL[id],
     })),
+    technologies: TECHNOLOGIES.map((item) => ({ id: item.id, label: item.name })),
     places: [...places].sort((a, b) => a.localeCompare(b)),
     communities: ecosystem
       .map((entry) => ({ id: entry.slug, label: entry.name }))
@@ -147,6 +151,18 @@ export function buildQuestBoard(): QuestView[] {
         countries.push(...placeParts(company.country))
         companyIds.push(`company:${company.slug}`)
       }
+      const sourcedCompanies: SourcedParty[] = companies
+        .filter((row) => row.problemSlugs.includes(problem.slug))
+        .map((company) => {
+          const source = company.sources[0]
+          return {
+            name: company.name,
+            href: company.url ?? source?.url ?? null,
+            detail: company.stage,
+            source: source?.title ?? company.name,
+            sourceUrl: source?.url ?? company.url ?? null,
+          }
+        })
       for (const org of problem.organizations ?? []) {
         if (seen.has(norm(org.name))) continue
         seen.add(norm(org.name))
@@ -233,17 +249,17 @@ export function buildQuestBoard(): QuestView[] {
           })
         }
       }
-      const feeds = registeredFeedLabels(demandSignalRegistry[problem.slug])
-      if (feeds.length === 0) demand.push(missing('Live demand feeds'))
+      const stored = readingsFor(problem.slug)
+      if (stored.length === 0) demand.push(missing('Live demand feeds'))
       else {
-        for (const label of feeds) {
+        for (const reading of stored) {
           demand.push({
-            label,
-            value: NOT_SOURCED,
-            unit: '',
-            source: 'Feed registered on this site. Reading not stored.',
-            sourceUrl: null,
-            asOf: '',
+            label: reading.label,
+            value: reading.status === 'ok' && reading.value != null ? reading.value.toLocaleString('en-US') : NOT_SOURCED,
+            unit: reading.status === 'ok' ? reading.unit : '',
+            source: reading.status === 'ok' ? (reading.query ? `Query: ${reading.query}` : 'Stored reading') : (reading.reason ?? ''),
+            sourceUrl: reading.sourceUrl,
+            asOf: reading.retrievedOn,
           })
         }
       }
@@ -278,6 +294,9 @@ export function buildQuestBoard(): QuestView[] {
         funderSlugs: [...new Set(funderSlugs)],
         companyIds: [...new Set(companyIds)],
         founderIds: [...new Set(founderIds)],
+        technologyIds: technologyIdsForProblem(problem.slug),
+        sourcedCompanies,
+        sourcedCompanyCount: sourcedCompanies.length,
         actions: ctas
           .filter((cta) => cta.problemSlugs.includes(problem.slug))
           .map((cta) => ({ kind: cta.kind, name: cta.name, url: cta.url, detail: cta.oneLiner })),

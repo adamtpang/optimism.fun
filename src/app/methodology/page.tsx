@@ -7,6 +7,9 @@ import { companies } from '@/data/companies'
 import { ecosystem } from '@/data/ecosystem'
 import { inLimitCaps } from '@/data/in-limit'
 import { deathRatePair } from '@/lib/citations'
+import SupplyDemandTable from '@/components/SupplyDemandTable'
+import { balanceRows } from '@/lib/sourced-balance'
+import { demandSnapshot } from '@/lib/demand-snapshot'
 
 export const metadata = {
   title: 'Methodology | optimism.fun',
@@ -535,6 +538,28 @@ export default function MethodologyPage() {
                     arguments behind the rankings get sharpened.
                   </li>
                 </ul>
+              </section>
+
+              <section>
+                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
+                  Supply and demand score
+                </h2>
+                <p className="mb-4">
+                  This score is not the priority rank. It does not change opportunity, neglectedness, tractability, or the order on the homepage ranking. It is a separate column.
+                </p>
+                <p className="mb-4">
+                  Demand is the mean of percentile ranks, times 100, rounded. Each indicator is ranked only among problems that have a number for that indicator. The lowest value in a column scores 0. The highest scores 100. Ties share the midpoint. If fewer than two problems have the indicator, that column has no percentile. A missing value is left out of the mean. It is not filled with zero or with an average. A demand score is published only when at least 3 of those percentiles exist. Otherwise the cell says not enough data, and the raw inputs stay visible.
+                </p>
+                <p className="mb-4">
+                  Demand indicators: related deaths per year, and a live burden feed only when its unit is deaths or DALYs. Also OpenAlex works from the last 12 months, NIH RePORTER funding for the latest complete fiscal year, active ClinicalTrials.gov trials where the problem is a clinical condition, Federal Register documents, USAspending awards, SEC EDGAR Form D filings, and openFDA shortage counts. A poverty rate, a fertility rate, tonnes of CO2, or life expectancy is shown and is not ranked, because those units are not deaths or DALYs. Wikipedia pageviews are stored as attention and are not demand. Readings were retrieved {demandSnapshot.retrievedOn}. Exa was not called, because it needs a key.
+                </p>
+                <p className="mb-4">
+                  Supply is the same mean of percentiles, published when at least one supply input is a sourced number. A stored zero counts. The columns are companies already on file, ClinicalTrials.gov industry sponsors of active trials, OpenAlex institutions of type company on papers from the last 12 months, sourced founders, sourced funders, and annual capital when a capital-flow figure is stored. OpenAlex returns at most 200 institutions. When a query hits that cap the count is not used. Capital with no stored figure is not yet sourced and is not treated as zero. Placeholder companies are not rows and are not counted.
+                </p>
+                <p className="mb-4">
+                  Gap is the demand score minus the supply score, after rounding each to a whole number. If either score is not enough data, the gap is not enough data.
+                </p>
+                <SupplyDemandTable rows={balanceRows()} />
               </section>
 
               <section>

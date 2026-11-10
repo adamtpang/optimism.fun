@@ -77,6 +77,11 @@ export type QuestView = {
   funderSlugs: string[]
   companyIds: string[]
   founderIds: string[]
+  /** Enabling technologies with a source URL on a sourced company. */
+  technologyIds: string[]
+  /** Company records only. Organizations and placeholders are not included. */
+  sourcedCompanies: SourcedParty[]
+  sourcedCompanyCount: number
   actions: QuestAction[]
   gapLine: string
 }

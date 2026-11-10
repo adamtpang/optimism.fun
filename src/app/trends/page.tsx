@@ -4,7 +4,8 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import EmailCapture from '@/components/EmailCapture'
 import TrendBoard from '@/components/TrendBoard'
-import { computeTrendBoard } from '@/lib/trends/engine'
+import trendSnapshot from '@/data/snapshots/trends-board.json'
+import { computeTrendBoard, type TrendBoard as TrendBoardData } from '@/lib/trends/engine'
 import { SOURCES } from '@/lib/trends/scoring'
 
 export const metadata: Metadata = {
@@ -17,8 +18,18 @@ export const metadata: Metadata = {
 // just re-fetch the same numbers.
 export const revalidate = 3600
 
+function boardForThisRender(): Promise<TrendBoardData> | TrendBoardData {
+  // GitHub search is serialized at 2.2s per term. A live board does not finish
+  // inside Vercel's 60s static-page limit. The build reads the committed
+  // snapshot. Hourly ISR still fetches live after deploy.
+  if (process.env.NEXT_PHASE === 'phase-production-build') {
+    return trendSnapshot as TrendBoardData
+  }
+  return computeTrendBoard()
+}
+
 export default async function TrendsPage() {
-  const board = await computeTrendBoard()
+  const board = await boardForThisRender()
   const rising = board.ranked.filter((t) => t.state === 'rising').length
 
   return (

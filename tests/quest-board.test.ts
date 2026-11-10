@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest'
 import { problems } from '@/data/problems'
 import { companies } from '@/data/companies'
 import { founders } from '@/data/founders'
-import { buildQuestBoard, registeredFeedLabels } from '@/lib/quest-board'
+import { buildQuestBoard } from '@/lib/quest-board'
 import { NOT_SOURCED, leastSuppliedGap } from '@/lib/quest-types'
-import { demandSignalRegistry } from '@/data/demand-signals'
+import { demandSnapshot } from '@/lib/demand-snapshot'
 import { publicPaths } from '@/lib/public-routes'
 
 describe('quest board', () => {
@@ -52,13 +52,18 @@ describe('quest board', () => {
     expect(bio?.builders.some((builder) => builder.name === 'Moderna')).toBe(true)
   })
 
-  it('does not turn a registered feed into a number', () => {
-    for (const [slug, feeds] of Object.entries(demandSignalRegistry)) {
-      const labels = registeredFeedLabels(feeds)
+  it('copies a stored demand reading and leaves a failed feed unsourced', () => {
+    for (const [slug, readings] of Object.entries(demandSnapshot.problems)) {
       const quest = board.find((row) => row.slug === slug)
       expect(quest).toBeTruthy()
-      for (const label of labels) {
-        expect(quest?.demand.find((fact) => fact.label === label)?.value).toBe(NOT_SOURCED)
+      for (const reading of readings) {
+        const fact = quest?.demand.find((row) => row.label === reading.label && row.asOf === reading.retrievedOn)
+        expect(fact, `${slug} ${reading.feed}`).toBeTruthy()
+        if (reading.status === 'ok' && reading.value != null) {
+          expect(fact?.value).toBe(reading.value.toLocaleString('en-US'))
+        } else {
+          expect(fact?.value).toBe(NOT_SOURCED)
+        }
       }
     }
   })
