@@ -3,8 +3,9 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import PageHeader from '@/components/PageHeader'
 import HeroFigure from '@/components/HeroFigure'
-import { computeSignals } from '@/lib/signals/compute'
-import { CATEGORY_VERIFIED_ASOF } from '@/lib/signals/categories'
+import { computeSignals, type ScoredSignal } from '@/lib/signals/compute'
+import { SIGNAL_CATEGORIES, CATEGORY_VERIFIED_ASOF } from '@/lib/signals/categories'
+import signalSnapshot from '@/data/snapshots/signals-board.json'
 
 export const metadata = {
   title: 'Market signals | optimism.fun',
@@ -14,13 +15,38 @@ export const metadata = {
 
 export const revalidate = 86400
 
+type SignalSnapshot = {
+  rows: {
+    indicator: string
+    baseline: { year: number; value: number }
+    latest: { year: number; value: number }
+    years: number
+    totalGrowthPct: number
+    cagrPct: number
+    sourceLastUpdated: string | null
+  }[]
+}
+
+/** World Bank calls do not finish reliably inside the 60s static-page limit. */
+function signalsForThisRender(): Promise<ScoredSignal[]> | ScoredSignal[] {
+  if (process.env.NEXT_PHASE === 'phase-production-build') {
+    const file = signalSnapshot as SignalSnapshot
+    return SIGNAL_CATEGORIES.flatMap((category) => {
+      const row = file.rows.find((item) => item.indicator === category.indicator)
+      if (!row) return []
+      return [{ category, ...row }]
+    }).sort((a, b) => b.cagrPct - a.cagrPct)
+  }
+  return computeSignals()
+}
+
 function fmtPct(n: number) {
   const sign = n >= 0 ? '+' : ''
   return `${sign}${n.toFixed(0)}%`
 }
 
 export default async function SignalsPage() {
-  const signals = await computeSignals()
+  const signals = await signalsForThisRender()
   const top = signals[0]
 
   return (

@@ -1,0 +1,96 @@
+{
+  "retrievedOn": "2026-11-10",
+  "note": "Read during the production build so /signals does not call the World Bank while pages are prerendered. After deploy, the page still fetches live on its daily revalidate.",
+  "rows": [
+    {
+      "indicator": "IT.NET.USER.ZS",
+      "baseline": {
+        "year": 2005,
+        "value": 15.6
+      },
+      "latest": {
+        "year": 2025,
+        "value": 73.6
+      },
+      "years": 20,
+      "totalGrowthPct": 371.79487179487177,
+      "cagrPct": 8.065647703153811,
+      "sourceLastUpdated": "2026-10-08"
+    },
+    {
+      "indicator": "IT.NET.BBND.P2",
+      "baseline": {
+        "year": 2005,
+        "value": 3.4
+      },
+      "latest": {
+        "year": 2025,
+        "value": 20.11
+      },
+      "years": 20,
+      "totalGrowthPct": 491.47058823529414,
+      "cagrPct": 9.29408477998872,
+      "sourceLastUpdated": "2026-10-08"
+    },
+    {
+      "indicator": "IT.CEL.SETS.P2",
+      "baseline": {
+        "year": 1996,
+        "value": 2.49966341127963
+      },
+      "latest": {
+        "year": 2025,
+        "value": 111.5
+      },
+      "years": 29,
+      "totalGrowthPct": 4360.600555133174,
+      "cagrPct": 13.992330392225938,
+      "sourceLastUpdated": "2026-10-08"
+    },
+    {
+      "indicator": "EG.FEC.RNEW.ZS",
+      "baseline": {
+        "year": 1996,
+        "value": 17.4450890685685
+      },
+      "latest": {
+        "year": 2020,
+        "value": 19.7355641050053
+      },
+      "years": 24,
+      "totalGrowthPct": 13.129626495078423,
+      "cagrPct": 0.5153404694497432,
+      "sourceLastUpdated": "2026-10-08"
+    },
+    {
+      "indicator": "TX.VAL.TECH.MF.ZS",
+      "baseline": {
+        "year": 2007,
+        "value": 19.8514707172552
+      },
+      "latest": {
+        "year": 2024,
+        "value": 24.6923279470414
+      },
+      "years": 17,
+      "totalGrowthPct": 24.38538332365698,
+      "cagrPct": 1.2918883428512329,
+      "sourceLastUpdated": "2026-10-08"
+    },
+    {
+      "indicator": "GB.XPD.RSDV.GD.ZS",
+      "baseline": {
+        "year": 1999,
+        "value": 2.04650060133132
+      },
+      "latest": {
+        "year": 2023,
+        "value": 2.59737836465431
+      },
+      "years": 24,
+      "totalGrowthPct": 26.918035741823132,
+      "cagrPct": 0.9981625059659605,
+      "sourceLastUpdated": "2026-10-08"
+    }
+  ]
+}
