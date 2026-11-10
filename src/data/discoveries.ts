@@ -775,6 +775,68 @@ export const discoveries: Discovery[] = [
     changes: 'scale',
     review: 'peer-reviewed',
   },
+  {
+    id: 'fofana-kalumi-ganaplacide-2026',
+    title:
+      'Ganaplacide plus lumefantrine solid dispersion formulation for children with uncomplicated Plasmodium falciparum malaria (KALUMI): an open-label, multicentre, randomised, controlled, adaptive, phase 2, non-inferiority trial',
+    // Europe PMC firstPublicationDate 2026-11-06. Crossref has no published-online date; issued and published-print are 2026-11 only.
+    published: '2026-11-06',
+    added: '2026-11-10',
+    source: 'The Lancet Infectious Diseases',
+    doi: '10.1016/s1473-3099(26)00492-5',
+    url: doi('10.1016/s1473-3099(26)00492-5'),
+    problemSlugs: ['infectious-disease'],
+    summary:
+      'In the main part, 220 children across Burkina Faso, Mali, Cote d\'Ivoire, Gabon, and DR Congo had PCR-corrected cure on day 29 of 97 of 98 (99%) with ganaplacide plus lumefantrine versus 98 of 99 (99%) with artemether-lumefantrine, a non-inferior result, and vomiting was 29% versus 11%. Ganaplacide is a new non-artemisinin antimalarial class, and a phase 3 trial followed (NCT05842954).',
+    changes: 'tractability',
+    review: 'trial-result',
+  },
+  {
+    id: 'di-achille-smartwatch-hypertension-2026',
+    title: 'Opportunistically Detecting Signs of Hypertension on a Consumer Smartwatch',
+    // Crossref published-online 2026-11-05.
+    published: '2026-11-05',
+    added: '2026-11-10',
+    source: 'Nature',
+    doi: '10.1038/s41586-026-11336-3',
+    url: doi('10.1038/s41586-026-11336-3'),
+    problemSlugs: ['hypertension'],
+    summary:
+      'AI on photoplethysmography and accelerometry from a consumer smartwatch, with no cuff calibration, was validated prospectively in 196 participants against 24-hour ambulatory blood pressure: over seven days, sensitivity was 65.8% and specificity 90.0%, versus initial office blood pressure screening sensitivity 55.3% and specificity 90.0%. Over half of adults with hypertension are unaware of it.',
+    changes: 'tractability',
+    review: 'peer-reviewed',
+  },
+  {
+    id: 'lucinde-chw-home-bp-2026',
+    title:
+      'Community health worker-led home blood pressure monitoring in rural sub-Saharan Africa: a diagnostic accuracy study',
+    // Europe PMC firstPublicationDate 2026-11-06. Crossref has no published-online date; issued and published-print are 2026-11 only.
+    published: '2026-11-06',
+    added: '2026-11-10',
+    source: 'The Lancet Global Health',
+    doi: '10.1016/j.langlo.2026.104097',
+    url: doi('10.1016/j.langlo.2026.104097'),
+    problemSlugs: ['hypertension'],
+    summary:
+      'Among 1279 participants in Kilifi, Kenya and Kiang West, The Gambia, community health worker coordinated home blood pressure monitoring had an age-standardised sensitivity of 82.6% and specificity of 82.4% in Kenya against daytime ambulatory monitoring.',
+    changes: 'tractability',
+    review: 'peer-reviewed',
+  },
+  {
+    id: 'scott-newborn-vitamin-k-2026',
+    title: 'Nonreceipt of Newborn Vitamin K and Risk of Bleeding',
+    // Crossref published-online 2026-11-05.
+    published: '2026-11-05',
+    added: '2026-11-10',
+    source: 'JAMA',
+    doi: '10.1001/jama.2026.21764',
+    url: doi('10.1001/jama.2026.21764'),
+    problemSlugs: ['newborn-survival'],
+    summary:
+      'Among 5 240 780 US infants in Epic Cosmos from 2017 to 2025, vitamin K nonreceipt rose from 3.1% in 2017 to 6.8% in 2025. Infants without it had a higher risk of bleeding by 6 months (adjusted risk ratio 1.47) and intracranial bleeding (adjusted risk ratio 2.43).',
+    changes: 'scale',
+    review: 'peer-reviewed',
+  },
 ]
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/
