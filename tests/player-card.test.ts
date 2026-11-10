@@ -12,6 +12,7 @@ import { buildPlayerOptions } from '@/lib/quest-board'
 const options: PlayerOptions = {
   skills: [{ id: 'bio', label: 'Biology' }],
   domains: [{ id: 'health', label: 'Health' }],
+  technologies: [{ id: 'ai', label: 'AI' }],
   places: ['Kenya', 'USA'],
   communities: [{ id: 'emergent-ventures', label: 'Emergent Ventures' }],
   networks: [{ id: 'company:moderna', label: 'Moderna', group: 'company' }],

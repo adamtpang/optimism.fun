@@ -80,12 +80,14 @@ export default function PlayerCardPanel({
   tokenInvalid,
   quests,
   showMatches,
+  preselected = null,
 }: {
   options: PlayerOptions
   initialCard: PlayerCard | null
   tokenInvalid: boolean
   quests: QuestView[]
   showMatches: boolean
+  preselected?: { name: string; href: string; gap: string | null } | null
 }) {
   const [card, setCard] = useState<PlayerCard>(initialCard ?? emptyPlayerCard())
   const [ready, setReady] = useState(Boolean(initialCard))
@@ -171,6 +173,26 @@ export default function PlayerCardPanel({
               className={chipClass(card.domains.includes(domain.id))}
             >
               {domain.label}
+            </button>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset className="border border-hair p-4 mt-3">
+        <legend className="font-mono text-small uppercase tracking-wider text-ink-500 px-1">Technologies</legend>
+        <p className="text-sm text-ink-400 mt-2">
+          Enabling tools, not problems. A technology matches only when a sourced company on the quest carries that tag.
+        </p>
+        <div className="flex flex-wrap gap-2 mt-2">
+          {options.technologies.map((technology) => (
+            <button
+              key={technology.id}
+              type="button"
+              aria-pressed={card.technologies.includes(technology.id)}
+              onClick={() => patch({ ...card, technologies: toggle(card.technologies, technology.id) })}
+              className={chipClass(card.technologies.includes(technology.id))}
+            >
+              {technology.label}
             </button>
           ))}
         </div>
@@ -322,11 +344,26 @@ export default function PlayerCardPanel({
         )}
       </p>
 
+      {showMatches && preselected && (
+        <article className="border border-dashed border-primary bg-neutral-50 p-4 mt-6 min-w-0">
+          <p className="font-mono text-small uppercase tracking-wider text-primary">Preselected quest</p>
+          <h2 className="font-serif text-2xl text-ink-100 mt-2 break-words">
+            <Link href={preselected.href} className="hover:text-primary">
+              {preselected.name}
+            </Link>
+          </h2>
+          {preselected.gap && <p className="text-sm text-ink-300 mt-2 break-words">Gap: {preselected.gap}</p>}
+          <p className="text-sm text-ink-400 mt-2">
+            Opened from an open quest. Fill the card to see whether your fields match it. The priority rank is unchanged.
+          </p>
+        </article>
+      )}
+
       {showMatches && (
         <section className="mt-10">
           <h2 className="font-serif text-3xl text-ink-100">Matches</h2>
           <p className="text-sm text-ink-400 mt-3 max-w-2xl">
-            Order is the rule list: an intersection with the thinner named side, then domain, skill, filling that side, place, community, network, and risk appetite. Ties use the existing site rank. No fit score is computed.
+            Order is the rule list: an intersection with the thinner named side, then domain, skill, technology tag, filling that side, place, community, network, and risk appetite. Ties use the existing site rank. No fit score is computed.
           </p>
           {cardIsEmpty(card) ? (
             <p className="border border-hair p-4 mt-4 text-ink-400">

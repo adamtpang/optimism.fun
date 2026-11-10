@@ -1,5 +1,7 @@
 import type { QuestView, SourcedParty, DemandFact, QuestFinding } from '@/lib/quest-types'
 import { NOT_SOURCED } from '@/lib/quest-types'
+import OpenQuestCard from '@/components/OpenQuestCard'
+import { openQuestsFor } from '@/lib/open-quests'
 
 function PartyList({ rows, empty }: { rows: SourcedParty[]; empty: string }) {
   if (rows.length === 0) return <p className="text-sm text-ink-400">{empty}</p>
@@ -125,6 +127,21 @@ export default function QuestList({ quests }: { quests: QuestView[] }) {
               {quest.retractedOnly && (
                 <p className="text-sm text-ink-400 mt-2">The only findings on file are retracted.</p>
               )}
+            </section>
+
+            <section>
+              <h3 className="font-mono text-small uppercase tracking-wider text-primary">
+                Companies working on this ({quest.sourcedCompanyCount})
+              </h3>
+              <PartyList
+                rows={quest.sourcedCompanies}
+                empty={quest.sourcedCompanyCount === 0 ? 'No sourced company is on file.' : NOT_SOURCED}
+              />
+              {openQuestsFor(quest.slug).map((openQuest) => (
+                <div key={openQuest.id} className="mt-4">
+                  <OpenQuestCard quest={openQuest} />
+                </div>
+              ))}
             </section>
 
             <section>

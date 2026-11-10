@@ -1,4 +1,5 @@
 import type { Domain } from '@/data/types'
+import type { TechnologyId } from '@/data/technologies'
 import type { SkillId } from '@/lib/where-match'
 
 export const PLAYER_CARD_STORAGE_KEY = 'optimism.playerCard.v1'
@@ -15,6 +16,7 @@ export type RiskBand = (typeof RISK_BANDS)[number]
 export type PlayerCard = {
   skills: SkillId[]
   domains: Domain[]
+  technologies: TechnologyId[]
   places: string[]
   communities: string[]
   networks: string[]
@@ -26,6 +28,7 @@ export type PlayerCard = {
 export type PlayerOptions = {
   skills: { id: SkillId; label: string }[]
   domains: { id: Domain; label: string }[]
+  technologies: { id: TechnologyId; label: string }[]
   places: string[]
   communities: { id: string; label: string }[]
   networks: { id: string; label: string; group: 'company' | 'founder' }[]
@@ -57,6 +60,7 @@ export function emptyPlayerCard(): PlayerCard {
   return {
     skills: [],
     domains: [],
+    technologies: [],
     places: [],
     communities: [],
     networks: [],
@@ -70,6 +74,7 @@ export function cardIsEmpty(card: PlayerCard): boolean {
   return (
     card.skills.length === 0 &&
     card.domains.length === 0 &&
+    card.technologies.length === 0 &&
     card.places.length === 0 &&
     card.communities.length === 0 &&
     card.networks.length === 0 &&
@@ -93,6 +98,7 @@ export function parsePlayerCard(input: unknown, options: PlayerOptions): PlayerC
   const raw = input as Record<string, unknown>
   const skills = new Set(options.skills.map((item) => item.id))
   const domains = new Set(options.domains.map((item) => item.id))
+  const technologies = new Set(options.technologies.map((item) => item.id))
   const places = new Set(options.places)
   const communities = new Set(options.communities.map((item) => item.id))
   const networks = new Set(options.networks.map((item) => item.id))
@@ -102,6 +108,7 @@ export function parsePlayerCard(input: unknown, options: PlayerOptions): PlayerC
   return {
     skills: strings(raw.skills, skills) as SkillId[],
     domains: strings(raw.domains, domains) as Domain[],
+    technologies: strings(raw.technologies, technologies) as TechnologyId[],
     places: strings(raw.places, places),
     communities: strings(raw.communities, communities),
     networks: strings(raw.networks, networks),
@@ -131,6 +138,7 @@ export function encodePlayerCard(card: PlayerCard): string {
   const slim: Record<string, unknown> = {}
   if (card.skills.length) slim.skills = card.skills
   if (card.domains.length) slim.domains = card.domains
+  if (card.technologies.length) slim.technologies = card.technologies
   if (card.places.length) slim.places = card.places
   if (card.communities.length) slim.communities = card.communities
   if (card.networks.length) slim.networks = card.networks
@@ -157,6 +165,9 @@ export function playerCardLines(card: PlayerCard, options: PlayerOptions): strin
     'On this device only. Not an account.',
     card.skills.length ? `Skills: ${label(card.skills, options.skills).join(', ')}` : 'Skills: not stated',
     card.domains.length ? `Domains: ${label(card.domains, options.domains).join(', ')}` : 'Domains: not stated',
+    card.technologies.length
+      ? `Technologies: ${label(card.technologies, options.technologies).join(', ')}`
+      : 'Technologies: not stated',
     card.places.length ? `Places: ${card.places.join(', ')}` : 'Places: not stated',
     card.communities.length
       ? `Communities: ${label(card.communities, options.communities).join(', ')}`

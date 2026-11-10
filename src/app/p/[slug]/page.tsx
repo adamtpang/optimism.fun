@@ -3,6 +3,10 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { problems, getProblemBySlug } from '@/data/problems'
 import { getCompaniesForProblem } from '@/data/companies'
+import { technologiesForProblem } from '@/data/technologies'
+import OpenQuestCard from '@/components/OpenQuestCard'
+import { openQuestsFor } from '@/lib/open-quests'
+import { balanceBySlug } from '@/lib/sourced-balance'
 import { getCapitalFlow } from '@/data/capital-flows'
 import { getInLimitCap } from '@/data/in-limit'
 import { displayDeathCitation, displayDeaths } from '@/lib/burden'
@@ -76,6 +80,9 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
   if (!problem) notFound()
 
   const companies = getCompaniesForProblem(slug)
+  const technologies = technologiesForProblem(slug)
+  const score = balanceBySlug().get(slug)
+  const openQuests = openQuestsFor(slug)
   const flow = getCapitalFlow(slug)
   const prize = getInLimitCap(slug)
   const deaths = displayDeaths(slug)
@@ -156,20 +163,88 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
 
         <ConstraintTree problemSlug={slug} />
 
-        {companies.length > 0 && (
-          <section className="site-shell py-10 border-b border-hair">
-            <h2 className="font-serif text-2xl text-ink-100 mb-4">Who is on it</h2>
-            <ul className="flex flex-wrap gap-2">
-              {companies.map((c) => (
-                <li key={c.slug}>
-                  <a href={c.url} target="_blank" rel="noopener noreferrer" className="inline-block border border-hair hover:border-primary px-3 min-h-11 inline-flex items-center text-sm text-ink-200">
-                    {c.name}
-                  </a>
-                </li>
-              ))}
+        <section className="site-shell py-10 border-b border-hair" id="companies">
+          <h2 className="font-serif text-2xl text-ink-100">Companies working on this</h2>
+          <p className="text-sm text-ink-400 mt-2">
+            {companies.length} sourced {companies.length === 1 ? 'company' : 'companies'}. Links are the company page or the source already on file.
+          </p>
+          {companies.length === 0 ? (
+            <p className="text-sm text-ink-400 mt-3">No sourced company is on file.</p>
+          ) : (
+            <ul className="mt-4 space-y-4">
+              {companies.map((company) => {
+                const source = company.sources[0]
+                const href = company.url ?? source?.url
+                return (
+                  <li key={company.slug} className="min-w-0">
+                    {href ? (
+                      <a href={href} target="_blank" rel="noopener noreferrer" className="text-ink-100 hover:text-primary break-words">
+                        {company.name}
+                      </a>
+                    ) : (
+                      <span className="text-ink-100">{company.name}</span>
+                    )}
+                    {source?.url && (
+                      <p className="text-sm text-ink-500 mt-1 break-words">
+                        <a href={source.url} target="_blank" rel="noopener noreferrer" className="hover:text-primary">
+                          {source.title}
+                        </a>
+                      </p>
+                    )}
+                  </li>
+                )
+              })}
             </ul>
-          </section>
-        )}
+          )}
+          {technologies.length > 0 && (
+            <div className="mt-6">
+              <h3 className="font-mono text-small uppercase tracking-wider text-ink-500">Technologies</h3>
+              <p className="text-sm text-ink-400 mt-2">Enabling tools with a source. They are not extra problems.</p>
+              <ul className="mt-3 space-y-2">
+                {technologies.map((tag) => (
+                  <li key={`${tag.companySlug}-${tag.id}`} className="text-sm text-ink-300 break-words">
+                    {tag.name} via {tag.companyName}. Evidence: {tag.evidence}.{' '}
+                    <a href={tag.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      Source
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {score && (
+            <div className="mt-6">
+              <h3 className="font-mono text-small uppercase tracking-wider text-ink-500">Supply and demand</h3>
+              <p className="text-sm text-ink-300 mt-2">
+                This score does not change the priority rank. Demand {score.demandLabel}. Supply {score.supplyLabel}. Gap {score.gapLabel}.
+              </p>
+              <ul className="mt-3 space-y-1">
+                {score.inputs.map((input) => (
+                  <li key={input.label} className="text-sm text-ink-400 break-words">
+                    {input.label}: {input.display}
+                    {input.value != null && input.unit ? ` ${input.unit}` : ''}
+                    {input.sourceUrl && (
+                      <>
+                        {' '}
+                        <a href={input.sourceUrl} className="text-primary hover:underline">
+                          Source
+                        </a>
+                      </>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {openQuests.length > 0 && (
+            <div className="mt-6 space-y-4">
+              <h3 className="font-mono text-small uppercase tracking-wider text-ink-500">Open quests</h3>
+              {openQuests.map((quest) => (
+                <OpenQuestCard key={quest.id} quest={quest} />
+              ))}
+            </div>
+          )}
+        </section>
 
         {science.length > 0 && (
           <section className="site-shell py-10 border-b border-hair">
