@@ -40,6 +40,7 @@ const STATIC_PATHS = [
   '/poster',
   '/privacy',
   '/progress',
+  '/quests',
   '/radar',
   '/rankings',
   '/research',

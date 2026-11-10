@@ -4,6 +4,7 @@ import PageHeader from '@/components/PageHeader'
 import Link from 'next/link'
 import { publicCompanies } from '@/data/public-companies'
 import { formatUSD } from '@/lib/format'
+import { companyRows, type SortMode } from '@/lib/contribution-sort'
 
 export const metadata = {
   title: 'Public companies by market cap | optimism.fun',
@@ -13,7 +14,16 @@ export const metadata = {
 
 const totalMC = publicCompanies.reduce((a, c) => a + c.marketCap.value, 0)
 
-export default function CompaniesPage() {
+function sortLink(active: boolean) {
+  return `inline-flex items-center h-11 px-3 text-sm border ${
+    active ? 'border-primary text-ink-100 bg-primary/10' : 'border-hair text-ink-300 hover:border-primary'
+  }`
+}
+
+export default async function CompaniesPage({ searchParams }: { searchParams: Promise<{ sort?: string }> }) {
+  const { sort } = await searchParams
+  const mode: SortMode = sort === 'contribution' ? 'contribution' : 'size'
+  const rows = companyRows(mode)
   return (
     <>
       <Navbar />
@@ -37,8 +47,19 @@ export default function CompaniesPage() {
           ]}
         />
 
-        <section className="px-6 py-10 max-w-7xl mx-auto">
-          <div className="overflow-x-auto border border-hair">
+        <section className="px-6 py-10 max-w-7xl mx-auto min-w-0">
+          <p className="text-sm text-ink-400 max-w-2xl mb-4">
+            Market cap is the default. Contribution puts a company whose name matches a sourced organization, or a company already tagged to a ranked problem, first. The existing problem rank breaks ties. A company with no sourced problem says not yet sourced and keeps its market-cap place behind the matched names. The number column stays the size rank. Problem rankings are unchanged.
+          </p>
+          <div className="flex flex-wrap gap-2 mb-4">
+            <Link href="/companies" className={sortLink(mode === 'size')}>
+              Market cap
+            </Link>
+            <Link href="/companies?sort=contribution" className={sortLink(mode === 'contribution')}>
+              Contribution to a problem
+            </Link>
+          </div>
+          <div className="overflow-x-auto border border-hair min-w-0">
             <table className="min-w-full font-mono text-xs">
               <thead>
                 <tr className="border-b border-hair-strong bg-ink-800/40 text-left text-small uppercase text-ink-400">
@@ -48,10 +69,11 @@ export default function CompaniesPage() {
                   <th className="px-3 py-2.5 font-medium">country</th>
                   <th className="px-3 py-2.5 font-medium text-right">market cap</th>
                   <th className="px-3 py-2.5 font-medium text-right">% of field</th>
+                  <th className="px-3 py-2.5 font-medium">problem</th>
                 </tr>
               </thead>
               <tbody>
-                {publicCompanies.map((c) => (
+                {rows.map(({ company: c, contribution }) => (
                   <tr
                     key={c.ticker}
                     className="border-b border-hair last:border-b-0 hover:bg-ink-800/30 transition-colors"
@@ -69,6 +91,9 @@ export default function CompaniesPage() {
                     </td>
                     <td className="px-3 py-2.5 text-right tabular-nums text-ink-400">
                       {((c.marketCap.value / totalMC) * 100).toFixed(2)}%
+                    </td>
+                    <td className="px-3 py-2.5 text-ink-300 max-w-xs whitespace-normal break-words">
+                      {contribution}
                     </td>
                   </tr>
                 ))}
