@@ -11,6 +11,21 @@
  */
 import { cancerTree } from './trees/cancer'
 import { energyAbundanceTree } from './trees/energy'
+import { lonelinessTree } from './trees/loneliness'
+import { copdTree } from './trees/copd'
+import { ntdTree } from './trees/neglected-tropical-diseases'
+import { infectiousDiseaseTree } from './trees/infectious-disease'
+import { newbornSurvivalTree } from './trees/newborn-survival'
+import { longevityTree } from './trees/longevity'
+import { housingConstructionTree } from './trees/housing-construction'
+import { climateChangeTree } from './trees/climate-change'
+import { aiDatacenterPowerTree } from './trees/ai-datacenter-power'
+import { biosecurityTree } from './trees/biosecurity'
+import { extremePovertyTree } from './trees/extreme-poverty'
+import { pedagogyTree } from './trees/pedagogy'
+import { fertilityDeclineTree } from './trees/fertility-decline'
+import { scientificProductivityTree } from './trees/scientific-productivity'
+import { financialInfrastructureTree } from './trees/financial-infrastructure'
 
 export type Level = 'low' | 'medium' | 'high' | 'unknown'
 
@@ -235,6 +250,21 @@ export const constraintTrees: ConstraintTree[] = [
   },
   cancerTree,
   energyAbundanceTree,
+  lonelinessTree,
+  copdTree,
+  ntdTree,
+  infectiousDiseaseTree,
+  newbornSurvivalTree,
+  longevityTree,
+  housingConstructionTree,
+  climateChangeTree,
+  aiDatacenterPowerTree,
+  biosecurityTree,
+  extremePovertyTree,
+  pedagogyTree,
+  fertilityDeclineTree,
+  scientificProductivityTree,
+  financialInfrastructureTree,
 ]
 
 export const getConstraintTree = (slug: string) =>

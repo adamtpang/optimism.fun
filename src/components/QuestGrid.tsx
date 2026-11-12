@@ -16,7 +16,14 @@ const BAND_DOT: Record<PlottedQuest['band'], { r: number; className: string }> =
   watch: { r: 1.5, className: 'fill-ink-500' },
 }
 
-export default function QuestGrid({ quests }: { quests: PlottedQuest[] }) {
+export default function QuestGrid({
+  quests,
+  you = null,
+}: {
+  quests: PlottedQuest[]
+  /** The visitor's own current quest, self-placed. */
+  you?: { good: number; hard: number } | null
+}) {
   const [activeSlug, setActiveSlug] = useState<string | null>(quests[0]?.slug ?? null)
   const active = quests.find((q) => q.slug === activeSlug) ?? null
 
@@ -38,17 +45,17 @@ export default function QuestGrid({ quests }: { quests: PlottedQuest[] }) {
           <line x1={0} y1={50} x2={100} y2={50} className="stroke-ink-700" strokeWidth={0.2} />
 
           {/* quadrant labels */}
-          <text x={97} y={6} textAnchor="end" className="fill-blue-600" style={{ font: '3.1px var(--font-plex-mono), monospace', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            hard + good — build here
+          <text x={97} y={6} textAnchor="end" className="fill-blue-600" style={{ fontSize: '3.1px', fontFamily: 'var(--font-plex-mono), monospace', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            hard + good: build here
           </text>
-          <text x={3} y={6} textAnchor="start" className="fill-ink-500" style={{ font: '3.1px var(--font-plex-mono), monospace', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          <text x={3} y={6} textAnchor="start" className="fill-ink-500" style={{ fontSize: '3.1px', fontFamily: 'var(--font-plex-mono), monospace', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             hard + bad
           </text>
-          <text x={97} y={97} textAnchor="end" className="fill-ink-500" style={{ font: '3.1px var(--font-plex-mono), monospace', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          <text x={97} y={97} textAnchor="end" className="fill-ink-500" style={{ fontSize: '3.1px', fontFamily: 'var(--font-plex-mono), monospace', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             easy + good
           </text>
-          <text x={3} y={97} textAnchor="start" className="fill-ink-600" style={{ font: '3.1px var(--font-plex-mono), monospace', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            easy + bad — not tracked here
+          <text x={3} y={97} textAnchor="start" className="fill-ink-600" style={{ fontSize: '3.1px', fontFamily: 'var(--font-plex-mono), monospace', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            easy + bad
           </text>
 
           {/* points */}
@@ -78,16 +85,33 @@ export default function QuestGrid({ quests }: { quests: PlottedQuest[] }) {
               </g>
             )
           })}
+
+          {/* the visitor's own quest */}
+          {you && (
+            <g aria-label="Your current quest">
+              <circle cx={you.good} cy={100 - you.hard} r={4} className="fill-none stroke-primary" strokeWidth={0.9} />
+              <circle cx={you.good} cy={100 - you.hard} r={1.1} className="fill-primary" />
+              <text
+                x={you.good}
+                y={100 - you.hard - 5.5}
+                textAnchor="middle"
+                className="fill-primary"
+                style={{ fontSize: '3.1px', fontFamily: 'var(--font-plex-mono), monospace', textTransform: 'uppercase', letterSpacing: '0.05em' }}
+              >
+                you
+              </text>
+            </g>
+          )}
         </svg>
 
         {/* axis labels */}
         <div className="flex items-center justify-between px-3 py-2 border-t border-hair font-mono text-small uppercase tracking-wide text-ink-500">
-          <span>&larr; less urgent</span>
-          <span className="text-ink-400">good, by opportunity</span>
-          <span>screaming opportunity &rarr;</span>
+          <span>&larr; bad</span>
+          <span className="text-ink-400">good half, ordered by opportunity</span>
+          <span>bigger opportunity &rarr;</span>
         </div>
         <div className="absolute left-2 top-2 flex flex-col items-start font-mono text-small uppercase tracking-wide text-ink-500 [writing-mode:vertical-rl]">
-          <span className="rotate-180">easy &rarr; hard, by frontier confidence</span>
+          <span className="rotate-180">easy &rarr; hard, by tractability, time, capital</span>
         </div>
       </div>
 
@@ -104,13 +128,14 @@ export default function QuestGrid({ quests }: { quests: PlottedQuest[] }) {
               <Link href={`/p/${active.problemSlug}`} className="text-primary hover:underline">
                 {active.problemName}
               </Link>
-              . Plotted at good {active.good}/100, hard {active.hard}/100.
+              . Opportunity {active.opportunity}/100, hard {active.hard}/100.
             </p>
+            <p className="font-mono text-small text-ink-500 leading-relaxed mb-4">Hard from: {active.hardWhy}.</p>
             <Link
-              href="/rankings"
+              href={`/p/${active.problemSlug}#coordinate`}
               className="inline-flex items-center gap-1.5 font-mono text-small uppercase tracking-wide text-paper bg-primary hover:bg-primary/90 rounded px-3 py-2 transition-colors"
             >
-              See it on the power rankings &rarr;
+              Commit to this problem &rarr;
             </Link>
           </>
         ) : (

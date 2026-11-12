@@ -5,7 +5,7 @@ import Footer from '@/components/Footer'
 import EmailCapture from '@/components/EmailCapture'
 import PageHeader from '@/components/PageHeader'
 import HeroFigure from '@/components/HeroFigure'
-import QuestGrid from '@/components/QuestGrid'
+import QuestFlow from '@/components/QuestFlow'
 import { formatKardashev } from '@/lib/kardashev'
 import { ARCHETYPES } from '@/data/archetypes'
 import { computeQuestRankings } from '@/lib/rankings'
@@ -21,7 +21,7 @@ export default function GoodQuestsPage() {
   const kardashev = formatKardashev()
   const ranked = computeQuestRankings()
   const plotted = placeOnQuestGrid(ranked)
-  const hardGoodCount = plotted.filter((q) => q.good >= 50 && q.hard >= 50).length
+  const hardGoodCount = plotted.filter((q) => q.hard >= 50).length
   const missionary = ARCHETYPES.missionary
   const evangelist = ARCHETYPES.evangelist
 
@@ -172,22 +172,23 @@ export default function GoodQuestsPage() {
               Here are {plotted.length} real quests, on the real grid.
             </h2>
             <p className="text-ink-400 text-sm leading-relaxed max-w-2xl mb-8">
-              The x-axis is <span className="text-ink-200">opportunity</span> — demand crossed
-              with how open the gap still is, computed live on{' '}
+              Left to right is bad to good. Every quest here sits in the good half, placed by{' '}
+              <span className="text-ink-200">opportunity</span>: demand crossed with how open the
+              gap still is, from{' '}
               <Link href="/rankings" className="text-primary hover:underline">
                 /rankings
               </Link>
-              . The y-axis is <span className="text-ink-200">how much frontier is left</span> —
-              a low-confidence quest has no playbook yet; that&rsquo;s what makes it hard. Every
-              quest here already cleared &ldquo;good&rdquo; before it was ranked at all — this
-              site only tracks unambiguously good problems (see{' '}
+              . The y-axis is <span className="text-ink-200">how hard the problem is</span>,
+              from three estimates each problem already carries: tractability, years to impact
+              and capital required. Every quest here cleared &ldquo;good&rdquo; before it was
+              ranked (see{' '}
               <Link href="/methodology" className="text-primary hover:underline">
                 /methodology
               </Link>
-              ) — so the left half of the grid is real, just empty by construction. Click a
-              point.
+              ), so the left half is empty until you answer for your own work. Now put
+              yourself on it.
             </p>
-            <QuestGrid quests={plotted} />
+            <QuestFlow quests={plotted} />
           </div>
         </section>
 
@@ -251,10 +252,16 @@ export default function GoodQuestsPage() {
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <Link
-                href="/fit"
+                href="#your-quest"
                 className="inline-flex items-center gap-2 font-mono text-xs uppercase text-paper bg-primary hover:bg-primary/90 rounded px-5 py-3 transition-colors"
               >
-                Find your quest &rarr;
+                Place your quest on the grid &rarr;
+              </Link>
+              <Link
+                href="/fit"
+                className="inline-flex items-center gap-2 font-mono text-xs uppercase text-ink-200 border border-hair hover:border-primary/60 rounded px-5 py-3 transition-colors"
+              >
+                Or take the interview &rarr;
               </Link>
               <Link
                 href="/journey"
