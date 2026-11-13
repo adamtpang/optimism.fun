@@ -27,17 +27,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 function MetricLine({ metric }: { metric: IndexMetric }) {
   return (
     <li className="border-t border-neutral-100 py-3 min-w-0">
-      <p className="text-sm text-neutral-900 break-words">{metric.label}</p>
-      <p className="mt-1 text-sm tabular-nums text-ink-100">
+      <p className="text-small text-neutral-900 break-words">{metric.label}</p>
+      <p className="mt-1 text-small font-figure text-ink-100">
         {formatIndexNumber(metric.value)} {metric.unit} ({metric.year})
       </p>
       {metric.intervalLow != null && metric.intervalHigh != null ? (
-        <p className="text-sm text-neutral-600">
+        <p className="text-small text-neutral-600">
           Published interval {formatIndexNumber(metric.intervalLow)} to {formatIndexNumber(metric.intervalHigh)} {metric.unit}.
         </p>
       ) : null}
-      {metric.derived && metric.formula ? <p className="text-sm text-neutral-600 break-words">Calculated. {metric.formula}</p> : null}
-      <p className="text-sm text-neutral-600">
+      {metric.derived && metric.formula ? <p className="text-small text-neutral-600 break-words">Calculated. {metric.formula}</p> : null}
+      <p className="text-small text-neutral-600">
         {metric.source}. Retrieved {metric.retrievedOn}.{' '}
         <a href={metric.sourceUrl} className="text-primary underline underline-offset-2 break-words" target="_blank" rel="noopener noreferrer">
           Source
@@ -59,18 +59,18 @@ function SensorBlock({ sensor }: { sensor: IndexSensorReading | null }) {
   if (!sensor) return null
   return (
     <li className="border-t border-neutral-100 py-3">
-      <p className="text-sm text-neutral-900">{sensor.label}</p>
-      <p className="mt-1 text-sm tabular-nums text-ink-100">
+      <p className="text-small text-neutral-900">{sensor.label}</p>
+      <p className="mt-1 text-small font-figure text-ink-100">
         {sensor.capped
           ? 'count capped'
           : sensor.status === 'ok' && sensor.value != null
             ? `${sensor.value.toLocaleString('en-US')} ${sensor.unit}`
             : 'not yet sourced'}
       </p>
-      {sensor.reason ? <p className="text-sm text-neutral-600 break-words">{sensor.reason}</p> : null}
-      {sensor.query ? <p className="text-sm text-neutral-600 break-words">Query: {sensor.query}</p> : null}
+      {sensor.reason ? <p className="text-small text-neutral-600 break-words">{sensor.reason}</p> : null}
+      {sensor.query ? <p className="text-small text-neutral-600 break-words">Query: {sensor.query}</p> : null}
       {sensor.sourceUrl ? (
-        <a href={sensor.sourceUrl} className="text-sm text-primary underline underline-offset-2 break-words" target="_blank" rel="noopener noreferrer">
+        <a href={sensor.sourceUrl} className="text-small text-primary underline underline-offset-2 break-words"target="_blank"rel="noopener noreferrer">
           Source
         </a>
       ) : null}
@@ -91,14 +91,14 @@ export default async function IndexProblemPage({ params }: { params: Promise<{ s
     <>
       <Navbar />
       <main className="site-shell pt-28 pb-16">
-        <p className="text-sm">
+        <p className="text-small">
           <Link href="/problem-index" className="text-primary underline underline-offset-2">
             Open index
           </Link>
         </p>
-        <p className="font-mono text-small uppercase text-primary mt-4">{problem.category}</p>
-        <h1 className="font-serif text-4xl md:text-5xl text-ink-100 leading-tight mt-2 max-w-[20ch]">{problem.name}</h1>
-        <p className="text-sm text-neutral-700 mt-3">
+        <p className="first-letter:uppercase text-small text-primary mt-4">{problem.category}</p>
+        <h1 className="text-h1 md:text-display-2 text-ink-100 leading-tight mt-2 max-w-[20ch]">{problem.name}</h1>
+        <p className="text-small text-neutral-700 mt-3">
           {score.rank == null ? 'Not ranked. The gap is insufficient data.' : `Gap rank ${score.rank}.`}{' '}
           {score.openQuest
             ? 'Open quest. The company search finished and found none.'
@@ -110,24 +110,24 @@ export default async function IndexProblemPage({ params }: { params: Promise<{ s
         </p>
         <dl className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div className="border border-neutral-200 bg-white p-3">
-            <dt className="text-sm text-neutral-600">Demand</dt>
-            <dd className="text-h3 tabular-nums">{score.demandLabel}</dd>
+            <dt className="text-small text-neutral-600">Demand</dt>
+            <dd className="text-h3 font-figure">{score.demandLabel}</dd>
           </div>
           <div className="border border-neutral-200 bg-white p-3">
-            <dt className="text-sm text-neutral-600">Supply</dt>
-            <dd className="text-h3 tabular-nums">{score.supplyLabel}</dd>
+            <dt className="text-small text-neutral-600">Supply</dt>
+            <dd className="text-h3 font-figure">{score.supplyLabel}</dd>
           </div>
           <div className="border border-neutral-200 bg-white p-3">
-            <dt className="text-sm text-neutral-600">Gap</dt>
-            <dd className="text-h3 tabular-nums">{score.gapLabel}</dd>
+            <dt className="text-small text-neutral-600">Gap</dt>
+            <dd className="text-h3 font-figure">{score.gapLabel}</dd>
           </div>
           <div className="border border-neutral-200 bg-white p-3">
-            <dt className="text-sm text-neutral-600">Companies</dt>
-            <dd className="text-h3 tabular-nums">{score.openQuest ? '0' : score.companyCount == null ? 'n/a' : score.companyCount}</dd>
+            <dt className="text-small text-neutral-600">Companies</dt>
+            <dd className="text-h3 font-figure">{score.openQuest ? '0' : score.companyCount == null ? 'n/a' : score.companyCount}</dd>
           </div>
         </dl>
-        {score.companyNote ? <p className="text-sm text-neutral-600 mt-3 max-w-[68ch]">{score.companyNote}</p> : null}
-        <p className="text-sm text-neutral-600 mt-3 max-w-[68ch]">
+        {score.companyNote ? <p className="text-small text-neutral-600 mt-3 max-w-[68ch]">{score.companyNote}</p> : null}
+        <p className="text-small text-neutral-600 mt-3 max-w-[68ch]">
           Headline: {formatIndexNumber(problem.headline.value)} {problem.headline.unit} in {problem.headline.year}. Retrieved {problemSnapshot.retrievedOn}. This is not a valuation.
         </p>
 
@@ -147,15 +147,15 @@ export default async function IndexProblemPage({ params }: { params: Promise<{ s
 
         <section className="mt-10 max-w-3xl">
           <h2 className="text-h3 text-ink-100">Known companies</h2>
-          <p className="text-sm text-neutral-600 mt-2">
+          <p className="text-small text-neutral-600 mt-2">
             Names come from the OpenAlex company search and, when the list fits on one page, ClinicalTrials.gov industry lead sponsors. The same company can appear in both. Placeholders are not listed here and are not counted.
           </p>
           {companies.length === 0 && sponsors.length === 0 ? (
-            <p className="text-sm text-neutral-700 mt-3">No named company link was returned for this search.</p>
+            <p className="text-small text-neutral-700 mt-3">No named company link was returned for this search.</p>
           ) : (
             <ul className="mt-3 space-y-2">
               {companies.map((company) => (
-                <li key={`oa-${company.name}`} className="text-sm break-words">
+                <li key={`oa-${company.name}`} className="text-small break-words">
                   {company.url ? (
                     <a href={company.url} className="text-primary underline underline-offset-2" target="_blank" rel="noopener noreferrer">
                       {company.name}
@@ -167,7 +167,7 @@ export default async function IndexProblemPage({ params }: { params: Promise<{ s
                 </li>
               ))}
               {sponsors.map((company) => (
-                <li key={`ct-${company.name}`} className="text-sm break-words">
+                <li key={`ct-${company.name}`} className="text-small break-words">
                   {company.url ? (
                     <a href={company.url} className="text-primary underline underline-offset-2" target="_blank" rel="noopener noreferrer">
                       {company.name}
@@ -183,19 +183,19 @@ export default async function IndexProblemPage({ params }: { params: Promise<{ s
         </section>
 
         <article className="mt-10 border border-dashed border-primary bg-neutral-50 p-4 max-w-3xl min-w-0">
-          <p className="font-mono text-small uppercase text-primary">AI-generated suggestion. Not a real company. Not a forecast.</p>
-          <h2 className="font-serif text-2xl text-ink-100 mt-2 break-words">{pack.name}</h2>
-          <p className="text-sm text-neutral-700 mt-2">
+          <p className="first-letter:uppercase text-small text-primary">AI-generated suggestion. Not a real company. Not a forecast.</p>
+          <h2 className="text-h2 text-ink-100 mt-2 break-words">{pack.name}</h2>
+          <p className="text-small text-neutral-700 mt-2">
             This placeholder is not counted as supply. It has no revenue, funding, or valuation.
           </p>
-          <h3 className="text-sm font-semibold text-ink-100 mt-4">Founder starter pack</h3>
-          <p className="text-sm text-neutral-900 mt-2 break-words">{pack.concept}</p>
-          <p className="text-sm text-neutral-900 mt-2 break-words">Customer: {pack.customer}</p>
-          <p className="text-sm text-neutral-900 mt-2 break-words">{pack.wedge}</p>
-          <h3 className="text-sm font-semibold text-ink-100 mt-4">Metrics to move</h3>
+          <h3 className="text-small font-semibold text-ink-100 mt-4">Founder starter pack</h3>
+          <p className="text-small text-neutral-900 mt-2 break-words">{pack.concept}</p>
+          <p className="text-small text-neutral-900 mt-2 break-words">Customer: {pack.customer}</p>
+          <p className="text-small text-neutral-900 mt-2 break-words">{pack.wedge}</p>
+          <h3 className="text-small font-semibold text-ink-100 mt-4">Metrics to move</h3>
           <ul className="mt-2 space-y-1">
             {pack.metricsToMove.map((metric) => (
-              <li key={metric.sourceUrl + metric.label} className="text-sm break-words">
+              <li key={metric.sourceUrl + metric.label} className="text-small break-words">
                 {metric.label}: {formatIndexNumber(metric.value)} {metric.unit} ({metric.year}){' '}
                 <a href={metric.sourceUrl} className="text-primary underline underline-offset-2" target="_blank" rel="noopener noreferrer">
                   Source
@@ -203,12 +203,12 @@ export default async function IndexProblemPage({ params }: { params: Promise<{ s
               </li>
             ))}
           </ul>
-          <h3 className="text-sm font-semibold text-ink-100 mt-4">Key papers</h3>
-          <p className="text-sm text-neutral-600 mt-1">Most-cited OpenAlex articles returned for a short title search on this problem. A neighboring topic can still appear. This is not a curated reading list.</p>
+          <h3 className="text-small font-semibold text-ink-100 mt-4">Key papers</h3>
+          <p className="text-small text-neutral-600 mt-1">Most-cited OpenAlex articles returned for a short title search on this problem. A neighboring topic can still appear. This is not a curated reading list.</p>
           {pack.papers.length ? (
             <ol className="mt-2 space-y-2 list-decimal pl-5">
               {pack.papers.map((paper) => (
-                <li key={paper.url} className="text-sm break-words">
+                <li key={paper.url} className="text-small break-words">
                   <a href={paper.url} className="text-primary underline underline-offset-2" target="_blank" rel="noopener noreferrer">
                     {paper.title}
                   </a>
@@ -220,23 +220,23 @@ export default async function IndexProblemPage({ params }: { params: Promise<{ s
               ))}
             </ol>
           ) : (
-            <p className="text-sm text-neutral-700 mt-2">No OpenAlex paper link resolved for this search.</p>
+            <p className="text-small text-neutral-700 mt-2">No OpenAlex paper link resolved for this search.</p>
           )}
-          <h3 className="text-sm font-semibold text-ink-100 mt-4">Datasets</h3>
+          <h3 className="text-small font-semibold text-ink-100 mt-4">Datasets</h3>
           <ul className="mt-2 space-y-1">
             {pack.datasets.map((dataset) => (
-              <li key={dataset.url} className="text-sm break-words">
+              <li key={dataset.url} className="text-small break-words">
                 <a href={dataset.url} className="text-primary underline underline-offset-2" target="_blank" rel="noopener noreferrer">
                   {dataset.name}
                 </a>
               </li>
             ))}
           </ul>
-          <h3 className="text-sm font-semibold text-ink-100 mt-4">Funders and grant programs</h3>
+          <h3 className="text-small font-semibold text-ink-100 mt-4">Funders and grant programs</h3>
           {pack.funders.length ? (
             <ul className="mt-2 space-y-2">
               {pack.funders.map((funder) => (
-                <li key={funder.url + funder.name} className="text-sm break-words">
+                <li key={funder.url + funder.name} className="text-small break-words">
                   <a href={funder.url} className="text-primary underline underline-offset-2" target="_blank" rel="noopener noreferrer">
                     {funder.name}
                   </a>
@@ -245,13 +245,13 @@ export default async function IndexProblemPage({ params }: { params: Promise<{ s
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-neutral-700 mt-2">No funder link was verified for this row.</p>
+            <p className="text-small text-neutral-700 mt-2">No funder link was verified for this row.</p>
           )}
-          <h3 className="text-sm font-semibold text-ink-100 mt-4">Comparable companies</h3>
+          <h3 className="text-small font-semibold text-ink-100 mt-4">Comparable companies</h3>
           {pack.comparables.length ? (
             <ul className="mt-2 space-y-1">
               {pack.comparables.map((company) => (
-                <li key={`${company.source}-${company.name}`} className="text-sm break-words">
+                <li key={`${company.source}-${company.name}`} className="text-small break-words">
                   {company.url ? (
                     <a href={company.url} className="text-primary underline underline-offset-2" target="_blank" rel="noopener noreferrer">
                       {company.name}
@@ -264,7 +264,7 @@ export default async function IndexProblemPage({ params }: { params: Promise<{ s
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-neutral-700 mt-2">No comparable company was sourced.</p>
+            <p className="text-small text-neutral-700 mt-2">No comparable company was sourced.</p>
           )}
         </article>
       </main>
