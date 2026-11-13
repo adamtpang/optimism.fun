@@ -58,19 +58,19 @@ function Stat({
 }) {
   const external = href?.startsWith('http')
   return (
-    <div className="border border-hair p-4 min-w-0">
-      <p className="font-mono text-3xl md:text-4xl tabular-nums text-ink-100">{value}</p>
-      <p className="text-sm text-ink-500 mt-1">{label}</p>
+    <div className="border border-neutral-300 rounded p-4 min-w-0">
+      <p className="font-figure text-h1 font-normal text-ink-100">{value}</p>
+      <p className="text-small text-ink-400 mt-1">{label}</p>
       {source && href && (
         <a
           href={href}
           {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-          className="block text-xs text-amber-300 underline decoration-dotted underline-offset-2 mt-2 leading-snug hover:text-amber-200 line-clamp-3"
+          className="block text-small text-info underline underline-offset-2 mt-2 leading-snug line-clamp-3"
         >
           {source}
         </a>
       )}
-      {source && !href && <p className="text-xs text-ink-500 mt-2 leading-snug">{source}</p>}
+      {source && !href && <p className="text-small text-ink-500 mt-2 leading-snug">{source}</p>}
     </div>
   )
 }
@@ -113,10 +113,11 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
       <main className="pt-4">
         {problemBandKind(slug) ? <PageBand kind={problemBandKind(slug)!} /> : <div className="pt-20" />}
         <div className="site-shell pb-8">
-          <h1 className="font-serif text-4xl md:text-6xl text-ink-100 leading-tight">{problem.name}</h1>
-          <p className="text-lg text-ink-400 mt-3 max-w-7xl">{problem.tagline}</p>
-          <p className="font-mono text-small text-ink-500 mt-3">
-            Updated {updated}
+          <p className="font-figure text-small text-ink-500">Problem &middot; updated {updated}</p>
+          <h1 className="text-h1 md:text-display-2 text-ink-100 mt-2">{problem.name}</h1>
+          <p className="text-body-lg text-ink-300 mt-3 max-w-[70ch]">{problem.tagline}</p>
+          <p className="text-small text-ink-500 mt-3">
+            Every number below has a source
             {' · '}
             <a className="text-primary hover:underline" href={`/api/problems/${slug}/csv`}>
               Download this data
@@ -168,7 +169,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
         <ConstraintTree problemSlug={slug} />
 
         <section className="site-shell py-10 border-b border-hair" id="companies">
-          <h2 className="font-serif text-2xl text-ink-100">Companies working on this</h2>
+          <h2 className="text-h2 text-ink-100">Companies working on this</h2>
           <p className="text-sm text-ink-400 mt-2">
             {companies.length} sourced {companies.length === 1 ? 'company' : 'companies'}. Links are the company page or the source already on file.
           </p>
@@ -202,7 +203,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
           )}
           {sponsorReading?.names && sponsorReading.names.length > 0 && (
             <div className="mt-6">
-              <h3 className="font-mono text-small uppercase tracking-wider text-ink-500">Industry sponsors on active trials</h3>
+              <h3 className="text-label text-ink-300">Industry sponsors on active trials</h3>
               <p className="text-sm text-ink-400 mt-2">
                 {sponsorReading.value ?? 'Count not stored'} distinct industry sponsors. Each link is the query for that sponsor. Top names by trial count.
               </p>
@@ -220,7 +221,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
           )}
           {(paperReading?.names?.length ?? 0) > 0 && (
             <div className="mt-6">
-              <h3 className="font-mono text-small uppercase tracking-wider text-ink-500">Company affiliations on recent papers</h3>
+              <h3 className="text-label text-ink-300">Company affiliations on recent papers</h3>
               <p className="text-sm text-ink-400 mt-2">
                 {paperReading?.capped
                   ? 'OpenAlex stops at 200 institutions for this query, so the count is not in the score. These are the top names from that capped list.'
@@ -240,7 +241,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
           )}
           {technologies.length > 0 && (
             <div className="mt-6">
-              <h3 className="font-mono text-small uppercase tracking-wider text-ink-500">Technologies</h3>
+              <h3 className="text-label text-ink-300">Technologies</h3>
               <p className="text-sm text-ink-400 mt-2">Enabling tools with a source. They are not extra problems.</p>
               <ul className="mt-3 space-y-2">
                 {technologies.map((tag) => (
@@ -256,7 +257,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
           )}
           {score && (
             <div className="mt-6">
-              <h3 className="font-mono text-small uppercase tracking-wider text-ink-500">Supply and demand</h3>
+              <h3 className="text-label text-ink-300">Supply and demand</h3>
               <p className="text-sm text-ink-300 mt-2">
                 This score does not change the priority rank. Demand {score.demandLabel}. Supply {score.supplyLabel}. Gap {score.gapLabel}.
               </p>
@@ -280,7 +281,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
           )}
           {openQuests.length > 0 && (
             <div className="mt-6 space-y-4">
-              <h3 className="font-mono text-small uppercase tracking-wider text-ink-500">Open quests</h3>
+              <h3 className="text-label text-ink-300">Open quests</h3>
               {openQuests.map((quest) => (
                 <OpenQuestCard key={quest.id} quest={quest} />
               ))}
@@ -291,7 +292,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
         {science.length > 0 && (
           <section className="site-shell py-10 border-b border-hair">
             <div className="flex items-baseline justify-between gap-4 mb-4">
-              <h2 className="font-serif text-2xl text-ink-100">New science</h2>
+              <h2 className="text-h2 text-ink-100">New science</h2>
               <Link
                 href={`/discoveries?problem=${slug}`}
                 className="font-mono text-small uppercase tracking-wider text-primary hover:underline"

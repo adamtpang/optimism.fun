@@ -22,6 +22,7 @@ import {
   type ActorType,
   type Intent,
 } from '@/lib/commitments'
+import { VISITOR_CLASS_PARAM, visitorClass } from '@/lib/visitor-classes'
 
 export type FormCompany = { slug: string; name: string }
 
@@ -96,17 +97,33 @@ export default function CommitmentForm({
   // The sticky action bar drives this form rather than duplicating it.
   useEffect(() => {
     const onCoordinate = (e: Event) => {
-      const detail = (e as CustomEvent<{ actor?: ActorType }>).detail
+      const detail = (e as CustomEvent<{ actor?: ActorType; intent?: Intent }>).detail
       const next = detail?.actor
       if (next && ACTOR_TYPES.includes(next)) {
+        const wanted = detail?.intent
         setActor(next)
-        setIntent(INTENTS_BY_ACTOR[next][0])
+        setIntent(wanted && INTENTS_BY_ACTOR[next].includes(wanted) ? wanted : INTENTS_BY_ACTOR[next][0])
         setState('idle')
       }
       rootRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
     window.addEventListener(COORDINATE_EVENT, onCoordinate)
     return () => window.removeEventListener(COORDINATE_EVENT, onCoordinate)
+  }, [])
+
+  // A class link such as /p/loneliness?as=patron#coordinate sets the starting
+  // actor and intent. Read in the browser so the page can stay prerendered.
+  useEffect(() => {
+    const cls = visitorClass(new URLSearchParams(window.location.search).get(VISITOR_CLASS_PARAM))
+    if (!cls) return
+    setActor(cls.commitment.actor)
+    setIntent(cls.commitment.intent)
+    // Jump, do not glide: the page scrolls smoothly by default, and a glide is
+    // cancelled when content above finishes loading. The second jump corrects
+    // for anything that changed height after the first.
+    const jump = () => rootRef.current?.scrollIntoView({ block: 'start', behavior: 'instant' })
+    const timers = [window.setTimeout(jump, 150), window.setTimeout(jump, 900)]
+    return () => timers.forEach((t) => window.clearTimeout(t))
   }, [])
 
   const needsCompany = intent === 'join' || intent === 'hire' || intent === 'raise'

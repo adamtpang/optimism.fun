@@ -8,6 +8,7 @@ import Broll from '@/components/media/Broll'
 import FigureCard from '@/components/FigureCard'
 import ClassActionBar from '@/components/ClassActionBar'
 import { featuredFigure } from '@/data/featured-figure'
+import { commitHref } from '@/lib/visitor-classes'
 import RankedProblems from '@/components/RankedProblems'
 import SupplyDemandTable from '@/components/SupplyDemandTable'
 import { balanceRows } from '@/lib/sourced-balance'
@@ -48,11 +49,10 @@ export default function Home() {
               <FigureCard figure={featuredFigure}>
                 <ClassActionBar
                   hrefs={{
-                    patron: `/p/${featuredFigure.problemSlug}#coordinate`,
-                    founder: `/p/${featuredFigure.problemSlug}#coordinate`,
-                    researcher: `/p/${featuredFigure.problemSlug}`,
+                    patron: commitHref(featuredFigure.problemSlug, 'patron'),
+                    founder: commitHref(featuredFigure.problemSlug, 'founder'),
+                    researcher: commitHref(featuredFigure.problemSlug, 'researcher'),
                   }}
-                  asks={{ researcher: 'Check the evidence' }}
                 />
               </FigureCard>
             </div>
@@ -73,9 +73,11 @@ export default function Home() {
 
         <Section id="problems" className="scroll-mt-20">
           <Container>
-            <p className="text-label text-primary">The problems</p>
-            <h2 className="text-h1 text-ink-100 mt-2 max-w-[28ch]">
-              Humanity&rsquo;s hardest problems.
+            <p className="font-figure text-small text-ink-500">
+              Table 01 &middot; {problems.length} problems{updated ? ` · reviewed through ${updated}` : ''}
+            </p>
+            <h2 className="text-h2 md:text-h1 text-ink-100 mt-2 max-w-[28ch]">
+              Every problem, ranked by how underserved it is
             </h2>
 
             <RankedProblems
