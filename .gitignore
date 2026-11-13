@@ -39,3 +39,6 @@ next-env.d.ts
 
 # Full copyrighted books kept locally for reference. This repo is public.
 research/references/books/
+
+# API cache for the problem-index snapshot script. The committed artifact is the JSON.
+scripts/.cache/

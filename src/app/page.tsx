@@ -79,6 +79,14 @@ export default function Home() {
             <h2 className="text-h2 md:text-h1 text-ink-100 mt-2 max-w-[28ch]">
               Every problem, ranked by how underserved it is
             </h2>
+            <p className="text-body text-neutral-600 mt-3 max-w-[68ch]">
+              This page keeps the curated list of {problems.length}. The open index is a longer set of sourced problems, ranked by gap, with no market cap attached.
+            </p>
+            <p className="mt-2">
+              <Link href="/index" className="inline-flex items-center min-h-11 text-primary underline underline-offset-2">
+                Open the index
+              </Link>
+            </p>
 
             <RankedProblems
               rows={rows.map((r) => {
