@@ -140,7 +140,7 @@ export const requestsForStartups: RequestForStartup[] = [
     successLooksLike:
       'Quality housing delivered at roughly one-third today’s cost per unit, repeatably, at metro scale.',
     goodQuest:
-      'A logistics + finance frontier disguised as a tech problem; decisive for 1.6B under-housed humans and unambiguously good.',
+      'A logistics + finance frontier disguised as a tech problem; decisive for the up to 3.4B people without adequate housing and unambiguously good.',
     confidence: 'med',
     asOf: ASOF,
   },
