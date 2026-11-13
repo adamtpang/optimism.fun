@@ -44,7 +44,7 @@ export const essaySeeds: EssaySeed[] = [
     claim:
       'Housing is expensive because construction never industrialized — not because materials got scarce.',
     bullets: [
-      '1.6B people live in inadequate housing; in rich cities median homes run 6–12× median income.',
+      'Up to 3.4B people lack adequate housing; in rich cities median homes run 6–12× median income.',
       'Construction productivity is roughly flat for 50 years while almost every manufactured good got cheaper and better.',
       'The gap is process (zoning, labor, finance, factory logistics), not the physics of steel, timber, or concrete.',
     ],

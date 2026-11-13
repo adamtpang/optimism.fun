@@ -287,13 +287,13 @@ export const problems: Problem[] = [
     slug: 'housing-construction',
     domain: 'poverty',
     scale: {
-      value: 1_600_000_000,
-      unit: 'people in inadequate housing',
+      value: 3_400_000_000,
+      unit: 'people lacking secure, safe and adequate housing (upper estimate)',
       trend: 'worsening',
-      source: 'UN-Habitat: ~1.6B people in inadequate housing; urban affordability worsening as construction productivity stays flat.',
-      sourceUrl: 'https://unhabitat.org/topic/housing',
+      source: 'UN-Habitat, World Cities Report 2026: up to 3.4 billion people lack access to secure, safe, and adequate housing, including more than 1 billion in informal settlements and slums.',
+      sourceUrl: 'https://unhabitat.org/world-cities-report-2026',
       confidence: 'med',
-      asOf: '2026-06-09',
+      asOf: '2026-11-13',
     },
     neglectedness: {
       score: 6,
@@ -329,15 +329,15 @@ export const problems: Problem[] = [
     tagline:
       'Too few homes get built, so homes cost too much.',
     description:
-      '1.6 billion people live in inadequate housing globally (UN-Habitat). In developed economies, housing is the single largest household expense, with construction productivity flat for 50 years. The physics of concrete, steel, and timber allows much cheaper buildings. The gap is process: zoning, labor shortages, regulatory stacks, and the absence of industrial-scale construction automation. Robotics, 3D printing, prefab, and permitting reform all compound.',
+      'Up to 3.4 billion people lack secure, safe and adequate housing, including more than 1 billion in informal settlements and slums (UN-Habitat, World Cities Report 2026). In developed economies, housing is the single largest household expense, with construction productivity flat for 50 years. The physics of concrete, steel, and timber allows much cheaper buildings. The gap is process: zoning, labor shortages, regulatory stacks, and the absence of industrial-scale construction automation. Robotics, 3D printing, prefab, and permitting reform all compound.',
     humansAffected: {
-      value: 1_600_000_000,
-      unit: 'humans in inadequate housing',
+      value: 3_400_000_000,
+      unit: 'people lacking secure, safe and adequate housing (upper estimate)',
       countKind: 'prevalence',
-      source: 'UN-Habitat World Cities Report',
-      sourceUrl: 'https://unhabitat.org/wcr/',
-      confidence: 'high',
-      asOf: TODAY,
+      source: 'UN-Habitat, World Cities Report 2026 ("up to 3.4 billion")',
+      sourceUrl: 'https://unhabitat.org/world-cities-report-2026',
+      confidence: 'med',
+      asOf: '2026-11-13',
     },
     severityNote:
       'Deaths are the wrong measure. The harm is inadequate and unaffordable housing. The appropriate measure is people living in inadequate housing, or the ratio of home prices to income.',
@@ -371,7 +371,7 @@ export const problems: Problem[] = [
     },
     transformation: {
       before:
-        'Median home in major cities costs 6–12× median income. Construction productivity flat for 50 years. 1.6B humans lack adequate housing.',
+        'Median home in major cities costs 6–12× median income. Construction productivity flat for 50 years. Up to 3.4B people lack adequate housing.',
       after:
         'Quality housing at ~1/3 current cost via factory-built modular + zoning + permitting reform. Median home affordable on median income in nearly every major city.',
       horizon: '15 years',
@@ -1228,21 +1228,21 @@ export const problems: Problem[] = [
     tier: 'welfare',
     domain: 'poverty',
     tagline:
-      'Lift the ~700 million people living on less than $2.15 a day into stable prosperity.',
+      'Lift the 811 million people living on less than $3 a day into stable prosperity.',
     description:
-      'Extreme poverty is the canonical proof that humanity can solve its biggest problems: the share of people living below the international poverty line fell from ~38% in 1990 to under 9% before the pandemic, the fastest decline in human history. The unfinished work is concentrated in Sub-Saharan Africa and fragile states, where economic growth, direct cash transfers, and proven public-health interventions still have enormous, measurable returns.',
+      'Extreme poverty is the canonical proof that humanity can solve its biggest problems: the number of people in extreme poverty fell from around 2.3 billion in 1990 to 811 million in 2026, measured at $3 a day (World Bank). The unfinished work is concentrated in Sub-Saharan Africa and fragile states, where economic growth, direct cash transfers, and proven public-health interventions still have enormous, measurable returns.',
     humansAffected: {
-      value: 700_000_000,
-      unit: 'people living below $2.15 a day',
+      value: 811_000_000,
+      unit: 'people living below $3 a day',
       countKind: 'prevalence',
-      observationYear: 2022,
-      source: 'World Bank — Poverty and Inequality Platform',
-      sourceUrl: 'https://pip.worldbank.org',
+      observationYear: 2026,
+      source: 'World Bank, poverty overview: 811 million people in extreme poverty, on less than $3 per day',
+      sourceUrl: 'https://www.worldbank.org/en/topic/poverty/overview',
       confidence: 'high',
-      asOf: '2026-06-09',
+      asOf: '2026-11-13',
     },
     severityNote:
-      'Deaths are the wrong measure. The harm is living below a poverty line. The appropriate measure is people below $2.15 a day, or the poverty gap. This entry does not use a modeled “deaths from poverty” figure.',
+      'Deaths are the wrong measure. The harm is living below a poverty line. The appropriate measure is people below $3 a day, or the poverty gap. This entry does not use a modeled “deaths from poverty” figure.',
     marketSize: {
       value: 70_000_000_000,
       unit: 'USD / year',
@@ -1251,20 +1251,13 @@ export const problems: Problem[] = [
       asOf: '2026-08-20',
     },
     scale: {
-      value: 700_000_000,
-      unit: 'people in extreme poverty (below $2.15/day)',
+      value: 811_000_000,
+      unit: 'people in extreme poverty (below $3/day)',
       trend: 'improving',
-      series: [
-        { year: 1990, value: 2_000_000_000 },
-        { year: 2000, value: 1_500_000_000 },
-        { year: 2010, value: 1_000_000_000 },
-        { year: 2019, value: 650_000_000 },
-        { year: 2022, value: 700_000_000 },
-      ],
-      source: 'World Bank / Our World in Data: extreme poverty fell ~65% since 1990, then ticked up slightly with COVID-19 and inflation.',
-      sourceUrl: 'https://ourworldindata.org/extreme-poverty',
+      source: 'World Bank: the number of people in extreme poverty fell from around 2.3 billion in 1990 to 811 million in 2026, at $3 per day. The earlier year-by-year series on this page used the old $2.15 line and was removed; two endpoints are not a series.',
+      sourceUrl: 'https://www.worldbank.org/en/topic/poverty/overview',
       confidence: 'high',
-      asOf: '2026-06-09',
+      asOf: '2026-11-13',
     },
     neglectedness: {
       score: 4,
@@ -2162,9 +2155,9 @@ export const problems: Problem[] = [
     domain: 'health',
     sectors: ['physical-health-and-disease'],
     tagline:
-      'The fourth-largest killer on Earth, and one of the least funded.',
+      'The third leading cause of death worldwide, and one of the least funded.',
     description:
-      'Chronic obstructive pulmonary disease is the progressive destruction of the airways and air sacs by inhaled irritants, above all tobacco smoke in high-income countries and household smoke from cooking fuel in low- and middle-income ones. Over decades the lungs lose the ability to move enough air, and the damage does not reverse. WHO counts 3.5 million deaths in 2021, about 5 percent of all deaths, and nearly 90 percent of the deaths under age 70 are in low- and middle-income countries. GBD 2021 estimates 213 million people living with it. Treatment manages symptoms with inhalers; nothing yet regenerates lung tissue, and the first biologic was approved only in September 2024. The two proven levers are not drugs at all: tobacco control and clean cooking.',
+      'Chronic obstructive pulmonary disease is the progressive destruction of the airways and air sacs by inhaled irritants, above all tobacco smoke in high-income countries and household smoke from cooking fuel in low- and middle-income ones. Over decades the lungs lose the ability to move enough air, and the damage does not reverse. WHO counts 3.4 million deaths in 2023, approximately 6 percent of all deaths, and nearly 90 percent of the deaths under age 70 are in low- and middle-income countries. GBD 2021 estimates 213 million people living with it. Treatment manages symptoms with inhalers; nothing yet regenerates lung tissue, and the first biologic was approved only in September 2024. The two proven levers are not drugs at all: tobacco control and clean cooking.',
     humansAffected: {
       value: 213_390_000,
       unit: 'prevalent cases of COPD (2021)',
@@ -2235,14 +2228,14 @@ export const problems: Problem[] = [
       unit: 'people living with COPD',
       trend: 'worsening',
       source:
-        'GBD 2021. Prevalent cases rise with population ageing even as the death rank slipped from third to fourth in the WHO list between 2019 and 2021',
+        'GBD 2021. Prevalent cases rise with population ageing even as the death rank slipped from third to fourth in the WHO list between 2019 and 2021. The WHO fact sheet updated in June 2026, on GBD 2023 data, lists it third again',
       sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/39748260/',
       confidence: 'med',
       asOf: '2026-09-11',
     },
     transformation: {
       before:
-        '213M people live with irreversible lung damage, 3.5M die a year, and most of the early deaths are where household smoke is the cause and inhalers are unavailable.',
+        '213M people live with irreversible lung damage, 3.4M died of it in 2023, and most of the early deaths are where household smoke is the cause and inhalers are unavailable.',
       after:
         'Clean cooking fuel and tobacco control stop most new cases before they start, and the people already living with COPD have a therapy that halts or reverses the damage rather than managing it.',
       horizon: '20 years',
@@ -2252,7 +2245,7 @@ export const problems: Problem[] = [
     neglectedness: {
       score: 7,
       rationale:
-        'The fourth-largest killer on Earth has a drug market of about $20 billion, one-twelfth of the $252 billion spent on cancer medicines, and had to wait until September 2024 for its first biologic. The two interventions that prevent the most cases, tobacco control and clean cooking, sit outside pharma entirely, and the deaths concentrate in the countries with the least purchasing power.',
+        'The third leading cause of death worldwide has a drug market of about $20 billion, one-twelfth of the $252 billion spent on cancer medicines, and had to wait until September 2024 for its first biologic. The two interventions that prevent the most cases, tobacco control and clean cooking, sit outside pharma entirely, and the deaths concentrate in the countries with the least purchasing power.',
       source: 'WHO COPD fact sheet; Data Bridge market estimate; Regeneron approval release',
       sourceUrl: 'https://investor.regeneron.com/news-releases/news-release-details/dupixentr-dupilumab-approved-us-first-ever-biologic-medicine',
       confidence: 'med',

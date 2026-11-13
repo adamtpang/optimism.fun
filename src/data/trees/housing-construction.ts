@@ -27,7 +27,7 @@ const GOOLSBEE_SYVERSON = {
 export const housingConstructionTree: ConstraintTree = {
   problemSlug: 'housing-construction',
   outcome:
-    'Safe, adequate housing that people can afford. UN-Habitat now says up to 3.4 billion people lack it and more than 1 billion live in slums and informal settlements. The 1.6 billion figure used elsewhere on this site is a different, lower estimate; its source was not re-opened this session.',
+    'Safe, adequate housing that people can afford. UN-Habitat now says up to 3.4 billion people lack it and more than 1 billion live in slums and informal settlements.',
   whyUnsolved:
     'Not the physics of building. In rich cities, rules on what may be built hold supply below demand, and where one city relaxed them, permits roughly doubled. In the US, measured construction productivity has fallen for decades. The global housing deficit grew from 251 million units in 2010 to 288 million in 2023, and UN-Habitat lists insufficient investment as one of four causes. Treating investment as the main gap in poor countries is our inference. Which constraint binds differs by place. Calling land-use rules the most binding is our inference from the cited studies, and it is best supported for high-cost cities.',
   bindingId: 'land-use-rules',

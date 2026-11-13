@@ -1,7 +1,7 @@
 // Constraint tree: why extreme poverty is not solved yet.
 // Researched 2026-11-11. Every number below comes from a page opened that day.
 // Inference is labelled as inference. Unknown stays unknown.
-// Two poverty lines appear. The site entry uses $2.15 a day (almost 700 million, 2024).
+// Two poverty lines appear. The site entry uses the current $3 a day line (811 million, 2026).
 // The World Bank now reports at $3 a day (811 million, 2026). They are not mixed.
 
 import type { ConstraintTree } from '../constraints'
