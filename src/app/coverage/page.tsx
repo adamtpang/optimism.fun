@@ -243,13 +243,9 @@ export default function CoveragePage() {
                 chance of an obvious blind spot.
               </p>
               <p>
-                <span className="text-ink-100">There is a live path to closing this.</span> The{' '}
-                <span className="text-ink-200">Exa Agent problem-sourcing pipeline</span> already
-                exists in code — it does open-ended web research and returns structured candidates
-                to a review queue at <span className="text-ink-200">/admin/candidates</span>. It is
-                currently in stub mode because it needs a database connection that has not been
-                wired up yet. Once it is, discovery stops depending on this page being re-run by
-                hand.
+                <span className="text-ink-100">New problems are added by hand.</span> Each one arrives as
+                a reviewed change to the dataset, with its sources, so this page is re-run when the
+                list changes.
               </p>
               <p>
                 <span className="text-ink-100">Three lists, three biases.</span> The SDGs skew
