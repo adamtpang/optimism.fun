@@ -59,7 +59,7 @@ export const infographicBriefs: InfographicBrief[] = [
     },
     facts: [
       { value: '811M', label: 'people live in extreme poverty, on less than $3 a day', source: 'World Bank, poverty overview', sourceUrl: 'https://www.worldbank.org/en/topic/poverty/overview' },
-      { value: '65%', label: 'decline in extreme poverty since 1990 before the pandemic reversal', source: 'Our World in Data', sourceUrl: 'https://ourworldindata.org/extreme-poverty' },
+      { value: '2.3B', label: 'people in extreme poverty in 1990, at the same $3 a day line', source: 'World Bank, poverty overview', sourceUrl: 'https://www.worldbank.org/en/topic/poverty/overview' },
       { value: '~$5K', label: 'per household in the Graduation model', source: 'BRAC Graduation program data, cited in optimism.fun RFS', sourceUrl: 'https://bracupgi.org' },
     ],
     sourceNote: 'The visual distinguishes the intervention’s evidence base from the still-unproven software cost-collapse thesis.',

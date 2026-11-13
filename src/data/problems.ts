@@ -1230,7 +1230,7 @@ export const problems: Problem[] = [
     tagline:
       'Lift the 811 million people living on less than $3 a day into stable prosperity.',
     description:
-      'Extreme poverty is the canonical proof that humanity can solve its biggest problems: the share of people living below the international poverty line fell from ~38% in 1990 to under 9% before the pandemic, the fastest decline in human history. The unfinished work is concentrated in Sub-Saharan Africa and fragile states, where economic growth, direct cash transfers, and proven public-health interventions still have enormous, measurable returns.',
+      'Extreme poverty is the canonical proof that humanity can solve its biggest problems: the number of people in extreme poverty fell from around 2.3 billion in 1990 to 811 million in 2026, measured at $3 a day (World Bank). The unfinished work is concentrated in Sub-Saharan Africa and fragile states, where economic growth, direct cash transfers, and proven public-health interventions still have enormous, measurable returns.',
     humansAffected: {
       value: 811_000_000,
       unit: 'people living below $3 a day',
@@ -2235,7 +2235,7 @@ export const problems: Problem[] = [
     },
     transformation: {
       before:
-        '213M people live with irreversible lung damage, 3.5M die a year, and most of the early deaths are where household smoke is the cause and inhalers are unavailable.',
+        '213M people live with irreversible lung damage, 3.4M died of it in 2023, and most of the early deaths are where household smoke is the cause and inhalers are unavailable.',
       after:
         'Clean cooking fuel and tobacco control stop most new cases before they start, and the people already living with COPD have a therapy that halts or reverses the damage rather than managing it.',
       horizon: '20 years',
