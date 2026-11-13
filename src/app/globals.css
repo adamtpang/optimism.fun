@@ -295,3 +295,8 @@ textarea {
   font-family: var(--font-figure), ui-monospace, SFMono-Regular, Menlo, monospace;
   font-variant-numeric: tabular-nums;
 }
+
+/* Photo credit set over a hero photograph: a soft shadow keeps it legible. */
+.hero-credit {
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.8);
+}

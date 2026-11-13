@@ -4,7 +4,10 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Container from '@/components/layout/Container'
 import Section from '@/components/layout/Section'
+import HeroMedia from '@/components/media/HeroMedia'
 import Broll from '@/components/media/Broll'
+import Credit from '@/components/media/Credit'
+import { mediaCredit } from '@/components/media/credits'
 import FigureCard from '@/components/FigureCard'
 import ClassActionBar from '@/components/ClassActionBar'
 import { featuredFigure } from '@/data/featured-figure'
@@ -24,6 +27,12 @@ export const metadata: Metadata = {
 
 export const revalidate = 300
 
+const EARTHSET = [
+  { media: '(max-width: 767px)', avif: '/media/earthset-828.avif', webp: '/media/earthset-828.webp' },
+  { media: '(max-width: 1279px)', avif: '/media/earthset-1280.avif', webp: '/media/earthset-1280.webp' },
+  { avif: '/media/earthset-1920.avif', webp: '/media/earthset-1920.webp' },
+]
+
 export default function Home() {
   const rows = computeRadarRows().sort((a, b) => b.opportunity - a.opportunity)
   const supplyRows = balanceRows()
@@ -33,19 +42,47 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
+      <Navbar onHero />
       <main>
-        <section className="pt-24 md:pt-28 pb-10 md:pb-14">
-          <Container>
-            <h1 className="text-h2 md:text-h1 text-ink-100 max-w-[26ch]">
+        <section className="relative md:h-[600px]">
+          <div className="relative h-[260px] mt-14 md:mt-0 md:absolute md:inset-0 md:h-full overflow-hidden">
+            <HeroMedia
+              alt={mediaCredit('earthset').text}
+              sources={EARTHSET}
+              width={1920}
+              height={1080}
+              priority
+              className="md:scale-[1.458] md:origin-[87px_402px]"
+            />
+            <div className="hero-scrim absolute inset-0 hidden md:block" />
+            <Credit
+              credit={mediaCredit('earthset')}
+              onDark
+              className="hero-credit absolute right-4 bottom-3 z-10 max-w-[36ch] text-right"
+            />
+          </div>
+          <Container className="relative z-10 py-8 md:h-full md:flex md:flex-col md:justify-center">
+            <h1 className="text-h1 md:text-display-2 text-ink-100 md:text-white max-w-[18ch]">
               Humanity&rsquo;s hardest problems, and what you can do about each one.
             </h1>
-            <p className="text-body text-ink-300 mt-3 max-w-[60ch]">
+            <p className="text-body-lg text-ink-300 md:text-neutral-200 mt-4 max-w-[46ch]">
               {problems.length} problems, ranked. Every number has a source. Whether you bring money, work or
               scrutiny, each one ends with something to do.
             </p>
+            <p className="mt-6">
+              <Link
+                href="#problems"
+                className="inline-flex items-center min-h-11 rounded px-5 text-label bg-primary text-primary-foreground md:bg-white md:text-teal-800"
+              >
+                See all {problems.length} problems
+              </Link>
+            </p>
+          </Container>
+        </section>
 
-            <div className="mt-8">
+        <section className="py-10 md:py-14">
+          <Container>
+            <div>
               <FigureCard figure={featuredFigure} href={`/figures/${featuredFigure.slug}`}>
                 <ClassActionBar
                   hrefs={{
