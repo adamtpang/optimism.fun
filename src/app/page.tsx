@@ -58,7 +58,7 @@ export default function Home() {
             <Credit
               credit={mediaCredit('earthset')}
               onDark
-              className="hero-credit absolute right-4 bottom-3 z-10 max-w-[36ch] text-right"
+              className="hero-credit absolute right-4 bottom-3 z-20 max-w-[36ch] text-right"
             />
           </div>
           <Container className="relative z-10 py-8 md:h-full md:flex md:flex-col md:justify-center">
