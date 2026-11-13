@@ -9,7 +9,7 @@ import { problems } from '@/data/problems'
 export const metadata: Metadata = {
   title: 'Open problem index | optimism.fun',
   description: 'Sourced problems that are still unsolved, ranked by the gap between demand and supply. No market cap.',
-  alternates: { canonical: '/index' },
+  alternates: { canonical: '/problem-index' },
 }
 
 export const revalidate = 86400

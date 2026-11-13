@@ -116,7 +116,7 @@ export default function ProblemIndexTable({ rows, categories }: { rows: IndexTab
         {ordered.map((row) => (
           <article key={row.slug} className="border border-neutral-200 bg-white p-4 min-w-0">
             <p className="text-sm text-neutral-600">{row.rank == null ? 'Not ranked' : `Rank ${row.rank}`}</p>
-            <Link href={`/index/${row.slug}`} className="mt-1 block text-body font-semibold text-ink-100 break-words">
+            <Link href={`/problem-index/${row.slug}`} className="mt-1 block text-body font-semibold text-ink-100 break-words">
               {row.name}
             </Link>
             <p className="mt-1 text-sm text-neutral-700">{row.category}</p>
@@ -168,7 +168,7 @@ export default function ProblemIndexTable({ rows, categories }: { rows: IndexTab
               <tr key={row.slug} className="border-t border-neutral-100 align-top">
                 <td className="px-3 py-3 text-sm tabular-nums text-neutral-600">{row.rank ?? 'n/a'}</td>
                 <td className="px-3 py-3 min-w-0">
-                  <Link href={`/index/${row.slug}`} className="text-sm font-semibold text-ink-100">
+                  <Link href={`/problem-index/${row.slug}`} className="text-sm font-semibold text-ink-100">
                     {row.name}
                   </Link>
                   {row.openQuest ? <p className="text-sm text-primary">Open quest</p> : null}

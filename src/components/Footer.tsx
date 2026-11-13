@@ -23,7 +23,7 @@ export default function Footer() {
               <Link href="/" className="inline-flex items-center h-11 text-neutral-800 hover:text-primary">
                 problems
               </Link>
-              <Link href="/index" className="inline-flex items-center h-11 text-neutral-800 hover:text-primary">
+              <Link href="/problem-index" className="inline-flex items-center h-11 text-neutral-800 hover:text-primary">
                 index
               </Link>
               <Link href="/quests" className="inline-flex items-center h-11 text-neutral-800 hover:text-primary">
