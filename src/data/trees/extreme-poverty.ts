@@ -30,7 +30,7 @@ export const extremePovertyTree: ConstraintTree = {
   outcome:
     'Nobody living below the extreme poverty line. In 2024 almost 700 million people, 8.5 percent of the world, lived on less than $2.15 a day. At the newer $3 line the World Bank counts 811 million in 2026.',
   whyUnsolved:
-    'Poverty fell where economies grew. What remains is concentrated where they do not: countries with conflict or instability, where income per person has fallen 1.8 percent a year since 2020. At the 2024 pace, ending extreme poverty would take three decades or more. Safety nets that could help reach one person in four in low-income countries, and aid fell 23.1 percent in 2025. Judging conflict and fragility as most binding is our inference from the World Bank figures.',
+    'What remains is concentrated in countries with historically low growth and fragility. What remains is concentrated where they do not: countries with conflict or instability, where income per person has fallen 1.8 percent a year since 2020. At the 2024 pace, ending extreme poverty would take three decades or more. Safety nets that could help reach one person in four in low-income countries, and aid fell 23.1 percent in 2025. Judging conflict and fragility as most binding is our inference from the World Bank figures.',
   bindingId: 'conflict-fragility',
   updated: '2026-11-11',
   root: [

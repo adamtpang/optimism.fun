@@ -27,9 +27,9 @@ const GOOLSBEE_SYVERSON = {
 export const housingConstructionTree: ConstraintTree = {
   problemSlug: 'housing-construction',
   outcome:
-    'Safe, adequate housing that people can afford. UN-Habitat now says up to 3.4 billion people lack it and more than 1 billion live in slums and informal settlements. The 1.6 billion figure used elsewhere on this site is an older UN-Habitat estimate.',
+    'Safe, adequate housing that people can afford. UN-Habitat now says up to 3.4 billion people lack it and more than 1 billion live in slums and informal settlements. The 1.6 billion figure used elsewhere on this site is a different, lower estimate; its source was not re-opened this session.',
   whyUnsolved:
-    'Not the physics of building. In rich cities, rules on what may be built hold supply below demand, and where one city relaxed them, permits roughly doubled. Building itself has not become more productive in decades. In poor countries the gap is investment: the global deficit grew from 251 million homes in 2010 to 288 million in 2023. Which constraint binds differs by place. Calling land-use rules the most binding is our inference from the cited studies, and it is best supported for high-cost cities.',
+    'Not the physics of building. In rich cities, rules on what may be built hold supply below demand, and where one city relaxed them, permits roughly doubled. In the US, measured construction productivity has fallen for decades. The global housing deficit grew from 251 million units in 2010 to 288 million in 2023, and UN-Habitat lists insufficient investment as one of four causes. Treating investment as the main gap in poor countries is our inference. Which constraint binds differs by place. Calling land-use rules the most binding is our inference from the cited studies, and it is best supported for high-cost cities.',
   bindingId: 'land-use-rules',
   updated: '2026-11-11',
   root: [
@@ -38,11 +38,11 @@ export const housingConstructionTree: ConstraintTree = {
       claim: 'In high-cost cities, rules on what may be built keep housing supply below demand.',
       kind: 'regulatory',
       whyUnsolved:
-        'Glaeser and Gyourko treat the gap between a home price and its production cost as a regulatory tax. They say the evidence suggests, but does not prove, that this tax often exceeds any harm new building causes. Existing owners gain from scarcity, so reform is slow.',
+        'Glaeser and Gyourko treat the gap between a home price and its production cost as a regulatory tax. They say the evidence suggests, but does not prove, that this tax often exceeds any harm new building causes. Inference: existing owners gain from scarcity, which may slow reform.',
       falsifier:
         'A city removes zoning limits on most of its residential land and new home permits do not rise compared with a credible counterfactual.',
       tested:
-        'Looked for it and found the opposite. Auckland upzoned about three quarters of its residential land in 2016. A 2025 synthetic control study finds permits per person roughly doubled within five years, with about 52,200 extra permits, 46 percent of the 112,300 issued. One city, one research group. Effects on rents and prices were not checked this session.',
+        'Looked for it and found the opposite. Auckland upzoned about three quarters of its residential land in 2016. A 2025 synthetic control study finds permits per person roughly doubled within five years. Seven years on, about 52,200 extra permits had been issued, 46 percent of the 112,300 issued in that period. One city, one research group. Effects on rents and prices were not checked this session.',
       suppliers: [],
       supplyState: 'unresearched',
       additionality: {

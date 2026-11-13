@@ -20,15 +20,15 @@ const PEARL = {
 export const longevityTree: ConstraintTree = {
   problemSlug: 'longevity',
   outcome:
-    'An intervention shown in a human trial to delay the diseases of aging. None has been shown yet. How many healthy years could be gained is unknown.',
+    'An intervention shown in a human trial to delay the diseases of aging. We found no such trial; we checked only rapamycin and metformin. How many healthy years could be gained is unknown.',
   whyUnsolved:
-    'Nobody has run the trial that would prove it. A trial of a drug against aging has to be large and long, because there is no agreed short-term measure of aging. The cheapest candidates are generic, so no company earns the cost back. The one trial designed to break the deadlock has been waiting for money.',
+    'We found no completed trial that would prove it. A trial of a drug against aging has to be large and long, because there is no agreed short-term measure of aging. Metformin, the drug in the one trial design we examined, is generic, so no company earns the cost back. That trial, TAME, has been waiting for money.',
   bindingId: 'no-payer',
   updated: '2026-11-11',
   root: [
     {
       id: 'no-payer',
-      claim: 'Nobody will pay for the large human trials, because the leading candidate drugs are generic.',
+      claim: 'The one large trial we examined is unfunded, and its drug is generic, so no company earns the cost back.',
       kind: 'payment',
       whyUnsolved:
         'The TAME trial would enroll 3,000 people aged 65 to 79 for six years, at an estimated cost of US$45 to 70 million. The National Institute on Aging set aside about US$5 million. Metformin is generic, so no drug company stands to make money from the result. Calling this the binding constraint is our inference from one trial.',
@@ -36,11 +36,11 @@ export const longevityTree: ConstraintTree = {
         'The regulator blocks such trials, so money would not help. Or a fully funded trial of this kind already exists.',
       tested:
         'Looked for it. NPR reports the FDA was receptive to the TAME design, so regulation did not block it. As of the April 2024 report the trial was not fully funded. We did not find a later funding announcement, and we did not check for industry trials of patented drugs.',
-      suppliers: ['American Federation for Aging Research', 'National Institute on Aging'],
+      suppliers: ['National Institute on Aging'],
       supplyState: 'thin',
       additionality: {
         level: 'high',
-        why: 'The gap for the one designed trial is tens of millions of dollars. One funder could close it.',
+        why: 'Inference: with a US$45 to 70 million cost and about US$5 million from the National Institute on Aging, the shortfall is probably tens of millions. Pledges of unknown size exist.',
       },
       entryPoints: [
         { who: 'capital', action: 'Fund part of the TAME trial shortfall, or another trial with disease outcomes, through its sponsor.' },
@@ -54,10 +54,10 @@ export const longevityTree: ConstraintTree = {
       claim: 'There is no accepted way to measure aging in a short trial.',
       kind: 'regulatory',
       whyUnsolved:
-        'The FDA does not recognize aging as a disease to treat, so a trial must count diseases or deaths, which takes years. A 2024 Nature Medicine paper states that no consensus exists on how biomarkers of aging should be validated before clinical use. Without a validated marker, every test of a drug costs a TAME-sized trial.',
+        'The FDA does not recognize aging as a disease to treat. Inference: so a trial must count diseases or deaths, which takes years. A 2024 Nature Medicine paper states that no consensus exists on how biomarkers of aging should be validated before clinical use. Inference: without a validated marker, proving a drug delays disease needs a long outcomes trial like TAME.',
       falsifier: 'A regulator accepts a biomarker of aging as a surrogate endpoint. Or a short trial using disease outcomes proves a drug works.',
       tested:
-        'Not found. The paper describes surrogate use as a potential, not an established, role. In the one-year PEARL trial of rapamycin, epigenetic aging measures showed no statistically significant effect.',
+        'Not found. The paper describes surrogate use as a potential, not an established, role. In the one-year PEARL trial of rapamycin, epigenetic aging measures showed no statistically significant effect in a subgroup of 24 participants.',
       suppliers: ['Authors of the Nature Medicine validation paper (Moqri and colleagues)'],
       supplyState: 'thin',
       additionality: {
@@ -72,10 +72,10 @@ export const longevityTree: ConstraintTree = {
     },
     {
       id: 'human-evidence',
-      claim: 'No drug has been shown to slow aging in people.',
+      claim: 'We found no human trial showing that a drug slows aging. We checked only rapamycin.',
       kind: 'science',
       whyUnsolved:
-        'The longest rapamycin trial for healthy aging, PEARL, ran 48 weeks with 114 people completing. Its primary endpoint, visceral fat, did not change. It gave no direct evidence that rapamycin extends human life. The doses were low, the sample small, and much of the data self-reported.',
+        'PEARL, described as the first long-running randomized trial of rapamycin in humans, ran 48 weeks with 114 people completing. Its primary endpoint, visceral fat, did not change. It gave no direct evidence that rapamycin extends human life. The doses were low, the sample small, and much of the data self-reported.',
       falsifier: 'A randomized human trial shows a drug delays age-related disease or death.',
       tested: 'Not found this session. We searched one candidate, rapamycin. Other candidates were not checked.',
       suppliers: ['Lifespan.io and AgelessRx (PEARL trial)'],

@@ -20,9 +20,9 @@ const WHO_TOBACCO = {
 export const copdTree: ConstraintTree = {
   problemSlug: 'copd',
   outcome:
-    'Fewer people develop and die of COPD. WHO counts 3.4 million deaths in 2023, and nearly 90 percent of deaths under age 70 are in low- and middle-income countries.',
+    'Fewer people develop and die of COPD. WHO reports 3.4 million deaths in 2023 (an IHME Global Burden of Disease estimate), and nearly 90 percent of deaths under age 70 are in low- and middle-income countries.',
   whyUnsolved:
-    'The damage cannot be reversed, so the disease has to be stopped before it starts. The two main causes are known: tobacco smoke and smoke from cooking fuel. Both are still breathed by billions of people. Those who already have COPD are mostly never diagnosed in poorer countries, and basic inhalers are often not on the shelf.',
+    'WHO says COPD is not curable, so the disease has to be stopped before it starts. WHO names smoking and air pollution as the most common causes; in poorer countries household smoke from cooking fuel is a major one. Both are still breathed by billions of people. In a three-country study, 95.3 percent of the COPD cases found had never been diagnosed, and basic inhalers are often not on the shelf.',
   bindingId: 'exposure',
   updated: '2026-11-11',
   root: [
@@ -31,11 +31,11 @@ export const copdTree: ConstraintTree = {
       claim: 'People keep breathing the smoke that causes COPD, from tobacco and from cooking fuel.',
       kind: 'policy',
       whyUnsolved:
-        'Tobacco smoking accounts for over 70 percent of cases in high-income countries and 30 to 40 percent in low- and middle-income ones. About 1.2 billion people still use tobacco. Around 2.1 billion cook on open fires or inefficient stoves. The fixes are taxes, laws and clean fuel, which nobody sells as a product. Calling this the binding constraint is our inference.',
+        'Tobacco smoking accounts for over 70 percent of cases in high-income countries and 30 to 40 percent in low- and middle-income ones. About 1.2 billion people still use tobacco. Around 2.1 billion cook on open fires or inefficient stoves. Inference: the main fixes are taxes, laws and clean fuel access, which depend more on policy than on a single product. Calling this the binding constraint is our inference.',
       falsifier:
         'COPD deaths keep rising in places where smoking and solid-fuel cooking have already fallen to low levels for decades.',
       tested:
-        'Looked for the size of the exposure share, not for the falsifier itself. WHO attributes 23 percent of adult COPD deaths in low- and middle-income countries to household air pollution, and 30 to 40 percent of cases there to tobacco. That leaves a share unexplained by these two causes. We did not find a country series that tests the falsifier directly.',
+        'Looked for the size of the exposure share, not for the falsifier itself. WHO attributes 23 percent of adult COPD deaths in low- and middle-income countries to household air pollution, and 30 to 40 percent of cases there to tobacco. These are shares of different things, deaths and cases, so we do not add them or compute a remainder. We did not find a country series that tests the falsifier directly.',
       suppliers: [
         'WHO Framework Convention on Tobacco Control and MPOWER',
         'WHO Clean Household Energy Solutions Toolkit (CHEST)',
@@ -55,7 +55,7 @@ export const copdTree: ConstraintTree = {
       children: [
         {
           id: 'clean-cooking',
-          claim: 'Clean cooking will not reach everyone by 2030.',
+          claim: 'At current rates, clean cooking will not reach everyone by 2030.',
           kind: 'delivery',
           whyUnsolved:
             'In 2021, 49 percent of rural people relied on polluting fuels, against 14 percent of urban people. WHO expects only 78 percent of the world to have clean cooking by 2030, leaving nearly 1.8 billion people without it.',
@@ -91,7 +91,7 @@ export const copdTree: ConstraintTree = {
     },
     {
       id: 'diagnosis-treatment',
-      claim: 'Most people with COPD in poorer countries are never diagnosed, and basic inhalers are often missing.',
+      claim: 'COPD often goes undiagnosed in poorer countries, and basic inhalers are often missing.',
       kind: 'delivery',
       whyUnsolved:
         'Diagnosis needs spirometry, which WHO says is often not available in low- and middle-income countries. In a study of 10,709 adults in Nepal, Peru and Uganda, 95.3 percent of the COPD cases found had never been diagnosed. In 2023, salbutamol inhalers were generally available in public primary care in less than two-thirds of low- and lower-middle-income countries.',
@@ -125,10 +125,10 @@ export const copdTree: ConstraintTree = {
     },
     {
       id: 'no-reversal',
-      claim: 'No treatment cures COPD or repairs the lung.',
+      claim: 'No treatment cures COPD.',
       kind: 'science',
       whyUnsolved:
-        'WHO states that COPD is not curable. Stopping smoking, avoiding polluted air, vaccines, medicines, oxygen and rehabilitation improve symptoms. None of them restores lost lung tissue.',
+        'WHO states that COPD is not curable. Stopping smoking, avoiding polluted air, vaccines, medicines, oxygen and rehabilitation improve symptoms. WHO does not describe any of them as a cure.',
       falsifier: 'A trial shows a therapy that restores lung function in established COPD.',
       suppliers: [],
       supplyState: 'unresearched',
