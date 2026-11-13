@@ -48,25 +48,25 @@ export default function DiscoveryList({
             <article className={compact ? 'p-4' : 'p-5'}>
               <div className="flex flex-wrap items-center gap-2 mb-2">
                 <span
-                  className={`font-mono text-small uppercase tracking-wider border px-1.5 py-px ${REVIEW_CLASS[item.review]}`}
+                  className={`text-small border px-1.5 py-px ${REVIEW_CLASS[item.review]}`}
                 >
                   {REVIEW_LABEL[item.review]}
                 </span>
                 {item.status && (
-                  <span className="font-mono text-small uppercase tracking-wider border border-terminal-rose/70 bg-terminal-rose/10 text-terminal-rose px-1.5 py-px">
+                  <span className="text-small border border-terminal-rose/70 bg-terminal-rose/10 text-terminal-rose px-1.5 py-px">
                     {item.status === 'retracted' ? 'Retracted' : 'Challenged'}
                   </span>
                 )}
                 <time
                   dateTime={item.published || undefined}
-                  className="ml-auto font-mono text-small text-ink-500 tabular-nums"
+                  className="ml-auto font-figure text-small text-ink-500 tabular-nums"
                 >
                   {item.published || 'date unknown'}
                 </time>
               </div>
 
               {compact ? (
-                <h3 className="font-serif text-lg text-ink-100 leading-snug">
+                <h3 className="text-h3 text-ink-100 leading-snug">
                   <a
                     href={item.url}
                     target="_blank"
@@ -77,7 +77,7 @@ export default function DiscoveryList({
                   </a>
                 </h3>
               ) : (
-                <h2 className="font-serif text-xl text-ink-100 leading-snug">
+                <h2 className="text-h3 text-ink-100 leading-snug">
                   <a
                     href={item.url}
                     target="_blank"
@@ -89,10 +89,10 @@ export default function DiscoveryList({
                 </h2>
               )}
 
-              <p className="mt-2 text-sm text-ink-300 leading-relaxed">{item.summary}</p>
+              <p className="mt-2 text-small text-ink-300 leading-relaxed">{item.summary}</p>
 
               {item.notice && (
-                <p className="mt-3 text-sm text-terminal-rose leading-relaxed">
+                <p className="mt-3 text-small text-terminal-rose leading-relaxed">
                   <span className="font-medium">
                     {item.status === 'retracted' ? 'Retracted. ' : 'Challenged. '}
                   </span>
@@ -109,7 +109,7 @@ export default function DiscoveryList({
               )}
 
               <div className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-small">
-                <span className="font-mono text-small uppercase tracking-wider text-ink-500">
+                <span className="text-small text-ink-500">
                   Moves {CHANGE_LABEL[item.changes]}
                 </span>
                 {item.problemSlugs.map((slug) => (
@@ -132,7 +132,7 @@ export default function DiscoveryList({
                 ))}
               </div>
 
-              <p className="mt-2 font-mono text-small text-ink-500">
+              <p className="mt-2 text-small text-ink-500">
                 <a
                   href={item.url}
                   target="_blank"

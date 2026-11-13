@@ -33,13 +33,13 @@ export default function CtaBoard({
   return (
     <section id={embedded ? undefined : 'do'} className={embedded ? 'mt-8' : 'site-shell py-10 border-b border-hair'}>
       <div className="flex flex-wrap items-baseline justify-between gap-3 mb-5">
-        <h2 className="font-serif text-2xl text-ink-100">What you can do</h2>
-        <a href="/data" className="font-mono text-small uppercase tracking-wider text-primary hover:underline">
+        <h2 className="text-h2 text-ink-100">What you can do</h2>
+        <a href="/data"className="text-small text-primary hover:underline">
           Open data
         </a>
       </div>
       {items.length === 0 && (
-        <p className="text-ink-400 text-sm mb-4">No checked action is listed for this yet.</p>
+        <p className="text-ink-400 text-small mb-4">No checked action is listed for this yet.</p>
       )}
       <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-3">
         {CTA_KINDS.map((kind) => {
@@ -47,16 +47,16 @@ export default function CtaBoard({
           return (
             <div key={kind} className="border border-hair min-w-0">
               <div className="px-3 py-2 border-b border-hair">
-                <h3 className="font-mono text-small uppercase tracking-wider text-ink-100">{COPY[kind].label}</h3>
-                <p className="text-xs text-ink-500 mt-0.5">{COPY[kind].hint}</p>
+                <h3 className="text-small text-ink-100">{COPY[kind].label}</h3>
+                <p className="text-small text-ink-500 mt-0.5">{COPY[kind].hint}</p>
               </div>
               {rows.length === 0 ? (
-                <p className="px-3 py-4 text-sm text-ink-500">None yet.</p>
+                <p className="px-3 py-4 text-small text-ink-500">None yet.</p>
               ) : (
                 <ul>
                   {rows.map((cta) => (
                     <li key={cta.id} className="px-3 py-3 border-b border-hair last:border-b-0">
-                      <p className="font-mono text-small uppercase tracking-wider text-ink-500">
+                      <p className="text-small text-ink-500">
                         {TYPE_LABEL[cta.type] ?? cta.type}
                         {cta.location ? ` · ${cta.location}` : ''}
                       </p>
@@ -68,9 +68,9 @@ export default function CtaBoard({
                       >
                         {cta.name}
                       </a>
-                      <p className="text-sm text-ink-400 mt-1 leading-snug">{cta.oneLiner}</p>
+                      <p className="text-small text-ink-400 mt-1 leading-snug">{cta.oneLiner}</p>
                       {cta.amount && (
-                        <p className="text-sm text-ink-200 mt-2 leading-snug">
+                        <p className="text-small text-ink-200 mt-2 leading-snug">
                           {cta.amount.text}{' '}
                           <a
                             href={cta.amount.sourceUrl}
@@ -82,7 +82,7 @@ export default function CtaBoard({
                           </a>
                         </p>
                       )}
-                      <p className="font-mono text-small text-ink-500 mt-2">Checked {cta.checkedDate}</p>
+                      <p className="text-small text-ink-500 mt-2">Checked {cta.checkedDate}</p>
                     </li>
                   ))}
                 </ul>

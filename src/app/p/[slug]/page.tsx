@@ -295,7 +295,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
               <h2 className="text-h2 text-ink-100">New science</h2>
               <Link
                 href={`/discoveries?problem=${slug}`}
-                className="font-mono text-small uppercase tracking-wider text-primary hover:underline"
+                className="text-small text-primary underline"
               >
                 All {science.length}
               </Link>

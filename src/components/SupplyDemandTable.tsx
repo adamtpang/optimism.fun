@@ -46,13 +46,13 @@ export default function SupplyDemandTable({ rows }: { rows: BalanceRow[] }) {
             type="button"
             aria-pressed={sort === column.id}
             onClick={() => setSort(column.id)}
-            className={`min-h-11 px-3 text-sm border ${sort === column.id ? 'border-primary text-ink-100 bg-white' : 'border-neutral-200 text-neutral-600 bg-neutral-50'}`}
+            className={`min-h-11 px-3 text-small border ${sort === column.id ? 'border-primary text-ink-100 bg-white' : 'border-neutral-200 text-neutral-600 bg-neutral-50'}`}
           >
             {column.label}
           </button>
         ))}
       </div>
-      <div className="mt-4 overflow-x-auto border border-neutral-200 rounded-xl bg-white">
+      <div className="mt-4 overflow-x-auto border border-neutral-200 rounded bg-white">
         <table className="w-full min-w-[720px] text-left">
           <thead className="bg-neutral-50 text-small text-neutral-600">
             <tr>
@@ -68,14 +68,14 @@ export default function SupplyDemandTable({ rows }: { rows: BalanceRow[] }) {
           <tbody>
             {ordered.map((row) => (
               <tr key={row.slug} className="border-t border-neutral-100 align-top">
-                <td className="px-3 py-3 text-sm text-neutral-600 tabular-nums">{row.rank}</td>
+                <td className="px-3 py-3 text-small text-neutral-600 tabular-nums">{row.rank}</td>
                 <td className="px-3 py-3 min-w-0">
                   <Link href={`/p/${row.slug}`} className="text-body font-semibold text-ink-100 hover:text-primary">
                     {row.name}
                   </Link>
                   <ul className="mt-2 space-y-1">
                     {row.inputs.map((input) => (
-                      <li key={input.label} className="text-sm text-neutral-600 break-words">
+                      <li key={input.label} className="text-small text-neutral-600 break-words">
                         {input.label}: {input.display}
                         {input.value != null && input.unit ? ` ${input.unit}` : ''}
                         {input.inScore ? '' : input.value == null ? '' : ' (shown, not in the score)'}
@@ -83,11 +83,11 @@ export default function SupplyDemandTable({ rows }: { rows: BalanceRow[] }) {
                     ))}
                   </ul>
                 </td>
-                <td className="px-3 py-3 text-sm tabular-nums">{row.burdenLabel}</td>
-                <td className="px-3 py-3 text-sm tabular-nums">{row.demandLabel}</td>
-                <td className="px-3 py-3 text-sm tabular-nums">{row.supplyLabel}</td>
-                <td className="px-3 py-3 text-sm tabular-nums">{row.gapLabel}</td>
-                <td className="px-3 py-3 text-sm tabular-nums">
+                <td className="px-3 py-3 text-small tabular-nums">{row.burdenLabel}</td>
+                <td className="px-3 py-3 text-small tabular-nums">{row.demandLabel}</td>
+                <td className="px-3 py-3 text-small tabular-nums">{row.supplyLabel}</td>
+                <td className="px-3 py-3 text-small tabular-nums">{row.gapLabel}</td>
+                <td className="px-3 py-3 text-small tabular-nums">
                   {row.companyCount}
                   {row.openQuest ? ' · open quest' : ''}
                   {row.companyNote ? ` · ${row.companyNote}` : ''}

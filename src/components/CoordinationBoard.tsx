@@ -30,7 +30,7 @@ type Props = {
 }
 
 const SUBMITTED = (
-  <span className="font-mono text-small uppercase tracking-wider text-ink-600 border border-hair px-1 py-0.5">
+  <span className="text-small text-ink-600 border border-hair px-1 py-0.5">
     user-submitted
   </span>
 )
@@ -57,10 +57,10 @@ function Column({
   return (
     <div className="border border-hair">
       <div className="border-b border-hair px-4 py-3 bg-ink-900/40">
-        <p className="font-mono text-small uppercase text-primary">
+        <p className="text-small text-primary">
           {kicker}
         </p>
-        <p className="font-mono text-small text-ink-500 mt-1 tabular-nums">
+        <p className="font-figure text-small text-ink-500 mt-1 tabular-nums">
           <span className={count > 0 ? 'text-ink-200' : 'text-ink-600'}>{count}</span> {countLabel}
         </p>
       </div>
@@ -87,10 +87,10 @@ export default function CoordinationBoard({
 
   return (
     <section className="px-6 py-12 max-w-7xl mx-auto border-t border-hair-strong">
-      <h2 className="font-serif text-2xl md:text-3xl text-ink-100 mb-2">
+      <h2 className="text-h2 md:text-h1 text-ink-100 mb-2">
         Who is moving on {problemName}
       </h2>
-      <p className="text-ink-500 text-sm mb-8">A human checks every entry. Nothing here can be bought.</p>
+      <p className="text-ink-500 text-small mb-8">A human checks every entry. Nothing here can be bought.</p>
 
       {!boardAvailable && (
         <p className="border border-primary/40 bg-primary/[0.04] px-4 py-3 text-small text-ink-300 mb-6">
@@ -110,12 +110,12 @@ export default function CoordinationBoard({
           {quests.map((q) => (
             <div key={q.slug} className="border-b border-hair pb-3 last:border-b-0 last:pb-0">
               <p className="text-ink-100 text-small font-medium leading-snug">{q.title}</p>
-              <p className="font-mono text-small text-ink-600 mt-1">
+              <p className="text-small text-ink-600 mt-1">
                 {q.crowded ? 'contested · check who is already here' : 'open · nobody funded yet'}
               </p>
               <Link
                 href="#coordinate"
-                className="inline-block mt-2 font-mono text-small uppercase tracking-wider text-primary hover:underline"
+                className="inline-block mt-2 text-small text-primary hover:underline"
               >
                 Claim this start
               </Link>
@@ -135,7 +135,7 @@ export default function CoordinationBoard({
                   href={c.url}
                   target="_blank"
                   rel="noreferrer nofollow"
-                  className="font-mono text-small text-primary hover:underline"
+                  className="text-small text-primary hover:underline"
                 >
                   proof
                 </a>
@@ -157,16 +157,16 @@ export default function CoordinationBoard({
               <div key={co.slug} className="border-b border-hair pb-3 last:border-b-0 last:pb-0">
                 <div className="flex items-baseline justify-between gap-2">
                   <p className="text-ink-100 text-small font-medium leading-snug">{co.name}</p>
-                  <span className="font-mono text-small text-ink-600 whitespace-nowrap">
+                  <span className="text-small text-ink-600 whitespace-nowrap">
                     {co.stage}
                   </span>
                 </div>
-                <p className="font-mono text-small text-ink-600 mt-1 tabular-nums">
+                <p className="font-figure text-small text-ink-600 mt-1 tabular-nums">
                   {n} {n === 1 ? 'person wants' : 'people want'} in
                 </p>
                 <Link
                   href="#coordinate"
-                  className="inline-block mt-2 font-mono text-small uppercase tracking-wider text-primary hover:underline"
+                  className="inline-block mt-2 text-small text-primary hover:underline"
                 >
                   I want in
                 </Link>
@@ -194,7 +194,7 @@ No companies tracked yet.
                 </p>
                 {SUBMITTED}
               </div>
-              <p className="font-mono text-small text-primary mb-1">
+              <p className="text-small text-primary mb-1">
                 {c.checkSizeBand ? BAND_LABEL[c.checkSizeBand] : 'band not given'}
                 {c.stage ? ` · ${c.stage}` : ''}
               </p>
