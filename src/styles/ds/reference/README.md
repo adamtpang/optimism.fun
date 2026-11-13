@@ -142,14 +142,29 @@ pinned to 14px, so they are harmless but should become `text-small`.
   low-income countries"), not its topic ("Loneliness by income").
 - Buttons name the action and its object: "Fund this gap", not "Learn more".
 
-## Components still to build (phase 2)
+## Components
 
-1. Chart frame: finding as title, the chart, a source line with links, share and
-   download.
-2. Infographic card: one idea, the number as the hero, sized to share, with the
-   source and optimism.fun credit inside the image.
-3. Class action bar: the three class buttons together, opening the commitment
-   form preset for that class. A static preview is on `/design-system`.
+1. Figure (`src/components/FigureCard.tsx`): finding as the title, the chart on
+   the plot grid, a ledger of facts, source links, and a slot for the class
+   buttons. Data lives in `src/data/figures.ts`, made by hand.
+2. Share image (`src/app/figures/[slug]/opengraph-image.tsx`): the figure as a
+   1200 by 630 picture with the hero number, the bars, and the source and
+   credit inside it. It is also the download on each figure page.
+3. Class action bar (`src/components/ClassActionBar.tsx`, and the sticky
+   `ActionBar.tsx` on problem pages): the three class buttons. Links made with
+   `commitHref()` open the commitment area set to that class.
+
+Still to build: a general chart frame for line and area charts. Today only
+horizontal bars exist.
+
+## The guard
+
+`tests/design-system.test.ts` holds the core pages to these rules and fails on
+a palette color, a raw hex value, a class color outside the class buttons, a
+serif or mono word font, forced capitals, a generic text size, an em dash, or
+a large corner or card shadow. Add a file to its `CORE` list once the file has
+been moved onto the system. The share images are exempt, because the image
+renderer cannot read CSS variables.
 
 ## Accessibility floor
 

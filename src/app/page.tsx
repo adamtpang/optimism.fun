@@ -46,7 +46,7 @@ export default function Home() {
             </p>
 
             <div className="mt-8">
-              <FigureCard figure={featuredFigure}>
+              <FigureCard figure={featuredFigure} href={`/figures/${featuredFigure.slug}`}>
                 <ClassActionBar
                   hrefs={{
                     patron: commitHref(featuredFigure.problemSlug, 'patron'),

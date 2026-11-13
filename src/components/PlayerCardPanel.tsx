@@ -31,7 +31,7 @@ function toggle<T>(list: T[], value: T): T[] {
 }
 
 function chipClass(on: boolean): string {
-  return `px-3 py-2 text-sm border text-left ${
+  return `px-3 py-2 text-small border text-left ${
     on ? 'border-primary text-ink-100 bg-primary/10' : 'border-hair text-ink-300 hover:border-primary'
   }`
 }

@@ -26,7 +26,7 @@ export default function BurdenBlock({ problemSlug }: { problemSlug: string }) {
               The burden behind it
             </p>
             <div className="flex items-baseline gap-3">
-              <span className="font-figure text-h1 font-normal md:text-5xl tabular-nums text-ink-100">
+              <span className="font-figure text-h1 font-normal md:text-data-xl tabular-nums text-ink-100">
                 {b.deaths > 0 ? formatHumans(b.deaths) : 'unmeasured'}
               </span>
               {b.deaths > 0 && (
