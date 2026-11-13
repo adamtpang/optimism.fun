@@ -69,12 +69,12 @@ export default function ProblemIndexTable({ rows, categories }: { rows: IndexTab
   return (
     <div className="mt-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
-        <label className="flex flex-col gap-1 text-sm text-neutral-700 min-w-0 sm:min-w-48">
+        <label className="flex flex-col gap-1 text-small text-neutral-700 min-w-0 sm:min-w-48">
           Category
           <select
             value={category}
             onChange={(event) => setCategory(event.target.value)}
-            className="min-h-11 border border-neutral-200 bg-white px-3 text-sm text-neutral-900"
+            className="min-h-11 border border-neutral-200 bg-white px-3 text-small text-neutral-900"
           >
             <option value="all">All categories</option>
             {categories.map((item) => (
@@ -84,12 +84,12 @@ export default function ProblemIndexTable({ rows, categories }: { rows: IndexTab
             ))}
           </select>
         </label>
-        <label className="flex flex-col gap-1 text-sm text-neutral-700 min-w-0 sm:min-w-48">
+        <label className="flex flex-col gap-1 text-small text-neutral-700 min-w-0 sm:min-w-48">
           Status
           <select
             value={status}
             onChange={(event) => setStatus(event.target.value)}
-            className="min-h-11 border border-neutral-200 bg-white px-3 text-sm text-neutral-900"
+            className="min-h-11 border border-neutral-200 bg-white px-3 text-small text-neutral-900"
           >
             <option value="all">All problems</option>
             <option value="open">Open quests</option>
@@ -104,54 +104,54 @@ export default function ProblemIndexTable({ rows, categories }: { rows: IndexTab
             type="button"
             aria-pressed={sort === item.id}
             onClick={() => setSort(item.id)}
-            className={`min-h-11 px-3 text-sm border ${sort === item.id ? 'border-primary text-primary bg-white' : 'border-neutral-200 text-neutral-700 bg-neutral-50'}`}
+            className={`min-h-11 px-3 text-small border ${sort === item.id ? 'border-primary text-primary bg-white' : 'border-neutral-200 text-neutral-700 bg-neutral-50'}`}
           >
             {item.label}
           </button>
         ))}
       </div>
-      <p className="mt-3 text-sm text-neutral-600">{ordered.length} rows. Size is not a sort key, because the units are not the same.</p>
+      <p className="mt-3 text-small text-neutral-600">{ordered.length} rows. Size is not a sort key, because the units are not the same.</p>
 
       <div className="mt-4 grid gap-3 md:hidden">
         {ordered.map((row) => (
           <article key={row.slug} className="border border-neutral-200 bg-white p-4 min-w-0">
-            <p className="text-sm text-neutral-600">{row.rank == null ? 'Not ranked' : `Rank ${row.rank}`}</p>
+            <p className="text-small text-neutral-600">{row.rank == null ? 'Not ranked' : `Rank ${row.rank}`}</p>
             <Link href={`/problem-index/${row.slug}`} className="mt-1 block text-body font-semibold text-ink-100 break-words">
               {row.name}
             </Link>
-            <p className="mt-1 text-sm text-neutral-700">{row.category}</p>
-            <p className="mt-3 text-sm text-neutral-900 break-words">
+            <p className="mt-1 text-small text-neutral-700">{row.category}</p>
+            <p className="mt-3 text-small text-neutral-900 break-words">
               {row.headlineValue} {row.headlineUnit} ({row.headlineYear}){' '}
               <a href={row.headlineUrl} className="text-primary underline underline-offset-2" target="_blank" rel="noopener noreferrer">
                 Source
               </a>
             </p>
-            <dl className="mt-3 grid grid-cols-2 gap-2 text-sm">
+            <dl className="mt-3 grid grid-cols-2 gap-2 text-small">
               <div>
                 <dt className="text-neutral-600">Demand</dt>
-                <dd className="tabular-nums text-neutral-900">{row.demandLabel}</dd>
+                <dd className="font-figure text-neutral-900">{row.demandLabel}</dd>
               </div>
               <div>
                 <dt className="text-neutral-600">Supply</dt>
-                <dd className="tabular-nums text-neutral-900">{row.supplyLabel}</dd>
+                <dd className="font-figure text-neutral-900">{row.supplyLabel}</dd>
               </div>
               <div>
                 <dt className="text-neutral-600">Gap</dt>
-                <dd className="tabular-nums text-neutral-900">{row.gapLabel}</dd>
+                <dd className="font-figure text-neutral-900">{row.gapLabel}</dd>
               </div>
               <div>
                 <dt className="text-neutral-600">Companies</dt>
-                <dd className="tabular-nums text-neutral-900">{row.companyLabel}</dd>
+                <dd className="font-figure text-neutral-900">{row.companyLabel}</dd>
               </div>
             </dl>
-            {row.openQuest ? <p className="mt-3 text-sm text-primary">Open quest</p> : null}
+            {row.openQuest ? <p className="mt-3 text-small text-primary">Open quest</p> : null}
           </article>
         ))}
       </div>
 
       <div className="mt-4 hidden md:block overflow-x-auto border border-neutral-200 bg-white">
         <table className="w-full text-left">
-          <thead className="bg-neutral-50 text-sm text-neutral-600">
+          <thead className="bg-neutral-50 text-small text-neutral-600">
             <tr>
               <th className="px-3 py-3 font-medium">Rank</th>
               <th className="px-3 py-3 font-medium">Problem</th>
@@ -166,16 +166,16 @@ export default function ProblemIndexTable({ rows, categories }: { rows: IndexTab
           <tbody>
             {ordered.map((row) => (
               <tr key={row.slug} className="border-t border-neutral-100 align-top">
-                <td className="px-3 py-3 text-sm tabular-nums text-neutral-600">{row.rank ?? 'n/a'}</td>
+                <td className="px-3 py-3 text-small font-figure text-neutral-600">{row.rank ?? 'n/a'}</td>
                 <td className="px-3 py-3 min-w-0">
-                  <Link href={`/problem-index/${row.slug}`} className="text-sm font-semibold text-ink-100">
+                  <Link href={`/problem-index/${row.slug}`} className="text-small font-semibold text-ink-100">
                     {row.name}
                   </Link>
-                  {row.openQuest ? <p className="text-sm text-primary">Open quest</p> : null}
+                  {row.openQuest ? <p className="text-small text-primary">Open quest</p> : null}
                 </td>
-                <td className="px-3 py-3 text-sm text-neutral-700">{row.category}</td>
-                <td className="px-3 py-3 text-sm text-neutral-900">
-                  <span className="tabular-nums">
+                <td className="px-3 py-3 text-small text-neutral-700">{row.category}</td>
+                <td className="px-3 py-3 text-small text-neutral-900">
+                  <span className="font-figure">
                     {row.headlineValue} {row.headlineUnit}
                   </span>
                   <span className="block text-neutral-600">{row.headlineYear}</span>
@@ -183,10 +183,10 @@ export default function ProblemIndexTable({ rows, categories }: { rows: IndexTab
                     Source
                   </a>
                 </td>
-                <td className="px-3 py-3 text-sm tabular-nums">{row.demandLabel}</td>
-                <td className="px-3 py-3 text-sm tabular-nums">{row.supplyLabel}</td>
-                <td className="px-3 py-3 text-sm tabular-nums">{row.gapLabel}</td>
-                <td className="px-3 py-3 text-sm tabular-nums">{row.companyLabel}</td>
+                <td className="px-3 py-3 text-small font-figure">{row.demandLabel}</td>
+                <td className="px-3 py-3 text-small font-figure">{row.supplyLabel}</td>
+                <td className="px-3 py-3 text-small font-figure">{row.gapLabel}</td>
+                <td className="px-3 py-3 text-small font-figure">{row.companyLabel}</td>
               </tr>
             ))}
           </tbody>
