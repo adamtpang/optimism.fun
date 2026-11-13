@@ -2,10 +2,6 @@
   "framework": "nextjs",
   "crons": [
     {
-      "path": "/api/cron/problem-sourcing",
-      "schedule": "0 12 * * *"
-    },
-    {
       "path": "/api/cron/newsletter",
       "schedule": "0 13 * * 1"
     },

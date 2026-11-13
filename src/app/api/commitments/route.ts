@@ -3,7 +3,7 @@
  * GET  /api/commitments?problemSlug=slug - list the public board for a problem
  *
  * Creating never publishes. The row is written as `pending` and a human has to
- * approve it in /admin/commitments before it renders anywhere. That review is
+ * approve it before it renders anywhere. That review is
  * the single gate: the submitter confirmation email was dropped on 2026-10-01
  * so the board does not depend on a mail provider. The owner still gets a
  * notification when one is configured.
@@ -85,7 +85,7 @@ export async function POST(req: Request) {
           '',
           v.proof,
           '',
-          `Review: ${BASE_URL}/admin/commitments`,
+          `Pending review. Row id: ${result.id}`,
         ]
           .filter(Boolean)
           .join('\n'),
@@ -99,7 +99,7 @@ export async function POST(req: Request) {
       JSON.stringify({
         event: 'commitment:created:no-mailer',
         id: result.id,
-        note: 'no mailer configured; review at /admin/commitments',
+        note: 'no mailer configured; the row is stored as pending',
       }),
     )
   }
