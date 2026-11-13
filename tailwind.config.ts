@@ -24,6 +24,7 @@ const config: Config = {
         mono: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
         serif: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
         display: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
+        figure: ['var(--font-figure)', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
       },
       colors: {
         ink: {

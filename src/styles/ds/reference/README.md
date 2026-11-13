@@ -32,6 +32,38 @@ hairline borders, generous space. Teal is the neutral action color. Blue marks
 information. Three bold colors are reserved for the three kinds of visitor.
 Everything else stays quiet so those three stand out.
 
+## The design language: Ledger with instruments
+
+Chosen by Adam on 2026-11-13 from four samples (Mission Brief, Broadsheet,
+Field Poster, Ledger). He took the simplicity of Ledger and the graphs, grid
+and color of Mission Brief.
+
+The page is a calm ledger: white, thin grey borders, plain Inter, facts in
+two-column rows. Each chart is an instrument set into it. The only bold color
+on a page is the three class buttons.
+
+Rules, each checkable on a screenshot:
+
+1. The grid (`.plot-grid`) appears only behind data. It is never page decoration.
+2. Numbers and figure labels are set in IBM Plex Mono (`.font-figure`). Words
+   are always Inter.
+3. Bold color is only ever a class button or a class label.
+4. Every figure has a title that states the finding, and a source link.
+5. Corners are small (4px) and there are no shadows on figures.
+
+Signature element: the figure (`src/components/FigureCard.tsx`), a finding, its
+chart on the grid, a ledger of facts, sources, and the class buttons beneath.
+The first one is on the homepage, fed by `src/data/featured-figure.ts`.
+
+Library decision: keep shadcn/ui and Radix for forms and dialogs (already
+installed, fully themeable). Charts are plain HTML and SVG for now. Observable
+Plot (ISC) is the planned addition when standard charts become many. Rejected:
+Mantine (a second component system), Tremor and Nivo (no registry activity
+since early or mid 2025, as read on 2026-11-12).
+
+Revisit when: the site gains more than a handful of chart types, or a dark
+theme is wanted.
+
 ## The three classes
 
 | Class | Who | Default ask | Color |
@@ -81,7 +113,8 @@ The site is light only. There is no dark theme.
 
 ## Type
 
-Inter only. 14px is the smallest text anywhere. Six sizes cover every page:
+Inter for words, IBM Plex Mono for numbers and figure labels. 14px is the smallest
+text anywhere. Six sizes cover every page:
 
 | Role | Tailwind | Size / line |
 |---|---|---|

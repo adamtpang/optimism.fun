@@ -4,14 +4,13 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Container from '@/components/layout/Container'
 import Section from '@/components/layout/Section'
-import HeroMedia from '@/components/media/HeroMedia'
 import Broll from '@/components/media/Broll'
-import Credit from '@/components/media/Credit'
-import { mediaCredit } from '@/components/media/credits'
+import FigureCard from '@/components/FigureCard'
+import ClassActionBar from '@/components/ClassActionBar'
+import { featuredFigure } from '@/data/featured-figure'
 import RankedProblems from '@/components/RankedProblems'
 import SupplyDemandTable from '@/components/SupplyDemandTable'
 import { balanceRows } from '@/lib/sourced-balance'
-import { Button } from '@/components/ui/button'
 import { problems } from '@/data/problems'
 import { discoveryCountByProblem } from '@/data/discoveries'
 import { computeRadarRows } from '@/lib/radar'
@@ -24,18 +23,6 @@ export const metadata: Metadata = {
 
 export const revalidate = 300
 
-const DOORS = [
-  { label: 'Problems', cta: 'Pick a problem', href: '#problems', body: 'The biggest unsolved ones, ranked.' },
-  { label: 'Capital', cta: 'Fund a gap', href: '/command#capital', body: 'Where money is, and where it is missing.' },
-  { label: 'Talent', cta: 'Work on one', href: '/command#talent', body: 'Specific work that moves a problem.' },
-]
-
-const EARTHSET = [
-  { media: '(max-width: 767px)', avif: '/media/earthset-828.avif', webp: '/media/earthset-828.webp' },
-  { media: '(max-width: 1279px)', avif: '/media/earthset-1280.avif', webp: '/media/earthset-1280.webp' },
-  { avif: '/media/earthset-1920.avif', webp: '/media/earthset-1920.webp' },
-]
-
 export default function Home() {
   const rows = computeRadarRows().sort((a, b) => b.opportunity - a.opportunity)
   const supplyRows = balanceRows()
@@ -45,71 +32,44 @@ export default function Home() {
 
   return (
     <>
-      <Navbar onHero />
+      <Navbar />
       <main>
-        <section className="relative md:h-[720px]">
-          <div className="relative h-[300px] mt-14 md:mt-0 md:absolute md:inset-0 md:h-full overflow-hidden">
-            <HeroMedia
-              alt={mediaCredit('earthset').text}
-              sources={EARTHSET}
-              width={1920}
-              height={1080}
-              priority
-              className="md:scale-[1.458] md:origin-[87px_402px]"
-            />
-            <div className="hero-scrim absolute inset-0 hidden md:block" />
-            <Credit
-              credit={mediaCredit('earthset')}
-              onDark
-              className="absolute right-4 bottom-3 md:bottom-32 z-10 max-w-[36ch] text-right [text-shadow:0_1px_2px_rgb(0_0_0/.8)]"
-            />
-          </div>
-          <Container className="relative z-10 py-8 md:h-full md:flex md:flex-col md:justify-center">
-            <h1 className="text-display-1 text-neutral-900 md:text-white max-w-[15ch]">
-              Humanity&rsquo;s hardest problems.
-              <span className="block text-primary md:text-white">Bring money or work.</span>
+        <section className="pt-24 md:pt-28 pb-10 md:pb-14">
+          <Container>
+            <h1 className="text-h2 md:text-h1 text-ink-100 max-w-[26ch]">
+              Humanity&rsquo;s hardest problems, and what you can do about each one.
             </h1>
-            <p className="text-body-lg text-neutral-700 md:text-neutral-200 mt-4 md:mt-6 max-w-[46ch]">
-              {problems.length} problems. Every number sourced. Nothing for sale.
+            <p className="text-body text-ink-300 mt-3 max-w-[60ch]">
+              {problems.length} problems, ranked. Every number has a source. Whether you bring money, work or
+              scrutiny, each one ends with something to do.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 mt-6 md:mt-8">
-              <Button asChild className="h-11 md:bg-white md:text-teal-800 md:hover:bg-neutral-50">
-                <Link href="#problems">Pick a problem</Link>
-              </Button>
-              <Button asChild variant="outline" className="h-11 bg-white md:bg-transparent md:text-white md:border-white/50 md:hover:bg-white/10">
-                <Link href="/data">Download the data</Link>
-              </Button>
+
+            <div className="mt-8">
+              <FigureCard figure={featuredFigure}>
+                <ClassActionBar
+                  hrefs={{
+                    patron: `/p/${featuredFigure.problemSlug}#coordinate`,
+                    founder: `/p/${featuredFigure.problemSlug}#coordinate`,
+                    researcher: `/p/${featuredFigure.problemSlug}`,
+                  }}
+                  asks={{ researcher: 'Check the evidence' }}
+                />
+              </FigureCard>
             </div>
-            <p className="text-small mt-4 flex flex-wrap gap-x-3 gap-y-1">
-              <Link href="/where" className="inline-flex items-center h-11 text-primary md:text-teal-200">
-                Where do I fit
+
+            <p className="text-small mt-5 flex flex-wrap gap-x-5 gap-y-1">
+              <Link href="#problems" className="inline-flex items-center min-h-11 text-primary underline">
+                See all {problems.length} problems
               </Link>
-              <Link href="/poster" className="inline-flex items-center h-11 text-primary md:text-teal-200">
-                Poster
+              <Link href="/quests" className="inline-flex items-center min-h-11 text-primary underline">
+                Find the quest that fits you
+              </Link>
+              <Link href="/data" className="inline-flex items-center min-h-11 text-primary underline">
+                Download the data
               </Link>
             </p>
           </Container>
         </section>
-
-        <div className="relative z-20 md:-mt-[88px]">
-          <Container>
-            <div className="doors-panel grid md:grid-cols-3 overflow-hidden">
-              {DOORS.map((d) => (
-                <Link
-                  key={d.label}
-                  href={d.href}
-                  className="block p-5 md:p-8 min-h-11 border-b md:border-b-0 md:border-r border-neutral-200 last:border-0"
-                >
-                  <p className="text-small font-medium text-neutral-700">{d.label}</p>
-                  <p className="text-h3 text-neutral-900 mt-1">
-                    {d.cta} <span className="text-primary">→</span>
-                  </p>
-                  <p className="text-small text-neutral-700 mt-1">{d.body}</p>
-                </Link>
-              ))}
-            </div>
-          </Container>
-        </div>
 
         <Section id="problems" className="scroll-mt-20">
           <Container>
