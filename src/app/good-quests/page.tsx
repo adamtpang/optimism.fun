@@ -5,7 +5,7 @@ import Footer from '@/components/Footer'
 import EmailCapture from '@/components/EmailCapture'
 import PageHeader from '@/components/PageHeader'
 import HeroFigure from '@/components/HeroFigure'
-import QuestGrid from '@/components/QuestGrid'
+import QuestFlow from '@/components/QuestFlow'
 import { formatKardashev } from '@/lib/kardashev'
 import { ARCHETYPES } from '@/data/archetypes'
 import { computeQuestRankings } from '@/lib/rankings'
@@ -14,14 +14,14 @@ import { placeOnQuestGrid } from '@/lib/quest-grid'
 export const metadata: Metadata = {
   title: 'Choose a good quest | optimism.fun',
   description:
-    'A gamified walkthrough of Trae Stephens & Markie Wagner’s "Choose Good Quests" — plotted with every real quest this site tracks. You are not too late for humanity’s story. You are absurdly early.',
+    'A gamified walkthrough of Trae Stephens & Markie Wagner’s "Choose Good Quests", plotted with every real quest this site tracks. You are not too late for humanity’s story. You are absurdly early.',
 }
 
 export default function GoodQuestsPage() {
   const kardashev = formatKardashev()
   const ranked = computeQuestRankings()
   const plotted = placeOnQuestGrid(ranked)
-  const hardGoodCount = plotted.filter((q) => q.good >= 50 && q.hard >= 50).length
+  const hardGoodCount = plotted.filter((q) => q.hard >= 50).length
   const missionary = ARCHETYPES.missionary
   const evangelist = ARCHETYPES.evangelist
 
@@ -55,11 +55,11 @@ export default function GoodQuestsPage() {
                 caption={kardashev.caption}
               />
               <div className="space-y-4">
-                <h2 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight">
+                <h2 className="text-h2 md:text-h1 text-ink-100 leading-tight">
                   This is what &ldquo;the beginning of infinity&rdquo; actually means.
                 </h2>
-                <p className="text-ink-300 text-sm leading-relaxed max-w-2xl">
-                  Not a slogan — a fact about knowledge. Every problem that is not forbidden by
+                <p className="text-ink-300 text-small leading-relaxed max-w-2xl">
+                  Not a slogan: a fact about knowledge. Every problem that is not forbidden by
                   the laws of physics is solvable, given the right knowledge, and the stock of
                   knowledge has no ceiling anyone has ever found. Ocean crossings were already
                   routine for several maritime societies 500 years ago. The change since is speed,
@@ -67,7 +67,7 @@ export default function GoodQuestsPage() {
                   There is no evidence every curve stops here, only evidence that someone has to
                   keep pushing the ones that are still open.
                 </p>
-                <p className="font-mono text-small text-ink-600 leading-relaxed max-w-2xl">
+                <p className="text-small text-ink-600 leading-relaxed max-w-2xl">
                   Full deep-history timeline and the live numbers behind this on{' '}
                   <Link href="/ages" className="text-primary hover:underline">
                     /ages
@@ -82,10 +82,10 @@ export default function GoodQuestsPage() {
         {/* the real test */}
         <section className="border-b border-hair">
           <div className="site-shell py-14">
-            <p className="font-mono text-small uppercase text-primary mb-3">
+            <p className="first-letter:uppercase text-small text-primary mb-3">
               The test, borrowed straight
             </p>
-            <h2 className="font-serif text-2xl md:text-4xl text-ink-100 leading-tight mb-5">
+            <h2 className="text-h2 md:text-h1 text-ink-100 leading-tight mb-5">
               Every pursuit you could spend a life on sits somewhere on one grid.
             </h2>
             <p className="text-ink-300 leading-relaxed max-w-2xl mb-3">
@@ -107,36 +107,36 @@ export default function GoodQuestsPage() {
               Their claim isn&rsquo;t subtle: &ldquo;there is a moral imperative for our best
               players to choose good, hard quests.&rdquo; If you have the rare combination of
               skill, resources, and time to take on something hard, and you spend it on
-              something easy instead — good or not — that is, in their words, &ldquo;a loss for
+              something easy instead (good or not), that is, in their words, &ldquo;a loss for
               humanity.&rdquo;
             </p>
 
             <div className="grid sm:grid-cols-2 gap-px bg-ink-700/50 border border-hair mb-3">
               <div className="bg-ink-900 p-5 sm:border-r border-b sm:border-b-0 border-hair">
-                <p className="font-mono text-small uppercase text-ink-600 mb-2">
+                <p className="first-letter:uppercase text-small text-ink-600 mb-2">
                   Hard + bad
                 </p>
                 <p className="text-ink-500 text-small leading-relaxed">
-                  Real suffering for no real gain — a war of attrition, a career spent
+                  Real suffering for no real gain: a war of attrition, a career spent
                   protecting a shrinking moat. The essay gives this box no examples. It doesn&rsquo;t
                   need any; nobody aspires here on purpose.
                 </p>
               </div>
               <div className="bg-ink-900 p-5 relative">
-                <span className="absolute top-3 right-3 font-mono text-small uppercase text-primary">
+                <span className="first-letter:uppercase absolute top-3 right-3 text-small text-primary">
                   the target
                 </span>
-                <p className="font-mono text-small uppercase text-primary mb-2">
+                <p className="first-letter:uppercase text-small text-primary mb-2">
                   Hard + good
                 </p>
                 <p className="text-ink-300 text-small leading-relaxed">
                   Reversing aging. Going to Mars. Curing cancer. Building AGI. A supersonic
-                  plane. &ldquo;Significantly more consequential than easy, good quests&rdquo; —
+                  plane. &ldquo;Significantly more consequential than easy, good quests&rdquo;,
                   their words. This is the box the whole site is built to point you toward.
                 </p>
               </div>
               <div className="bg-ink-900 p-5 sm:border-r border-hair">
-                <p className="font-mono text-small uppercase text-ink-600 mb-2">
+                <p className="first-letter:uppercase text-small text-ink-600 mb-2">
                   Easy + bad
                 </p>
                 <p className="text-ink-500 text-small leading-relaxed">
@@ -146,18 +146,18 @@ export default function GoodQuestsPage() {
                 </p>
               </div>
               <div className="bg-ink-900 p-5">
-                <p className="font-mono text-small uppercase text-ink-500 mb-2">
+                <p className="first-letter:uppercase text-small text-ink-500 mb-2">
                   Easy + good
                 </p>
                 <p className="text-ink-400 text-small leading-relaxed">
-                  Top marks in school, a modest fitness goal — fine, even admirable, and real.
+                  Top marks in school, a modest fitness goal: fine, even admirable, and real.
                   Just not the ceiling of what you could do with one life.
                 </p>
               </div>
             </div>
-            <p className="font-mono text-small text-ink-600 leading-relaxed">
+            <p className="text-small text-ink-600 leading-relaxed">
               Quotes from the original essay, reproduced here as written. Read it in full at the
-              link above — it&rsquo;s short.
+              link above. It&rsquo;s short.
             </p>
           </div>
         </section>
@@ -165,39 +165,40 @@ export default function GoodQuestsPage() {
         {/* the live grid */}
         <section className="border-b border-hair bg-ink-900/30">
           <div className="site-shell py-14">
-            <p className="font-mono text-small uppercase text-primary mb-3">
-              Not hypothetical — plotted with this site&rsquo;s own live data
+            <p className="first-letter:uppercase text-small text-primary mb-3">
+              Not hypothetical: plotted with this site&rsquo;s own live data
             </p>
-            <h2 className="font-serif text-2xl md:text-4xl text-ink-100 leading-tight mb-5">
+            <h2 className="text-h2 md:text-h1 text-ink-100 leading-tight mb-5">
               Here are {plotted.length} real quests, on the real grid.
             </h2>
-            <p className="text-ink-400 text-sm leading-relaxed max-w-2xl mb-8">
-              The x-axis is <span className="text-ink-200">opportunity</span> — demand crossed
-              with how open the gap still is, computed live on{' '}
+            <p className="text-ink-400 text-small leading-relaxed max-w-2xl mb-8">
+              Left to right is bad to good. Every quest here sits in the good half, placed by{' '}
+              <span className="text-ink-200">opportunity</span>: demand crossed with how open the
+              gap still is, from{' '}
               <Link href="/rankings" className="text-primary hover:underline">
                 /rankings
               </Link>
-              . The y-axis is <span className="text-ink-200">how much frontier is left</span> —
-              a low-confidence quest has no playbook yet; that&rsquo;s what makes it hard. Every
-              quest here already cleared &ldquo;good&rdquo; before it was ranked at all — this
-              site only tracks unambiguously good problems (see{' '}
+              . The y-axis is <span className="text-ink-200">how hard the problem is</span>,
+              from three estimates each problem already carries: tractability, years to impact
+              and capital required. Every quest here cleared &ldquo;good&rdquo; before it was
+              ranked (see{' '}
               <Link href="/methodology" className="text-primary hover:underline">
                 /methodology
               </Link>
-              ) — so the left half of the grid is real, just empty by construction. Click a
-              point.
+              ), so the left half is empty until you answer for your own work. Now put
+              yourself on it.
             </p>
-            <QuestGrid quests={plotted} />
+            <QuestFlow quests={plotted} />
           </div>
         </section>
 
         {/* the people hard quests need */}
         <section className="border-b border-hair">
           <div className="site-shell py-14">
-            <p className="font-mono text-small uppercase text-primary mb-3">
+            <p className="first-letter:uppercase text-small text-primary mb-3">
               A good quest needs believers
             </p>
-            <h2 className="font-serif text-2xl md:text-4xl text-ink-100 leading-tight mb-5 max-w-7xl">
+            <h2 className="text-h2 md:text-h1 text-ink-100 leading-tight mb-5 max-w-7xl">
               The hard part is not only technical. It is moral endurance.
             </h2>
             <p className="text-ink-300 leading-relaxed max-w-2xl mb-8">
@@ -208,27 +209,27 @@ export default function GoodQuestsPage() {
             </p>
             <div className="grid md:grid-cols-2 gap-px border border-hair bg-ink-700/50">
               <article className="bg-ink-900 p-6">
-                <p className="font-mono text-small uppercase text-primary mb-2">
+                <p className="first-letter:uppercase text-small text-primary mb-2">
                   {missionary.name}
                 </p>
-                <h3 className="font-serif text-xl text-ink-100 mb-2">Carry the cause.</h3>
-                <p className="text-sm text-ink-400 leading-relaxed mb-4">{missionary.essence}</p>
-                <p className="text-sm text-ink-300 leading-relaxed">
+                <h3 className="text-h3 text-ink-100 mb-2">Carry the cause.</h3>
+                <p className="text-small text-ink-400 leading-relaxed mb-4">{missionary.essence}</p>
+                <p className="text-small text-ink-300 leading-relaxed">
                   {missionary.edge}
                 </p>
               </article>
               <article className="bg-ink-900 p-6">
-                <p className="font-mono text-small uppercase text-terminal-cyan mb-2">
+                <p className="first-letter:uppercase text-small text-ink-300 mb-2">
                   {evangelist.name}
                 </p>
-                <h3 className="font-serif text-xl text-ink-100 mb-2">Build the coalition.</h3>
-                <p className="text-sm text-ink-400 leading-relaxed mb-4">{evangelist.essence}</p>
-                <p className="text-sm text-ink-300 leading-relaxed">
+                <h3 className="text-h3 text-ink-100 mb-2">Build the coalition.</h3>
+                <p className="text-small text-ink-400 leading-relaxed mb-4">{evangelist.essence}</p>
+                <p className="text-small text-ink-300 leading-relaxed">
                   {evangelist.edge}
                 </p>
               </article>
             </div>
-            <p className="mt-5 font-mono text-small text-ink-500 leading-relaxed max-w-2xl">
+            <p className="mt-5 text-small text-ink-500 leading-relaxed max-w-2xl">
               A moral mission is necessary, not sufficient. The standard here is still a specific
               problem, a real frontier, evidence that the future would be better if it works, and
               the discipline to earn founder-problem fit in the real world.
@@ -239,26 +240,32 @@ export default function GoodQuestsPage() {
         {/* the honest question */}
         <section className="border-b border-hair">
           <div className="site-shell py-16 text-center">
-            <h2 className="font-serif text-3xl md:text-5xl text-ink-100 leading-tight mb-5">
+            <h2 className="text-h1 md:text-display-2 text-ink-100 leading-tight mb-5">
               Are you on a good quest right now?
               <span className="block text-primary">Be honest.</span>
             </h2>
             <p className="text-ink-400 leading-relaxed max-w-xl mx-auto mb-8">
-              Not a rhetorical question — the essay&rsquo;s actual closing line. If the honest
+              Not a rhetorical question: the essay&rsquo;s actual closing line. If the honest
               answer is no, the fix isn&rsquo;t motivation. It&rsquo;s finding the specific hard,
               good quest that only you are positioned to run at. That match has a name here:
               founder-problem fit.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <Link
-                href="/fit"
-                className="inline-flex items-center gap-2 font-mono text-xs uppercase text-paper bg-primary hover:bg-primary/90 rounded px-5 py-3 transition-colors"
+                href="#your-quest"
+                className="first-letter:uppercase inline-flex items-center gap-2 text-small text-paper bg-primary hover:bg-primary/90 rounded px-5 py-3 transition-colors"
               >
-                Find your quest &rarr;
+                Place your quest on the grid &rarr;
+              </Link>
+              <Link
+                href="/fit"
+                className="first-letter:uppercase inline-flex items-center gap-2 text-small text-ink-200 border border-hair hover:border-primary/60 rounded px-5 py-3 transition-colors"
+              >
+                Or take the interview &rarr;
               </Link>
               <Link
                 href="/journey"
-                className="inline-flex items-center gap-2 font-mono text-xs uppercase text-ink-200 border border-hair hover:border-primary/60 rounded px-5 py-3 transition-colors"
+                className="first-letter:uppercase inline-flex items-center gap-2 text-small text-ink-200 border border-hair hover:border-primary/60 rounded px-5 py-3 transition-colors"
               >
                 How to actually start &rarr;
               </Link>
@@ -269,8 +276,8 @@ export default function GoodQuestsPage() {
         {/* close, looping back to beginning of infinity */}
         <section className="border-b border-hair">
           <div className="site-shell py-10">
-            <p className="text-ink-400 leading-relaxed max-w-2xl text-sm">
-              The current age of humanity has no date on it yet. It&rsquo;s still being written —
+            <p className="text-ink-400 leading-relaxed max-w-2xl text-small">
+              The current age of humanity has no date on it yet. It&rsquo;s still being written:
               see{' '}
               <Link href="/ages" className="text-primary hover:underline">
                 /ages

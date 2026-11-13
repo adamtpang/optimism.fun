@@ -22,6 +22,7 @@ import {
   type ActorType,
   type Intent,
 } from '@/lib/commitments'
+import { VISITOR_CLASS_PARAM, visitorClass } from '@/lib/visitor-classes'
 
 export type FormCompany = { slug: string; name: string }
 
@@ -96,17 +97,33 @@ export default function CommitmentForm({
   // The sticky action bar drives this form rather than duplicating it.
   useEffect(() => {
     const onCoordinate = (e: Event) => {
-      const detail = (e as CustomEvent<{ actor?: ActorType }>).detail
+      const detail = (e as CustomEvent<{ actor?: ActorType; intent?: Intent }>).detail
       const next = detail?.actor
       if (next && ACTOR_TYPES.includes(next)) {
+        const wanted = detail?.intent
         setActor(next)
-        setIntent(INTENTS_BY_ACTOR[next][0])
+        setIntent(wanted && INTENTS_BY_ACTOR[next].includes(wanted) ? wanted : INTENTS_BY_ACTOR[next][0])
         setState('idle')
       }
       rootRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
     window.addEventListener(COORDINATE_EVENT, onCoordinate)
     return () => window.removeEventListener(COORDINATE_EVENT, onCoordinate)
+  }, [])
+
+  // A class link such as /p/loneliness?as=patron#coordinate sets the starting
+  // actor and intent. Read in the browser so the page can stay prerendered.
+  useEffect(() => {
+    const cls = visitorClass(new URLSearchParams(window.location.search).get(VISITOR_CLASS_PARAM))
+    if (!cls) return
+    setActor(cls.commitment.actor)
+    setIntent(cls.commitment.intent)
+    // Jump, do not glide: the page scrolls smoothly by default, and a glide is
+    // cancelled when content above finishes loading. The second jump corrects
+    // for anything that changed height after the first.
+    const jump = () => rootRef.current?.scrollIntoView({ block: 'start', behavior: 'instant' })
+    const timers = [window.setTimeout(jump, 150), window.setTimeout(jump, 900)]
+    return () => timers.forEach((t) => window.clearTimeout(t))
   }, [])
 
   const needsCompany = intent === 'join' || intent === 'hire' || intent === 'raise'
@@ -163,12 +180,12 @@ export default function CommitmentForm({
       <div
         ref={rootRef}
         id="coordinate"
-        className="border border-terminal-green/40 bg-terminal-green/[0.04] p-6 scroll-mt-24"
+        className="border border-terminal-green/40 bg-terminal-green/[0.04] p-6 scroll-mt-40"
       >
-        <p className="font-mono text-small uppercase text-terminal-green mb-2">
+        <p className="first-letter:uppercase text-small text-terminal-green mb-2">
           Submitted · not yet public
         </p>
-        <p className="text-ink-200 text-sm leading-relaxed">
+        <p className="text-ink-200 text-small leading-relaxed">
           Received. A human reads it before it appears on the {problemName} board. Nothing is
           published automatically, and your email is never shown.
         </p>
@@ -176,15 +193,15 @@ export default function CommitmentForm({
     )
   }
 
-  const label = 'block font-mono text-small uppercase text-ink-500 mb-1.5'
+  const label = 'block text-label text-ink-300 mb-1.5'
   const field =
-    'w-full bg-ink-900/60 border border-hair px-3 py-2 text-sm text-ink-100 placeholder:text-ink-600 focus:border-primary focus:outline-none'
+    'w-full bg-ink-900/60 border border-hair px-3 py-2 text-small text-ink-100 placeholder:text-ink-600 focus:border-primary focus:outline-none'
 
   return (
-    <div ref={rootRef} id="coordinate" className="border border-hair scroll-mt-24">
+    <div ref={rootRef} id="coordinate" className="border border-hair scroll-mt-40">
       {!compact && (
         <div className="border-b border-hair px-5 py-4 bg-ink-900/40">
-          <p className="font-serif text-xl text-ink-100">Act on {problemName}</p>
+          <p className="text-h3 text-ink-100">Act on {problemName}</p>
         </div>
       )}
 
@@ -216,7 +233,7 @@ export default function CommitmentForm({
               type="button"
               onClick={() => pickActor(a)}
               aria-pressed={actor === a}
-              className={`px-3 py-2.5 font-mono text-small transition-colors ${
+              className={`px-3 py-2.5 text-small transition-colors ${
                 actor === a
                   ? 'bg-primary text-ink-900 font-medium'
                   : 'bg-ink-900/60 text-ink-400 hover:text-ink-100'
@@ -269,7 +286,7 @@ export default function CommitmentForm({
                 ))}
               </select>
               {companies.length === 0 && (
-                <p className="font-mono text-small text-terminal-rose mt-1.5">
+                <p className="text-small text-terminal-rose mt-1.5">
                   No company is tracked on this problem yet. Use the contribute path to add one.
                 </p>
               )}
@@ -356,7 +373,7 @@ export default function CommitmentForm({
             placeholder={prompt.placeholder}
             className={`${field} resize-y leading-relaxed`}
           />
-          <p className="font-mono text-small text-ink-600 mt-1 tabular-nums">
+          <p className="font-figure text-small text-ink-600 mt-1 tabular-nums">
             {proof.length} / {MAX_PROOF}
           </p>
         </div>
@@ -446,11 +463,11 @@ export default function CommitmentForm({
         <button
           type="submit"
           disabled={state === 'sending'}
-          className="w-full bg-primary text-ink-900 font-medium text-sm py-3 hover:bg-primary/90 disabled:opacity-50 transition-colors"
+          className="w-full bg-primary text-ink-900 font-medium text-small py-3 hover:bg-primary/90 disabled:opacity-50 transition-colors"
         >
           {state === 'sending' ? 'Sending...' : 'Commit'}
         </button>
-        <p className="font-mono text-small text-ink-600 text-center">
+        <p className="text-small text-ink-600 text-center">
           A human reviews every submission. Nothing publishes itself.
         </p>
       </form>

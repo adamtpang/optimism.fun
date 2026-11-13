@@ -26,24 +26,24 @@ export default function MethodologyPage() {
           <div className="max-w-3xl mx-auto">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-sm text-ink-500 hover:text-ink-300 transition-colors mb-8"
+              className="inline-flex items-center gap-2 text-small text-ink-500 hover:text-ink-300 transition-colors mb-8"
             >
               <span>←</span> back
             </Link>
-            <p className="text-amber-300 font-medium tracking-[0.2em] uppercase text-xs mb-3">
+            <p className="first-letter:uppercase text-primary font-medium text-small mb-3">
               Methodology
             </p>
-            <h1 className="font-serif text-4xl md:text-6xl font-normal leading-[1.1] mb-6">
+            <h1 className="text-h1 md:text-display-2 font-normal leading-[1.1] mb-6">
               How we rank.
             </h1>
-            <p className="text-lg text-ink-400 leading-relaxed mb-12">
+            <p className="text-body-lg text-ink-400 leading-relaxed mb-12">
               Every ranking is a conjecture open to refutation. The point is not to be right
               forever, it is to be wrong in public and correctable by evidence.
             </p>
 
             <div className="space-y-12 text-ink-300 leading-relaxed">
               <section>
-                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
+                <h2 className="text-h2 font-normal mb-4 text-ink-100">
                   Three lenses, not one composite
                 </h2>
                 <p className="mb-4">
@@ -52,42 +52,42 @@ export default function MethodologyPage() {
                   supports it. Users pick which lens matters and sort by it.
                 </p>
                 <div className="space-y-4">
-                  <div className="rounded border border-amber-500/20 bg-amber-500/[0.03] p-5">
-                    <p className="text-amber-300 text-xs uppercase tracking-wider mb-2">
+                  <div className="rounded border border-neutral-300 bg-paper p-5">
+                    <p className="first-letter:uppercase text-primary text-small mb-2">
                       welfare lens
                     </p>
-                    <h3 className="font-serif font-semibold mb-2 text-ink-100">
+                    <h3 className="font-semibold mb-2 text-ink-100">
                       Copenhagen Consensus Benefit-Cost Ratio
                     </h3>
-                    <p className="text-sm text-ink-400">
+                    <p className="text-small text-ink-400">
                       Dollars of social good per dollar of intervention. Developed by Nobel-
                       laureate economists at the Copenhagen Consensus Center. Favors
                       high-certainty, shovel-ready interventions like micronutrients and
                       disease control.
                     </p>
                   </div>
-                  <div className="rounded border border-rose-500/20 bg-rose-500/[0.03] p-5">
-                    <p className="text-terminal-rose text-xs uppercase tracking-wider mb-2">
+                  <div className="rounded border border-neutral-300 bg-paper p-5">
+                    <p className="first-letter:uppercase text-terminal-rose text-small mb-2">
                       x-risk lens
                     </p>
-                    <h3 className="font-serif font-semibold mb-2 text-ink-100">
+                    <h3 className="font-semibold mb-2 text-ink-100">
                       80,000 Hours ITN composite
                     </h3>
-                    <p className="text-sm text-ink-400">
+                    <p className="text-small text-ink-400">
                       Importance × Tractability × Neglectedness. Developed at 80,000 Hours
                       for Effective Altruism cause prioritization. Favors problems where an
                       additional unit of effort has the highest marginal impact on avoiding
                       civilizational loss.
                     </p>
                   </div>
-                  <div className="rounded border border-amber-300/20 bg-indigo-500/[0.03] p-5">
-                    <p className="text-amber-200 text-xs uppercase tracking-wider mb-2">
+                  <div className="rounded border border-neutral-300 bg-paper p-5">
+                    <p className="first-letter:uppercase text-primary text-small mb-2">
                       utility delta lens
                     </p>
-                    <h3 className="font-serif font-semibold mb-2 text-ink-100">
+                    <h3 className="font-semibold mb-2 text-ink-100">
                       State-of-the-art vs physics-possible
                     </h3>
-                    <p className="text-sm text-ink-400">
+                    <p className="text-small text-ink-400">
                       The ratio of current best solution to what physics and economics would
                       allow. Inspired by Musk&rsquo;s utility-delta framing. Favors hard tech
                       with massive unrealized gaps. Energy, construction, transportation, bio.
@@ -97,13 +97,13 @@ export default function MethodologyPage() {
               </section>
 
               <section>
-                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
+                <h2 className="text-h2 font-normal mb-4 text-ink-100">
                   Detecting demand: humanity&rsquo;s market research
                 </h2>
                 <p className="mb-4">
                   Demand for a problem&rsquo;s solution is what the world is{' '}
-                  <em>already paying</em> &mdash; in suffering, money, capital, research, and
-                  policy &mdash; to make it go away. The trap is mistaking{' '}
+                  <em>already paying</em>, in suffering, money, capital, research, and
+                  policy, to make it go away. The trap is mistaking{' '}
                   <span className="text-ink-100">attention</span> (hype, news spikes, search
                   volume) for demand. Attention is cheap and faddish; we treat it as a{' '}
                   <em>crowding</em> signal, not demand. So we detect demand by triangulating
@@ -112,10 +112,10 @@ export default function MethodologyPage() {
                 </p>
                 <div className="space-y-3 mb-4">
                   <div className="rounded border border-hair p-4">
-                    <p className="text-amber-300 text-xs uppercase tracking-wider mb-1">
+                    <p className="first-letter:uppercase text-primary text-small mb-1">
                       burden &middot; who, how badly
                     </p>
-                    <p className="text-sm text-ink-400">
+                    <p className="text-small text-ink-400">
                       Affected population × per-capita severity. Live sources:{' '}
                       <span className="text-ink-200">
                         IHME Global Burden of Disease, WHO, World Bank, Our World in Data
@@ -124,42 +124,42 @@ export default function MethodologyPage() {
                     </p>
                   </div>
                   <div className="rounded border border-hair p-4">
-                    <p className="text-amber-300 text-xs uppercase tracking-wider mb-1">
+                    <p className="first-letter:uppercase text-primary text-small mb-1">
                       willingness to pay &middot; revealed spend
                     </p>
-                    <p className="text-sm text-ink-400">
-                      The addressable market the world already pays into &mdash; household,
+                    <p className="text-small text-ink-400">
+                      The addressable market the world already pays into, household,
                       government, and enterprise spend. National accounts and sector TAM.
                     </p>
                   </div>
                   <div className="rounded border border-hair p-4">
-                    <p className="text-amber-300 text-xs uppercase tracking-wider mb-1">
+                    <p className="first-letter:uppercase text-primary text-small mb-1">
                       capital flux &middot; smart money + momentum
                     </p>
-                    <p className="text-sm text-ink-400">
+                    <p className="text-small text-ink-400">
                       Estimated venture, grant, and R&amp;D dollars flowing at the problem, and
                       whether they&rsquo;re rising. Crunchbase / Dealroom, NIH RePORTER, NSF,
                       philanthropy.
                     </p>
                   </div>
                   <div className="rounded border border-hair p-4">
-                    <p className="text-ink-300 text-xs uppercase tracking-wider mb-1">
+                    <p className="first-letter:uppercase text-ink-300 text-small mb-1">
                       research &amp; policy &middot; frontier and institutions{' '}
                       <span className="text-ink-600 normal-case">(feeds coming online)</span>
                     </p>
-                    <p className="text-sm text-ink-400">
+                    <p className="text-small text-ink-400">
                       Publication and patent intensity (OpenAlex, NIH RePORTER, The Lens) and
-                      institutional demand &mdash; legislation, procurement, prizes. Wired into
+                      institutional demand, legislation, procurement, prizes. Wired into
                       the model; awaiting their live feeds.
                     </p>
                   </div>
                   <div className="rounded border border-hair p-4">
-                    <p className="text-amber-300 text-xs uppercase tracking-wider mb-1">
+                    <p className="first-letter:uppercase text-primary text-small mb-1">
                       expert priors &middot; credible prioritizers
                     </p>
-                    <p className="text-sm text-ink-400">
+                    <p className="text-small text-ink-400">
                       Convergence of institutions that rank problems with a transparent
-                      methodology &mdash; 80,000 Hours, Open Philanthropy, GiveWell, Copenhagen
+                      methodology, 80,000 Hours, Open Philanthropy, GiveWell, Copenhagen
                       Consensus, YC RFS, Founders Fund. When several agree independently, that
                       is signal.
                     </p>
@@ -170,24 +170,24 @@ export default function MethodologyPage() {
                   log-normalizes each against a named ceiling, and applies a{' '}
                   <span className="text-ink-100">corroboration gate</span>: a problem&rsquo;s
                   demand isn&rsquo;t trusted until at least two independent signal classes agree
-                  &mdash; a lone signal is discounted. A class with no credible source yet is{' '}
+                 , a lone signal is discounted. A class with no credible source yet is{' '}
                   dropped from the blend, never counted as a silent zero. The{' '}
-                  <span className="text-amber-300">●</span> dots on the{' '}
+                  <span className="text-primary">●</span> dots on the{' '}
                   <Link
                     href="/radar"
-                    className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                    className="text-primary underline underline-offset-2"
                   >
                     radar
                   </Link>{' '}
                   show how many classes corroborate each number. The most valuable problems are
                   where demand is high but attention and capital are{' '}
-                  <em>low</em> &mdash; that gap is the founder&rsquo;s and the
+                  <em>low</em>, that gap is the founder&rsquo;s and the
                   allocator&rsquo;s edge.
                 </p>
               </section>
 
               <section>
-                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
+                <h2 className="text-h2 font-normal mb-4 text-ink-100">
                   Time and capital are order-of-magnitude estimates
                 </h2>
                 <p className="mb-4">
@@ -198,7 +198,7 @@ export default function MethodologyPage() {
                 </p>
                 <p className="mb-4">
                   For <span className="text-ink-100">time-to-impact</span>, we pattern-match
-                  against the closest historical arc — biotech base rates for longevity, IEA
+                  against the closest historical arc: biotech base rates for longevity, IEA
                   Net-Zero envelopes for energy, Gavi/Global Fund scaling curves for
                   infectious disease. The number is years from <em>today</em> to
                   civilizational-scale impact, not first product.
@@ -213,7 +213,7 @@ export default function MethodologyPage() {
               </section>
 
               <section>
-                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
+                <h2 className="text-h2 font-normal mb-4 text-ink-100">
                   The homepage order
                 </h2>
                 <p className="mb-4">
@@ -241,7 +241,7 @@ export default function MethodologyPage() {
                   or mix a stock with a flow.
                 </p>
                 <p className="mb-4 text-ink-100">Sourced on the death-rate scale</p>
-                <ul className="space-y-3 text-sm text-ink-400 mb-4">
+                <ul className="space-y-3 text-small text-ink-400 mb-4">
                   {problems.filter((p) => deathRatePair(p)).map((p) => {
                     const pair = deathRatePair(p)!
                     return (
@@ -263,7 +263,7 @@ export default function MethodologyPage() {
                   })}
                 </ul>
                 <p className="mb-4 text-ink-100">Sourced as the share lost if the catastrophe occurs</p>
-                <ul className="space-y-3 text-sm text-ink-400 mb-4">
+                <ul className="space-y-3 text-small text-ink-400 mb-4">
                   {problems
                     .filter((p) => p.tier === 'x-risk' && p.severity && !deathRatePair(p))
                     .map((p) => (
@@ -279,7 +279,7 @@ export default function MethodologyPage() {
                     ))}
                 </ul>
                 <p className="mb-4 text-ink-100">Not scored</p>
-                <ul className="space-y-3 text-sm text-ink-400 mb-4">
+                <ul className="space-y-3 text-small text-ink-400 mb-4">
                   {problems
                     .filter((p) => !p.severity)
                     .map((p) => (
@@ -339,13 +339,13 @@ export default function MethodologyPage() {
               </section>
 
               <section>
-                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
+                <h2 className="text-h2 font-normal mb-4 text-ink-100">
                   Every number carries a confidence tag
                 </h2>
                 <p className="mb-4">
                   If we don&rsquo;t know, we say so. Every numeric cell is tagged{' '}
                   <span className="text-terminal-green">high</span>,{' '}
-                  <span className="text-amber-300">med</span>, or{' '}
+                  <span className="text-primary">med</span>, or{' '}
                   <span className="text-terminal-rose">low</span> with a source and an as-of date.
                   Unknown values are written as &ldquo;unknown&rdquo; and tagged low. No silent
                   guessing.
@@ -359,7 +359,7 @@ export default function MethodologyPage() {
               </section>
 
               <section>
-                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
+                <h2 className="text-h2 font-normal mb-4 text-ink-100">
                   Live data, refreshed daily
                 </h2>
                 <p className="mb-5">
@@ -372,12 +372,12 @@ export default function MethodologyPage() {
               </section>
 
               <section>
-                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
+                <h2 className="text-h2 font-normal mb-4 text-ink-100">
                   Five tiers, for navigation not hierarchy
                 </h2>
-                <ul className="space-y-2 text-sm text-ink-400">
+                <ul className="space-y-2 text-small text-ink-400">
                   <li>
-                    <span className="text-amber-300">welfare floor</span>: Copenhagen
+                    <span className="text-primary">welfare floor</span>: Copenhagen
                     Consensus baseline. High-certainty, high-BCR interventions.
                   </li>
                   <li>
@@ -385,7 +385,7 @@ export default function MethodologyPage() {
                     top-priority areas. AI, bio, nuclear, catastrophic risk.
                   </li>
                   <li>
-                    <span className="text-amber-200">hard tech</span>: Stephens&rsquo;
+                    <span className="text-primary">hard tech</span>: Stephens&rsquo;
                     &ldquo;good quests&rdquo; from Founders Fund. Energy, construction, space,
                     bio-manufacturing.
                   </li>
@@ -401,7 +401,7 @@ export default function MethodologyPage() {
               </section>
 
               <section>
-                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
+                <h2 className="text-h2 font-normal mb-4 text-ink-100">
                   What we refuse to do
                 </h2>
                 <ul className="space-y-3 text-ink-400">
@@ -426,27 +426,27 @@ export default function MethodologyPage() {
               </section>
 
               <section>
-                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
+                <h2 className="text-h2 font-normal mb-4 text-ink-100">
                   Shoulders we stand on
                 </h2>
                 <p className="mb-4">
                   optimism.fun is downstream of three open inspirations. Each one supplies
                   a piece of the rubric we use to rank.
                 </p>
-                <ul className="space-y-3 text-sm text-ink-400">
+                <ul className="space-y-3 text-small text-ink-400">
                   <li>
                     <a
                       href="https://traestephens.substack.com/p/choose-good-quests"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                      className="text-primary underline underline-offset-2"
                     >
                       Trae Stephens &amp; Markie Wagner &middot; &ldquo;Choose Good Quests&rdquo;
                     </a>{' '}
-                    &mdash; the good&times;hard quest grid: a good quest makes the future
+                   , the good&times;hard quest grid: a good quest makes the future
                     better, a bad one doesn&rsquo;t. Our best people owe the world a hard one.
                     Gamified on{' '}
-                    <Link href="/good-quests" className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2">
+                    <Link href="/good-quests" className="text-primary underline underline-offset-2">
                       /good-quests
                     </Link>
                     .
@@ -456,11 +456,11 @@ export default function MethodologyPage() {
                       href="https://patrickcollison.com/progress"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                      className="text-primary underline underline-offset-2"
                     >
                       Patrick Collison &middot; Progress Studies
                     </a>{' '}
-                    &mdash; the case that progress is a study, not a vibe. Cowen &amp;
+                   , the case that progress is a study, not a vibe. Cowen &amp;
                     Collison&rsquo;s 2019 essay set the field. The dense linkroll on that
                     page is the spirit we want for our /voices and /progress.
                   </li>
@@ -469,11 +469,11 @@ export default function MethodologyPage() {
                       href="https://www.ycombinator.com/rfs"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                      className="text-primary underline underline-offset-2"
                     >
                       Y Combinator &middot; Requests for Startups
                     </a>{' '}
-                    &mdash; the format for turning a problem into a concrete buildable
+                   , the format for turning a problem into a concrete buildable
                     company. Our per-problem whitepapers follow the RFS voice: lead with the
                     pain, name the unlock, describe the shape.
                   </li>
@@ -482,11 +482,11 @@ export default function MethodologyPage() {
                       href="https://80000hours.org/problem-profiles/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                      className="text-primary underline underline-offset-2"
                     >
                       80,000 Hours &middot; problem profiles
                     </a>{' '}
-                    &mdash; the ITN composite (importance &times; tractability &times;
+                   , the ITN composite (importance &times; tractability &times;
                     neglectedness) we use as the x-risk lens.
                   </li>
                   <li>
@@ -494,11 +494,11 @@ export default function MethodologyPage() {
                       href="https://copenhagenconsensus.com"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                      className="text-primary underline underline-offset-2"
                     >
                       Copenhagen Consensus
                     </a>{' '}
-                    &mdash; benefit-cost ratios for the welfare lens. Lomborg&rsquo;s
+                   , benefit-cost ratios for the welfare lens. Lomborg&rsquo;s
                     Nobel-laureate panel methodology.
                   </li>
                   <li>
@@ -506,11 +506,11 @@ export default function MethodologyPage() {
                       href="https://ourworldindata.org"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                      className="text-primary underline underline-offset-2"
                     >
                       Our World in Data
                     </a>{' '}
-                    &mdash; the gold standard for &ldquo;every number sourced.&rdquo; Many of
+                   , the gold standard for &ldquo;every number sourced.&rdquo; Many of
                     our progress receipts trace back here.
                   </li>
                   <li>
@@ -518,11 +518,11 @@ export default function MethodologyPage() {
                       href="https://rootsofprogress.org"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                      className="text-primary underline underline-offset-2"
                     >
                       Roots of Progress
                     </a>{' '}
-                    &mdash; Jason Crawford&rsquo;s case that progress is the moral imperative
+                   , Jason Crawford&rsquo;s case that progress is the moral imperative
                     of our era. Anchors the &ldquo;progress &amp; abundance&rdquo; tier.
                   </li>
                   <li>
@@ -530,18 +530,18 @@ export default function MethodologyPage() {
                       href="https://worksinprogress.co"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-300 hover:text-amber-200 underline decoration-dotted underline-offset-2"
+                      className="text-primary underline underline-offset-2"
                     >
                       Works in Progress
                     </a>{' '}
-                    &mdash; the magazine of the progress-studies movement. Where many of the
+                   , the magazine of the progress-studies movement. Where many of the
                     arguments behind the rankings get sharpened.
                   </li>
                 </ul>
               </section>
 
               <section>
-                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
+                <h2 className="text-h2 font-normal mb-4 text-ink-100">
                   Supply and demand score
                 </h2>
                 <p className="mb-4">
@@ -563,7 +563,7 @@ export default function MethodologyPage() {
               </section>
 
               <section>
-                <h2 className="font-serif text-2xl font-normal mb-4 text-ink-100">
+                <h2 className="text-h2 font-normal mb-4 text-ink-100">
                   Phase 0 status
                 </h2>
                 <p className="mb-3">

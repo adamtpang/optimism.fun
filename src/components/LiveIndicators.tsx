@@ -23,7 +23,7 @@ type Resp = {
 }
 
 const fmt = (n: number) => new Intl.NumberFormat('en', { maximumFractionDigits: 2 }).format(n)
-const day = (s: string | null) => (s ? s.slice(0, 10) : '—')
+const day = (s: string | null) => (s ? s.slice(0, 10) : 'unknown')
 
 /**
  * Reads /api/indicators (DB-backed live World Bank values) and renders the
@@ -50,22 +50,22 @@ export default function LiveIndicators() {
     }
   }, [])
 
-  if (err) return <p className="text-sm text-ink-500">Live data unavailable right now.</p>
-  if (!data) return <p className="text-sm text-ink-500">Loading live values…</p>
+  if (err) return <p className="text-small text-ink-500">Live data unavailable right now.</p>
+  if (!data) return <p className="text-small text-ink-500">Loading live values…</p>
 
   return (
     <div>
       {data.observations.length === 0 ? (
-        <p className="text-sm text-ink-400">
+        <p className="text-small text-ink-400">
           The live table is wired and will populate on the next scheduled refresh
           {data.dbConfigured ? '' : ' once the database is connected'}. Seed values are shown
           across the site until then.
         </p>
       ) : (
         <div className="rounded border border-hair overflow-hidden">
-          <table className="w-full text-sm">
+          <table className="w-full text-small">
             <thead>
-              <tr className="font-mono text-small uppercase tracking-wider text-ink-500">
+              <tr className="first-letter:uppercase text-small text-ink-500">
                 <th className="text-left p-3 font-normal">World Bank indicator</th>
                 <th className="text-right p-3 font-normal">Latest</th>
                 <th className="text-right p-3 font-normal">Year</th>
@@ -75,15 +75,15 @@ export default function LiveIndicators() {
               {data.observations.map((o) => (
                 <tr key={o.indicator} className="border-t border-hair">
                   <td className="p-3 text-ink-300">{o.label}</td>
-                  <td className="p-3 text-right font-mono text-ink-100">{fmt(o.value)}</td>
-                  <td className="p-3 text-right font-mono text-ink-500">{o.year}</td>
+                  <td className="p-3 text-right text-ink-100">{fmt(o.value)}</td>
+                  <td className="p-3 text-right text-ink-500">{o.year}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       )}
-      <p className="mt-3 font-mono text-small text-ink-500">
+      <p className="mt-3 text-small text-ink-500">
         <span className="text-primary">●</span> source: World Bank WDI · published{' '}
         {data.sourceLastUpdated ? day(data.sourceLastUpdated) : 'unavailable'} · our copy refreshed {day(data.dbFetchedAt)}
       </p>

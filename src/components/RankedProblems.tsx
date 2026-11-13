@@ -63,7 +63,7 @@ export default function RankedProblems({ rows }: { rows: RankedRow[] }) {
             if (value === 'ranked' || value === 'people' || value === 'neglected') setSort(value)
           }}
           aria-label="Sort problems"
-          className="inline-flex h-auto justify-start gap-1 rounded-lg bg-neutral-100 p-1"
+          className="inline-flex h-auto justify-start gap-1 rounded bg-neutral-100 p-1"
         >
           {SORTS.map((item) => (
             <ToggleGroupItem
@@ -77,11 +77,11 @@ export default function RankedProblems({ rows }: { rows: RankedRow[] }) {
         </ToggleGroup>
       </div>
 
-      <div className="mt-4 border border-neutral-200 rounded-xl bg-white shadow-sm overflow-hidden">
-        <div className="hidden md:grid grid-cols-[48px_minmax(0,1.3fr)_minmax(0,1.5fr)_120px_150px_72px] gap-4 items-center h-12 px-6 bg-neutral-50 border-b border-neutral-200 text-small font-medium text-neutral-600">
+      <div className="mt-4 border border-neutral-300 rounded bg-white overflow-hidden">
+        <div className="hidden md:grid grid-cols-[48px_minmax(0,1.3fr)_minmax(0,1.5fr)_120px_150px_72px] gap-4 items-center h-12 px-6 bg-neutral-50 border-b border-neutral-300 text-small font-medium text-neutral-600">
           <span>#</span>
           <span>Problem</span>
-          <span className="flex justify-between pr-14">
+          <span className="flex justify-between pr-[5.75rem] font-figure font-normal">
             <span>1M</span>
             <span>10M</span>
             <span>100M</span>
@@ -98,7 +98,9 @@ export default function RankedProblems({ rows }: { rows: RankedRow[] }) {
               key={r.slug}
               className="grid grid-cols-[28px_minmax(0,1fr)_auto] md:grid-cols-[48px_minmax(0,1.3fr)_minmax(0,1.5fr)_120px_150px_72px] gap-x-3 gap-y-2 items-center px-4 md:px-6 py-4 border-b border-neutral-100 last:border-b-0"
             >
-              <span className="text-small text-neutral-600 font-medium self-start md:self-center">{i + 1}</span>
+              <span className="font-figure text-small text-neutral-600 self-start md:self-center pt-3 md:pt-0">
+                {String(i + 1).padStart(2, '0')}
+              </span>
               <div className="min-w-0">
                 <Link href={`/p/${r.slug}`} className="inline-flex min-h-11 items-center text-body font-semibold text-ink-100 hover:text-primary">
                   {r.name}
@@ -117,21 +119,21 @@ export default function RankedProblems({ rows }: { rows: RankedRow[] }) {
               </div>
               <Link
                 href={`/p/${r.slug}#coordinate`}
-                className="md:hidden inline-flex items-center justify-center h-11 w-11 rounded-lg border border-neutral-200 text-primary font-semibold"
+                className="md:hidden inline-flex items-center justify-center h-11 w-11 rounded border border-neutral-300 text-primary font-semibold"
                 aria-label={`Act on ${r.name}`}
               >
                 →
               </Link>
               <div className="col-start-2 md:col-start-auto md:col-span-1 flex items-center gap-3 min-w-0">
-                <div className="decade-track relative h-3 flex-1 rounded-full overflow-hidden" aria-hidden>
-                  <div className="absolute inset-y-0 left-0 bg-blue-600 rounded-full" style={{ width: `${r.width}%` }} />
+                <div className="plot-grid relative h-5 flex-1 border border-neutral-300 overflow-hidden" aria-hidden>
+                  <div className="absolute inset-y-0 left-0 bg-ink-100" style={{ width: `${r.width}%` }} />
                 </div>
-                <span className="text-small font-semibold text-blue-700 tabular-nums w-14 text-right">
-                  {r.people ? formatHumans(r.people) : '—'}
+                <span className="font-figure text-small text-ink-100 w-20 text-right">
+                  {r.people ? formatHumans(r.people) : 'unknown'}
                 </span>
               </div>
-              <span className="hidden md:block text-small text-right tabular-nums text-neutral-900">
-                {r.deaths ? formatHumans(r.deaths) : '—'}
+              <span className="hidden md:block font-figure text-small text-right text-ink-100">
+                {r.deaths ? formatHumans(r.deaths) : 'unknown'}
               </span>
               <span className="hidden md:flex">
                 <NeglectMeter score={r.score} />
@@ -143,7 +145,7 @@ export default function RankedProblems({ rows }: { rows: RankedRow[] }) {
               </p>
               <Link
                 href={`/p/${r.slug}#coordinate`}
-                className="hidden md:inline-flex items-center justify-center h-11 px-3 rounded-lg border border-neutral-200 text-small font-semibold text-primary hover:bg-teal-50"
+                className="hidden md:inline-flex items-center justify-center h-11 px-3 rounded border border-neutral-300 text-small font-semibold text-primary hover:bg-teal-50"
               >
                 Act
               </Link>

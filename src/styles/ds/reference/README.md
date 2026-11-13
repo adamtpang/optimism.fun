@@ -1,198 +1,176 @@
-# optimism.fun — Design System
+# optimism.fun design system
 
-> Humanity's quest log. A ranked dashboard of humanity's most important problems.
-> *All problems are explainable. All solutions are creatable. Infinite problems, infinite solutions.*
+Rewritten 2026-11-12 to describe the site as it is. The earlier version of this
+file described a true-black terminal with a sky-blue accent, serif headlines and
+em dashes. None of that is the site any more. The token files are the truth:
 
-This is the brand + UI design system for **optimism.fun** — a quantitative leaderboard
-that ranks humanity's biggest unsolved problems and maps the companies, founders,
-countries, crypto, and capital pointed at each one. The aesthetic is a **terminal /
-quest-log**: true-black canvas, a faint engineering grid, hairline rules, monospace
-data labels, a single sky-blue accent, and confident Fraunces serif headlines.
+- `src/styles/ds/colors.css`: every color
+- `src/styles/ds/typography.css`: fonts and weights
+- `tailwind.config.ts`: the names components use
+- `/design-system` (local only, 404 in production): everything on one screen
 
----
+The older reference cards in `components/` and `_ds_manifest.json` in this folder
+predate the 2026-11-01 spec. Treat them as history, not instructions.
 
-## Source material
+## What the site is for
 
-This system was reverse-engineered from the product's live codebase. If you have access,
-read these to go deeper — the component vocabulary, copy, and data model all live here:
+If Deutsch is the theory, Elon is the practice. We are at the beginning of
+infinity, and problems, capital and talent, properly brought together, can save
+the world. The site does three jobs at once:
 
-- **GitHub (web app):** https://github.com/adamtpang/optimism.fun
-  - `src/app/globals.css` — the canonical color system, lattice background, theme variables
-  - `tailwind.config.ts` — the full token map (note: the sky-blue accent is named `teal-*` in code for legacy continuity)
-  - `src/components/` — `ProblemTable`, `ScoreBar`, `TierPill`, `SourceBadge`, `Navbar`, `Footer`, `EmailCapture`, `PageHeader`, `InfoTip`, `MarketTable`
-  - `src/app/page.tsx`, `src/app/rfs/page.tsx`, `src/app/methodology/page.tsx` — page composition + voice
+1. Show the data, with a source on every number (the Our World in Data job).
+2. Make it a picture worth sharing (the Visual Capitalist job).
+3. End in a specific ask (the "Choose Good Quests" job).
 
-Built by Adam Pangelinan / Anchor Marianas LLC. Stack: Next.js 16, React 19, Tailwind 3,
-Framer Motion, next-themes. Explore the repo to build higher-fidelity work than this kit alone allows.
+The third is what makes it different. Every chart and every problem ends with
+something to do.
 
----
+## The look in one paragraph
 
-## What this product is
+Light paper, dark ink, one typeface. White canvas, a pale grey paper for panels,
+hairline borders, generous space. Teal is the neutral action color. Blue marks
+information. Three bold colors are reserved for the three kinds of visitor.
+Everything else stays quiet so those three stand out.
 
-optimism.fun ranks "humanity-scale problems" across multiple cause-prioritization lenses
-(EA / welfare BCR, 80,000 Hours x-risk ITN, e/acc utility-delta) and surfaces, for each:
-the **explanations** (thinkers who argue it matters), the **solutions** (companies
-attacking it), and the **coordination layer** (talent + capital pointed at it). Adjacent
-surfaces map countries, crypto, public companies, and a weekly "Requests for Startups"
-drop. Everything is **sourced and confidence-tagged** — the brand's core promise is that
-every number has a receipt.
+## The design language: Ledger with instruments
 
-The intellectual lineage is explicit and worth matching in tone: David Deutsch's
-critical rationalism ("all problems are explainable, all solutions are creatable"),
-Founders Fund's *Choose Good Quests*, Patrick Collison's progress studies, YC's RFS.
+Chosen by Adam on 2026-11-13 from four samples (Mission Brief, Broadsheet,
+Field Poster, Ledger). He took the simplicity of Ledger and the graphs, grid
+and color of Mission Brief.
 
----
+The page is a calm ledger: white, thin grey borders, plain Inter, facts in
+two-column rows. Each chart is an instrument set into it. The only bold color
+on a page is the three class buttons.
 
-## CONTENT FUNDAMENTALS — how optimism.fun writes
+Rules, each checkable on a screenshot:
 
-The voice is **terminal-precise but humane** — an engineer's logbook written by someone
-who genuinely believes the future is bright. Quantitative confidence without hype.
+1. The grid (`.plot-grid`) appears only behind data. It is never page decoration.
+2. Numbers and figure labels are set in IBM Plex Mono (`.font-figure`). Words
+   are always Inter.
+3. Bold color is only ever a class button or a class label.
+4. Every figure has a title that states the finding, and a source link.
+5. Corners are small (4px) and there are no shadows on figures.
 
-- **Casing.** Two registers, used deliberately:
-  - **lowercase mono** for system chrome, labels, kickers, nav, metadata
-    (`humanity's requests for startups · v0.1`, `weighting: balanced`, `methodology →`).
-    This is the "machine" voice. Kickers are often numbered: `02 · the explanations`.
-  - **Sentence-case Fraunces** for headlines — confident, declarative, often two-beat:
-    *"Infinite problems. Infinite solutions."* · *"Choose a good quest."* ·
-    *"One problem. One whitepaper. Every week."*
-- **Person.** Mostly third-person and imperative — it addresses the *problem space*, not
-  the reader's feelings. When it turns to **you**, it's a direct challenge:
-  *"Pick one worth your life."* · *"what to do with your one life — start here."*
-  "We" appears for the project's own claims (*"each week we ship…"*).
-- **Punctuation as texture.** The interpunct `·` and middot `·` separate metadata
-  fields. The em-dash carries asides. The diamond `◆` is the brand's verbal/visual tic —
-  it opens the logo and closes the footer (*"◆ Infinite problems. Infinite solutions."*).
-  Arrows `→` `&rarr;` terminate calls to action. Quotes are typographic (`'` `"`).
-- **Numbers are sacred.** Every figure is sourced, given a confidence tag (high / med /
-  low), and shown in tabular mono. Magnitudes are order-of-magnitude honest
-  ("millions vs. billions vs. trillions"). The product would rather show a `·` placeholder
-  than an unsourced number.
-- **Intellectual register.** Comfortable with jargon from its lineage — *BCR, ITN,
-  utility δ, x-risk, power-law, frontier, neglectedness* — but always with a hover-definition
-  nearby. It cites real thinkers by surname (Deutsch, Musk, Collison, Cowen).
-- **Honest about uncertainty.** *"Every request here is an argument, not an oracle."* ·
-  *"This list is a conjecture."* · *"open to refutation."* Confidence is a feature, not a pose.
-- **No emoji. Ever.** No exclamation-heavy marketing. No "revolutionary / game-changing."
-  The optimism is in the *content* (problems are solvable), not in the punctuation.
+Signature element: the figure (`src/components/FigureCard.tsx`), a finding, its
+chart on the grid, a ledger of facts, sources, and the class buttons beneath.
+The first one is on the homepage, fed by `src/data/featured-figure.ts`.
 
-**Specimen lines** (lift the cadence, not the words):
-- Kicker: `05 · the white mirror`
-- Headline: *Every problem above, solved for all that have it.*
-- Body: *"{n} priority problems, ranked. Every number sourced. Pick one worth your life."*
-- CTA: `See the receipts →` · `subscribe →` · `read the whitepaper →`
-- Footer sign-off: `◆ Infinite problems. Infinite solutions.`
+Library decision: keep shadcn/ui and Radix for forms and dialogs (already
+installed, fully themeable). Charts are plain HTML and SVG for now. Observable
+Plot (ISC) is the planned addition when standard charts become many. Rejected:
+Mantine (a second component system), Tremor and Nivo (no registry activity
+since early or mid 2025, as read on 2026-11-12).
 
----
+Revisit when: the site gains more than a handful of chart types, or a dark
+theme is wanted.
 
-## VISUAL FOUNDATIONS
+## The three classes
 
-**Theme.** Dark is canonical. True-black canvas `#08080A`, warm off-white text `#F6F5F2`.
-A clean **light** theme (white `#FFFFFF`, slate-900 ink) ships as a first-class companion —
-toggle via `data-theme="light"` on a root element. The accent is identical in both.
+| Class | Who | Default ask | Color |
+|---|---|---|---|
+| Patron | Has capital and decides where it goes | Fund this gap | Gold |
+| Founder | Builds, or joins people who do | Start or join this quest | Vermilion |
+| Researcher | Checks the numbers and extends what is known | Fix or extend this number | Blue |
 
-**Color.** One accent and one accent only: **sky blue `#0ea5e9`** (brighter `#38bdf8`
-on black). Used for the logo diamond, links, active states, primary buttons, focus rings,
-selection, the radial glow, and scrollbars — a single bright punch against an otherwise
-neutral ink scale. Four **terminal signal** tones carry semantic data and never decorate:
-green (welfare / high-confidence), rose (x-risk / low-confidence), violet (explanations /
-emerging), cyan (solutions / progress). On dark they are muted; on light they darken to
-700-level for AA contrast. The ink scale (100 brightest → 900 darkest surface) is warm-neutral
-on dark, Tailwind slate on light.
+The three get equal weight. No page ranks one above the others.
 
-**Type.** Three families, three jobs. **Fraunces** (serif, optical sizing) for *every*
-headline — normal weight at large sizes, leading ~1.05, confident not loud. **IBM Plex Sans**
-for UI and reading body (base ~15px, slightly condensed). **IBM Plex Mono** for everything
-"machine": labels, kickers, table cells, data, nav counts. The signature move is the
-**micro-label**: mono, UPPERCASE, `letter-spacing: 0.25em` (ultra-wide), 10–11px, muted ink.
-Numerals are always tabular.
+Each class has four color steps, defined in `colors.css` and exposed in Tailwind
+as `patron`, `founder` and `researcher`:
 
-**Backgrounds.** No photography, no illustration, no gradients-as-decoration. The single
-atmospheric device is the **terminal-grid lattice** — a 1px line grid at 32px pitch rendered
-at ~1.5–4% opacity, with one **sky-blue radial glow** blooming from the top edge (`ellipse
-1200×800 at 50% -10%`). Feature sections use `.surface-paper` — a slightly warmer black with
-a faint sky wash at the top. That's the entire background language.
+| Step | Tailwind | Use |
+|---|---|---|
+| fill | `bg-patron` | A solid block: a button or a badge |
+| on | `text-patron-on` | Text and icons placed over the fill |
+| ink | `text-patron-ink`, `border-patron-ink` | The class color as text or a rule on white or paper |
+| tint | `bg-patron-tint` | A soft background behind ink or body text |
 
-**Structure comes from lines, not shadows.** Layout is organized by **hairline borders** —
-`rgb(var(--line) / 0.08)` standard, `/0.16` strong — that follow the theme. Cards, tables,
-and grids are defined by these 1px rules and 1px gaps (`gap-px bg-ink-700`) that read as
-fine dividers. Real shadows are reserved for floating UI only (popovers, dialogs) and are
-soft and dark. Tables are the hero layout: dense, mono, tabular, sortable, with uppercase
-ultra-wide headers on a faintly raised row.
+Ready-made class strings live in `src/lib/visitor-classes.ts`. Use those instead
+of assembling class names from strings, which Tailwind cannot see.
 
-**Corners.** Small and architectural. `4px` default radius, `8px` maximum. Most rectangles
-(buttons, pills, cards, inputs, table cells) are effectively **sharp** — the terminal look.
-Full rounding is reserved for avatars and status dots only.
+### Rules for class colors
 
-**Components' resting look.** Buttons are mostly **bordered ghost** — a hairline box with
-mono uppercase label; the primary variant is a solid sky-blue fill with near-black text.
-Pills (tier, source, confidence) are 1px-bordered, tinted with their signal color at ~30%
-border / ~90% text, uppercase mono micro. Score bars are a literal **1px-tall track** with
-a colored fill — minimal, instrument-like.
+1. A class color appears only on that class's call to action and its labels.
+2. Never use a class color for a data series. Never use a chart color for a button.
+3. Gold cannot carry white text. The patron fill takes dark text and an ink border.
+4. Vermilion is close to the error red. Do not place a founder button beside an
+   error message.
+5. Color is never the only signal. Every class button also carries its name.
 
-**Motion.** Quiet and fast. Color/background transitions on hover (~120–200ms,
-`cubic-bezier(0.4,0,0.2,1)`); a slow 4s pulse on a few live indicators. **No bounces, no
-slides, no parallax.** Framer Motion is used for restrained fades/reveals. Respect
-`prefers-reduced-motion`.
+`tests/class-colors.test.ts` measures every pair and fails below 4.5:1 for text
+and 3:1 for the button border.
 
-**Hover states.** Text brightens toward ink-100 or shifts to the accent; surfaces lift one
-ink step (`ink-900 → ink-800`); bordered elements warm their border toward the accent
-(`border-teal-300/60`). **Press** is conveyed by a darker accent (`#0284c7`), not by
-scale/shrink. Disabled = `opacity: 0.4` + `not-allowed`.
+## Color, everything else
 
-**Transparency & blur.** Used sparingly and purposefully: the fixed navbar gains
-`backdrop-blur-md` + `bg-ink/90` once scrolled; tints are layered via low-opacity accent
-washes (`teal-300/[0.04]–0.10`). No frosted-glass everywhere — blur signals "floating
-above content," nothing more.
+- Action: teal 700 (`bg-primary`, `text-primary`). Links and neutral buttons.
+- Information: blue (`text-info`).
+- Error: `text-destructive`.
+- Text: `text-ink-100` (primary) down to `text-ink-500` (labels). All text steps
+  used as copy meet 4.5:1 on white.
+- Surfaces: `bg-background` (white), `bg-paper` (pale grey).
+- Charts: `--chart-1` to `--chart-5` and `--chart-other`, for data series only.
 
-**Layout rules.** Fixed top navbar (two rows: brand/meta + scrollable data-tab rail).
-Content maxes at `80rem` (`max-w-7xl`); editorial pages narrow to `56rem`. Gutter `1.5rem`.
-Everything aligns to the 32px lattice. Generous vertical section padding (`py-16`–`py-20`)
-separated by hairline rules spanning the full width.
+The site is light only. There is no dark theme.
 
----
+## Type
 
-## ICONOGRAPHY
+Inter for words, IBM Plex Mono for numbers and figure labels. 14px is the smallest
+text anywhere. Six sizes cover every page:
 
-optimism.fun is **deliberately icon-light** — it leans on typography, the diamond glyph,
-and Unicode symbols rather than an icon library. There is no Lucide/Heroicons/Feather
-dependency in the product.
+| Role | Tailwind | Size / line |
+|---|---|---|
+| Display | `text-display-2` | 48 / 52, semibold |
+| H1 | `text-h1` | 36 / 40, semibold |
+| H2 | `text-h2` | 28 / 34, semibold |
+| H3 | `text-h3` | 20 / 28, semibold |
+| Body | `text-body` | 16 / 24 |
+| Small | `text-small` | 14 / 20 |
 
-- **The brand mark** is a sky-blue **infinity/link knot** drawn as a single stroked path
-  on a white rounded square (`assets/optimism-icon-rounded.svg`) — the infinity loop nods
-  to "infinite problems, infinite solutions." A bare-glyph version is `assets/optimism-mark.svg`.
-  Both are copied from the product's real favicon/app-icon.
-- **The diamond `◆`** (U+25C6) is the workhorse "logo" in running text: it precedes the
-  `optimism.fun` wordmark in the nav and footer and accents kickers. Always in the sky accent.
-- **Unicode as iconography.** The product uses text glyphs where another app would use SVG
-  icons: sort carets `▾` `▴`, the bullet `·` / `&middot;`, arrows `→` `&rarr;`, the theme
-  toggle `◐` / `◑` (half-circles for dark/light), and the info `i` in a hairline circle
-  (the `InfoTip` trigger). These inherit `currentColor` and tabular metrics.
-- **No emoji**, ever — it would break the terminal register.
+One extra size, `text-data-xl` (48 / 52, tabular figures), is for a hero number.
+`text-display-1` (64px) is allowed once per page at most, for a homepage headline.
 
-If you need a richer icon set for a new surface, match the restraint: thin 1.5px stroke,
-square caps, no fills — and **flag the addition**, since the base product ships almost none.
-(`assets/` holds the two real brand SVGs; add new icons there as inline SVG referencing `currentColor`.)
+Known drift, to be cleaned on the core pages only: many components still use the
+generic Tailwind sizes (`text-2xl`, `text-4xl` and so on) and the old `font-serif`
+and `font-mono` names, which now all resolve to Inter. `text-xs` and `text-sm` are
+pinned to 14px, so they are harmless but should become `text-small`.
 
----
+## Writing
 
-## INDEX — what's in this system
+- Plain sentences. State the finding first, then the number, then the source.
+- Never use em dashes. Use commas, colons, parentheses or a new sentence.
+- Every number has a source. A missing number is shown as unknown, never guessed.
+- A chart's title states what the chart shows ("Loneliness is twice as common in
+  low-income countries"), not its topic ("Loneliness by income").
+- Buttons name the action and its object: "Fund this gap", not "Learn more".
 
-**Foundations (root)**
-- `styles.css` — global entry; `@import`s everything below. Link this one file.
-- `tokens/fonts.css` — IBM Plex Sans, IBM Plex Mono, Fraunces (Google Fonts)
-- `tokens/colors.css` — surfaces, ink scale, accent, terminal signals (dark + light)
-- `tokens/typography.css` — families, size scales, tracking, weights
-- `tokens/spacing.css` — spacing, radii, hairline borders, shadows, motion
-- `tokens/base.css` — body defaults, lattice background, `.surface-paper`, `.kicker`, utilities
+## Components
 
-**Specimen cards** — `guidelines/*.card.html` (Type, Colors, Spacing, Brand) — render in the Design System tab.
+1. Figure (`src/components/FigureCard.tsx`): finding as the title, the chart on
+   the plot grid, a ledger of facts, source links, and a slot for the class
+   buttons. Data lives in `src/data/figures.ts`, made by hand.
+2. Share image (`src/app/figures/[slug]/opengraph-image.tsx`): the figure as a
+   1200 by 630 picture with the hero number, the bars, and the source and
+   credit inside it. It is also the download on each figure page.
+3. Class action bar (`src/components/ClassActionBar.tsx`, and the sticky
+   `ActionBar.tsx` on problem pages): the three class buttons. Links made with
+   `commitHref()` open the commitment area set to that class.
 
-**Components** — `components/` (each: `<Name>.jsx` + `.d.ts` + `.prompt.md`, one card per group)
-- core: `Button`, `Kicker` · badges: `TierPill`, `ConfidenceBadge` · data: `ScoreBar`, `StatPair` · layout: `Card`, `Input`
+Still to build: a general chart frame for line and area charts. Today only
+horizontal bars exist.
 
-**UI kit** — `ui_kits/website/` — interactive recreation of the optimism.fun web app
-(navbar, hero, the problem leaderboard, the pipeline, email capture).
+## The guard
 
-**Assets** — `assets/` — brand mark SVGs.
+`tests/design-system.test.ts` holds the core pages to these rules and fails on
+a palette color, a raw hex value, a class color outside the class buttons, a
+serif or mono word font, forced capitals, a generic text size, an em dash, or
+a large corner or card shadow. Add a file to its `CORE` list once the file has
+been moved onto the system. The share images are exempt, because the image
+renderer cannot read CSS variables.
 
-**Skill** — `SKILL.md` — Agent-Skills-compatible entry point.
+## Accessibility floor
+
+- Text contrast 4.5:1, large text and control borders 3:1.
+- Touch targets at least 44px.
+- Visible keyboard focus on every control.
+- Reduced motion, reduced transparency and increased contrast are respected in
+  `src/app/globals.css`.
+- No horizontal scroll at 375px.

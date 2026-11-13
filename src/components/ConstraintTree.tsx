@@ -11,25 +11,25 @@ function Node({ c, binding, nested }: { c: Constraint; binding: string; nested?:
   const isBinding = c.id === binding
   return (
     <div className={`border-l-2 pl-4 ${isBinding ? 'border-primary' : 'border-hair'} ${nested ? 'mt-4' : ''}`}>
-      {isBinding && <p className="font-mono text-xs uppercase tracking-wider text-primary mb-1">Biggest blocker</p>}
-      <p className="text-ink-100 text-lg leading-snug">{c.claim}</p>
+      {isBinding && <p className="first-letter:uppercase text-small text-primary mb-1">Biggest blocker</p>}
+      <p className="text-ink-100 text-body-lg leading-snug">{c.claim}</p>
       {c.entryPoints.length > 0 && (
         <ul className="mt-2 space-y-1">
           {c.entryPoints.map((e) => (
-            <li key={e.action} className="text-sm text-ink-300">
-              <span className="font-mono text-xs uppercase text-primary mr-2">{WHO[e.who]}</span>
+            <li key={e.action} className="text-small text-ink-300">
+              <span className="first-letter:uppercase text-small text-primary mr-2">{WHO[e.who]}</span>
               {e.action}
             </li>
           ))}
         </ul>
       )}
-      <details className="mt-2 text-sm text-ink-400">
+      <details className="mt-2 text-small text-ink-400">
         <summary className="cursor-pointer text-ink-500 hover:text-ink-200">Why, and how we know</summary>
         <p className="mt-2">{c.whyUnsolved}</p>
         <p className="mt-2"><span className="text-ink-200">Wrong if:</span> {c.falsifier}</p>
         {c.tested && <p className="mt-2"><span className="text-ink-200">Found:</span> {c.tested}</p>}
         {c.suppliers.length > 0 && <p className="mt-2"><span className="text-ink-200">On it:</span> {c.suppliers.join(', ')}</p>}
-        <p className="mt-2 text-xs">
+        <p className="mt-2 text-small">
           {c.sources.map((s, i) => (
             <a key={s.url} href={s.url} target="_blank" rel="noopener noreferrer" className="underline decoration-dotted hover:text-primary">
               {s.label}{i < c.sources.length - 1 ? ' · ' : ''}
@@ -48,7 +48,7 @@ export default function ConstraintTree({ problemSlug }: { problemSlug: string })
   return (
     <section id="why-unsolved" className="border-b border-hair">
       <div className="site-shell py-10">
-        <h2 className="font-serif text-2xl text-ink-100 mb-6">Why it is not solved yet</h2>
+        <h2 className="text-h2 text-ink-100 mb-6">Why it is not solved yet</h2>
         <div className="space-y-8">
           {t.root.map((c) => (
             <Node key={c.id} c={c} binding={t.bindingId} />

@@ -10,16 +10,16 @@ export default function CiteThis({ problem }: { problem: Problem }) {
   const scored = deathRatePair(problem)
   return (
     <section id="cite-this" className="site-shell min-w-0 py-10 border-b border-hair [overflow-wrap:anywhere]">
-      <h2 className="font-serif text-2xl text-ink-100 mb-4">Cite this</h2>
+      <h2 className="text-h2 text-ink-100 mb-4">Cite this</h2>
       {problem.severityNote && (
-        <p className="text-sm text-ink-400 leading-relaxed mb-4">{problem.severityNote}</p>
+        <p className="text-small text-ink-400 leading-relaxed mb-4">{problem.severityNote}</p>
       )}
       {scored?.yearMismatch && (
-        <p className="text-sm text-ink-400 leading-relaxed mb-4">
+        <p className="text-small text-ink-400 leading-relaxed mb-4">
           Year mismatch: {scored.yearMismatch}
         </p>
       )}
-      <ol className="space-y-3 text-sm text-ink-300 leading-relaxed list-decimal pl-5">
+      <ol className="space-y-3 text-small text-ink-300 leading-relaxed list-decimal pl-5">
         {cites.map((c) => (
           <li key={c.href ?? c.text}>
             {c.href ? (

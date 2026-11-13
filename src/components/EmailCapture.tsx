@@ -50,12 +50,12 @@ export default function EmailCapture({ variant = 'prominent' }: { variant?: Vari
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
-          className="flex-1 bg-[rgb(var(--bg))] border border-hair-strong text-ink-100 font-sans text-sm px-3 py-2 focus:outline-none focus:border-primary/60 placeholder:text-ink-500"
+          className="flex-1 bg-[rgb(var(--bg))] border border-hair-strong text-ink-100 font-sans text-small px-3 py-2 focus:outline-none focus:border-primary/60 placeholder:text-ink-500"
         />
         <button
           type="submit"
           disabled={status === 'sending' || !email.trim()}
-          className="font-mono text-small uppercase tracking-wider text-primary border border-primary/40 px-4 py-2 hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
+          className="first-letter:uppercase text-small text-primary border border-primary/40 px-4 py-2 hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
         >
           {status === 'sent' ? 'thanks →' : status === 'sending' ? 'joining…' : 'join'}
         </button>
@@ -68,14 +68,14 @@ export default function EmailCapture({ variant = 'prominent' }: { variant?: Vari
       <div className="site-shell py-16 md:py-20">
         <div className="grid lg:grid-cols-[1.2fr_1fr] gap-10 items-center">
           <div>
-            <div className="font-mono text-small uppercase text-paper-copper mb-4">
+            <div className="first-letter:uppercase text-small text-paper-copper mb-4">
               Published whitepapers
             </div>
-            <h2 className="font-serif text-3xl md:text-5xl text-ink-100 leading-[1.05] mb-5">
+            <h2 className="text-h1 md:text-display-2 text-ink-100 leading-[1.05] mb-5">
               One problem.
               <span className="block text-primary">Published essays, not a Monday promise.</span>
             </h2>
-            <p className="text-ink-200 leading-relaxed text-base md:text-lg max-w-xl mb-6">
+            <p className="text-ink-200 leading-relaxed text-base md:text-body-lg max-w-xl mb-6">
               The essays that exist are listed at <a href="/whitepapers" className="text-primary hover:underline">/whitepapers</a>.
               A new essay is not promised every Monday. Weeks with no essay are empty on purpose.
               Nothing here invents a back catalog.
@@ -83,8 +83,8 @@ export default function EmailCapture({ variant = 'prominent' }: { variant?: Vari
 
             {status === 'sent' ? (
               <div className="inline-flex items-center gap-3 border border-primary/40 bg-primary/[0.06] px-4 py-3">
-                <span className="text-primary font-mono">◆</span>
-                <span className="text-ink-100 text-sm">
+                <span className="text-primary">◆</span>
+                <span className="text-ink-100 text-small">
                   Logged. Welcome to the ledger.
                 </span>
               </div>
@@ -106,7 +106,7 @@ export default function EmailCapture({ variant = 'prominent' }: { variant?: Vari
                 <button
                   type="submit"
                   disabled={status === 'sending' || !email.trim()}
-                  className="font-mono text-small uppercase tracking-wider text-primary-foreground bg-primary hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-colors px-6 py-3 whitespace-nowrap border border-primary font-semibold"
+                  className="first-letter:uppercase text-small text-primary-foreground bg-primary hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition-colors px-6 py-3 whitespace-nowrap border border-primary font-semibold"
                 >
                   {status === 'sending' ? 'subscribing…' : 'subscribe →'}
                 </button>
@@ -114,20 +114,20 @@ export default function EmailCapture({ variant = 'prominent' }: { variant?: Vari
             )}
 
             {status === 'error' && (
-              <p className="mt-3 font-mono text-small text-terminal-rose">
+              <p className="mt-3 text-small text-terminal-rose">
                 failed. try again in a moment.
               </p>
             )}
 
-            <p className="mt-5 font-mono text-small text-ink-500 max-w-xl leading-relaxed">
+            <p className="mt-5 text-small text-ink-500 max-w-xl leading-relaxed">
               optimism.fun uses your email address only to send low-volume project updates
               through Resend. You can unsubscribe with one click at any time; read the{' '}
               <a href="/privacy" className="text-primary hover:underline">privacy policy</a>.
             </p>
           </div>
 
-          <div className="hidden lg:flex flex-col gap-3 font-mono text-small">
-            <div className="text-small uppercase text-ink-500 mb-1">
+          <div className="hidden lg:flex flex-col gap-3 text-small">
+            <div className="first-letter:uppercase text-small text-ink-500 mb-1">
               the three routings
             </div>
             <div className="border border-hair p-4 bg-[rgb(var(--bg)/0.3)]">

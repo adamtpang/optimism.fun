@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { IBM_Plex_Mono, Inter } from 'next/font/google'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Providers from '@/components/Providers'
 import { PostHogProvider } from './providers'
@@ -9,6 +9,14 @@ const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter',
+})
+
+// Numbers and figure labels only. Words stay in Inter.
+const figure = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-figure',
+  display: 'swap',
 })
 
 const SITE_URL = 'https://optimism.fun'
@@ -75,7 +83,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={inter.variable}>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${figure.variable}`}>
       <body className={`${inter.className} antialiased`}>
         <script
           type="application/ld+json"
