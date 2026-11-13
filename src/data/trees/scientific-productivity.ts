@@ -46,7 +46,7 @@ export const scientificProductivityTree: ConstraintTree = {
   outcome:
     'More discoveries per researcher-year. Today the trend runs the other way: keeping chip density doubling takes more than 18 times as many researchers as in the early 1970s.',
   whyUnsolved:
-    'Three things pull output per researcher down. Each field asks for more learning before a person can add to it, so careers start later and work narrows. The funding system takes a large share of the time researchers do have. And some published results do not hold up, so later work builds on sand. The first is the best documented and the hardest to change. The other two are smaller and more fixable.',
+    'Three things pull output per researcher down. Each field asks for more learning before a person can add to it, so careers start later and work narrows. The funding system takes a large share of the time researchers do have. And some published results do not replicate, so later work may rest on results that do not hold. Inference: the first is the best documented and the hardest to change.',
   bindingId: 'burden-of-knowledge',
   updated: '2026-11-11',
   root: [
@@ -55,11 +55,11 @@ export const scientificProductivityTree: ConstraintTree = {
       claim: 'New ideas take more researchers and more training to find than they used to.',
       kind: 'science',
       whyUnsolved:
-        'Bloom and co-authors found research effort rising substantially while research productivity declines sharply across industries, products and firms. Jones\'s model says that as knowledge piles up, people train longer, specialise and work in teams. At NIH the median age at a first major grant has sat near 42 since 2021, after rising through the 1990s and 2000s. Nobody can make the frontier closer. The open question is whether tools can cut the time to reach it. Binding choice is inference.',
+        'Bloom and co-authors found research effort rising substantially while research productivity declines sharply across industries, products and firms. Jones\'s model says that as knowledge piles up, people train longer, specialise and work in teams. At NIH the median age at a first major grant has sat near 42 since 2021, after rising through the 1990s and 2000s. NIH gives no cause for the rise; reading it as a sign of the knowledge burden is inference. Nobody can make the frontier closer. The open question is whether tools can cut the time to reach it. Binding choice is inference.',
       falsifier:
         'Fields where output per researcher is flat or rising for decades. Or evidence that the measured decline is an artifact of how output is counted.',
       tested:
-        'Looked for evidence against. One widely cited measure is disputed. Park, Leahey and Funk reported that disruptiveness scores for papers fell 91.9 to 100 percent between 1945 and 2010, across 45 million papers. Petersen and co-authors argue that the index is biased by citation inflation and cannot be compared across time. The original authors replied that the decline holds under the critics\' own data and exclusions. So the citation-based evidence is contested. The Bloom result rests on different data, researcher counts against output, and no refutation of it was searched for this session.',
+        'Looked for evidence against. One widely cited measure is disputed. Park, Leahey and Funk reported that disruptiveness scores for papers fell 91.9 to 100 percent between 1945 and 2010, across 45 million papers. Petersen and co-authors argue that the index is biased by citation inflation and cannot be compared across time. A separate critique by Holst and co-authors blamed papers with no references; the original authors replied that the decline holds under those critics\' own data and exclusions. No reply to the citation-inflation critique was read this session. So the citation-based evidence is contested. The Bloom result rests on different data, researcher counts against output, and no refutation of it was searched for this session.',
       suppliers: [],
       supplyState: 'unresearched',
       additionality: {
@@ -78,11 +78,11 @@ export const scientificProductivityTree: ConstraintTree = {
       claim: 'The funding system spends researcher time on process and leaves some kinds of work with no home.',
       kind: 'coordination',
       whyUnsolved:
-        'In a 2012 survey of 13,453 principal investigators at 111 US institutions, researchers estimated that 42 percent of their research time on federal projects went to meeting requirements, not active research. The 2005 survey found about the same, so nothing moved in seven years. Separately, some projects are too big for a lab and not profitable enough for a company. Rules are added one at a time by many agencies and nobody is charged with removing them.',
+        'In a 2012 survey of 13,453 principal investigators at 111 US institutions, researchers estimated that 42 percent of their research time on federal projects went to meeting requirements, not active research. The source says the 2005 survey gave similar results, suggesting little change. The 2012 response rate was 26 percent. Separately, Convergent Research describes Focused Research Organizations as time-bound efforts to produce public goods that unblock scientific progress. Inference: rules are added one at a time by many agencies and nobody is charged with removing them.',
       falsifier:
         'Researchers freed from administrative work produce no more than those who are not. Or the 42 percent figure does not hold when time is logged, not self-reported.',
       tested:
-        'Not tested for output. The 42 percent figure is self-reported and from 2012. A 2018 round of the survey exists but its report was not opened this session, so the current figure is unknown here.',
+        'Not tested for output. The 42 percent figure is self-reported and from 2012. No later round of the survey was opened this session, so the current figure is unknown here.',
       suppliers: [
         'Federal Demonstration Partnership (measures the burden)',
         'Convergent Research (launches Focused Research Organizations)',
@@ -90,7 +90,7 @@ export const scientificProductivityTree: ConstraintTree = {
       supplyState: 'thin',
       additionality: {
         level: 'medium',
-        why: 'Inference: the burden is measured but few groups are named as removing it. Convergent lists eight Focused Research Organizations, which is small against the size of public research.',
+        why: 'Inference: the burden is measured but few groups are named as removing it. Convergent\'s homepage shows eight Focused Research Organizations and links to more, which is small against the size of public research.',
       },
       entryPoints: [
         { who: 'talent', action: 'Log one lab\'s hours for a month by task and compare the result with the 42 percent survey figure.' },
@@ -101,10 +101,10 @@ export const scientificProductivityTree: ConstraintTree = {
     },
     {
       id: 'reliability',
-      claim: 'A share of published findings does not replicate, so later work builds on results that are wrong.',
+      claim: 'A share of published findings does not replicate, so later work may rest on results that do not hold.',
       kind: 'coordination',
       whyUnsolved:
-        'When the Open Science Collaboration reran published psychology studies, 36 percent of replications were statistically significant, against about 97 percent of the originals. Careers reward new positive results, not checks of old ones. This figure is for psychology. Rates in other fields were not researched this session.',
+        'When the Open Science Collaboration reran published psychology studies, 36 percent of replications were statistically significant, against about 97 percent of the originals. A failed replication does not by itself show the original was wrong. This figure is for psychology. Rates in other fields were not researched this session.',
       falsifier:
         'Large replication projects in other fields find that most results hold. Or fields with low replication rates advance as fast as fields with high ones.',
       suppliers: ['Open Science Collaboration'],

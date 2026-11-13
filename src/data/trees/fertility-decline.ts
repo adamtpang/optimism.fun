@@ -30,20 +30,20 @@ export const fertilityDeclineTree: ConstraintTree = {
   outcome:
     'People can have the number of children they want, when they want them. The measure is the gap between intended and actual births. Global fertility is 2.25 births per woman, down from 3.31 in 1990.',
   whyUnsolved:
-    'No single cause is established. In a UNFPA survey across 14 countries, money was the limit people named most often. Trials of policy show that childcare raises the number of children people end up with, while cash payments mostly shift timing. Births are also moving to later ages, and infertility care is priced out of reach for most people. The same survey found nearly one in three adults had an unintended pregnancy, so the gap runs in both directions.',
+    'None of the sources read names a single cause. In a UNFPA survey across 14 countries, 39 percent said financial limitations had affected or would affect their family size. A review of 35 quasi-experimental studies in rich countries found childcare expansions raise completed fertility, while cash transfers have temporary effects. Births are also moving to later ages, and infertility care is out of reach for many people because of cost. The same survey found nearly one in three adults had an unintended pregnancy, so the gap runs in both directions.',
   bindingId: 'cost',
   updated: '2026-11-11',
   root: [
     {
       id: 'cost',
-      claim: 'People who want children say they cannot afford them.',
+      claim: 'About four in ten people surveyed say money limits the family size they want.',
       kind: 'payment',
       whyUnsolved:
         'In the UNFPA and YouGov survey of 14 countries, 39 percent said financial limitations had affected or would affect their ability to reach the family size they want. Nearly 20 percent of adults of reproductive age believe they will not be able to have the number of children they want. Support that would change this is costly, and the evidence on which support works is mixed. Binding choice is inference from stated reasons, which are not the same as causes.',
       falsifier:
         'Completed family size does not rise where the cost of raising children is cut. Or countries with the most generous support show the same gap between wanted and actual births.',
       tested:
-        'Partly supports, partly weakens. A systematic review of 35 experimental and quasi-experimental studies in Europe, the United States, Canada and Australia found that childcare expansions increase completed fertility. It found that increased cash transfers have temporary effects. Newer evidence on parental leave suggests larger effects than earlier work. So lowering one cost, childcare, moves the outcome, and handing over cash mostly does not. Effect sizes were not on the page opened. Not tested: whether the gap between wanted and actual births is smaller in high-support countries.',
+        'Partly supports, partly weakens. A systematic review of 35 experimental and quasi-experimental studies in Europe, the United States, Canada and Australia found that childcare expansions increase completed fertility. It found that increased cash transfers have temporary effects. Newer evidence on parental leave suggests larger effects than earlier work. Inference: lowering one cost, childcare, moves the outcome, and handing over cash has a temporary effect. Effect sizes were not on the page opened. Not tested: whether the gap between wanted and actual births is smaller in high-support countries.',
       suppliers: [],
       supplyState: 'unresearched',
       additionality: {
@@ -62,7 +62,7 @@ export const fertilityDeclineTree: ConstraintTree = {
       claim: 'People cannot have children at the age they would prefer, and births move later.',
       kind: 'coordination',
       whyUnsolved:
-        'Nearly one in four adults in the UNFPA survey felt unable to have a child at their preferred time. Nearly one in five said fears about the future, such as climate change, wars and pandemics, had led or would lead to fewer children than they wanted. UN projections expect the share of births to women under 25 to fall in every region by 2100. Education, work, housing and finding a partner all have to line up first, and no one institution owns that sequence.',
+        'Nearly one in four adults in the UNFPA survey felt unable to have a child at their preferred time. Nearly one in five said fears about the future, such as climate change, wars and pandemics, had led or would lead to fewer children than they wanted. UN projections expect the share of births to women under 25 to fall in every region by 2100. Inference: education, work, housing and finding a partner all have to line up first, and no one institution owns that sequence.',
       falsifier:
         'Countries where first births come early show the same gap between wanted and actual family size. Or later starts are shown to be fully made up by births at older ages.',
       suppliers: [],
@@ -79,7 +79,7 @@ export const fertilityDeclineTree: ConstraintTree = {
     },
     {
       id: 'infertility-care',
-      claim: 'Infertility is common and treatment costs more than most people can pay.',
+      claim: 'Infertility is common, and treatment is mostly paid out of pocket.',
       kind: 'payment',
       whyUnsolved:
         'About 17.5 percent of adults, roughly one in six, experience infertility in their lifetime, with similar rates in rich and poor countries. Treatment is mostly paid out of pocket. In low- and middle-income countries, one round of IVF often costs more than a year of average income. WHO says prevention, diagnosis and treatment remain underfunded.',

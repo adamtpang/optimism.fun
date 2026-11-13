@@ -21,7 +21,7 @@ const NEST360 = { label: 'NEST360 (opened 2026-11-11)', url: 'https://www.nest36
 export const newbornSurvivalTree: ConstraintTree = {
   problemSlug: 'newborn-survival',
   outcome:
-    'Every country at or below 12 newborn deaths per 1,000 live births, the SDG target for 2030. About 2.3 million newborns die each year, and WHO says 64 countries will miss the target without urgent action.',
+    'Every country at or below 12 newborn deaths per 1,000 live births, the SDG target for 2030. About 2.3 million newborns died in 2022, and WHO says 64 countries will miss the target without urgent action.',
   whyUnsolved:
     'Most births now happen in a health facility, but the facility often cannot care for a small or sick baby. The leading causes are premature birth, birth complications and infection. The fixes are known devices and skills: oxygen, a pulse oximeter, breathing support, trained staff. They are not reliably in the ward where the baby is.',
   bindingId: 'facility-care',
@@ -36,7 +36,7 @@ export const newbornSurvivalTree: ConstraintTree = {
       falsifier:
         'Most newborn deaths happen to babies who never reach a facility. Then getting to care, not care inside the facility, would be the limit.',
       tested:
-        'Looked for it. WHO puts facility births at almost 80 percent globally, yet about 1 million newborns die in their first 24 hours and 75 percent of newborn deaths are in the first week. That fits a gap in care inside facilities. Weak point: the share of deaths that occur inside facilities was not found, and facility birth rates are lower in the highest-mortality regions.',
+        'Looked for it. WHO puts facility births at almost 80 percent globally, yet about 1 million newborns die in their first 24 hours and 75 percent of newborn deaths are in the first week. That fits a gap in care inside facilities. Weak point: the share of deaths that occur inside facilities was not found, and regional facility birth rates were not checked.',
       suppliers: ['NEST360', 'Global Oxygen Alliance', 'UNICEF', 'WHO'],
       supplyState: 'thin',
       additionality: {
@@ -55,7 +55,7 @@ export const newbornSurvivalTree: ConstraintTree = {
           claim: 'Oxygen and pulse oximetry are missing from the lists that drive purchasing.',
           kind: 'policy',
           whyUnsolved:
-            'The Oxygen Commission asks that pulse oximetry and oxygen be added to the UN list of 13 priority maternal and newborn commodities, to national essential device lists and to universal health coverage schemes. It also says newborn survival targets leave them out.',
+            'The Oxygen Commission notes that pulse oximetry and oxygen are not on the UN list of 13 priority maternal and newborn commodities, and asks governments to add them to essential medicine and device lists and to universal health coverage schemes. It also says the newborn targets do not mention pulse oximetry.',
           falsifier: 'Countries that list and fund oxygen for newborns show no better coverage than those that do not.',
           suppliers: ['Lancet Global Health Commission on Medical Oxygen Security'],
           supplyState: 'unresearched',
@@ -69,7 +69,7 @@ export const newbornSurvivalTree: ConstraintTree = {
     },
     {
       id: 'sepsis-diagnostic',
-      claim: 'No fast test for newborn sepsis exists, because nobody can profit from making one.',
+      claim: 'No fast test for newborn sepsis exists. The Center for Global Development argues the commercial incentive is too weak.',
       kind: 'payment',
       whyUnsolved:
         'Newborn sepsis causes 400,000 to 700,000 deaths a year. Blood cultures take over 48 hours, so clinicians treat on signs like fever and poor feeding. The Center for Global Development says a rapid test is feasible, but prices in poor countries do not cover the research cost and copycats erode the first maker.',

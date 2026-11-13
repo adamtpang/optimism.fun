@@ -29,7 +29,7 @@ export const aiDatacenterPowerTree: ConstraintTree = {
   outcome:
     'A new datacenter gets firm power on roughly the timeline it takes to build the datacenter. Today the IEA estimates about 20 percent of planned datacenter projects could be delayed unless grid risks are addressed.',
   whyUnsolved:
-    'Datacenters used about 415 TWh in 2024, 1.5 percent of world electricity, and the IEA expects about 945 TWh by 2030. A datacenter can be built faster than the grid around it: new transmission lines take four to eight years in advanced economies, and waits for transformers and cables have doubled in three years. Turbines for new gas plants are booked years ahead. Forecasts of US demand span nearly a factor of two, so who should pay for upgrades is contested. Judging grid connection as most binding is our inference.',
+    'Datacenters used about 415 TWh in 2024, 1.5 percent of world electricity, and the IEA expects about 945 TWh by 2030. Inference: a datacenter can be built faster than the grid around it. New transmission lines take four to eight years in advanced economies, and waits for transformers and cables have doubled in three years. One large maker of gas turbines has little capacity left through 2030. The one official US projection opened spans 325 to 580 TWh for 2028, and who should pay for upgrades was still before FERC in 2026. Judging grid connection as most binding is our inference.',
   bindingId: 'large-load-connection',
   updated: '2026-11-11',
   root: [
@@ -38,11 +38,11 @@ export const aiDatacenterPowerTree: ConstraintTree = {
       claim: 'Datacenters wait years for a grid connection because rules and wires were not designed for loads this large.',
       kind: 'regulatory',
       whyUnsolved:
-        'The IEA calls grid connection queues long and complex. Utility Dive reports some utilities quoting delays of seven to ten years for large loads. On 18 June 2026 FERC issued show cause orders to all six grid operators it regulates, covering study procedures, upgrade costs, co-located generation and flexible loads for sites of 50 MW or more. Responses were due 17 August 2026. Final rules were not found this session.',
+        'The IEA calls grid connection queues long and complex. Utility Dive reports some utilities citing delays of up to seven to ten years for large loads. On 18 June 2026 FERC issued show cause orders to all six grid operators it regulates, covering study procedures, upgrade costs, co-located generation and flexible loads for sites of 50 MW or more. Responses were due 17 August 2026. Final rules were not found this session.',
       falsifier:
         'Large loads connect quickly once they accept limited curtailment, which would show the limit is the connection rules, not physical grid capacity.',
       tested:
-        'Partly supports a rules problem. A Duke study found the 22 largest US balancing areas could take 76 GW of new load curtailed 0.25 percent of the time, and 126 GW at 1 percent. It ignored transmission constraints, and datacenters have rarely joined demand response. ERCOT and PG&E offer flexible connection options. No measured connection times for flexible loads were found.',
+        'Partly supports a rules problem. A Duke study found the 22 largest US balancing areas could take 76 GW of new load if it were curtailed for 0.25 percent of its maximum uptime, about 85 hours a year, and 126 GW at 1 percent, about 366 hours. It ignored transmission constraints, and datacenters have rarely joined demand response. ERCOT and PG&E offer flexible connection options. No measured connection times for flexible loads were found.',
       suppliers: ['FERC and the six grid operators it regulates (rule reform)', 'ERCOT and PG&E (flexible connection options)'],
       supplyState: 'contested',
       additionality: {
@@ -58,7 +58,7 @@ export const aiDatacenterPowerTree: ConstraintTree = {
     },
     {
       id: 'power-equipment',
-      claim: 'The turbines, transformers and cables needed to serve new datacenters are sold out years ahead.',
+      claim: 'Waits for transformers and cables have doubled in three years, and one large turbine maker has little capacity left through 2030.',
       kind: 'manufacturing',
       whyUnsolved:
         'The IEA says waits for transformers and cables have doubled in three years and gas turbine deliveries face lead times of several years. GE Vernova reported a 100 GW gas turbine backlog in the first quarter of 2026, up from 83 GW at the end of 2025, with about 10 GW of production capacity left through 2030 and prices up 10 to 20 percent on new bids.',
@@ -81,7 +81,7 @@ export const aiDatacenterPowerTree: ConstraintTree = {
     },
     {
       id: 'demand-uncertainty',
-      claim: 'Nobody knows how much datacenter load will arrive, so nobody agrees on what to build or who pays.',
+      claim: 'How much datacenter load will arrive is uncertain, and who pays for the upgrades is not settled.',
       kind: 'coordination',
       whyUnsolved:
         'US datacenters used 176 TWh in 2023, about 4.4 percent of US electricity. The Berkeley Lab projection for 2028 is 325 to 580 TWh, or 6.7 to 12 percent. That range is wide. The IEA expects datacenters to drive nearly half of US demand growth to 2030. FERC asked grid operators for more transparent upgrade costs, and one commissioner warned that negotiated agreements may not be enough to protect existing ratepayers.',

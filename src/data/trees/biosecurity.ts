@@ -33,7 +33,7 @@ export const biosecurityTree: ConstraintTree = {
   outcome:
     'A new pandemic threat is detected early and safe vaccines, tests and treatments reach every country fast. The stated target is a vaccine within about 100 days. For COVID-19 the first vaccines took 326 days.',
   whyUnsolved:
-    'The first COVID-19 vaccines arrived in under a year. The failure was reach: getting them, and later mpox vaccines, to poorer countries took far longer. The Pandemic Agreement meant to fix this was adopted in 2025 but cannot open for signature until an unfinished annex on sharing is agreed. Money is falling, not rising. The monitoring board says risk is outpacing investment. Judging countermeasure access as most binding is our inference from its findings.',
+    'The first COVID-19 vaccines arrived in under a year. The failure was reach: getting them, and later mpox vaccines, to poorer countries took far longer. The Pandemic Agreement meant to fix this was adopted in 2025 but cannot open for signature until an unfinished annex on sharing is agreed. Overall aid is falling: official development assistance fell 23.1 percent in real terms in 2025. The monitoring board says risk is outpacing investment. Judging countermeasure access as most binding is our inference from its findings.',
   bindingId: 'countermeasure-access',
   updated: '2026-11-11',
   root: [
@@ -65,7 +65,7 @@ export const biosecurityTree: ConstraintTree = {
           claim: 'The agreement that would set access rules is adopted but cannot yet be signed.',
           kind: 'policy',
           whyUnsolved:
-            'The World Health Assembly adopted the Pandemic Agreement on 20 May 2025. It opens for signature only after an annex on pathogen access and benefit sharing is adopted, and needs 60 ratifications to take effect. Under the sharing system, participating manufacturers would target 20 percent of real-time production for WHO. On 1 May 2026 Member States ended talks without a text and asked for an extension to May 2027.',
+            'The World Health Assembly adopted the Pandemic Agreement on 20 May 2025. It opens for signature only after an annex on pathogen access and benefit sharing is adopted, and needs 60 ratifications to take effect. Under the sharing system, participating manufacturers would target 20 percent of real-time production for WHO. On 1 May 2026 Member States agreed more time was needed, with the outcome due at the May 2027 Assembly or an earlier special session in 2026.',
           falsifier: 'The annex is adopted and 60 countries ratify the agreement.',
           tested: 'Not yet. As of the 1 May 2026 WHO release there was no agreed text. Later developments were not opened this session.',
           suppliers: ['WHO Intergovernmental Working Group on the Pandemic Agreement'],
@@ -103,7 +103,7 @@ export const biosecurityTree: ConstraintTree = {
     },
     {
       id: 'preparedness-finance',
-      claim: 'Preparedness is paid for in emergencies and cut between them.',
+      claim: 'Preparedness has an estimated funding gap, and overall aid is now falling.',
       kind: 'payment',
       whyUnsolved:
         'In 2022 WHO and the World Bank estimated a 10.5 billion dollar annual gap in preparedness financing. Aid has since fallen: OECD preliminary data show official development assistance down 23.1 percent in real terms in 2025, the largest annual decline recorded, with a further fall projected for 2026. The monitoring board says development assistance is at levels not seen since 2009.',

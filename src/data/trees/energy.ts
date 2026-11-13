@@ -10,7 +10,7 @@ export const energyAbundanceTree: ConstraintTree = {
   problemSlug: 'energy-abundance',
   outcome: 'Clean, cheap power on demand for everyone, everywhere.',
   whyUnsolved:
-    'Generation is cheap; delivery is not. New plants wait years for grid connection, grid equipment is short, and the 565M people without power in sub-Saharan Africa sit behind a financing gap mostly made of grids. Inference from the sources below.',
+    'Generation is cheap; delivery is not. New plants wait years for grid connection, grid equipment is short, and the 565M people without power in sub-Saharan Africa sit behind a financing gap whose largest slice is grids. Inference from the sources below.',
   bindingId: 'grid-delivery',
   updated: '2026-10-29',
   root: [
@@ -19,7 +19,7 @@ export const energyAbundanceTree: ConstraintTree = {
       claim: 'Cheap clean generation is stranded because grid connection and wires lag years behind.',
       kind: 'delivery',
       whyUnsolved:
-        'Connection depends on utility studies, scarce equipment and new lines. US high-voltage line building averaged about 350 miles a year in 2020 to 2023 against roughly 5,000 miles a year needed. Binding status is inference.',
+        'Connection depends on utility studies, scarce equipment and new lines. US high-voltage line building averaged 536 miles a year in 2020 to 2024, after a FERC revision, against roughly 5,000 miles a year that Grid Strategies extrapolates from DOE findings. Binding status is inference.',
       falsifier:
         'Queued projects reach operation in under two years, or US high-voltage additions approach the 5,000 miles a year benchmark.',
       tested:
@@ -46,16 +46,16 @@ export const energyAbundanceTree: ConstraintTree = {
           claim: 'US queues hold about 1,312 GW of generation; median request to operation exceeds five years.',
           kind: 'regulatory',
           whyUnsolved:
-            'Serial utility studies, speculative requests and upgrade cost allocation slow every project. Reforms raised withdrawals and shrank the queue, but built projects still took over five years in 2025.',
+            'Serial utility studies, speculative requests and upgrade cost allocation slow every project. High withdrawals and fewer new requests shrank the queue, but built projects still took over five years in 2025. LBNL says it is too early to measure the effect of reforms.',
           falsifier:
             'Median request-to-operation time for projects built in a year falls below three years in the next Queued Up edition.',
           tested:
-            'Partly refuted on size: the queue fell from about 1,400 GW (end 2024) to 1,312 GW (end 2025) after reforms and withdrawals. Not refuted on time: median duration rose past five years. ERCOT connect-and-manage outperformed in 2024, so process design matters.',
+            'Partly refuted on size: the queue fell from about 1,400 GW (end 2024) to 1,312 GW (end 2025) after high withdrawals and fewer new requests. Not refuted on time: median duration rose past five years. ERCOT executed more interconnection agreements than other regions in 2024, and LBNL says connect-and-manage is likely one reason.',
           suppliers: ['GridUnity (local research, CAISO deployment)'],
           supplyState: 'thin',
           additionality: {
             level: 'medium',
-            why: 'Study rework is real, but FERC reforms target speculative requests too; faster software alone may miss the cause.',
+            why: 'Inference: study rework is real, but speculative requests and cost allocation also slow projects, so faster software alone may miss the cause.',
           },
           entryPoints: [
             { who: 'talent', action: 'Build a public dataset of interconnection study revisions and the cost changes between them.' },
@@ -63,7 +63,7 @@ export const energyAbundanceTree: ConstraintTree = {
             { who: 'operator', action: 'Copy the ERCOT connect-and-manage approach in one other region and report time to energization.' },
           ],
           sources: [
-            { label: 'LBNL, Queued Up 2026 Edition (end of 2025 data)', url: 'https://emp.lbl.gov/queued-2026-edition-characteristics-power-plants-seeking-transmission-interconnection-end-2025' },
+            { label: 'LBNL, Queued Up 2026 Edition (end of 2025 data)', url: 'https://emp.lbl.gov/publications/queued-2026-edition-characteristics' },
             { label: 'LBNL, Queued Up 2025 Edition PDF', url: 'https://emp.lbl.gov/sites/default/files/2025-12/Queued%20Up%202025%20Edition%20-%2012.15.2025.pdf' },
             { label: 'pv magazine: ERCOT outperformed on interconnection in 2024', url: 'https://pv-magazine-usa.com/2026/01/07/ercot-outperformed-on-interconnection-in-2024-likely-due-to-connect-and-manage' },
             { label: 'GridUnity CAISO case study (local research)', url: 'https://www.gridunity.com/resources/how-caiso-is-using-gridunity-to-unsnarl-its-interconnection-process' },
@@ -71,14 +71,14 @@ export const energyAbundanceTree: ConstraintTree = {
         },
         {
           id: 'transformer-supply',
-          claim: 'US power transformers run a 30% supply deficit with about 128-week lead times.',
+          claim: 'US power transformers run a 30% supply deficit, with lead times of about 128 weeks in Q2 2025.',
           kind: 'manufacturing',
           whyUnsolved:
-            'Factories take years and large capital to add. About 80% of US power transformer supply is imported. Wood Mackenzie expects most specifications to stay in marginal shortage through 2030.',
+            'About 80% of US power transformer supply is imported. Wood Mackenzie predicts most specifications will remain in marginal shortage by 2030.',
           falsifier:
             'Power transformer lead times fall below one year and the Wood Mackenzie deficit estimate drops under 10%.',
           tested:
-            'Partly refuted: lead times eased 10 weeks in Q2 2025. Not refuted: still about 128 weeks (GSUs about 144) and a 30% deficit. Distribution transformer deficit estimates disagree (10% vs 6%).',
+            'Not refuted: about 128 weeks in Q2 2025 (generator step-up units about 144) and a 30% deficit. The distribution transformer deficit is put at 10%.',
           suppliers: ['Eaton ($340M South Carolina transformer factory, production planned 2027; local research)'],
           supplyState: 'thin',
           additionality: {
@@ -93,6 +93,7 @@ export const energyAbundanceTree: ConstraintTree = {
           sources: [
             { label: 'Wood Mackenzie press release: 30% and 10% deficits in 2025', url: 'https://www.woodmac.com/press-releases/power-transformers-and-distribution-transformers-will-face-supply-deficits-of-30-and-10-in-2025/' },
             { label: 'pv magazine: grid transformers face significant supply deficits', url: 'https://pv-magazine-usa.com/2025/08/14/grid-transformers-face-significant-supply-deficits-says-wood-mackenzie/' },
+            { label: 'EEPower: transformer lead times in Q2 2025 (Wood Mackenzie)', url: 'https://eepower.com/market-insights/transformer-supply-chain-woes-persist-as-energy-demand-grows/' },
             { label: 'Eaton transformer factory announcement (local research)', url: 'https://www.eaton.com/us/en-us/company/news-insights/news-releases/2025/eaton-invests-in-new-south-carolina-transformer-manufacturing.html' },
           ],
         },
@@ -103,7 +104,7 @@ export const energyAbundanceTree: ConstraintTree = {
       claim: 'Clean power is cheap when the sun shines; firm power around the clock is not solved.',
       kind: 'engineering',
       whyUnsolved:
-        'Four-hour batteries are now cheap, but multi-day and seasonal gaps need longer storage or firm sources. Next-generation geothermal only reached first commercial operation in 2026. Long-duration and nuclear costs were not researched here.',
+        'Four-hour batteries are now cheap, but multi-day and seasonal gaps need longer storage or firm sources. The first utility-scale enhanced geothermal block, 33 MW at Fervo\'s Cape Station, declared commercial operation on 30 September 2026. Long-duration and nuclear costs were not researched here.',
       falsifier:
         'Firm clean power (storage plus renewables, geothermal or nuclear) is contracted at or below new gas cost in most large markets.',
       tested:
@@ -134,7 +135,7 @@ export const energyAbundanceTree: ConstraintTree = {
             'Multi-day storage projects reach commercial operation at a delivered cost comparable to four-hour lithium-ion.',
           tested:
             'The "batteries are too expensive" claim is refuted for daily cycling. The multi-day claim was not tested; no long-duration source was fetched.',
-          suppliers: ['Fluence (local research: FY2025 loss and tariff-related pauses)'],
+          suppliers: [],
           supplyState: 'unresearched',
           additionality: {
             level: 'unknown',
@@ -152,7 +153,7 @@ export const energyAbundanceTree: ConstraintTree = {
         },
         {
           id: 'geothermal-scale',
-          claim: 'Enhanced geothermal works commercially but has only about 100 MW at one site.',
+          claim: 'Enhanced geothermal works commercially but has only 33 MW operating at one site, with about 100 MW due by January 2027.',
           kind: 'engineering',
           whyUnsolved:
             'Fervo Cape Station declared commercial operation on 30 September 2026 with one 33 MW block; two more are due by January 2027. Repeatability across sites and cost at scale are not yet shown.',
@@ -169,7 +170,7 @@ export const energyAbundanceTree: ConstraintTree = {
           entryPoints: [
             { who: 'talent', action: 'Bring oil and gas drilling or completions experience to a geothermal developer.' },
             { who: 'capital', action: 'Back a second EGS site outside Utah to test whether the Cape result repeats.' },
-            { who: 'operator', action: 'Sign a firm geothermal PPA like the 396 MW Google deal to give developers bankable demand.' },
+            { who: 'operator', action: 'Sign a firm geothermal power purchase agreement to give developers bankable demand.' },
           ],
           sources: [
             { label: 'Renewable Energy Magazine: Fervo declares commercial operation at Cape', url: 'https://www.renewableenergymagazine.com/geothermal/fervo-energy-declares-commercial-operation-at-cape-20261002' },
@@ -189,7 +190,7 @@ export const energyAbundanceTree: ConstraintTree = {
       falsifier:
         'Annual access finance to sub-Saharan Africa reaches $15B and the unserved count falls by tens of millions a year.',
       tested:
-        'Not refuted. In 2023, 35M people gained access but population grew 30M, so the gap shrank only 5M. 84% of the unserved are rural.',
+        'Not refuted. In 2023, 35M people gained access but population grew by nearly 30M, so the gap shrank only 5M. Globally, 84% of people without electricity are rural.',
       suppliers: ['World Bank and AfDB Mission 300'],
       supplyState: 'thin',
       additionality: {
@@ -237,10 +238,10 @@ export const energyAbundanceTree: ConstraintTree = {
         },
         {
           id: 'mission-300-pace',
-          claim: 'Mission 300 connected over 50M people in two years; 300M by 2030 needs faster delivery.',
+          claim: 'Mission 300 counts over 50M people connected since July 2023; 300M by 2030 needs faster delivery.',
           kind: 'delivery',
           whyUnsolved:
-            'The World Bank owns 250M connections and AfDB 50M. AfDB says progress must accelerate. A 64M figure from October 2026 was not confirmed against a primary source.',
+            'AfDB says progress must accelerate. A 64M figure from October 2026 was not confirmed against a primary source.',
           falsifier:
             'Mission 300 reports 150M or more connections by end of 2027.',
           tested:

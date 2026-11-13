@@ -9,7 +9,7 @@ export const cancerTree: ConstraintTree = {
   outcome:
     'Fewer people die of cancer: 9.7M deaths a year (GLOBOCAN 2022) falls, and survival stops depending on where you live.',
   whyUnsolved:
-    'Most cancer deaths come from causes we already know how to cut, tobacco and late or absent treatment in poorer countries. The tools exist but are not delivered. New detection tests and new drugs help less than the delivery gap costs.',
+    'About half of cancer deaths are attributable to modifiable risks (Cancer Atlas), and survival is far lower where treatment is missing. The tools exist but are not delivered. Inference: closing that delivery gap matters more than new detection tests or new drugs.',
   bindingId: 'delivery-gap',
   updated: '2026-10-29',
   root: [
@@ -18,11 +18,11 @@ export const cancerTree: ConstraintTree = {
       claim: 'Known prevention and treatment do not reach most people who die of cancer.',
       kind: 'delivery',
       whyUnsolved:
-        'About half of cancer deaths trace to modifiable risks, and about 70% of deaths occur in low- and middle-income countries. The fixes are policy, machines, staff and drugs, which nobody profits from selling at scale. Binding choice is inference.',
+        'About half of cancer deaths trace to modifiable risks, and WHO AFRO says more than two thirds of deaths occur in low- and middle-income countries, on 2012 data. Inference: the fixes are policy, machines, staff and drugs, which are hard to sell profitably at scale. Binding choice is inference.',
       falsifier:
         'If modifiable risks explained well under a quarter of deaths, or survival gaps closed without new delivery, this is not binding.',
       tested:
-        'Looked for refutation. Found the opposite: ACS/IARC Cancer Atlas says about half of cancer deaths are attributable to modifiable risks; a 2026 WHO/IARC study puts 37.8% of new cases on modifiable risks. WHO AFRO says about 70% of cancer deaths are in LMICs. Weak point: the "half" figure is from an ACS-led atlas, and attribution is not the same as deaths avoidable in practice.',
+        'Looked for refutation. Found the opposite: ACS/IARC Cancer Atlas says about half of cancer deaths are attributable to modifiable risks; a 2026 WHO/IARC study puts 37.8% of new cases on modifiable risks. WHO AFRO says more than two thirds of cancer deaths are in LMICs, on 2012 data. Weak point: the "half" figure is from an ACS-led atlas, and attribution is not the same as deaths avoidable in practice.',
       suppliers: ['WHO Global Initiative for Childhood Cancer', 'IAEA Rays of Hope', 'St. Jude Global'],
       supplyState: 'thin',
       additionality: {
@@ -38,6 +38,7 @@ export const cancerTree: ConstraintTree = {
         { label: 'ASCO Post: nearly 50% of cancer deaths attributable to modifiable risks (Cancer Atlas)', url: 'https://ascopost.com/news/june-2025/nearly-50-percent-of-all-cancer-deaths-worldwide-attributable-to-modifiable-risk-factors' },
         { label: 'ASCO Post: WHO/IARC analysis, 37.8% of cases attributable to modifiable risks (Feb 2026)', url: 'https://ascopost.com/news/february-2026/who-analysis-finds-many-global-cancer-cases-attributable-to-modifiable-risk-factors/' },
         { label: 'WHO AFRO: cancer', url: 'https://afro.who.int/health-topics/cancer' },
+        { label: 'WHO/IARC: global cancer burden, 20 million new cases and 9.7 million deaths in 2022', url: 'https://www.who.int/news/item/01-02-2024-global-cancer-burden-growing--amidst-mounting-need-for-services' },
       ],
       children: [
         {
@@ -49,7 +50,7 @@ export const cancerTree: ConstraintTree = {
           falsifier:
             'If tobacco-attributable cancer deaths fell sharply without further policy change, this would not be a live constraint.',
           tested:
-            'WHO October 2025 report: 1.38B users in 2000 to 1.2B in 2024; prevalence 33.1% to 19.5%; projected over 1.15B by 2030. Decline is real but slow. The "one in five cancer deaths" figure is from the Cancer Atlas, not a WHO death count; WHO/IARC gives 15.1% of new cases from smoking.',
+            'WHO October 2025 report: 1.38B users in 2000 to 1.2B in 2024, nearly 20% of adults. Decline is real but slow. The "one in five cancer deaths" figure is from the Cancer Atlas, not a WHO death count; WHO/IARC gives 15.1% of new cases from smoking.',
           suppliers: ['WHO'],
           supplyState: 'thin',
           additionality: {
@@ -67,14 +68,14 @@ export const cancerTree: ConstraintTree = {
         },
         {
           id: 'lmic-treatment',
-          claim: 'Children with cancer survive about 80% in rich countries and about 20 to 30% elsewhere.',
+          claim: 'More than 80% of children with cancer are cured in rich countries, and less than 30% in most poorer ones.',
           kind: 'delivery',
           whyUnsolved:
             'More than 20 African countries have no radiotherapy at all. Pathology, drugs and trained staff are missing together. WHO targets 60% childhood survival by 2030, which means the gap is still open.',
           falsifier:
             'If LMIC childhood survival already approached 60% broadly, or radiotherapy gaps were closed, this child would shrink.',
           tested:
-            'UICC: about 80% five-year survival in high-income countries; WHO-linked sources say 20 to 30% in LMICs, St. Jude says about a third. A 2019-data study of 197 countries found no low- or lower-middle-income country at 60% at baseline. IAEA says more than 20 African countries lack radiotherapy; the exact current count was not found.',
+            'WHO: more than 80% cured in high-income countries and less than 30% in most LMICs; St. Jude says about a third. A study on 2015 to 2019 data found no low- or lower-middle-income country at 60% overall cancer survival at baseline. IAEA says more than 20 African countries lack radiotherapy; the exact current count was not found.',
           suppliers: ['WHO Global Initiative for Childhood Cancer', 'IAEA Rays of Hope', 'St. Jude Global'],
           supplyState: 'thin',
           additionality: {
@@ -86,7 +87,8 @@ export const cancerTree: ConstraintTree = {
             { who: 'operator', action: 'Help one pediatric oncology unit set up a basic cancer registry to count outcomes.' },
           ],
           sources: [
-            { label: 'UICC: Global Initiative for Childhood Cancer', url: 'https://www.uicc.org/what-we-do/advocacy/working-together/global-initiative-childhood-cancer' },
+            { label: 'WHO fact sheet: cancer in children', url: 'https://www.who.int/news-room/fact-sheets/detail/cancer-in-children' },
+            { label: 'Global cancer survival study, 2015 to 2019 data (PMC)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11332931/' },
             { label: 'St. Jude: Global Initiative', url: 'https://www.stjude.org/global/collaborating-to-cure/global-initiative.html' },
             { label: 'IAEA Rays of Hope story', url: 'https://iaea.shorthandstories.com/raysofhope/' },
             { label: 'IAEA/WHO joint statement on Rays of Hope', url: 'https://www.who.int/news/item/04-02-2022-iaea-who-joint-statement-on-reducing-inequity-in-access-to-cancer-care-through-rays-of-hope-initiative' },
@@ -96,7 +98,7 @@ export const cancerTree: ConstraintTree = {
     },
     {
       id: 'late-detection',
-      claim: 'Most cancer deaths come from cancers found late, with no proven screening test.',
+      claim: 'In the US, cancers with no recommended screening test account for about 71% of cancer deaths (a GRAIL figure, via AJMC).',
       kind: 'science',
       whyUnsolved:
         'About 70% of US cancer deaths come from cancers with no recommended screening. The leading multi-cancer blood test missed its main trial goal. Stage shift does not reliably predict fewer deaths, so proof is slow.',
@@ -126,11 +128,11 @@ export const cancerTree: ConstraintTree = {
           claim: 'Proven screening is underused: under one in five eligible US adults get lung screening.',
           kind: 'delivery',
           whyUnsolved:
-            'Eligibility depends on smoking history that clinics rarely record. Uptake varies threefold across states, lowest where lung cancer deaths are highest. Only about 14% of diagnosed cancers are found by screening.',
+            'Inference: eligibility depends on smoking history, which is not always recorded. In 2022 survey data, state uptake ranged from 9.7% to 31%, low in southern states with high lung cancer burden. Duke says cancers behind about two thirds of cancer deaths have no recommended screening test.',
           falsifier:
             'If eligible adults were mostly up to date and deaths still did not fall, uptake would not be the limit.',
           tested:
-            'ACS, JAMA, 2024 NHIS data: 12.8M eligible, 18.7% up to date, state range 9.7% to 31%. An older ALA figure was 5.8%, so the trend is up. ACS models 62,110 lung cancer deaths prevented over five years at full uptake. Global screening uptake was not researched.',
+            'ACS, JAMA, 2024 NHIS data: 12.8M eligible, 18.7% up to date. An earlier ACS study on 2022 BRFSS data found a state range of 9.7% to 31%. An older ALA figure was 5.8%, from a different method, so the two are not a trend. ACS models 62,110 lung cancer deaths prevented over five years at full uptake. Global screening uptake was not researched.',
           suppliers: ['American Cancer Society'],
           supplyState: 'thin',
           additionality: {
@@ -144,7 +146,8 @@ export const cancerTree: ConstraintTree = {
           sources: [
             { label: 'AuntMinnie: ACS, only 1 in 5 eligible US adults screened for lung cancer in 2024', url: 'https://auntminnie.com/clinical-news/ct/article/15772301/acs-only-1-in-5-eligible-us-adults-underwent-lcs-in-2024' },
             { label: 'AARP: lung screening guidelines (ALA 5.8% figure)', url: 'https://www.aarp.org/health/conditions-treatments/lung-cancer-screening-guidelines/' },
-            { label: 'Duke Cancer Institute: 14% of cancers found by screening (NORC)', url: 'https://dukecancerinstitute.org/center/center-onco-primary-care/pathfinder-2' },
+            { label: 'Duke Cancer Institute: cancers without recommended screening', url: 'https://dukecancerinstitute.org/center/center-onco-primary-care/pathfinder-2' },
+            { label: 'AuntMinnie: ACS, states with higher lung cancer burden show low screening rates (2022 BRFSS)', url: 'https://www.auntminnie.com/clinical-news/ct/article/15677095/acs-states-with-higher-lung-cancer-burden-show-low-screening-rates' },
           ],
         },
       ],
@@ -154,11 +157,11 @@ export const cancerTree: ConstraintTree = {
       claim: 'Cancer trials are slow because few patients enroll and many trials never finish.',
       kind: 'coordination',
       whyUnsolved:
-        'About 7% of US cancer patients join treatment trials, and most US counties have no active cancer trial. About one in five adult cancer trials fails to finish enrollment. Sites, eligibility rules and costs are not coordinated.',
+        'About 7% of US cancer patients join treatment trials, and most US counties have no active cancer trial. About one in five adult cancer trials fails to finish enrollment. Inference: sites, eligibility rules and costs are not coordinated.',
       falsifier:
         'If most patients offered trials refused, the limit would be willingness, not access or design.',
       tested:
-        'Refutation check: a 2020 meta-analysis found 55% of patients agree when offered a trial, so willingness is not the main limit. Enrollment estimate is 7.1% (Unger, JCO 2024), up from the older under-5% figure, and modeled from accreditation data. Cost per patient: only a 2013 industry estimate ($74,800, phase 3) and a 2019 single-center Italian estimate (EUR 11,379) were found; current cost is unknown.',
+        'Refutation check: a 2020 meta-analysis found 55% of patients agree when offered a trial, so willingness is not the main limit. Enrollment estimate is 7.1% (Unger, JCO 2024), up from the older under-5% figure, and modeled from accreditation data. Cost per patient: only a 2019 single-center Italian estimate (EUR 11,379) could be opened; current cost is unknown.',
       suppliers: [],
       supplyState: 'unresearched',
       additionality: {
@@ -171,8 +174,9 @@ export const cancerTree: ConstraintTree = {
       ],
       sources: [
         { label: 'HealthDay: enrollment in cancer treatment trials about 7% (Unger, JCO)', url: 'https://www.healthday.com/healthpro-news/cancer/patient-enrollment-in-cancer-treatment-trials-about-7-percent' },
-        { label: 'Healio: many patients lack trial access where they live', url: 'https://cm.healio.com/news/hematology-oncology/20241022/many-patients-with-cancer-do-not-have-access-to-clinical-trials-based-on-where-they-live' },
-        { label: 'Healio: one in five cancer trials fails to complete enrollment', url: 'https://cm.healio.com/news/hematology-oncology/20140130/hot0114galsky_10_3928_1081_597x_20140101_24_1331469' },
+        { label: 'JNCI editorial on the Unger meta-analysis: 55% agree when offered a trial', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7936047/' },
+        { label: 'Healio: many patients lack trial access where they live', url: 'https://www.healio.com/news/hematology-oncology/20241022/many-patients-with-cancer-do-not-have-access-to-clinical-trials-based-on-where-they-live' },
+        { label: 'Healio: one in five cancer trials fails to complete enrollment', url: 'https://www.healio.com/news/hematology-oncology/20140130/hot0114galsky_10_3928_1081_597x_20140101_24_1331469' },
         { label: 'PLoS ONE 2019: per-patient trial cost, Italian center', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6324822/' },
         { label: 'Business Wire 2013: phase 3 oncology per-patient cost', url: 'https://www.businesswire.com/news/home/20130722005066/en/Phase-3-Oncology-Trial-Costs-Fall-Narrower' },
       ],
@@ -182,11 +186,11 @@ export const cancerTree: ConstraintTree = {
           claim: 'Poor accrual is the leading reason cancer trials stop early.',
           kind: 'coordination',
           whyUnsolved:
-            'Trials open at too few sites, with narrow eligibility, and compete for the same patients. Poor accrual caused 38.7% of early terminations in one analysis and 33% in another.',
+            'Inference: trials open at too few sites, with narrow eligibility, and compete for the same patients. Poor accrual caused 38.7% of early terminations in one analysis and 33% in another.',
           falsifier:
             'If terminated trials mostly stopped for safety or futility, accrual would not be the bottleneck.',
           tested:
-            'Estimates differ by dataset: 20% risk of failing to complete enrollment (2005 to 2011 adult trials); 8.5% terminated or withdrawn across 12,875 oncology registrations; 37.9% of NCI phase III trials missed minimum accrual. Poor accrual is the top cause in each.',
+            'Estimates differ by dataset: 20% risk of failing to complete enrollment (2005 to 2011 adult trials); 8.5% terminated or withdrawn across 12,875 oncology registrations; 37.9% of NCI phase III trials missed minimum accrual. Poor accrual was the most common stated reason in both termination analyses.',
           suppliers: [],
           supplyState: 'unresearched',
           additionality: {
@@ -198,7 +202,7 @@ export const cancerTree: ConstraintTree = {
           ],
           sources: [
             { label: 'PMC: premature termination in oncology trials', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6292544' },
-            { label: 'Healio: one in five cancer trials fails to complete enrollment', url: 'https://cm.healio.com/news/hematology-oncology/20140130/hot0114galsky_10_3928_1081_597x_20140101_24_1331469' },
+            { label: 'Healio: one in five cancer trials fails to complete enrollment', url: 'https://www.healio.com/news/hematology-oncology/20140130/hot0114galsky_10_3928_1081_597x_20140101_24_1331469' },
           ],
         },
       ],

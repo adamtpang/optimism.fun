@@ -23,7 +23,7 @@ export const climateChangeTree: ConstraintTree = {
   outcome:
     'Global CO2 emissions falling fast enough to limit warming, with energy still cheap. Today they are still rising: fossil CO2 was projected to reach a record 38.1 billion tonnes in 2025.',
   whyUnsolved:
-    'Clean power is cheap and already cuts emissions in rich countries. In 2024 emissions fell 1.1 percent in advanced economies and rose 1.5 percent in emerging and developing ones, where energy demand is growing and capital is expensive. Steel and cement have almost no clean capacity on order. Current policies point to about 2.6C of warming. Judging the emerging-economy build as most binding is our inference from these figures.',
+    'In 2024 emissions fell 1.1 percent in advanced economies, driven by lower coal and oil use as low-emissions sources kept growing, and rose 1.5 percent in emerging and developing ones, where energy demand is growing and capital is expensive. Announced near-zero steel and cement capacity for 2030 is about a tenth of what a net-zero pathway needs. Current policies point to about 2.6C of warming. Judging the emerging-economy build as most binding is our inference from these figures.',
   bindingId: 'emerging-economy-build',
   updated: '2026-11-11',
   root: [
@@ -32,7 +32,7 @@ export const climateChangeTree: ConstraintTree = {
       claim: 'Emissions rise where energy demand is growing fastest, because clean build there has not yet outpaced demand.',
       kind: 'delivery',
       whyUnsolved:
-        'Energy-related CO2 hit 37.8 Gt in 2024, up 0.8 percent. Emerging and developing economies rose 1.5 percent (375 Mt) while advanced economies fell 1.1 percent (120 Mt). Solar, wind, nuclear, electric cars and heat pumps now avoid about 2.6 Gt a year, roughly 7 percent of the total. That is real, but it is being added on top of growing demand.',
+        'Energy-related CO2 hit 37.8 Gt in 2024, up 0.8 percent. Emerging and developing economies rose 1.5 percent (375 Mt) while advanced economies fell 1.1 percent (120 Mt). Solar, wind, nuclear, electric cars and heat pumps deployed since 2019 now avoid about 2.6 Gt a year, roughly 7 percent of the total. That is real, but it is being added on top of growing demand.',
       falsifier:
         'Emissions in the large emerging economies stop growing while their economies keep growing.',
       tested:
@@ -74,7 +74,7 @@ export const climateChangeTree: ConstraintTree = {
     },
     {
       id: 'heavy-industry',
-      claim: 'Steel and cement have almost no near-zero capacity on order, because the clean product costs more and few buyers commit.',
+      claim: 'Announced near-zero steel and cement capacity for 2030 is about a tenth of what a net-zero pathway needs. The IEA names cost as the main barrier.',
       kind: 'engineering',
       whyUnsolved:
         'Steel and cement produce 14 percent of global energy and process emissions. Announced near-zero capacity for 2030 is about 10 Mt of steel and 35 Mt of cement, roughly 10 percent of what a net-zero pathway needs that year. Early production costs 10 to 125 percent more than conventional. Disclosed offtake deals for near-zero steel cover a little under 2 Mt a year by 2030. The IEA names cost as the largest barrier.',

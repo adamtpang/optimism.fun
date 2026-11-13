@@ -40,9 +40,9 @@ const NILSON = {
 export const financialInfrastructureTree: ConstraintTree = {
   problemSlug: 'financial-infrastructure',
   outcome:
-    'Anyone can send or receive money at a cost near zero. Today sending $200 across a border costs 6.7 percent on average, and 1.3 billion adults have no account.',
+    'Anyone can send or receive money at a cost near zero. In the second quarter of 2024, sending $200 across a border cost 6.7 percent on average, and 1.3 billion adults have no account.',
   whyUnsolved:
-    'Inside one country the problem is solved wherever a public instant rail exists: Brazil signed up 67 percent of adults in about a year. Between countries it is not. A cross-border payment passes through two domestic systems, two sets of rules and often a chain of banks, and no single body can change all of them. The G20 has agreed the policy and says the 2027 targets will likely be missed. The remaining unbanked mostly already own a phone, so the last gap there is identity and rules, not hardware.',
+    'Inside one country a public instant rail can move fast: Brazil signed up 67 percent of adults in about a year. That is one country, and no merchant cost data was read. Between countries it is not. A cross-border payment passes through two domestic systems, two sets of rules and often a chain of banks, and no single body can change all of them. The G20 has agreed the policy, and the Financial Stability Board says satisfactory improvement by the 2027 timetable is unlikely. Most of the remaining unbanked already own a phone. Inference: for them the gap is identity and rules, not hardware.',
   bindingId: 'cross-border',
   updated: '2026-11-11',
   root: [
@@ -55,7 +55,7 @@ export const financialInfrastructureTree: ConstraintTree = {
       falsifier:
         'Costs fall to the 3 percent target on the current G20 roadmap without new rails or new entrants. Or costs stay high in corridors where both ends already have open instant payment systems.',
       tested:
-        'Supports the claim. The Financial Stability Board said in October 2025 that satisfactory improvement in line with the 2027 timetable is unlikely, that 2025 indicators show only slight improvement since 2023, and that the average global cost remains sticky. It also said most roadmap actions are complete but have not yet reached end users. So policy design is done and delivery is the gap. A secondary source citing FXC Intelligence puts 35.4 percent of payments within one hour against a 75 percent target. Not tested: costs in corridors that link two instant payment systems.',
+        'Supports the claim. The Financial Stability Board said in October 2025 that satisfactory improvement in line with the 2027 timetable is unlikely, that 2025 indicators show only slight improvement since 2023, and that the average global cost of remittances remains sticky, with some improvement in the most expensive regions. It also said most roadmap actions are complete but have not yet reached end users. Inference: policy design is done and delivery is the gap. A secondary source citing FXC Intelligence puts 35.4 percent of payments within one hour against a 75 percent target. Not tested: costs in corridors that link two instant payment systems.',
       suppliers: [
         'Financial Stability Board',
         'BIS Committee on Payments and Market Infrastructures',
@@ -64,7 +64,7 @@ export const financialInfrastructureTree: ConstraintTree = {
       supplyState: 'contested',
       additionality: {
         level: 'medium',
-        why: 'Inference: public bodies have set the rules and many firms compete on popular corridors. A new team adds most in expensive corridors, where the FSB still reports high costs.',
+        why: 'Inference: public bodies have set the rules. A new team likely adds most in high-cost corridors. The FSB pages read report costs by region, not by corridor.',
       },
       entryPoints: [
         { who: 'talent', action: 'Pick one corridor that costs above 5 percent and break the fee into exchange margin, compliance and payout, with sources.' },
@@ -78,7 +78,7 @@ export const financialInfrastructureTree: ConstraintTree = {
       claim: '1.3 billion adults have no account, and most of them already own a phone.',
       kind: 'delivery',
       whyUnsolved:
-        'Account ownership reached 79 percent of adults, up from 50 percent in 2011. Of the 1.3 billion without one, about 900 million own a mobile phone and 530 million own a smartphone. The World Bank names what is still missing: digital IDs, government payment systems, modern payment rails and the removal of regulatory roadblocks. Those are state functions, which a company cannot supply alone.',
+        'Account ownership reached 79 percent of adults, up from 50 percent in 2011. Of the 1.3 billion without one, about 900 million own a mobile phone and 530 million own a smartphone. The World Bank president lists the ingredients it is working on: digital IDs, digital cash-transfer programmes, modern payment systems and fewer regulatory roadblocks. Inference: those are largely state functions, which a company cannot supply alone.',
       falsifier:
         'Countries that issue digital IDs and allow mobile money still see no rise in account ownership among phone owners. Or most unbanked adults say they do not want an account.',
       tested:
@@ -97,7 +97,7 @@ export const financialInfrastructureTree: ConstraintTree = {
     },
     {
       id: 'domestic-rails',
-      claim: 'Where no open instant rail exists, everyday payments run on rails that charge merchants a percentage.',
+      claim: 'Where no open instant rail exists, everyday payments run largely on cards. What merchants pay was not read this session.',
       kind: 'policy',
       whyUnsolved:
         'Brazil\'s Pix signed up 67 percent of adults in little over a year after its November 2020 launch, with free payments between people and low charges for merchants. The BIS credits two choices: large banks were required to join, and the central bank both ran the rail and set the rules. Those are decisions only a public authority can make. In the United States, card purchase volume was $12.498 trillion in 2025, up 5.0 percent.',
