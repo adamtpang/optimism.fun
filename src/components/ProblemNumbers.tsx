@@ -73,7 +73,7 @@ export default async function ProblemNumbers({ problem }: { problem: Problem }) 
 
       {owid.state === 'ok' && (
         <div className="mt-3">
-          <p className="text-small text-ink-500 mb-2">
+          <p className="first-letter:uppercase text-small text-ink-500 mb-2">
             Live trend · Our World in Data
           </p>
           <MetricChart
@@ -94,7 +94,7 @@ export default async function ProblemNumbers({ problem }: { problem: Problem }) 
         <div className="grid sm:grid-cols-2 gap-3 mt-3">
           {blocks.map((metric) => (
             <div key={metric.id} className="border border-hair p-4">
-              <p className="text-small text-ink-500">{metric.label}</p>
+              <p className="first-letter:uppercase text-small text-ink-500">{metric.label}</p>
               <p className="font-figure text-h1 font-normal tabular-nums text-ink-100 mt-1">{formatMeasure(metric.value)}</p>
               <p className="text-small text-ink-400 mt-1">{metric.unit}</p>
               <SourceLink source={metric.source} href={metric.sourceUrl} />

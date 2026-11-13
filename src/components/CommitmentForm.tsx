@@ -182,7 +182,7 @@ export default function CommitmentForm({
         id="coordinate"
         className="border border-terminal-green/40 bg-terminal-green/[0.04] p-6 scroll-mt-40"
       >
-        <p className="text-small text-terminal-green mb-2">
+        <p className="first-letter:uppercase text-small text-terminal-green mb-2">
           Submitted · not yet public
         </p>
         <p className="text-ink-200 text-small leading-relaxed">

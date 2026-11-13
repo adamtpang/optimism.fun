@@ -40,7 +40,7 @@ function Choice({
 }) {
   return (
     <fieldset className="mb-5">
-      <legend className="text-sm text-ink-200 mb-2">{legend}</legend>
+      <legend className="text-small text-ink-200 mb-2">{legend}</legend>
       <div className="flex flex-wrap gap-2">
         {options.map((o) => {
           const on = o.value === value
@@ -50,7 +50,7 @@ function Choice({
               type="button"
               aria-pressed={on}
               onClick={() => onChange(o.value)}
-              className={`min-h-11 rounded border px-3 py-2 text-sm text-left transition-colors ${
+              className={`min-h-11 rounded border px-3 py-2 text-small text-left transition-colors ${
                 on ? 'border-primary bg-primary/10 text-ink-100' : 'border-hair text-ink-300 hover:border-primary/60'
               }`}
             >
@@ -97,10 +97,10 @@ export default function QuestFlow({ quests }: { quests: PlottedQuest[] }) {
 
   return (
     <div id="your-quest" className="scroll-mt-24">
-      <h3 className="font-serif text-2xl md:text-3xl text-ink-100 leading-tight mb-2">
+      <h3 className="text-h2 md:text-h1 text-ink-100 leading-tight mb-2">
         Where is the thing you work on now?
       </h3>
-      <p className="text-ink-400 text-sm leading-relaxed max-w-2xl mb-5">
+      <p className="text-ink-400 text-small leading-relaxed max-w-2xl mb-5">
         Two honest answers put you on the same grid as every quest here. Your answers stay in this browser.
       </p>
       <Choice legend="If it fully works, what changes?" options={GOOD_OPTIONS} value={good} onChange={setGood} />
@@ -109,13 +109,13 @@ export default function QuestFlow({ quests }: { quests: PlottedQuest[] }) {
       <div aria-live="polite">
         {box && (
           <div className="border-l-2 border-primary pl-4 mb-6 max-w-2xl">
-            <p className="text-ink-200 text-sm leading-relaxed">
+            <p className="text-ink-200 text-small leading-relaxed">
               You are in <span className="text-ink-100 font-medium">{box.name}</span>. {box.verdict}
             </p>
             <div className="flex flex-wrap items-center gap-4 mt-3">
               <Link
                 href="/quests"
-                className="inline-flex items-center min-h-11 font-mono text-xs uppercase text-paper bg-primary hover:bg-primary/90 rounded px-4 py-2 transition-colors"
+                className="first-letter:uppercase inline-flex items-center min-h-11 text-small text-paper bg-primary hover:bg-primary/90 rounded px-4 py-2 transition-colors"
               >
                 Next: fill in your player card &rarr;
               </Link>
@@ -125,7 +125,7 @@ export default function QuestFlow({ quests }: { quests: PlottedQuest[] }) {
                   setGood(null)
                   setHard(null)
                 }}
-                className="min-h-11 text-sm text-ink-400 underline hover:text-ink-200"
+                className="min-h-11 text-small text-ink-400 underline hover:text-ink-200"
               >
                 Clear my answers
               </button>

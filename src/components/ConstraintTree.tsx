@@ -11,13 +11,13 @@ function Node({ c, binding, nested }: { c: Constraint; binding: string; nested?:
   const isBinding = c.id === binding
   return (
     <div className={`border-l-2 pl-4 ${isBinding ? 'border-primary' : 'border-hair'} ${nested ? 'mt-4' : ''}`}>
-      {isBinding && <p className="text-small text-primary mb-1">Biggest blocker</p>}
+      {isBinding && <p className="first-letter:uppercase text-small text-primary mb-1">Biggest blocker</p>}
       <p className="text-ink-100 text-body-lg leading-snug">{c.claim}</p>
       {c.entryPoints.length > 0 && (
         <ul className="mt-2 space-y-1">
           {c.entryPoints.map((e) => (
             <li key={e.action} className="text-small text-ink-300">
-              <span className="text-small text-primary mr-2">{WHO[e.who]}</span>
+              <span className="first-letter:uppercase text-small text-primary mr-2">{WHO[e.who]}</span>
               {e.action}
             </li>
           ))}

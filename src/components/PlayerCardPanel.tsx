@@ -141,11 +141,11 @@ export default function PlayerCardPanel({
   return (
     <div className="min-w-0">
       {tokenInvalid && (
-        <p className="text-sm text-ink-400 mb-4">That share link could not be read. The card on this device was left as it was.</p>
+        <p className="text-small text-ink-400 mb-4">That share link could not be read. The card on this device was left as it was.</p>
       )}
 
       <fieldset className="border border-hair p-4">
-        <legend className="font-mono text-small uppercase tracking-wider text-ink-500 px-1">Skills</legend>
+        <legend className="first-letter:uppercase text-small text-ink-500 px-1">Skills</legend>
         <div className="flex flex-wrap gap-2 mt-2">
           {options.skills.map((skill) => (
             <button
@@ -162,7 +162,7 @@ export default function PlayerCardPanel({
       </fieldset>
 
       <fieldset className="border border-hair p-4 mt-3">
-        <legend className="font-mono text-small uppercase tracking-wider text-ink-500 px-1">Domains</legend>
+        <legend className="first-letter:uppercase text-small text-ink-500 px-1">Domains</legend>
         <div className="flex flex-wrap gap-2 mt-2">
           {options.domains.map((domain) => (
             <button
@@ -179,8 +179,8 @@ export default function PlayerCardPanel({
       </fieldset>
 
       <fieldset className="border border-hair p-4 mt-3">
-        <legend className="font-mono text-small uppercase tracking-wider text-ink-500 px-1">Technologies</legend>
-        <p className="text-sm text-ink-400 mt-2">
+        <legend className="first-letter:uppercase text-small text-ink-500 px-1">Technologies</legend>
+        <p className="text-small text-ink-400 mt-2">
           Enabling tools, not problems. A technology matches only when a sourced company on the quest carries that tag.
         </p>
         <div className="flex flex-wrap gap-2 mt-2">
@@ -199,7 +199,7 @@ export default function PlayerCardPanel({
       </fieldset>
 
       <fieldset className="border border-hair p-4 mt-3">
-        <legend className="font-mono text-small uppercase tracking-wider text-ink-500 px-1">Places</legend>
+        <legend className="first-letter:uppercase text-small text-ink-500 px-1">Places</legend>
         <div className="flex flex-wrap gap-2 mt-2 max-h-48 overflow-y-auto">
           {options.places.map((place) => (
             <button
@@ -216,7 +216,7 @@ export default function PlayerCardPanel({
       </fieldset>
 
       <details className="border border-hair p-4 mt-3">
-        <summary className="cursor-pointer font-mono text-small uppercase tracking-wider text-ink-500">
+        <summary className="first-letter:uppercase cursor-pointer text-small text-ink-500">
           Communities you can reach ({options.communities.length})
         </summary>
         <div className="flex flex-wrap gap-2 mt-3 max-h-48 overflow-y-auto">
@@ -235,21 +235,21 @@ export default function PlayerCardPanel({
       </details>
 
       <details className="border border-hair p-4 mt-3">
-        <summary className="cursor-pointer font-mono text-small uppercase tracking-wider text-ink-500">
+        <summary className="first-letter:uppercase cursor-pointer text-small text-ink-500">
           Networks ({options.networks.length})
         </summary>
-        <label className="block mt-3 text-sm text-ink-400" htmlFor="network-filter">
+        <label className="block mt-3 text-small text-ink-400"htmlFor="network-filter">
           Filter sourced companies and founders
         </label>
         <input
           id="network-filter"
           value={filter}
           onChange={(event) => setFilter(event.target.value)}
-          className="mt-2 w-full border border-hair bg-background px-3 py-2 text-sm text-ink-100"
+          className="mt-2 w-full border border-hair bg-background px-3 py-2 text-small text-ink-100"
           autoComplete="off"
         />
         {card.networks.length > 0 && (
-          <p className="text-sm text-ink-300 mt-2 break-words">
+          <p className="text-small text-ink-300 mt-2 break-words">
             Selected: {card.networks.map((id) => options.networks.find((row) => row.id === id)?.label ?? id).join(', ')}
           </p>
         )}
@@ -266,11 +266,11 @@ export default function PlayerCardPanel({
             </button>
           ))}
         </div>
-        <p className="text-sm text-ink-500 mt-2">Showing {networks.length} names. The list is the sourced set, not a search of the world.</p>
+        <p className="text-small text-ink-500 mt-2">Showing {networks.length} names. The list is the sourced set, not a search of the world.</p>
       </details>
 
       <fieldset className="border border-hair p-4 mt-3">
-        <legend className="font-mono text-small uppercase tracking-wider text-ink-500 px-1">Capital</legend>
+        <legend className="first-letter:uppercase text-small text-ink-500 px-1">Capital</legend>
         <div className="flex flex-wrap gap-2 mt-2">
           {CAPITAL_BANDS.filter((band) => band !== 'none').map((band) => (
             <button
@@ -287,7 +287,7 @@ export default function PlayerCardPanel({
       </fieldset>
 
       <fieldset className="border border-hair p-4 mt-3">
-        <legend className="font-mono text-small uppercase tracking-wider text-ink-500 px-1">Time</legend>
+        <legend className="first-letter:uppercase text-small text-ink-500 px-1">Time</legend>
         <div className="flex flex-wrap gap-2 mt-2">
           {TIME_BANDS.filter((band) => band !== 'none').map((band) => (
             <button
@@ -304,7 +304,7 @@ export default function PlayerCardPanel({
       </fieldset>
 
       <fieldset className="border border-hair p-4 mt-3">
-        <legend className="font-mono text-small uppercase tracking-wider text-ink-500 px-1">Risk appetite</legend>
+        <legend className="first-letter:uppercase text-small text-ink-500 px-1">Risk appetite</legend>
         <div className="flex flex-wrap gap-2 mt-2">
           {RISK_BANDS.filter((band) => band !== 'none').map((band) => (
             <button
@@ -321,18 +321,18 @@ export default function PlayerCardPanel({
       </fieldset>
 
       <div className="flex flex-wrap gap-2 mt-4">
-        <button type="button" onClick={() => patch(emptyPlayerCard())} className="px-3 py-2 text-sm border border-hair text-ink-300">
+        <button type="button" onClick={() => patch(emptyPlayerCard())} className="px-3 py-2 text-small border border-hair text-ink-300">
           Clear card
         </button>
-        <button type="button" onClick={() => paintCard(playerCardLines(card, options))} className="px-3 py-2 text-sm border border-primary text-primary">
+        <button type="button" onClick={() => paintCard(playerCardLines(card, options))} className="px-3 py-2 text-small border border-primary text-primary">
           Download card image
         </button>
-        <button type="button" onClick={copyLink} className="px-3 py-2 text-sm border border-primary text-primary">
+        <button type="button" onClick={copyLink} className="px-3 py-2 text-small border border-primary text-primary">
           {copied ? 'Link copied' : 'Copy share link'}
         </button>
       </div>
-      <p className="text-sm text-ink-500 mt-3 break-all">{sharePath}</p>
-      <p className="text-sm text-ink-500 mt-2">
+      <p className="text-small text-ink-500 mt-3 break-all">{sharePath}</p>
+      <p className="text-small text-ink-500 mt-2">
         Saved in this browser only. Nothing is sent and nothing is written into the repository.
         {showMatches ? '' : (
           <>
@@ -346,14 +346,14 @@ export default function PlayerCardPanel({
 
       {showMatches && preselected && (
         <article className="border border-dashed border-primary bg-neutral-50 p-4 mt-6 min-w-0">
-          <p className="font-mono text-small uppercase tracking-wider text-primary">Preselected quest</p>
-          <h2 className="font-serif text-2xl text-ink-100 mt-2 break-words">
+          <p className="first-letter:uppercase text-small text-primary">Preselected quest</p>
+          <h2 className="text-h2 text-ink-100 mt-2 break-words">
             <Link href={preselected.href} className="hover:text-primary">
               {preselected.name}
             </Link>
           </h2>
-          {preselected.gap && <p className="text-sm text-ink-300 mt-2 break-words">Gap: {preselected.gap}</p>}
-          <p className="text-sm text-ink-400 mt-2">
+          {preselected.gap && <p className="text-small text-ink-300 mt-2 break-words">Gap: {preselected.gap}</p>}
+          <p className="text-small text-ink-400 mt-2">
             Opened from an open quest. Fill the card to see whether your fields match it. The priority rank is unchanged.
           </p>
         </article>
@@ -361,8 +361,8 @@ export default function PlayerCardPanel({
 
       {showMatches && (
         <section className="mt-10">
-          <h2 className="font-serif text-3xl text-ink-100">Matches</h2>
-          <p className="text-sm text-ink-400 mt-3 max-w-2xl">
+          <h2 className="text-h1 text-ink-100">Matches</h2>
+          <p className="text-small text-ink-400 mt-3 max-w-2xl">
             Order is the rule list: an intersection with the thinner named side, then domain, skill, technology tag, filling that side, place, community, network, and risk appetite. Ties use the existing site rank. No fit score is computed.
           </p>
           {cardIsEmpty(card) ? (
@@ -375,31 +375,31 @@ export default function PlayerCardPanel({
             <ol className="mt-4 space-y-4">
               {matches.map((match, index) => (
                 <li key={match.slug} className="border border-hair p-4 min-w-0">
-                  <p className="font-mono text-small uppercase tracking-wider text-ink-500">
+                  <p className="first-letter:uppercase text-small text-ink-500">
                     {index + 1} · site rank {match.rank}
                   </p>
-                  <h3 className="font-serif text-2xl text-ink-100 mt-1 break-words">
+                  <h3 className="text-h2 text-ink-100 mt-1 break-words">
                     <Link href={match.href} className="hover:text-primary">
                       {match.name}
                     </Link>
                   </h3>
                   <ul className="mt-3 space-y-2">
                     {match.reasons.map((reason) => (
-                      <li key={reason} className="text-sm text-ink-300 break-words">
+                      <li key={reason} className="text-small text-ink-300 break-words">
                         {reason}
                       </li>
                     ))}
                   </ul>
-                  <p className="text-sm text-ink-100 mt-4 break-words">
-                    <span className="font-mono text-small uppercase tracking-wider text-primary">What only you could do. </span>
+                  <p className="text-small text-ink-100 mt-4 break-words">
+                    <span className="first-letter:uppercase text-small text-primary">What only you could do. </span>
                     {match.onlyYou}
                   </p>
                   {match.playerGaps.length > 0 && (
                     <div className="mt-4">
-                      <p className="font-mono text-small uppercase tracking-wider text-ink-500">Gaps to fill</p>
+                      <p className="first-letter:uppercase text-small text-ink-500">Gaps to fill</p>
                       <ul className="mt-2 space-y-1">
                         {match.playerGaps.map((gap) => (
-                          <li key={gap} className="text-sm text-ink-400 break-words">
+                          <li key={gap} className="text-small text-ink-400 break-words">
                             {gap}
                           </li>
                         ))}
@@ -409,19 +409,19 @@ export default function PlayerCardPanel({
                   {match.dataGaps.length > 0 && (
                     <ul className="mt-3 space-y-1">
                       {match.dataGaps.map((gap) => (
-                        <li key={gap} className="text-sm text-ink-500">
+                        <li key={gap} className="text-small text-ink-500">
                           {gap}
                         </li>
                       ))}
                     </ul>
                   )}
-                  <p className="mt-4 text-sm break-words">
-                    <span className="font-mono text-small uppercase tracking-wider text-primary">First action. </span>
+                  <p className="mt-4 text-small break-words">
+                    <span className="first-letter:uppercase text-small text-primary">First action. </span>
                     <a href={match.firstAction.url} className="text-ink-100 hover:text-primary">
                       {match.firstAction.name}
                     </a>
                   </p>
-                  <p className="text-sm text-ink-400 mt-1 break-words">{match.firstAction.detail}</p>
+                  <p className="text-small text-ink-400 mt-1 break-words">{match.firstAction.detail}</p>
                 </li>
               ))}
             </ol>

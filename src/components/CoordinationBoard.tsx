@@ -30,7 +30,7 @@ type Props = {
 }
 
 const SUBMITTED = (
-  <span className="text-small text-ink-600 border border-hair px-1 py-0.5">
+  <span className="first-letter:uppercase text-small text-ink-600 border border-hair px-1 py-0.5">
     user-submitted
   </span>
 )
@@ -57,7 +57,7 @@ function Column({
   return (
     <div className="border border-hair">
       <div className="border-b border-hair px-4 py-3 bg-ink-900/40">
-        <p className="text-small text-primary">
+        <p className="first-letter:uppercase text-small text-primary">
           {kicker}
         </p>
         <p className="font-figure text-small text-ink-500 mt-1 tabular-nums">
@@ -115,7 +115,7 @@ export default function CoordinationBoard({
               </p>
               <Link
                 href="#coordinate"
-                className="inline-block mt-2 text-small text-primary hover:underline"
+                className="first-letter:uppercase inline-block mt-2 text-small text-primary hover:underline"
               >
                 Claim this start
               </Link>
@@ -166,7 +166,7 @@ export default function CoordinationBoard({
                 </p>
                 <Link
                   href="#coordinate"
-                  className="inline-block mt-2 text-small text-primary hover:underline"
+                  className="first-letter:uppercase inline-block mt-2 text-small text-primary hover:underline"
                 >
                   I want in
                 </Link>

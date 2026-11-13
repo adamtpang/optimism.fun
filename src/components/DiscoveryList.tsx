@@ -48,12 +48,12 @@ export default function DiscoveryList({
             <article className={compact ? 'p-4' : 'p-5'}>
               <div className="flex flex-wrap items-center gap-2 mb-2">
                 <span
-                  className={`text-small border px-1.5 py-px ${REVIEW_CLASS[item.review]}`}
+                  className={`first-letter:uppercase text-small border px-1.5 py-px ${REVIEW_CLASS[item.review]}`}
                 >
                   {REVIEW_LABEL[item.review]}
                 </span>
                 {item.status && (
-                  <span className="text-small border border-terminal-rose/70 bg-terminal-rose/10 text-terminal-rose px-1.5 py-px">
+                  <span className="first-letter:uppercase text-small border border-terminal-rose/70 bg-terminal-rose/10 text-terminal-rose px-1.5 py-px">
                     {item.status === 'retracted' ? 'Retracted' : 'Challenged'}
                   </span>
                 )}
@@ -109,7 +109,7 @@ export default function DiscoveryList({
               )}
 
               <div className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-small">
-                <span className="text-small text-ink-500">
+                <span className="first-letter:uppercase text-small text-ink-500">
                   Moves {CHANGE_LABEL[item.changes]}
                 </span>
                 {item.problemSlugs.map((slug) => (

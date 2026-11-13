@@ -34,7 +34,7 @@ export default function CtaBoard({
     <section id={embedded ? undefined : 'do'} className={embedded ? 'mt-8' : 'site-shell py-10 border-b border-hair'}>
       <div className="flex flex-wrap items-baseline justify-between gap-3 mb-5">
         <h2 className="text-h2 text-ink-100">What you can do</h2>
-        <a href="/data"className="text-small text-primary hover:underline">
+        <a href="/data" className="first-letter:uppercase text-small text-primary hover:underline">
           Open data
         </a>
       </div>
@@ -47,7 +47,7 @@ export default function CtaBoard({
           return (
             <div key={kind} className="border border-hair min-w-0">
               <div className="px-3 py-2 border-b border-hair">
-                <h3 className="text-small text-ink-100">{COPY[kind].label}</h3>
+                <h3 className="first-letter:uppercase text-small text-ink-100">{COPY[kind].label}</h3>
                 <p className="text-small text-ink-500 mt-0.5">{COPY[kind].hint}</p>
               </div>
               {rows.length === 0 ? (
@@ -56,7 +56,7 @@ export default function CtaBoard({
                 <ul>
                   {rows.map((cta) => (
                     <li key={cta.id} className="px-3 py-3 border-b border-hair last:border-b-0">
-                      <p className="text-small text-ink-500">
+                      <p className="first-letter:uppercase text-small text-ink-500">
                         {TYPE_LABEL[cta.type] ?? cta.type}
                         {cta.location ? ` · ${cta.location}` : ''}
                       </p>

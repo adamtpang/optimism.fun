@@ -22,7 +22,7 @@ export default function BurdenBlock({ problemSlug }: { problemSlug: string }) {
       <div className="site-shell py-8">
         <div className="flex flex-wrap items-baseline justify-between gap-4 mb-5">
           <div>
-            <p className="text-small text-ink-500 mb-2">
+            <p className="first-letter:uppercase text-small text-ink-500 mb-2">
               The burden behind it
             </p>
             <div className="flex items-baseline gap-3">
