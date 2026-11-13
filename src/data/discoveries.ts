@@ -929,6 +929,38 @@ export const discoveries: Discovery[] = [
     changes: 'tractability',
     review: 'peer-reviewed',
   },
+  {
+    id: 'pepfar-withdrawal-hiv-services-uganda-zimbabwe-2026',
+    title:
+      'HIV service delivery after the PEPFAR and USAID HIV funding withdrawal in Uganda and Zimbabwe: an interrupted time-series study',
+    // Europe PMC electronicPublicationDate 2026-10-04 (online first). Crossref issued and published-print are 2026-11, issue 11.
+    published: '2026-10-04',
+    added: '2026-11-13',
+    source: 'The Lancet Global Health',
+    doi: '10.1016/j.langlo.2026.104061',
+    url: doi('10.1016/j.langlo.2026.104061'),
+    problemSlugs: ['infectious-disease'],
+    summary:
+      'An interrupted time-series of four NGOs serving key populations in Uganda and Zimbabwe found that after the February 2025 US funding withdrawal, HIV testing fell by 58.7 to 63.8 index points, PrEP by 43.0 to 71.6 and treatment by 22.0 to 31.5 (index points equal percentage change from mean 2024 levels), with services still well below 2024 levels in March 2026.',
+    changes: 'neglectedness',
+    review: 'peer-reviewed',
+  },
+  {
+    id: 'pure-underdiagnosed-copd-2026',
+    title:
+      'The burden and long-term outcomes of diagnosed and underdiagnosed COPD across diverse communities from high-income, middle-income, and low-income countries: the Prospective Urban Rural Epidemiology (PURE) study',
+    // Europe PMC electronicPublicationDate 2026-10-03 (online first). Crossref issued and published-print are 2026-11, issue 11.
+    published: '2026-10-03',
+    added: '2026-11-13',
+    source: 'The Lancet Global Health',
+    doi: '10.1016/j.langlo.2026.104055',
+    url: doi('10.1016/j.langlo.2026.104055'),
+    problemSlugs: ['copd'],
+    summary:
+      'Spirometry on 119,252 adults in 25 countries found airflow obstruction in 9.5%, and 89.2% of those cases had never been diagnosed; underdiagnosed COPD still carried a mortality hazard ratio of 1.53 versus no COPD.',
+    changes: 'scale',
+    review: 'peer-reviewed',
+  },
 ]
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/
