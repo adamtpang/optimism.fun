@@ -60,7 +60,7 @@ export default function NavbarClient({ onHero: onHeroProp = false }: { onHero?: 
           optimism.fun
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-1" aria-label="Primary">
+        <nav className="hidden xl:flex items-center gap-1" aria-label="Primary">
           {NAV_TABS.map((tab) => (
             <Link key={tab.name} href={tab.href} className={itemClass(isActive(tab.href))}>
               {tab.name}
@@ -68,7 +68,7 @@ export default function NavbarClient({ onHero: onHeroProp = false }: { onHero?: 
           ))}
         </nav>
 
-        <div className="ml-auto hidden lg:flex items-center gap-1">
+        <div className="ml-auto hidden xl:flex items-center gap-1">
           <Link href="/methodology" className={itemClass(isActive('/methodology'))}>
             Methodology
           </Link>
@@ -86,7 +86,7 @@ export default function NavbarClient({ onHero: onHeroProp = false }: { onHero?: 
           <SheetTrigger asChild>
             <button
               type="button"
-              className={`lg:hidden ml-auto inline-flex items-center justify-center h-11 w-11 rounded-lg border border-border bg-background text-foreground ${
+              className={`xl:hidden ml-auto inline-flex items-center justify-center h-11 w-11 rounded-lg border border-border bg-background text-foreground ${
                 onHero ? 'md:border-white/40 md:bg-transparent md:text-white' : ''
               }`}
               aria-label="Menu"
@@ -113,7 +113,7 @@ export default function NavbarClient({ onHero: onHeroProp = false }: { onHero?: 
                 Methodology
               </Link>
               <Link href="/manifesto" onClick={() => setOpen(false)} className="flex items-center h-12 text-body border-b border-neutral-100">
-                manifesto
+                Manifesto
               </Link>
               <a
                 href="https://github.com/adamtpang/optimism.fun"
