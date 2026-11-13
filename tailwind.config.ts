@@ -4,6 +4,7 @@ import tailwindcssAnimate from 'tailwindcss-animate'
 /**
  * Design tokens from the 2026-11-01 design spec.
  * Teal is action. Blue is information. Neutrals carry body text.
+ * Gold, vermilion and blue are the three visitor classes: patron, founder, researcher.
  * xs/sm are pinned to 14px so existing utilities cannot render below the floor.
  */
 const hsl = (name: string) => `hsl(var(${name}) / <alpha-value>)`
@@ -14,6 +15,7 @@ const config: Config = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/lib/visitor-classes.ts',
   ],
   theme: {
     extend: {
@@ -107,6 +109,24 @@ const config: Config = {
         input: hsl('--input'),
         ring: hsl('--ring'),
         info: hsl('--info'),
+        patron: {
+          DEFAULT: 'var(--class-patron-fill)',
+          on: 'var(--class-patron-on)',
+          ink: 'var(--class-patron-ink)',
+          tint: 'var(--class-patron-tint)',
+        },
+        founder: {
+          DEFAULT: 'var(--class-founder-fill)',
+          on: 'var(--class-founder-on)',
+          ink: 'var(--class-founder-ink)',
+          tint: 'var(--class-founder-tint)',
+        },
+        researcher: {
+          DEFAULT: 'var(--class-researcher-fill)',
+          on: 'var(--class-researcher-on)',
+          ink: 'var(--class-researcher-ink)',
+          tint: 'var(--class-researcher-tint)',
+        },
         chart: {
           1: 'var(--chart-1)',
           2: 'var(--chart-2)',

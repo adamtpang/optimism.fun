@@ -80,3 +80,31 @@
   --confidence-med: #1f56c9;
   --confidence-low: rgb(var(--terminal-rose));
 }
+
+/* Class colors (2026-11-12). The three kinds of visitor each own one color.
+   Use them only for that class's call to action and its labels, so the color
+   always means "this is for you". Teal stays the neutral action color.
+
+   Each class has four steps:
+     fill  a solid block: a button or a badge
+     on    text and icons placed over the fill, at least 4.5:1
+     ink   the class color as text or a rule on white or paper, at least 4.5:1
+     tint  a soft background behind ink or body text
+   tests/class-colors.test.ts measures every pair. Gold cannot carry white
+   text, so patron uses dark text on the fill and takes an ink border. */
+:root {
+  --class-patron-fill: #f5b800;
+  --class-patron-on: #121920;
+  --class-patron-ink: #7a5200;
+  --class-patron-tint: #fff6d6;
+
+  --class-founder-fill: #d63f12;
+  --class-founder-on: #ffffff;
+  --class-founder-ink: #a83a0c;
+  --class-founder-tint: #fdede7;
+
+  --class-researcher-fill: #1f56c9;
+  --class-researcher-on: #ffffff;
+  --class-researcher-ink: #1b45a3;
+  --class-researcher-tint: #eff5ff;
+}
