@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: `${problem.name} | optimism.fun`,
     description: `Sourced figures for ${problem.name}. The company sketch on this page is an AI suggestion, not a real company.`,
-    alternates: { canonical: `/index/${slug}` },
+    alternates: { canonical: `/problem-index/${slug}` },
   }
 }
 
@@ -92,7 +92,7 @@ export default async function IndexProblemPage({ params }: { params: Promise<{ s
       <Navbar />
       <main className="site-shell pt-28 pb-16">
         <p className="text-sm">
-          <Link href="/index" className="text-primary underline underline-offset-2">
+          <Link href="/problem-index" className="text-primary underline underline-offset-2">
             Open index
           </Link>
         </p>
