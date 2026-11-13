@@ -837,6 +837,130 @@ export const discoveries: Discovery[] = [
     changes: 'scale',
     review: 'peer-reviewed',
   },
+  {
+    id: 'intismeran-melanoma-phase3-2026',
+    title: 'Intismeran Autogene plus Pembrolizumab for Resected Stage IIB to IV Melanoma',
+    // Crossref published-online 2026-11-11. First author is Georgina V. Long.
+    published: '2026-11-11',
+    added: '2026-11-12',
+    source: 'New England Journal of Medicine',
+    doi: '10.1056/nejmoa2609762',
+    url: doi('10.1056/nejmoa2609762'),
+    problemSlugs: ['cancer'],
+    summary:
+      'In a phase 3 double-blind trial, 1137 patients with completely resected high-risk cutaneous melanoma had recurrence-free survival at 24 months of 82.2% with the individualized neoantigen therapy intismeran plus pembrolizumab versus 70.0% with pembrolizumab alone, and distant-metastasis-free survival of 88.5% versus 80.2%.',
+    changes: 'tractability',
+    review: 'trial-result',
+  },
+  {
+    id: 'meng-one-child-bureaucratic-incentives-2026',
+    title: 'Bureaucratic incentives shaped effectiveness of the one-child policy in China',
+    // Crossref published-online 2026-11-11. First author is Lingsheng Meng.
+    published: '2026-11-11',
+    added: '2026-11-12',
+    source: 'Nature',
+    doi: '10.1038/s41586-026-11232-w',
+    url: doi('10.1038/s41586-026-11232-w'),
+    problemSlugs: ['fertility-decline'],
+    summary:
+      'China\'s one vote veto policy, which strictly prohibited career advancement for adherence failure, explains nearly half of China\'s total fertility rate decline during the 1990s and drove fertility below the replacement rate. The findings suggest that stronger bureaucratic enforcement made a greater contribution to low fertility than past research found.',
+    changes: 'tractability',
+    review: 'peer-reviewed',
+  },
+  {
+    id: 'watson-aml-preleukaemia-evolution-2026',
+    title: 'Evolutionary dynamics in the years preceding acute myeloid leukaemia',
+    // Crossref published-online 2026-11-11. First author is Caroline J. Watson.
+    published: '2026-11-11',
+    added: '2026-11-12',
+    source: 'Nature',
+    doi: '10.1038/s41586-026-11269-x',
+    url: doi('10.1038/s41586-026-11269-x'),
+    problemSlugs: ['cancer'],
+    summary:
+      'Annual blood samples collected for up to a decade before acute myeloid leukaemia diagnosis show that the first driver mutations are typically acquired in the first few decades of life, and that later clones with multiple driver mutations and selective advantages up to 100-fold larger can sweep the blood decades before diagnosis, a window for early detection.',
+    changes: 'tractability',
+    review: 'peer-reviewed',
+  },
+  {
+    id: 'hopo-14-1-oral-actinide-chelator-2026',
+    title: 'HOPO 14-1, an Oral Actinide Chelator: A Phase 1 Nonrandomized Clinical Trial',
+    // Crossref title plus subtitle. Published-online 2026-11-11.
+    published: '2026-11-11',
+    added: '2026-11-12',
+    source: 'JAMA',
+    doi: '10.1001/jama.2026.19809',
+    url: doi('10.1001/jama.2026.19809'),
+    problemSlugs: [],
+    riskSlugs: ['nuclear-war'],
+    summary:
+      'In a phase 1 trial of 42 healthy adults, single oral doses of HOPO 14-1 up to 7500 mg caused no serious adverse events or dose-limiting toxicity. It is the first shelf-stable, broad-spectrum actinide chelator that does not require intravenous access or trained personnel.',
+    changes: 'tractability',
+    review: 'trial-result',
+  },
+  {
+    id: 'tu-stroma-ovarian-cancer-ev-rna-2026',
+    title: 'Blood-based RNA biomarker for the early detection of ovarian cancer',
+    // Crossref published-online 2026-11-10.
+    published: '2026-11-10',
+    added: '2026-11-12',
+    source: 'Nature Medicine',
+    doi: '10.1038/s41591-026-04732-9',
+    url: doi('10.1038/s41591-026-04732-9'),
+    problemSlugs: ['cancer'],
+    summary:
+      'In serum extracellular vesicles from 506 individuals, the extracellular-vesicle RNA Tu-stroma discriminated the precursor lesion STIC from controls with AUC 0.99 versus 0.59 for CA125. Prospective evaluation is still required to validate diagnostic performance.',
+    changes: 'tractability',
+    review: 'peer-reviewed',
+  },
+  {
+    id: 'rsvpref-maternal-vaccine-meta-analysis-2026',
+    title:
+      'RSV Bivalent Prefusion F Protein Vaccine in Pregnancy and Protection Against RSV-Associated Illness in Infants: A Systematic Review and Meta-Analysis',
+    // Crossref has no published-online date. issued, published, and published-print are 2026-11-01.
+    published: '2026-11-01',
+    added: '2026-11-12',
+    source: 'JAMA Pediatrics',
+    doi: '10.1001/jamapediatrics.2026.4074',
+    url: doi('10.1001/jamapediatrics.2026.4074'),
+    problemSlugs: ['newborn-survival', 'infectious-disease'],
+    summary:
+      'In 7 real-world studies of 7112 infants from Argentina, the UK, and the US, maternal RSVpreF vaccination was 82% effective against RSV lower respiratory tract infection hospitalization from birth to age 3 months and 78% from birth to 6 months, when mothers were vaccinated 14 days or more before delivery.',
+    changes: 'tractability',
+    review: 'peer-reviewed',
+  },
+  {
+    id: 'pepfar-withdrawal-hiv-services-uganda-zimbabwe-2026',
+    title:
+      'HIV service delivery after the PEPFAR and USAID HIV funding withdrawal in Uganda and Zimbabwe: an interrupted time-series study',
+    // Europe PMC electronicPublicationDate 2026-10-04 (online first). Crossref issued and published-print are 2026-11, issue 11.
+    published: '2026-10-04',
+    added: '2026-11-13',
+    source: 'The Lancet Global Health',
+    doi: '10.1016/j.langlo.2026.104061',
+    url: doi('10.1016/j.langlo.2026.104061'),
+    problemSlugs: ['infectious-disease'],
+    summary:
+      'An interrupted time-series of four NGOs serving key populations in Uganda and Zimbabwe found that after the February 2025 US funding withdrawal, HIV testing fell by 58.7 to 63.8 index points, PrEP by 43.0 to 71.6 and treatment by 22.0 to 31.5 (index points equal percentage change from mean 2024 levels), with services still well below 2024 levels in March 2026.',
+    changes: 'neglectedness',
+    review: 'peer-reviewed',
+  },
+  {
+    id: 'pure-underdiagnosed-copd-2026',
+    title:
+      'The burden and long-term outcomes of diagnosed and underdiagnosed COPD across diverse communities from high-income, middle-income, and low-income countries: the Prospective Urban Rural Epidemiology (PURE) study',
+    // Europe PMC electronicPublicationDate 2026-10-03 (online first). Crossref issued and published-print are 2026-11, issue 11.
+    published: '2026-10-03',
+    added: '2026-11-13',
+    source: 'The Lancet Global Health',
+    doi: '10.1016/j.langlo.2026.104055',
+    url: doi('10.1016/j.langlo.2026.104055'),
+    problemSlugs: ['copd'],
+    summary:
+      'Spirometry on 119,252 adults in 25 countries found airflow obstruction in 9.5%, and 89.2% of those cases had never been diagnosed; underdiagnosed COPD still carried a mortality hazard ratio of 1.53 versus no COPD.',
+    changes: 'scale',
+    review: 'peer-reviewed',
+  },
 ]
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/

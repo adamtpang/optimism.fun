@@ -71,4 +71,4 @@ notice: {
 
 The first 30 rows were taken from the bounty-board findings whose DOIs were checked on 2026-10-28. Publish dates and titles were read from Crossref, except Greenblatt et al. 2024, which is an arXiv preprint (`published` 2024-12-18 from the arXiv record). Two rows are `challenged`: Park, Leahey, and Funk 2023 (Holst et al., Nature 2026) and Hsieh and Moretti 2019 (Greaney, AEJ Macro 2026).
 
-Four ranked problems have no row because the seed set had no paper that bears on them: fertility decline, neglected tropical diseases, AI datacenter power, and financial infrastructure. Leave them empty until a real paper shows up. Do not stretch a tag to fill the gap.
+Three ranked problems have no row because the seed set had no paper that bears on them: neglected tropical diseases, AI datacenter power, and financial infrastructure. Fertility decline now has a row, added 2026-11-12. Leave the others empty until a real paper shows up. Do not stretch a tag to fill the gap.

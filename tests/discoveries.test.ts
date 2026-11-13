@@ -63,11 +63,11 @@ describe('discoveries', () => {
       'cancer',
       'copd',
       'diabetes',
+      'fertility-decline',
     ]) {
       expect(covered.has(slug), slug).toBe(true)
     }
     for (const slug of [
-      'fertility-decline',
       'neglected-tropical-diseases',
       'ai-datacenter-power',
       'financial-infrastructure',
