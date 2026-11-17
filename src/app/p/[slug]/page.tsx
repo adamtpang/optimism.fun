@@ -18,6 +18,8 @@ import ActionBar from '@/components/ActionBar'
 import CommitmentForm from '@/components/CommitmentForm'
 import CoordinationBoard from '@/components/CoordinationBoard'
 import ConstraintTree from '@/components/ConstraintTree'
+import ChartFooter from '@/components/ChartFooter'
+import { chartPackagesFor } from '@/data/chart-packages'
 import { cachedCountsByProblem, cachedListByProblem } from '@/lib/commitments-cache'
 import { isDbConfigured } from '@/lib/db'
 import { requestsForStartups } from '@/data/rfs'
@@ -165,6 +167,17 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
         <ProblemNumbers problem={problem} />
         <CtaBoard problemSlug={slug} />
         <BurdenBlock problemSlug={slug} />
+
+        {/* One chart, one story. A package appears here only once it is assigned to this problem. */}
+        {chartPackagesFor(slug).map((pkg) => (
+          <section key={pkg.id} className="site-shell py-10 border-b border-hair" id={`chart-${pkg.id}`}>
+            <h2 className="text-h2 text-ink-100 max-w-[30ch]">{pkg.claim}</h2>
+            <div className="plot-grid border border-neutral-300 mt-4 min-h-40 p-4 text-small text-ink-500">
+              Chart slot. The visual is not built yet.
+            </div>
+            <ChartFooter pkg={pkg} />
+          </section>
+        ))}
 
         <ConstraintTree problemSlug={slug} />
 
