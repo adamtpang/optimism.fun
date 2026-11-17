@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { VISITOR_CLASSES } from '@/lib/visitor-classes'
+import ChartFooter from '@/components/ChartFooter'
+import { chartPackages } from '@/data/chart-packages'
 
 /**
  * The design system on one screen. A working reference for whoever is building,
@@ -100,6 +102,21 @@ export default function DesignSystemPage() {
             ))}
           </div>
         </div>
+      </Section>
+
+      <Section
+        title="Chart slots"
+        note="Every chart carries the same slots: one claim, one visual, then source, license, date accessed, processing, limitation and three downloads. An empty slot is printed as empty. Draft packages show here before they are assigned to a problem page."
+      >
+        {chartPackages.map((pkg) => (
+          <div key={pkg.id} className="border border-neutral-300 rounded p-5" data-chart-package={pkg.id}>
+            <h3 className="text-h3 text-ink-100 max-w-[40ch]">{pkg.claim}</h3>
+            <div className="plot-grid border border-neutral-300 mt-4 min-h-40 p-4 text-small text-ink-500">
+              Chart slot. The visual is not built yet.
+            </div>
+            <ChartFooter pkg={pkg} />
+          </div>
+        ))}
       </Section>
 
       <Section title="Neutral action and information" note="Teal is the action color for anything that is not class-specific. Blue links and information marks stay as they are.">
