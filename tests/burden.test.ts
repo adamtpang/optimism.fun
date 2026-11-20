@@ -59,15 +59,19 @@ describe('sums', () => {
     expect(totalCountedDeaths()).toBeLessThan(40_000_000)
   })
 
-  it('hypertension carries ischaemic heart disease and stroke, and nothing aggregate', () => {
-    const b = burdenForProblem('hypertension')
-    expect(b).not.toBeNull()
-    const names = b!.counted.map((c) => c.slug)
-    expect(names).toContain('ischaemic-heart-disease')
-    expect(names).toContain('stroke')
-    expect(b!.deaths).toBe(9_100_000 + 6_800_000)
-    expect(b!.aggregates.map((a) => a.slug)).toContain('cardiovascular-all')
-    expect(b!.counted.some((c) => c.aggregate)).toBe(false)
+  it('counts ischaemic heart disease only under heart disease', () => {
+    const heart = burdenForProblem('heart-disease')
+    expect(heart).not.toBeNull()
+    expect(heart!.counted.map((c) => c.slug)).toEqual(['ischaemic-heart-disease'])
+    expect(heart!.deaths).toBe(9_469_357)
+    expect(heart!.counted[0]!.deaths.sourceUrl).toMatch(/^https:\/\//)
+    expect(heart!.counted[0]!.deaths.asOf).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+    const hypertension = burdenForProblem('hypertension')!
+    expect(hypertension.counted.map((c) => c.slug)).toEqual(['stroke'])
+    expect(hypertension.deaths).toBe(6_800_000)
+    expect(hypertension.aggregates).toEqual([])
+    expect(burdenForProblem('longevity')!.counted.map((c) => c.slug)).not.toContain('ischaemic-heart-disease')
+    expect(unmappedCauses().map((c) => c.slug)).not.toContain('cardiovascular-all')
   })
 
   it('counts a shared cause under both problems, by design', () => {
@@ -130,7 +134,7 @@ describe('the coverage finding', () => {
     const kidney = mortalityCauses.find((c) => c.slug === 'kidney-diseases')!
     expect(kidney.problemSlugs).toEqual(['hypertension', 'diabetes'])
     expect(kidney.deaths.value).toBeNull()
-    expect(burdenForProblem('hypertension')!.deaths).toBe(9_100_000 + 6_800_000)
+    expect(burdenForProblem('hypertension')!.deaths).toBe(6_800_000)
   })
 
   it('carries lung cancer under the cancer problem and the all-cancers roll-up as an aggregate', () => {
@@ -158,7 +162,7 @@ describe('the demand signal', () => {
     const h = mortalitySignal('hypertension')!
     expect(h).toBeGreaterThan(0.9)
     expect(h).toBeLessThanOrEqual(1)
-    const expected = Math.log10(15_900_000) / Math.log10(MORTALITY_CEILING)
+    const expected = Math.log10(6_800_000) / Math.log10(MORTALITY_CEILING)
     expect(h).toBeCloseTo(Math.min(1, expected), 6)
   })
 
@@ -168,13 +172,13 @@ describe('the demand signal', () => {
   })
 
   it('ranks the problems by mortality in the order the data implies', () => {
-    const order = ['hypertension', 'longevity', 'biosecurity', 'infectious-disease']
+    const order = ['heart-disease', 'longevity', 'biosecurity', 'hypertension', 'infectious-disease']
       .map((s) => [s, mortalitySignal(s)!] as const)
       .sort((a, b) => b[1] - a[1])
       .map(([s]) => s)
-    expect(order[0]).toBe('longevity')
-    expect(order[1]).toBe('hypertension')
-    expect(order[2]).toBe('biosecurity')
-    expect(order[3]).toBe('infectious-disease')
+    expect(order[0]).toBe('heart-disease')
+    expect(order[1]).toBe('biosecurity')
+    expect(order[2]).toBe('longevity')
+    expect(order[3]).toBe('hypertension')
   })
 })

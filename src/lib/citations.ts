@@ -64,6 +64,13 @@ export function citationsForProblem(problem: Problem): Citation[] {
     href: `${SITE}/p/${problem.slug}`,
   })
 
+  for (const figure of problem.headlineFigures ?? []) {
+    add({
+      text: `${figure.source} (${yearOf(figure.asOf)}). ${figure.label}: ${figure.display}. ${figure.sourceUrl}`,
+      href: figure.sourceUrl,
+    })
+  }
+
   for (const s of problem.sources) {
     add({ text: `${s.title}. ${s.url}`, href: s.url })
   }

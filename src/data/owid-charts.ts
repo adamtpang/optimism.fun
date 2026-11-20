@@ -16,6 +16,8 @@
  * - cancer — incidence and death charts return HTTP 403.
  * - copd — chronic-respiratory death charts return HTTP 403. The solid-fuel
  *   cooking chart is not COPD and ends in 2010.
+ * - heart-disease: no World chart was verified for this pass. The stored
+ *   series is the GBD prevalence pair, not a live OWID retrieval.
  *
  * Judgment calls that did map:
  * - infectious-disease uses malaria deaths, the same burden the demand feed
