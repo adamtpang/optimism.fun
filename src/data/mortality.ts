@@ -80,7 +80,7 @@ export const mortalityCauses: MortalityCause[] = [
     deaths: {
       value: 9_469_357,
       year: 2023,
-      shareOfDeaths: 0.155,
+      shareOfDeaths: 9_469_357 / 61_071_367,
       source:
         'WHO Global Health Estimates 2023, global deaths workbook (published 2026): ischaemic heart disease, both sexes, all ages, 9,469,357 deaths in 2023. The public fact sheet rounds the same estimate to 9.5 million. Checked 2026-11-20.',
       sourceUrl:

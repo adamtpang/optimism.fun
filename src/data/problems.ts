@@ -2163,6 +2163,7 @@ export const problems: Problem[] = [
       { title: 'IARC GLOBOCAN 2020 (ASCO Post summary)', url: 'https://ascopost.com/news/december-2020/globocan-2020-database-provides-latest-global-data-on-cancer-burden-cancer-deaths' },
       { title: 'WHO, global cancer burden growing, February 2024', url: 'https://www.who.int/news/item/01-02-2024-global-cancer-burden-growing--amidst-mounting-need-for-services' },
       { title: 'IQVIA Institute, Global Oncology Trends 2025', url: 'https://www.iqvia.com/insights/the-iqvia-institute/reports-and-publications/reports/global-oncology-trends-2025' },
+      { title: 'Chen S. et al., JAMA Oncology, 2023. Global economic cost of 29 cancers, 2020 to 2050, in international dollars. doi 10.1001/jamaoncol.2022.7826', url: 'https://jamanetwork.com/journals/jamaoncology/fullarticle/2801798' },
       { title: 'Merck, fourth-quarter and full-year 2024 results', url: 'https://www.merck.com/news/merck-announces-fourth-quarter-and-full-year-2024-financial-results/' },
       { title: 'NCI budget and appropriations', url: 'https://www.cancer.gov/about-nci/budget' },
       { title: 'WHO cancer fact sheet', url: 'https://www.who.int/news-room/fact-sheets/detail/cancer' },

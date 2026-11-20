@@ -8,7 +8,8 @@ import { getInLimitCap } from '@/data/in-limit'
 import { listCtas } from '@/data/ctas'
 import { burdenForProblem } from '@/lib/burden'
 import { computeRadarRows } from '@/lib/radar'
-import { deathRatePair } from '@/lib/citations'
+import { citationsForProblem, deathRatePair } from '@/lib/citations'
+import { formatDeathShare } from '@/lib/format'
 import { severityFromDeathRate } from '@/lib/priority'
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/
@@ -38,6 +39,10 @@ describe('heart disease in the ranking', () => {
     expect(pair.deaths.asOf).toMatch(DATE)
     expect(pair.affected.asOf).toMatch(DATE)
     expect(heart.severity!.value).toBeCloseTo(severityFromDeathRate(pair.deaths.value, pair.affected.value), 3)
+    expect(formatDeathShare(9_469_357 / 61_071_367)).toBe('15.5% of all deaths')
+    expect(formatDeathShare(0.1)).toBe('10% of all deaths')
+    const cites = citationsForProblem(heart).map((cite) => cite.text).join('\n')
+    expect(cites).toContain('694,708')
   })
 
   it('does not also count those deaths under hypertension or longevity', () => {
@@ -68,6 +73,10 @@ describe('cancer figures', () => {
     expect(figures[0]!.sourceUrl).toContain('iqvia.com')
     expect(figures[1]!.label.toLowerCase()).toContain('international dollars')
     expect(figures[1]!.sourceUrl).toContain('jamaoncology')
+    const cites = citationsForProblem(cancer).map((cite) => cite.text).join('\n')
+    expect(cites).toContain('INT$25.2T')
+    expect(cites).toContain('$252B')
+    expect(cites).toContain('jamaoncology')
   })
 
   it('fills build, fund, and learn, including the open data rows', () => {
