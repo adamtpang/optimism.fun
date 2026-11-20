@@ -1,5 +1,6 @@
 import type { Company } from './types'
 import { healthCompanies } from './health-companies'
+import { sciFiBankCompanies } from './companies-scifi-bank'
 
 const TODAY = '2026-04-24'
 
@@ -1180,6 +1181,7 @@ export const companies: Company[] = [
     sources: [src('Marco Polo', 'https://www.marcopolo.me')],
     asOf: TODAY,
   },
+  ...sciFiBankCompanies,
   ...healthCompanies,
 ]
 

@@ -94,7 +94,7 @@ describe('OWID chart parsing', () => {
 })
 
 describe('OWID chart map', () => {
-  it('only names problems that exist, and records the four with no verified chart', () => {
+  it('only names problems that exist, and records problems with no verified chart', () => {
     const known = new Set(problems.map((problem) => problem.slug))
     for (const [slug, chart] of Object.entries(owidCharts)) {
       expect(known.has(slug)).toBe(true)
@@ -103,7 +103,17 @@ describe('OWID chart map', () => {
       expect(chart.verifiedOn).toBe('2026-11-01')
     }
     const unmapped = problems.map((problem) => problem.slug).filter((slug) => !owidCharts[slug]).sort()
-    expect(unmapped).toEqual(['biosecurity', 'cancer', 'copd', 'loneliness'])
+    expect(unmapped).toEqual([
+      'ai-clinical-care',
+      'artificial-womb',
+      'biosecurity',
+      'brain-computer-interface',
+      'cancer',
+      'copd',
+      'loneliness',
+      'organ-banking',
+      'organ-shortage',
+    ])
   })
 })
 

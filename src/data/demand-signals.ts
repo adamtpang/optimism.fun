@@ -265,6 +265,39 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     wikipediaArticle: 'Diabetes',
     clinicalTrials: { cond: 'Diabetes Mellitus' },
   },
+  // Sci-fi bank, 2026-11-20. Queries only. Counts are not stored in the main snapshot.
+  'organ-banking': {
+    openAlexSearch: 'organ cryopreservation',
+    nihSearch: 'organ cryopreservation',
+    usaSpendingTerm: 'organ cryopreservation',
+    wikipediaArticle: 'Cryopreservation',
+  },
+  'organ-shortage': {
+    openAlexSearch: 'xenotransplantation',
+    nihSearch: 'xenotransplantation',
+    usaSpendingTerm: 'xenotransplantation',
+    wikipediaArticle: 'Xenotransplantation',
+    clinicalTrials: { term: 'xenotransplantation' },
+  },
+  'brain-computer-interface': {
+    openAlexSearch: 'brain computer interface',
+    nihSearch: 'brain computer interface',
+    usaSpendingTerm: 'brain computer interface',
+    wikipediaArticle: 'Brain_implant',
+    clinicalTrials: { term: 'brain computer interface' },
+  },
+  'ai-clinical-care': {
+    openAlexSearch: 'artificial intelligence prescription',
+    nihSearch: 'artificial intelligence prescription',
+    usaSpendingTerm: 'artificial intelligence prescription',
+    wikipediaArticle: 'Clinical_decision_support_system',
+  },
+  'artificial-womb': {
+    openAlexSearch: 'artificial placenta',
+    nihSearch: 'artificial placenta',
+    usaSpendingTerm: 'artificial womb',
+    wikipediaArticle: 'Artificial_uterus',
+  },
 }
 
 /** Source metadata for the /demand page's "where the numbers come from" strip. */

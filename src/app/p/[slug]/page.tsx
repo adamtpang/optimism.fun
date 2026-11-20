@@ -118,6 +118,23 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
           <p className="font-figure text-small text-ink-500">Problem &middot; updated {updated}</p>
           <h1 className="text-h1 md:text-display-2 text-ink-100 mt-2">{problem.name}</h1>
           <p className="text-body-lg text-ink-300 mt-3 max-w-[70ch]">{problem.tagline}</p>
+          {problem.sciFiOrigin && (
+            <p className="text-small text-ink-500 mt-3 max-w-[70ch]">Science-fiction lineage: {problem.sciFiOrigin}</p>
+          )}
+          {problem.relatedProblemSlugs && problem.relatedProblemSlugs.length > 0 && (
+            <p className="text-small text-ink-400 mt-2 max-w-[70ch]">
+              Related on this index:{' '}
+              {problem.relatedProblemSlugs.map((relatedSlug, index) => (
+                <span key={relatedSlug}>
+                  {index > 0 ? ', ' : ''}
+                  <Link href={`/p/${relatedSlug}`} className="text-primary hover:underline">
+                    {getProblemBySlug(relatedSlug)?.name ?? relatedSlug}
+                  </Link>
+                </span>
+              ))}
+              . The shared count is not added twice.
+            </p>
+          )}
           <p className="text-small text-ink-500 mt-3">
             Every number below has a source
             {' · '}

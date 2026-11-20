@@ -369,6 +369,16 @@ export type Problem = {
   scores: LensScore
   sources: { title: string; url: string }[]
   asOf: string
+  /**
+   * One paraphrased science-fiction lineage. Not a source for any number.
+   * Optional. Absent on problems that have no such note.
+   */
+  sciFiOrigin?: string
+  /**
+   * Other ranked problems that share the same people. Display only.
+   * Does not merge their deaths or scores.
+   */
+  relatedProblemSlugs?: string[]
 }
 
 export type CompanyStage =

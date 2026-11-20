@@ -16,6 +16,9 @@
  * - cancer — incidence and death charts return HTTP 403.
  * - copd — chronic-respiratory death charts return HTTP 403. The solid-fuel
  *   cooking chart is not COPD and ends in 2010.
+ * - organ-banking, organ-shortage, brain-computer-interface, ai-clinical-care,
+ *   and artificial-womb: no redistributable World series was verified for these
+ *   rows. None is mapped.
  *
  * Judgment calls that did map:
  * - infectious-disease uses malaria deaths, the same burden the demand feed

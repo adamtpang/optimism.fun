@@ -421,6 +421,10 @@ no new severity value was stored.
 - 2026-11-03 pins: Sutton, Che, Bantle, the R21 Lancet phase 3 trial, both M72 NEJM trials, and Dorman 2021 `10.1056/nejmoa2033400` are injected by DOI lookup when search misses them. CI fails if a pin is missing from that candidate set. A no-answer response is HTTP 200. A significant efficacy result is not labeled no effect.
 - 2026-11-04 round 10: primary papers are answered from the longer Europe PMC or Crossref abstract. Fields need a verbatim evidence span. M72, R21, rifapentine, and fasting synonyms ground those questions. Socks still does not. MMWR is Guidance. Preview or `?debug=1` lists kept and rejected papers. `node scripts/demo-eval.mjs <base-url> [runs]` repeats the demo questions.
 
+## Sci-fi bank problems (2026-11-20)
+
+Five problems, in `src/data/problems-scifi-bank.ts`, appended to the ranked list: `organ-banking`, `organ-shortage`, `brain-computer-interface`, `ai-clinical-care`, `artificial-womb`. Each has a one-line science-fiction lineage. None has an in-limit ceiling, a market size, or a death mapped in `src/data/mortality.ts`. The US transplant waiting list is stored on both organ rows and is not added. Preterm deaths on the artificial-womb row stay inside newborn survival. Live OpenAlex, NIH, USAspending, and Wikipedia counts were not fetched; the side snapshot marks them unavailable.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know

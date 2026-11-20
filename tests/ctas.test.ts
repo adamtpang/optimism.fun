@@ -18,7 +18,7 @@ describe('ctas', () => {
   })
 
   it('keeps the ingested research set', () => {
-    expect(ctas).toHaveLength(96)
+    expect(ctas).toHaveLength(112)
     expect(ctas.every((c) => !('httpStatus' in c))).toBe(true)
     expect(ctas.every((c) => !('problem' in c))).toBe(true)
     expect(ctas.filter((c) => c.checked === false)).toHaveLength(6)
