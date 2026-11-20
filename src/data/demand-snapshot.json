@@ -801,7 +801,7 @@
             "count": 33
           },
           {
-            "name": "Organisation de Coordination pour la lutte contre les Endémies en Afrique Centrale",
+            "name": "Organisation de Coordination pour la lutte contre les End\u00e9mies en Afrique Centrale",
             "url": "https://openalex.org/I4210115601",
             "count": 27
           },
@@ -1198,7 +1198,7 @@
             "count": 10
           },
           {
-            "name": "L'Oréal (France)",
+            "name": "L'Or\u00e9al (France)",
             "url": "https://openalex.org/I14285755",
             "count": 10
           },
@@ -1208,7 +1208,7 @@
             "count": 10
           },
           {
-            "name": "Université Paris-Saclay",
+            "name": "Universit\u00e9 Paris-Saclay",
             "url": "https://openalex.org/I277688954",
             "count": 10
           },
@@ -1683,12 +1683,12 @@
             "count": 3
           },
           {
-            "name": "Hospital General Universitario Gregorio Marañón",
+            "name": "Hospital General Universitario Gregorio Mara\u00f1\u00f3n",
             "url": "https://openalex.org/I2960094004",
             "count": 3
           },
           {
-            "name": "Centro de Investigación Biomédica en Red de Salud Mental",
+            "name": "Centro de Investigaci\u00f3n Biom\u00e9dica en Red de Salud Mental",
             "url": "https://openalex.org/I4210090703",
             "count": 3
           },
@@ -1896,7 +1896,7 @@
             "count": 2
           },
           {
-            "name": "Hôpital Foch",
+            "name": "H\u00f4pital Foch",
             "url": "https://openalex.org/I4210156825",
             "count": 2
           },
@@ -1916,7 +1916,7 @@
             "count": 1
           },
           {
-            "name": "Dartmouth–Hitchcock Medical Center",
+            "name": "Dartmouth\u2013Hitchcock Medical Center",
             "url": "https://openalex.org/I1289422878",
             "count": 1
           }
@@ -2004,7 +2004,7 @@
       {
         "feed": "burden",
         "status": "ok",
-        "label": "Annual CO₂ emissions",
+        "label": "Annual CO\u2082 emissions",
         "value": 38598580000,
         "unit": "t",
         "query": "annual-co2-emissions",
@@ -2086,7 +2086,7 @@
             "count": 9
           },
           {
-            "name": "Alfred-Wegener-Institut Helmholtz-Zentrum für Polar- und Meeresforschung",
+            "name": "Alfred-Wegener-Institut Helmholtz-Zentrum f\u00fcr Polar- und Meeresforschung",
             "url": "https://openalex.org/I127251866",
             "count": 9
           },
@@ -2101,7 +2101,7 @@
             "count": 9
           },
           {
-            "name": "Institut de Recherche pour le Développement",
+            "name": "Institut de Recherche pour le D\u00e9veloppement",
             "url": "https://openalex.org/I4210166444",
             "count": 9
           }
@@ -2423,17 +2423,17 @@
             "count": 17
           },
           {
-            "name": "Université Paris-Saclay",
+            "name": "Universit\u00e9 Paris-Saclay",
             "url": "https://openalex.org/I277688954",
             "count": 7
           },
           {
-            "name": "Hôpital Antoine-Béclère",
+            "name": "H\u00f4pital Antoine-B\u00e9cl\u00e8re",
             "url": "https://openalex.org/I4210150149",
             "count": 7
           },
           {
-            "name": "Assistance Publique – Hôpitaux de Paris",
+            "name": "Assistance Publique \u2013 H\u00f4pitaux de Paris",
             "url": "https://openalex.org/I4210097159",
             "count": 6
           },
@@ -2711,7 +2711,7 @@
             "count": 38
           },
           {
-            "name": "Assistance Publique – Hôpitaux de Paris",
+            "name": "Assistance Publique \u2013 H\u00f4pitaux de Paris",
             "url": "https://openalex.org/I4210097159",
             "count": 36
           },
@@ -3981,6 +3981,254 @@
         "query": "Diabetes",
         "sourceUrl": "https://en.wikipedia.org/wiki/Diabetes",
         "retrievedOn": "2026-11-10",
+        "reason": null
+      }
+    ],
+    "heart-disease": [
+      {
+        "feed": "burden",
+        "status": "unavailable",
+        "label": "Burden feed",
+        "value": null,
+        "unit": "",
+        "query": null,
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "No query is registered for this problem. A query was not invented."
+      },
+      {
+        "feed": "openalex",
+        "status": "ok",
+        "label": "OpenAlex works, last 12 months",
+        "value": 5785,
+        "unit": "works",
+        "query": "ischemic heart disease",
+        "sourceUrl": "https://openalex.org/works?filter=title_and_abstract.search%3Aischemic%20heart%20disease%2Cfrom_publication_date%3A2025-11-20",
+        "retrievedOn": "2026-11-20",
+        "reason": null
+      },
+      {
+        "feed": "nih",
+        "status": "ok",
+        "label": "NIH RePORTER funding",
+        "value": 316484990,
+        "unit": "USD",
+        "query": "ischemic heart disease (FY2026)",
+        "sourceUrl": "https://reporter.nih.gov/search/IWK4ab8nckq4DRXjpoVw6A/projects",
+        "retrievedOn": "2026-11-20",
+        "reason": "21 projects had no reported award amount. Those amounts were not filled in. The value is the sum of reported awards."
+      },
+      {
+        "feed": "openalex-companies",
+        "status": "unavailable",
+        "label": "OpenAlex company affiliations",
+        "value": null,
+        "unit": "companies",
+        "query": "ischemic heart disease",
+        "sourceUrl": "https://api.openalex.org/works?filter=title_and_abstract.search%3Aischemic%20heart%20disease%2Cfrom_publication_date%3A2025-11-20%2Cauthorships.institutions.type%3Acompany&group_by=authorships.institutions.id&per_page=200&mailto=adamtpang%40gmail.com",
+        "retrievedOn": "2026-11-20",
+        "reason": "OpenAlex group_by returns at most 200 institutions. The distinct company count is higher and was not invented. The named list is the top of that capped response.",
+        "names": [
+          {
+            "name": "Brigham and Women's Hospital",
+            "url": "https://openalex.org/I1283280774",
+            "count": 11
+          },
+          {
+            "name": "Amgen (United States)",
+            "url": "https://openalex.org/I1320553840",
+            "count": 10
+          },
+          {
+            "name": "University of Toronto",
+            "url": "https://openalex.org/I185261750",
+            "count": 9
+          },
+          {
+            "name": "Karger Publishers (Switzerland)",
+            "url": "https://openalex.org/I4210162602",
+            "count": 9
+          },
+          {
+            "name": "University of Turin",
+            "url": "https://openalex.org/I55143463",
+            "count": 9
+          },
+          {
+            "name": "Universidade de S\u00e3o Paulo",
+            "url": "https://openalex.org/I17974374",
+            "count": 8
+          },
+          {
+            "name": "Thrombolysis in Myocardial Infarction Study Group",
+            "url": "https://openalex.org/I4210159766",
+            "count": 8
+          },
+          {
+            "name": "St. Michael's Hospital",
+            "url": "https://openalex.org/I1297363086",
+            "count": 7
+          },
+          {
+            "name": "Mayo Clinic",
+            "url": "https://openalex.org/I1330342723",
+            "count": 7
+          },
+          {
+            "name": "Harvard University",
+            "url": "https://openalex.org/I136199984",
+            "count": 7
+          },
+          {
+            "name": "National and Kapodistrian University of Athens",
+            "url": "https://openalex.org/I200777214",
+            "count": 7
+          },
+          {
+            "name": "Azienda Ospedaliera Citta' della Salute e della Scienza di Torino",
+            "url": "https://openalex.org/I4210086903",
+            "count": 7
+          }
+        ],
+        "capped": true
+      },
+      {
+        "feed": "clinicaltrials",
+        "status": "ok",
+        "label": "ClinicalTrials.gov active trials",
+        "value": 2265,
+        "unit": "active trials",
+        "query": "Coronary Artery Disease",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.cond=Coronary+Artery+Disease&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&countTotal=true&pageSize=1",
+        "retrievedOn": "2026-11-20",
+        "reason": null
+      },
+      {
+        "feed": "clinicaltrials-sponsors",
+        "status": "ok",
+        "label": "ClinicalTrials.gov industry sponsors",
+        "value": 183,
+        "unit": "industry sponsors",
+        "query": "Coronary Artery Disease",
+        "sourceUrl": "https://clinicaltrials.gov/api/v2/studies?query.cond=Coronary+Artery+Disease&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&filter.advanced=AREA%5BLeadSponsorClass%5DINDUSTRY&countTotal=true&pageSize=1",
+        "retrievedOn": "2026-11-20",
+        "reason": null,
+        "names": [
+          {
+            "name": "Genoss Co., Ltd.",
+            "count": 13,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Coronary+Artery+Disease&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Genoss+Co.%2C+Ltd.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Novartis Pharmaceuticals",
+            "count": 9,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Coronary+Artery+Disease&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Novartis+Pharmaceuticals&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Abbott Medical Devices",
+            "count": 7,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Coronary+Artery+Disease&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Abbott+Medical+Devices&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "CoreAalst BV",
+            "count": 7,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Coronary+Artery+Disease&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=CoreAalst+BV&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "HeartFlow, Inc.",
+            "count": 6,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Coronary+Artery+Disease&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=HeartFlow%2C+Inc.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Abiomed Inc.",
+            "count": 5,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Coronary+Artery+Disease&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Abiomed+Inc.&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Amgen",
+            "count": 5,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Coronary+Artery+Disease&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Amgen&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Biosensors Europe SA",
+            "count": 5,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Coronary+Artery+Disease&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Biosensors+Europe+SA&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Biotronik AG",
+            "count": 5,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Coronary+Artery+Disease&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Biotronik+AG&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "BrosMed Medical Co., Ltd",
+            "count": 5,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Coronary+Artery+Disease&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=BrosMed+Medical+Co.%2C+Ltd&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Ceric S\u00e0rl",
+            "count": 5,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Coronary+Artery+Disease&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Ceric+S%C3%A0rl&countTotal=true&pageSize=1"
+          },
+          {
+            "name": "Cleerly, Inc.",
+            "count": 4,
+            "url": "https://clinicaltrials.gov/api/v2/studies?query.cond=Coronary+Artery+Disease&filter.overallStatus=RECRUITING%2CACTIVE_NOT_RECRUITING%2CENROLLING_BY_INVITATION%2CNOT_YET_RECRUITING&query.spons=Cleerly%2C+Inc.&countTotal=true&pageSize=1"
+          }
+        ]
+      },
+      {
+        "feed": "federal-register",
+        "status": "unavailable",
+        "label": "Federal Register documents",
+        "value": null,
+        "unit": "",
+        "query": null,
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "No query is registered for this problem. A query was not invented."
+      },
+      {
+        "feed": "usaspending",
+        "status": "ok",
+        "label": "USAspending awards",
+        "value": 125,
+        "unit": "awards",
+        "query": "ischemic heart disease",
+        "sourceUrl": "https://www.usaspending.gov/search?hash=&keywords=ischemic%20heart%20disease",
+        "retrievedOn": "2026-11-20",
+        "reason": null
+      },
+      {
+        "feed": "edgar",
+        "status": "unavailable",
+        "label": "SEC EDGAR Form D filings",
+        "value": null,
+        "unit": "",
+        "query": null,
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "No query is registered for this problem. A query was not invented."
+      },
+      {
+        "feed": "openfda",
+        "status": "unavailable",
+        "label": "openFDA current drug shortages",
+        "value": null,
+        "unit": "",
+        "query": null,
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "No query is registered for this problem. A query was not invented."
+      },
+      {
+        "feed": "wikipedia",
+        "status": "ok",
+        "label": "Wikipedia pageviews (attention, not demand)",
+        "value": 692372,
+        "unit": "pageviews",
+        "query": "Coronary_artery_disease",
+        "sourceUrl": "https://en.wikipedia.org/wiki/Coronary_artery_disease",
+        "retrievedOn": "2026-11-20",
         "reason": null
       }
     ]

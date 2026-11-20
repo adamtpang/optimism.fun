@@ -129,8 +129,23 @@ export function deathsByProblem(): Map<string, ProblemBurden> {
  * purpose: "all cancers, 9.7M, nothing on the index" is the finding, and
  * nothing is being summed.
  */
+/**
+ * An aggregate whose members are each already mapped is not an unmapped killer.
+ * Cardiovascular disease is the case: ischaemic heart disease sits on heart
+ * disease, and stroke sits on hypertension, so the roll-up is not a gap.
+ */
+function membersAlreadyMapped(cause: MortalityCause): boolean {
+  if (!cause.aggregate || !cause.members?.length) return false
+  return cause.members.every((slug) => {
+    const member = mortalityCauses.find((c) => c.slug === slug)
+    return member != null && member.problemSlugs.length > 0
+  })
+}
+
 export function unmappedCauses(): MortalityCause[] {
-  return mortalityCauses.filter((c) => c.problemSlugs.length === 0).sort(byDeathsDesc)
+  return mortalityCauses
+    .filter((c) => c.problemSlugs.length === 0 && !membersAlreadyMapped(c))
+    .sort(byDeathsDesc)
 }
 
 /** Counted deaths across all single causes. Aggregates excluded. */

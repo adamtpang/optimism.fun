@@ -2131,7 +2131,28 @@ export const problems: Problem[] = [
       { mode: 'career', text: 'Work in oncology research, cancer epidemiology, or the delivery of existing care in low-income settings, where the same diagnosis has the worst odds.' },
       { mode: 'donate', text: 'Cancer Grand Challenges funds team science against the problems no single lab can take on.', url: 'https://cancergrandchallenges.org' },
     ],
-    lastUpdated: '2026-09-11',
+    headlineFigures: [
+      {
+        id: 'cancer-medicines-2024',
+        label: 'cancer medicines, 2024',
+        display: '$252B',
+        source:
+          'IQVIA Institute, Global Oncology Trends 2025 (22 May 2025): cancer medicine spending at list prices rose to $252Bn globally in 2024.',
+        sourceUrl:
+          'https://www.iqvia.com/insights/the-iqvia-institute/reports-and-publications/reports/global-oncology-trends-2025',
+        asOf: '2026-11-20',
+      },
+      {
+        id: 'cancer-economic-cost-2020-2050',
+        label: 'economic cost, international dollars, 2020 to 2050',
+        display: 'INT$25.2T',
+        source:
+          'Chen S. et al., JAMA Oncology, 2023: the estimated global economic cost of cancers from 2020 to 2050 is $25.2 trillion in international dollars (constant 2017 prices). doi 10.1001/jamaoncol.2022.7826.',
+        sourceUrl: 'https://jamanetwork.com/journals/jamaoncology/fullarticle/2801798',
+        asOf: '2026-11-20',
+      },
+    ],
+    lastUpdated: '2026-11-20',
     scores: {
       welfareBCR: null,
       xriskITN: null,
@@ -2459,6 +2480,156 @@ export const problems: Problem[] = [
       { title: 'GLP-1 drugs market 2024 (Precedence Research via BioSpace)', url: 'https://www.biospace.com/press-releases/glp-1-drugs-market-ozempic-wegovy-and-mounjaro-fda-and-industry-insights-from-precedence-research' },
     ],
     asOf: '2026-09-11',
+  },
+  {
+    slug: 'heart-disease',
+    name: 'Heart disease',
+    tier: 'welfare',
+    domain: 'health',
+    sectors: ['physical-health-and-disease', 'aging-and-longevity'],
+    tagline:
+      'The leading cause of death worldwide: 9,469,357 deaths from ischaemic heart disease in 2023.',
+    description:
+      'Ischaemic heart disease is plaque in the coronary arteries that cuts off blood to heart muscle. WHO Global Health Estimates 2023, published in 2026, count 9,469,357 deaths in 2023, about 9.47 million and 15.5 percent of all deaths. The public fact sheet rounds that total to 9.5 million. In the United States, provisional 2025 data count 694,708 heart disease deaths, a broader category than ischaemic heart disease alone. Blood pressure, cholesterol, smoking, diabetes, and age drive the global toll. Large trials already show that lowering LDL cholesterol and body weight can cut cardiovascular events. Two 2026 outcome trials, of pelacarsen and of ziltivekimab, did not.',
+    humansAffected: {
+      value: 254_276_268,
+      unit: 'people living with ischaemic heart disease in 2021',
+      countKind: 'prevalence',
+      observationYear: 2021,
+      publicationYear: 2025,
+      source:
+        'Liang et al., Frontiers in Public Health, 2025, analysis of GBD 2021: 254,276,268 prevalent ischaemic heart disease cases in 2021, up from 112,169,488 in 1990.',
+      sourceUrl: 'https://www.frontiersin.org/journals/public-health/articles/10.3389/fpubh.2025.1569179/full',
+      confidence: 'med',
+      asOf: '2026-11-20',
+    },
+    severity: {
+      value: 0.6428,
+      unit: '0-1 log of annual deaths per person living with ischaemic heart disease',
+      source:
+        'WHO Global Health Estimates 2023 workbook: 9,469,357 ischaemic heart disease deaths in 2023. Liang et al. 2025, from GBD 2021: 254,276,268 prevalent cases in 2021. Years differ, so the rate is approximate: 9,469,357 / 254,276,268 = 0.0372 deaths per prevalent case per year. Log-normalized from 1 in 10,000 (0) to certain death this year (1): 0.6428.',
+      sourceUrl:
+        'https://cdn.who.int/media/docs/default-source/gho-documents/global-health-estimates/deaths_global_2026-09-30.xlsx',
+      confidence: 'med',
+      asOf: '2026-11-20',
+    },
+    mortalityPairs: [
+      {
+        deaths: {
+          value: 9_469_357,
+          year: 2023,
+          label: 'ischaemic heart disease deaths',
+          source:
+            'WHO Global Health Estimates 2023, global deaths workbook: 9,469,357 deaths, both sexes, all ages, 2023',
+          sourceUrl:
+            'https://cdn.who.int/media/docs/default-source/gho-documents/global-health-estimates/deaths_global_2026-09-30.xlsx',
+          asOf: '2026-11-20',
+        },
+        affected: {
+          value: 254_276_268,
+          year: 2021,
+          label: 'people living with ischaemic heart disease',
+          source:
+            'Liang et al., Frontiers in Public Health, 2025: 254,276,268 prevalent cases in 2021, from GBD 2021',
+          sourceUrl: 'https://www.frontiersin.org/journals/public-health/articles/10.3389/fpubh.2025.1569179/full',
+          doi: '10.3389/fpubh.2025.1569179',
+          asOf: '2026-11-20',
+        },
+        denominatorKind: 'person-stock',
+        yearMismatch:
+          'Deaths are WHO Global Health Estimates for 2023. Prevalence is GBD 2021, as reported in 2025.',
+      },
+    ],
+    scale: {
+      value: 254_276_268,
+      unit: 'people living with ischaemic heart disease',
+      trend: 'worsening',
+      series: [
+        { year: 1990, value: 112_169_488 },
+        { year: 2021, value: 254_276_268 },
+      ],
+      source:
+        'Liang et al., Frontiers in Public Health, 2025, from GBD 2021. Cases rose from 112,169,488 in 1990 to 254,276,268 in 2021. WHO deaths rose over the same era, from 6,429,003 in 2000 to 9,469,357 in 2023.',
+      sourceUrl: 'https://www.frontiersin.org/journals/public-health/articles/10.3389/fpubh.2025.1569179/full',
+      confidence: 'med',
+      asOf: '2026-11-20',
+    },
+    neglectedness: {
+      score: 3,
+      rationale:
+        'Not a neglected science. It is the leading cause of death, and large outcome trials of existing drug classes are still being published, including SELECT and VESALIUS-CV. The gap is that deaths rose by about 3 million from 2000 to 2023 in the WHO workbook. This 3 is a judgment of crowding, on the same 1 to 10 scale as the rest of the index, not a measured funding total.',
+      source: 'WHO Global Health Estimates 2023 deaths workbook; SELECT, NEJM',
+      sourceUrl:
+        'https://cdn.who.int/media/docs/default-source/gho-documents/global-health-estimates/deaths_global_2026-09-30.xlsx',
+      confidence: 'med',
+      asOf: '2026-11-20',
+    },
+    tractability: {
+      score: 7,
+      rationale:
+        'SELECT reported a hazard ratio of 0.80 for major cardiovascular events with semaglutide, and VESALIUS-CV reported 0.75 for 3-point MACE with evolocumab. Those are existing drugs with outcome evidence. Pelacarsen (hazard ratio 1.02) and ziltivekimab (hazard ratio 0.99) did not reduce events, and base editing is still in early trials. This 7 is a judgment, not a measured probability.',
+      source: 'SELECT and VESALIUS-CV, New England Journal of Medicine',
+      sourceUrl: 'https://www.nejm.org/doi/full/10.1056/nejmoa2307563',
+      confidence: 'med',
+      asOf: '2026-11-20',
+    },
+    organizations: [
+      {
+        name: 'WHO Global Health Estimates',
+        url: 'https://www.who.int/data/gho/data/themes/mortality-and-global-health-estimates/ghe-leading-causes-of-death/',
+        kind: 'cause-of-death estimates',
+      },
+      { name: 'Cleerly', url: 'https://cleerly.com/press/fda-clearance-cleerly-labs', kind: 'company, coronary CT analysis' },
+      { name: 'Cuorips', url: 'https://www.cuorips.co.jp/news-en/20260306', kind: 'company, iPSC cardiomyocyte sheets' },
+    ],
+    waysToHelp: [
+      {
+        mode: 'build',
+        text: 'Build earlier finding of coronary plaque, and the follow-up that gets a person onto a therapy with a cardiovascular outcome trial behind it.',
+        url: 'https://cleerly.com/press/fda-clearance-cleerly-labs',
+      },
+      {
+        mode: 'research',
+        text: 'Read the outcome trials before treating a mechanism as a solution. SELECT and VESALIUS-CV reduced events. Lp(a)HORIZON and ZEUS did not.',
+        url: 'https://www.nejm.org/doi/full/10.1056/nejmoa2307563',
+      },
+    ],
+    headlineFigures: [
+      {
+        id: 'us-heart-disease-deaths-2025',
+        label: 'US heart disease deaths, 2025, provisional',
+        display: '694,708',
+        source:
+          'NCHS Vital Statistics Rapid Release No. 44 (July 2026): heart disease was the leading cause of death in 2025, with 694,708 deaths. Provisional data as of 10 May 2026. This is all heart disease, not the global ischaemic heart disease count.',
+        sourceUrl: 'https://www.cdc.gov/nchs/data/vsrr/vsrr044.pdf',
+        asOf: '2026-11-20',
+      },
+    ],
+    lastUpdated: '2026-11-20',
+    scores: {
+      welfareBCR: null,
+      xriskITN: null,
+      utilityDelta: null,
+    },
+    sources: [
+      {
+        title: 'WHO Global Health Estimates 2023, global deaths workbook',
+        url: 'https://cdn.who.int/media/docs/default-source/gho-documents/global-health-estimates/deaths_global_2026-09-30.xlsx',
+      },
+      {
+        title: 'WHO, The top 10 causes of death (2 October 2026)',
+        url: 'https://www.who.int/news-room/fact-sheets/detail/the-top-10-causes-of-death',
+      },
+      {
+        title: 'Liang et al., global burden of ischaemic heart disease, GBD 2021',
+        url: 'https://www.frontiersin.org/journals/public-health/articles/10.3389/fpubh.2025.1569179/full',
+      },
+      {
+        title: 'NCHS Vital Statistics Rapid Release No. 44, provisional US mortality 2025',
+        url: 'https://www.cdc.gov/nchs/data/vsrr/vsrr044.pdf',
+      },
+    ],
+    asOf: '2026-11-20',
   },
 ]
 

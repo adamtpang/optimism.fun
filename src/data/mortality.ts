@@ -77,15 +77,26 @@ export const mortalityCauses: MortalityCause[] = [
   {
     slug: 'ischaemic-heart-disease',
     name: 'Ischaemic heart disease',
-    deaths: { value: 9_100_000, year: 2021, shareOfDeaths: 0.13, confidence: 'high', ...WHO_GHE },
+    deaths: {
+      value: 9_469_357,
+      year: 2023,
+      shareOfDeaths: 0.155,
+      source:
+        'WHO Global Health Estimates 2023, global deaths workbook (published 2026): ischaemic heart disease, both sexes, all ages, 9,469,357 deaths in 2023. The public fact sheet rounds the same estimate to 9.5 million. Checked 2026-11-20.',
+      sourceUrl:
+        'https://cdn.who.int/media/docs/default-source/gho-documents/global-health-estimates/deaths_global_2026-09-30.xlsx',
+      confidence: 'high',
+      asOf: '2026-11-20',
+    },
     whoRank2021: 1,
     gbdRank2023: 1,
-    trend: 'Rising: up 2.7 million deaths a year since 2000 (WHO).',
+    trend:
+      'Rising: the same workbook counts 6,429,003 deaths in 2000 and 9,469,357 in 2023.',
     mechanism:
       'LDL-driven plaque narrows the coronary arteries over decades. A plaque ruptures, a clot forms, and heart muscle downstream dies. Blood pressure, cholesterol, smoking, diabetes and age drive it.',
-    problemSlugs: ['hypertension', 'longevity'],
+    problemSlugs: ['heart-disease'],
     mappingNote:
-      'High blood pressure is the leading modifiable risk for ischaemic heart disease and age is the largest non-modifiable one, so both problems address it. The deaths are counted under each, not split.',
+      'Counted only under heart disease. Hypertension keeps stroke, and longevity keeps stroke and dementia. These 9,469,357 deaths are not added to either of those problems.',
   },
   {
     slug: 'covid-19',
@@ -239,8 +250,9 @@ export const mortalityCauses: MortalityCause[] = [
     trend: 'One in three deaths worldwide in 2023, up from 13.1 million in 1990 (GBD).',
     mechanism:
       'Ischaemic heart disease and stroke are the bulk of it, both driven by blood pressure, lipids, smoking, diabetes and age.',
-    problemSlugs: ['hypertension'],
-    mappingNote: 'Aggregate, excluded from sums. Its two largest members are listed separately.',
+    problemSlugs: [],
+    mappingNote:
+      'Aggregate, excluded from sums. Ischaemic heart disease is counted under heart disease and stroke under hypertension, so this roll-up is not assigned to either problem and is not an unmapped gap.',
     aggregate: true,
     members: ['ischaemic-heart-disease', 'stroke'],
   },
