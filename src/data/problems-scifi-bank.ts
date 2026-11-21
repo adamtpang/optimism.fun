@@ -10,6 +10,11 @@ import type { Problem } from './types'
 
 const AS_OF = '2026-11-20'
 
+const NOT_BORING = {
+  sourceUrl: 'https://notboring.com/sci-fi-idea-bank',
+  sourceLabel: 'Not Boring Sci-Fi Idea Bank',
+} as const
+
 const HRSA_WAITLIST = 'https://www.organdonor.gov/learn/organ-donation-statistics'
 const SRTR_DONATION = 'https://srtr.hrsa.gov/adr/2024/DOD/'
 const UNTIL_REWARM = 'https://www.untillabs.com/blog/rewarming'
@@ -114,6 +119,13 @@ export const sciFiBankProblems: Problem[] = [
     ],
     asOf: AS_OF,
     sciFiOrigin: "Cold sleep in Robert Heinlein's Methuselah's Children (1941) and The Door into Summer (1956).",
+    imagined: {
+      work: "The Senator's Daughter",
+      author: 'Edward Page Mitchell',
+      year: 1879,
+      note: 'an early story about freezing a living person to store them',
+      ...NOT_BORING,
+    },
     relatedProblemSlugs: ['organ-shortage'],
   },
   {
@@ -198,6 +210,13 @@ export const sciFiBankProblems: Problem[] = [
     ],
     asOf: AS_OF,
     sciFiOrigin: "A body taken apart for transplant in Larry Niven's The Jigsaw Man (1967).",
+    imagined: {
+      work: 'The Velvet Glove',
+      author: 'Harry Harrison',
+      year: 1956,
+      note: 'small clusters of cells that regrow human limbs',
+      ...NOT_BORING,
+    },
     relatedProblemSlugs: ['organ-banking'],
   },
   {
@@ -274,6 +293,13 @@ export const sciFiBankProblems: Problem[] = [
     ],
     asOf: AS_OF,
     sciFiOrigin: "A neural lace in Iain M. Banks's Surface Detail (2010).",
+    imagined: {
+      work: "Masson's Secret",
+      author: 'Raymond Z. Gallun',
+      year: 1939,
+      note: 'a brain implant that sends sight and sound and lets the body be controlled',
+      ...NOT_BORING,
+    },
   },
   {
     slug: 'ai-clinical-care',
@@ -345,6 +371,13 @@ export const sciFiBankProblems: Problem[] = [
     ],
     asOf: AS_OF,
     sciFiOrigin: "A robot doctor in Heller's Flamingo (1930).",
+    imagined: {
+      work: 'Flamingo: A Drama of A.D. 1950',
+      author: 'Clarence Edward Heller',
+      year: 1930,
+      note: 'a mechanical physician',
+      ...NOT_BORING,
+    },
   },
   {
     slug: 'artificial-womb',
@@ -418,6 +451,13 @@ export const sciFiBankProblems: Problem[] = [
     asOf: AS_OF,
     sciFiOrigin:
       "Gestation outside a body in Aldous Huxley's Brave New World (1932) and Lois McMaster Bujold's uterine replicator (1986).",
+    imagined: {
+      work: 'Brave New World',
+      author: 'Aldous Huxley',
+      year: 1932,
+      note: 'embryos grown to term in a room outside the body',
+      ...NOT_BORING,
+    },
     relatedProblemSlugs: ['newborn-survival'],
   },
 ]

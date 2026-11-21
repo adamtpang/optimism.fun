@@ -297,6 +297,20 @@ export type WayToHelp = {
   url?: string
 }
 
+/**
+ * Who first imagined this, and when. Display only. Not a ranking input
+ * and not a source for any number on the page.
+ */
+export type Imagined = {
+  work: string
+  author: string
+  year: number
+  /** One clause in our own words. Not a quotation from the story. */
+  note: string
+  sourceUrl: string
+  sourceLabel: string
+}
+
 export type Problem = {
   slug: string
   name: string
@@ -374,6 +388,11 @@ export type Problem = {
    * Optional. Absent on problems that have no such note.
    */
   sciFiOrigin?: string
+  /**
+   * Who first imagined it, and when. Optional. Rendered only when set.
+   * Does not enter any score.
+   */
+  imagined?: Imagined
   /**
    * Other ranked problems that share the same people. Display only.
    * Does not merge their deaths or scores.

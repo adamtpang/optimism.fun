@@ -32,6 +32,7 @@ import CtaBoard from '@/components/CtaBoard'
 import BurdenBlock from '@/components/BurdenBlock'
 import { problemMetrics } from '@/lib/open-data'
 import PageBand, { problemBandKind } from '@/components/media/PageBand'
+import ImaginedLine from '@/components/ImaginedLine'
 
 export function generateStaticParams() {
   return problems.map((p) => ({ slug: p.slug }))
@@ -177,6 +178,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
               />
             )}
           </div>
+          <ImaginedLine imagined={problem.imagined} />
         </div>
 
         <ActionBar />
