@@ -172,6 +172,11 @@ export const PROBLEM_TO_SECTORS: Record<string, string[]> = {
   'fertility-decline': ['demographics-and-society'],
   'loneliness': ['mental-health', 'demographics-and-society'],
   'heart-disease': ['physical-health-and-disease', 'aging-and-longevity'],
+  'organ-banking': ['physical-health-and-disease'],
+  'organ-shortage': ['physical-health-and-disease'],
+  'brain-computer-interface': ['physical-health-and-disease'],
+  'ai-clinical-care': ['physical-health-and-disease'],
+  'artificial-womb': ['physical-health-and-disease'],
 }
 
 export function getSectorsForProblem(problemSlug: string): string[] {

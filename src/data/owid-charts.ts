@@ -18,6 +18,9 @@
  *   cooking chart is not COPD and ends in 2010.
  * - heart-disease: no World chart was verified for this pass. The stored
  *   series is the GBD prevalence pair, not a live OWID retrieval.
+ * - organ-banking, organ-shortage, brain-computer-interface, ai-clinical-care,
+ *   and artificial-womb: no redistributable World series was verified for these
+ *   rows. None is mapped.
  *
  * Judgment calls that did map:
  * - infectious-disease uses malaria deaths, the same burden the demand feed

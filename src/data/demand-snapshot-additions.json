@@ -1,0 +1,235 @@
+{
+  "note": "Side file for five problems added 2026-11-20. Merged in src/lib/demand-snapshot.ts. Counts are unavailable on purpose.",
+  "problems": {
+    "organ-banking": [
+      {
+        "feed": "openalex",
+        "status": "unavailable",
+        "label": "OpenAlex works, last 12 months",
+        "value": null,
+        "unit": "works",
+        "query": "organ cryopreservation",
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "The search term is registered. A live count was not stored in this pass, so no number was invented."
+      },
+      {
+        "feed": "nih",
+        "status": "unavailable",
+        "label": "NIH RePORTER funding",
+        "value": null,
+        "unit": "USD",
+        "query": "organ cryopreservation",
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "The search term is registered. A live count was not stored in this pass, so no number was invented."
+      },
+      {
+        "feed": "usaspending",
+        "status": "unavailable",
+        "label": "USAspending awards",
+        "value": null,
+        "unit": "awards",
+        "query": "organ cryopreservation",
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "The search term is registered. A live count was not stored in this pass, so no number was invented."
+      },
+      {
+        "feed": "wikipedia",
+        "status": "unavailable",
+        "label": "Wikipedia pageviews (attention, not demand)",
+        "value": null,
+        "unit": "pageviews",
+        "query": "Cryopreservation",
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "The search term is registered. A live count was not stored in this pass, so no number was invented."
+      }
+    ],
+    "organ-shortage": [
+      {
+        "feed": "openalex",
+        "status": "unavailable",
+        "label": "OpenAlex works, last 12 months",
+        "value": null,
+        "unit": "works",
+        "query": "xenotransplantation",
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "The search term is registered. A live count was not stored in this pass, so no number was invented."
+      },
+      {
+        "feed": "nih",
+        "status": "unavailable",
+        "label": "NIH RePORTER funding",
+        "value": null,
+        "unit": "USD",
+        "query": "xenotransplantation",
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "The search term is registered. A live count was not stored in this pass, so no number was invented."
+      },
+      {
+        "feed": "usaspending",
+        "status": "unavailable",
+        "label": "USAspending awards",
+        "value": null,
+        "unit": "awards",
+        "query": "xenotransplantation",
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "The search term is registered. A live count was not stored in this pass, so no number was invented."
+      },
+      {
+        "feed": "wikipedia",
+        "status": "unavailable",
+        "label": "Wikipedia pageviews (attention, not demand)",
+        "value": null,
+        "unit": "pageviews",
+        "query": "Xenotransplantation",
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "The search term is registered. A live count was not stored in this pass, so no number was invented."
+      }
+    ],
+    "brain-computer-interface": [
+      {
+        "feed": "openalex",
+        "status": "unavailable",
+        "label": "OpenAlex works, last 12 months",
+        "value": null,
+        "unit": "works",
+        "query": "brain computer interface",
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "The search term is registered. A live count was not stored in this pass, so no number was invented."
+      },
+      {
+        "feed": "nih",
+        "status": "unavailable",
+        "label": "NIH RePORTER funding",
+        "value": null,
+        "unit": "USD",
+        "query": "brain computer interface",
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "The search term is registered. A live count was not stored in this pass, so no number was invented."
+      },
+      {
+        "feed": "usaspending",
+        "status": "unavailable",
+        "label": "USAspending awards",
+        "value": null,
+        "unit": "awards",
+        "query": "brain computer interface",
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "The search term is registered. A live count was not stored in this pass, so no number was invented."
+      },
+      {
+        "feed": "wikipedia",
+        "status": "unavailable",
+        "label": "Wikipedia pageviews (attention, not demand)",
+        "value": null,
+        "unit": "pageviews",
+        "query": "Brain_implant",
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "The search term is registered. A live count was not stored in this pass, so no number was invented."
+      }
+    ],
+    "ai-clinical-care": [
+      {
+        "feed": "openalex",
+        "status": "unavailable",
+        "label": "OpenAlex works, last 12 months",
+        "value": null,
+        "unit": "works",
+        "query": "artificial intelligence prescription",
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "The search term is registered. A live count was not stored in this pass, so no number was invented."
+      },
+      {
+        "feed": "nih",
+        "status": "unavailable",
+        "label": "NIH RePORTER funding",
+        "value": null,
+        "unit": "USD",
+        "query": "artificial intelligence prescription",
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "The search term is registered. A live count was not stored in this pass, so no number was invented."
+      },
+      {
+        "feed": "usaspending",
+        "status": "unavailable",
+        "label": "USAspending awards",
+        "value": null,
+        "unit": "awards",
+        "query": "artificial intelligence prescription",
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "The search term is registered. A live count was not stored in this pass, so no number was invented."
+      },
+      {
+        "feed": "wikipedia",
+        "status": "unavailable",
+        "label": "Wikipedia pageviews (attention, not demand)",
+        "value": null,
+        "unit": "pageviews",
+        "query": "Clinical_decision_support_system",
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "The search term is registered. A live count was not stored in this pass, so no number was invented."
+      }
+    ],
+    "artificial-womb": [
+      {
+        "feed": "openalex",
+        "status": "unavailable",
+        "label": "OpenAlex works, last 12 months",
+        "value": null,
+        "unit": "works",
+        "query": "artificial placenta",
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "The search term is registered. A live count was not stored in this pass, so no number was invented."
+      },
+      {
+        "feed": "nih",
+        "status": "unavailable",
+        "label": "NIH RePORTER funding",
+        "value": null,
+        "unit": "USD",
+        "query": "artificial placenta",
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "The search term is registered. A live count was not stored in this pass, so no number was invented."
+      },
+      {
+        "feed": "usaspending",
+        "status": "unavailable",
+        "label": "USAspending awards",
+        "value": null,
+        "unit": "awards",
+        "query": "artificial womb",
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "The search term is registered. A live count was not stored in this pass, so no number was invented."
+      },
+      {
+        "feed": "wikipedia",
+        "status": "unavailable",
+        "label": "Wikipedia pageviews (attention, not demand)",
+        "value": null,
+        "unit": "pageviews",
+        "query": "Artificial_uterus",
+        "sourceUrl": null,
+        "retrievedOn": "2026-11-20",
+        "reason": "The search term is registered. A live count was not stored in this pass, so no number was invented."
+      }
+    ]
+  }
+}

@@ -9,6 +9,7 @@
  * The data compilation is CC BY 4.0. Upstream pages keep their own terms.
  */
 import { problems } from './problems'
+import { sciFiBankCtas } from './ctas-scifi-bank'
 import { existentialRisks, type ExistentialRisk } from './existential-risks'
 
 export type CtaKind = 'build' | 'fund' | 'buy' | 'learn'
@@ -1389,6 +1390,7 @@ export const ctas: Cta[] = [
     checkedDate: "2026-11-20",
     checked: true,
   },
+  ...sciFiBankCtas,
 ]
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/

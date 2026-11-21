@@ -27,6 +27,7 @@ import { fertilityDeclineTree } from './trees/fertility-decline'
 import { scientificProductivityTree } from './trees/scientific-productivity'
 import { financialInfrastructureTree } from './trees/financial-infrastructure'
 import { heartDiseaseTree } from './trees/heart-disease'
+import { sciFiBankTrees } from './trees/scifi-bank'
 
 export type Level = 'low' | 'medium' | 'high' | 'unknown'
 
@@ -267,6 +268,7 @@ export const constraintTrees: ConstraintTree[] = [
   scientificProductivityTree,
   financialInfrastructureTree,
   heartDiseaseTree,
+  ...sciFiBankTrees,
 ]
 
 export const getConstraintTree = (slug: string) =>

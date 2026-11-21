@@ -427,6 +427,10 @@ no new severity value was stored.
 - Cancer no longer has an in-limit ceiling. The page shows IQVIA's $252B cancer-medicine spend for 2024 and Chen et al. 2023's INT$25.2 trillion economic cost for 2020 to 2050.
 - Calls to action for both problems are appended in `src/data/ctas.ts`. There is no separate Open data column, so the data rows sit under Learn.
 
+## Sci-fi bank problems (2026-11-20)
+
+Five problems, in `src/data/problems-scifi-bank.ts`, appended to the ranked list: `organ-banking`, `organ-shortage`, `brain-computer-interface`, `ai-clinical-care`, `artificial-womb`. Each has a one-line science-fiction lineage and an optional `imagined` line. None has an in-limit ceiling, a market size, or a death mapped in `src/data/mortality.ts`. The US transplant waiting list is stored on both organ rows and is not added. Preterm deaths on the artificial-womb row stay inside newborn survival. Live OpenAlex, NIH, USAspending, and Wikipedia counts were not fetched; the side snapshot marks them unavailable.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
