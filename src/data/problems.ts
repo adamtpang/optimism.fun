@@ -1,4 +1,5 @@
 import type { Problem, Domain } from './types'
+import { sciFiBankProblems } from './problems-scifi-bank'
 
 const TODAY = '2026-04-24'
 
@@ -2460,6 +2461,7 @@ export const problems: Problem[] = [
     ],
     asOf: '2026-09-11',
   },
+  ...sciFiBankProblems,
 ]
 
 export const getProblemBySlug = (slug: string): Problem | undefined =>
