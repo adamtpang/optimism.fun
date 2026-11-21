@@ -265,6 +265,13 @@ export const demandSignalRegistry: Record<string, DemandSignalFeeds> = {
     wikipediaArticle: 'Diabetes',
     clinicalTrials: { cond: 'Diabetes Mellitus' },
   },
+  'heart-disease': {
+    openAlexSearch: 'ischemic heart disease',
+    nihSearch: 'ischemic heart disease',
+    usaSpendingTerm: 'ischemic heart disease',
+    wikipediaArticle: 'Coronary_artery_disease',
+    clinicalTrials: { cond: 'Coronary Artery Disease' },
+  },
 }
 
 /** Source metadata for the /demand page's "where the numbers come from" strip. */

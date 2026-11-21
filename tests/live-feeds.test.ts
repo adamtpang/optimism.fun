@@ -103,7 +103,7 @@ describe('OWID chart map', () => {
       expect(chart.verifiedOn).toBe('2026-11-01')
     }
     const unmapped = problems.map((problem) => problem.slug).filter((slug) => !owidCharts[slug]).sort()
-    expect(unmapped).toEqual(['biosecurity', 'cancer', 'copd', 'loneliness'])
+    expect(unmapped).toEqual(['biosecurity', 'cancer', 'copd', 'heart-disease', 'loneliness'])
   })
 })
 

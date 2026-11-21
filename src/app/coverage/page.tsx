@@ -155,10 +155,9 @@ export default function CoveragePage() {
                     Every cause in WHO&apos;s 2021 top ten now maps to a problem on the index.
                   </p>
                   <p className="text-ink-400 text-small leading-relaxed mt-1 max-w-xl">
-                    As of 2026-09-11, after cancer, COPD and diabetes were added the day the
-                    burden layer counted them. Coverage is not adequacy: a mapped cause carries
-                    exactly the deaths it did before, and the problem pages say how well each is
-                    actually served.
+                    As of 2026-11-20, ischaemic heart disease is counted only on the heart
+                    disease problem. Those deaths are not also added under hypertension or
+                    longevity. Stroke stays under both. Coverage is not adequacy.
                   </p>
                 </div>
               ) : (

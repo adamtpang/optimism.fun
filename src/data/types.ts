@@ -297,6 +297,19 @@ export type WayToHelp = {
   url?: string
 }
 
+/**
+ * A sourced figure shown in the problem-page stat row.
+ * `display` is the exact label, so international dollars are not rewritten as USD.
+ */
+export type HeadlineFigure = {
+  id: string
+  label: string
+  display: string
+  source: string
+  sourceUrl: string
+  asOf: string
+}
+
 export type Problem = {
   slug: string
   name: string
@@ -364,6 +377,12 @@ export type Problem = {
   people?: Person[]
   /** Concrete ways to help or build, for non-founders and founders alike. */
   waysToHelp?: WayToHelp[]
+  /**
+   * Extra sourced stats for the page header. Not a ranking input.
+   * Use this for a figure that is not people affected, related deaths, annual
+   * spend, or an in-limit ceiling.
+   */
+  headlineFigures?: HeadlineFigure[]
   /** ISO date this entry's content was last reviewed. Shown on every page. */
   lastUpdated?: string
   scores: LensScore
