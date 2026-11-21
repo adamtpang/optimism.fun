@@ -18,7 +18,7 @@ describe('ctas', () => {
   })
 
   it('keeps the ingested research set', () => {
-    expect(ctas).toHaveLength(112)
+    expect(ctas).toHaveLength(131)
     expect(ctas.every((c) => !('httpStatus' in c))).toBe(true)
     expect(ctas.every((c) => !('problem' in c))).toBe(true)
     expect(ctas.filter((c) => c.checked === false)).toHaveLength(6)
@@ -46,6 +46,7 @@ describe('ctas', () => {
       'About $216 million in gifts and grants organized since 2019 (all cause areas)',
       'About $216 million in gifts and grants organized since 2019 (all cause areas)',
       'Grants of up to £1 million per project; over £27 million awarded to 60+ projects in the first round',
+      'up to $34m',
     ])
     for (const c of ctas) {
       if (c.amount) expect(c.amount.sourceUrl.startsWith('https://')).toBe(true)

@@ -177,6 +177,15 @@ export default async function ProblemPage({ params }: { params: Promise<{ slug: 
                 href={prize.marketCap.sourceUrl ?? cite}
               />
             )}
+            {problem.headlineFigures?.map((figure) => (
+              <Stat
+                key={figure.id}
+                label={figure.label}
+                value={figure.display}
+                source={`${figure.source} Checked ${figure.asOf}.`}
+                href={figure.sourceUrl}
+              />
+            ))}
           </div>
           <ImaginedLine imagined={problem.imagined} />
         </div>

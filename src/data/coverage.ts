@@ -118,7 +118,7 @@ export const coverageTaxonomies: CoverageTaxonomy[] = [
     method:
       'Epidemiology ranked by DALYs (disability-adjusted life years) — the antidote to picking health causes by which ones get news coverage. This is the most damning cross-check: it is ranked by actual harm, and the index barely touches it.',
     items: [
-      { name: 'Cardiovascular diseases', status: 'partial', matchedSlugs: ['hypertension'], note: 'Hypertension now covers the largest modifiable cardiovascular risk and its delivery gap; lipids, acute cardiac care, congenital disease, and other cardiovascular causes remain unmodeled.' },
+      { name: 'Cardiovascular diseases', status: 'partial', matchedSlugs: ['hypertension', 'heart-disease'], note: 'Heart disease covers ischaemic heart disease (9,469,357 deaths in 2023, WHO Global Health Estimates). Hypertension covers high blood pressure and, in the burden roll-up, stroke. Lipids as their own row, acute cardiac care, congenital disease, and other cardiovascular causes remain unmodeled. The deaths are not added together.' },
       { name: 'Cancers', status: 'covered', matchedSlugs: ['cancer'], note: 'The second-largest cause of death worldwide: 9.7 million deaths in 2022 (GLOBOCAN), lung alone 1.8 million. Added to the index on 2026-09-11, the same day the burden layer exposed it as the largest gap on this page by deaths. Covered as one problem; the hundreds of distinct cancers are not modeled separately.' },
       { name: 'Neonatal disorders / maternal mortality', status: 'partial', matchedSlugs: ['newborn-survival'], note: 'Newborn survival covers the neonatal half, the fifth cause of death globally in GBD 2023. Maternal mortality is still not on the index. This row read "gap" until 2026-09-11, a stale entry the burden layer caught.' },
       { name: 'Mental and substance use disorders', status: 'gap', matchedSlugs: [], note: 'Depression, anxiety, and addiction are a top-5 DALY cause on their own — distinct from loneliness on the index, which frames the social dimension only.' },
@@ -145,9 +145,9 @@ export type CoverageGapCandidate = {
  */
 export const coverageGapCandidates: CoverageGapCandidate[] = [
   {
-    name: 'Cardiovascular disease beyond hypertension',
+    name: 'Cardiovascular disease beyond ischaemic heart disease and hypertension',
     flaggedBy: ['gbd'],
-    why: 'Hypertension control now covers the largest modifiable risk factor, but the index still lacks a complete cardiovascular model spanning lipids, smoking, acute care, and structural disease.',
+    why: 'Ischaemic heart disease and hypertension are on the index. Stroke is counted under hypertension. Lipids as their own problem, acute cardiac care, congenital disease, and structural disease are still not separate rows.',
   },
   {
     name: 'Cancer',

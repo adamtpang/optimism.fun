@@ -171,6 +171,7 @@ export const PROBLEM_TO_SECTORS: Record<string, string[]> = {
   'longevity': ['aging-and-longevity', 'physical-health-and-disease'],
   'fertility-decline': ['demographics-and-society'],
   'loneliness': ['mental-health', 'demographics-and-society'],
+  'heart-disease': ['physical-health-and-disease', 'aging-and-longevity'],
   'organ-banking': ['physical-health-and-disease'],
   'organ-shortage': ['physical-health-and-disease'],
   'brain-computer-interface': ['physical-health-and-disease'],

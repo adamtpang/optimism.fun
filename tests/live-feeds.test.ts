@@ -110,6 +110,7 @@ describe('OWID chart map', () => {
       'brain-computer-interface',
       'cancer',
       'copd',
+      'heart-disease',
       'loneliness',
       'organ-banking',
       'organ-shortage',

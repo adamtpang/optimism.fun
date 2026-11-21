@@ -6,7 +6,7 @@
  * mortality dimension (pedagogy, loneliness) does not get an empty section.
  */
 import { burdenForProblem, DISCLOSURE } from '@/lib/burden'
-import { formatHumans } from '@/lib/format'
+import { formatDeathShare, formatHumans } from '@/lib/format'
 
 export default function BurdenBlock({ problemSlug }: { problemSlug: string }) {
   const b = burdenForProblem(problemSlug)
@@ -66,7 +66,7 @@ export default function BurdenBlock({ problemSlug }: { problemSlug: string }) {
               <p className="font-figure text-small text-primary tabular-nums md:text-right">
                 {formatHumans(c.deaths.value ?? 0)}
                 <span className="block text-small text-ink-600">
-                  {c.deaths.shareOfDeaths ? `${Math.round(c.deaths.shareOfDeaths * 100)}% of all deaths` : `${c.deaths.year}`}
+                  {c.deaths.shareOfDeaths != null ? formatDeathShare(c.deaths.shareOfDeaths) : `${c.deaths.year}`}
                 </span>
               </p>
             </div>
