@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     'techno-capitalism',
   ],
   openGraph: {
-    title: "optimism.fun | Problems, capital, talent",
+    title: "optimism.fun | Humanity's hardest problems, ranked",
     description:
       "Humanity's hardest problems, ranked with sourced numbers. Bring money or work.",
     url: SITE_URL,
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "optimism.fun | Problems, capital, talent",
+    title: "optimism.fun | Humanity's hardest problems, ranked",
     description:
       "Humanity's hardest problems, ranked with sourced numbers. Bring money or work.",
   },
